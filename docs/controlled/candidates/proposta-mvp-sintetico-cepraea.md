@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-PROPOSTA-MVP-SINTETICO
 title: "Proposta de recorte do MVP sintético do CEPRAEA BEACH PRO"
 document_type: decisao
-version: "0.1.3"
+version: "0.1.4"
 workflow_status: RASCUNHO
 responsible: Davi Sermenho
 permitted_uses:
@@ -149,9 +149,9 @@ consolidados permanecem como critérios e não geram trabalho duplicado.
 ### MVP-08 — Cobertura por função ampla
 
 - Contagem descritiva baseada exclusivamente nas respostas vigentes.
-- Funções iniciais: goleira, defesa, ataque, especialista e indefinida.
-- Coringa é papel tático do jogo e não integra a classificação de posição ou
-  função do cadastro.
+- Funções iniciais: goleira, defesa, ataque e indefinida.
+- Especialista e coringa são nomes equivalentes do mesmo papel tático
+  contextual do jogo e não integram posição ou função cadastral.
 - Nenhuma recomendação automática de convocação, escalação, disciplina,
   confiabilidade ou condição pessoal.
 - RFs: RF-030 a RF-032.
@@ -223,12 +223,14 @@ Estas respostas são propostas para aprovação conjunta, não decisões já tom
 ### PD-001 — Cobertura tática
 
 **Proposta:** incluir no MVP somente cobertura quantitativa por função ampla:
-goleira, defesa, ataque, especialista e indefinida.
+goleira, defesa, ataque e indefinida.
 
 Posições específicas, combinações e sistemas táticos ficam adiados até que Davi
 valide um vocabulário mais detalhado. A PWA não produz convocação ou escalação.
-Coringa pode ser tratado futuramente como papel tático contextual, mas não como
-posição nem como nome alternativo para especialista.
+Especialista, também denominado coringa, poderá ser tratado futuramente como
+papel tático contextual. Os termos são equivalentes e nenhum deles é posição
+ou função cadastral permanente. O papel não permite inferir a função ampla da
+atleta.
 
 ### PD-002 — Vínculo esportivo e conta
 

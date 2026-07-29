@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-DEC-MAPA-FEATURES
 title: "Mapa de features do MVP sintético"
 document_type: decisao
-version: "0.1.1"
+version: "0.1.2"
 workflow_status: CANONICA_VIGENTE
 responsible: Davi Sermenho
 permitted_uses:
@@ -111,7 +111,8 @@ respostas, pendências e fatos não registrados.
 
 MVP-08 (Cobertura por função ampla): contagem descritiva baseada nas respostas
 vigentes. Sem recomendação de convocação, escalação, disciplina ou condição
-pessoal. Funções: goleira, defesa, ataque, especialista e indefinida.
+pessoal. Funções: goleira, defesa, ataque e indefinida. Especialista, também
+denominado coringa, é papel tático contextual e não integra essa contagem.
 
 - RF-030, RF-031, RF-032
 

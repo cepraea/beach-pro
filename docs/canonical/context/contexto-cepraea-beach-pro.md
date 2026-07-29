@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
 title: "Versão candidata de contexto do CEPRAEA"
 document_type: contexto
-version: "0.1.1"
+version: "0.1.2"
 workflow_status: CANONICA_VIGENTE
 responsible: Davi Sermenho
 permitted_uses:
@@ -250,9 +250,12 @@ prohibited_uses:
 - `CONFIRMADO_FONTE`: a operação esportiva envolve elenco, treinos, calendário,
   competições, convocações, escalações, participação real, resultados,
   planejamento, comunicação e histórico.
-- `CONFIRMADO_FONTE`: funções amplas usadas nas fontes incluem goleira, defesa,
-  ataque, coringa e indefinida; posições específicas dependem de validação
-  esportiva.
+- `CONFIRMADO_FONTE`: as fontes legadas registraram goleira, defesa, ataque,
+  coringa e indefinida na mesma classificação.
+- `CORRECAO_CONFIRMADA_HUMANO`: essa estrutura legada é semanticamente
+  incorreta. As únicas funções amplas cadastrais são goleira, defesa, ataque e
+  indefinida. Especialista, também denominado coringa, é um papel tático
+  contextual do jogo e não uma função ou posição permanente da atleta.
 - `CONFIRMADO_FONTE`: a viabilidade de treino ou competição depende não apenas
   da quantidade de atletas, mas também da cobertura de funções, posições e
   sistemas táticos.
@@ -870,10 +873,13 @@ principais; computador ou notebook de Davi para administração.
   temporal.
 - Status da atleta — condição de vínculo com o elenco; não representa
   disponibilidade para um compromisso.
-- Função — classificação esportiva ampla, como goleira, defesa, ataque, coringa
+- Função — classificação esportiva ampla e cadastral: goleira, defesa, ataque
   ou indefinida.
 - Posição — papel esportivo autorizado ou efetivamente desempenhado, que pode
   variar conforme o contexto.
+- Papel tático contextual — atribuição exercida durante o jogo. Especialista é
+  o nome técnico canônico e coringa é seu sinônimo esportivo; nenhum dos termos
+  integra a função ou posição cadastral permanente da atleta.
 - Compromisso — treino, competição, reunião, feedback ou outra atividade
   operacional.
 - Solicitação operacional — pedido criado por Davi que define assunto, pessoa

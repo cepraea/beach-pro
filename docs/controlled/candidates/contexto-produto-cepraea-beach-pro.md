@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-CONTEXTO-TRABALHO-V02
 title: "Contexto do CEPRAEA BEACH PRO — versão de trabalho"
 document_type: contexto
-version: "0.2"
+version: "0.2.1"
 workflow_status: RASCUNHO
 responsible: Davi Sermenho
 permitted_uses:
@@ -258,9 +258,12 @@ prohibited_uses:
   planejamento, comunicação e histórico.
 - `CONFIRMADO_FONTE`: as fontes legadas registram as classificações goleira,
   defesa, ataque, coringa e indefinida.
-- `CONFIRMADO_HUMANO`: para o produto, o nome correto da classificação é
-  especialista, não coringa. Coringa é papel tático do jogo e não deve ser
-  tratado como posição. Posições específicas dependem de validação esportiva.
+- `CORRECAO_CONFIRMADA_HUMANO`: o registro legado de coringa como classificação
+  é semanticamente incorreto. As funções amplas cadastrais válidas são goleira,
+  defesa, ataque e indefinida. Especialista e coringa são denominações
+  equivalentes do mesmo papel tático contextual do jogo, não posições nem
+  classificações permanentes. Posições específicas dependem de validação
+  esportiva.
 - `CONFIRMADO_FONTE`: a viabilidade de treino ou competição depende não apenas
   da quantidade de atletas, mas também da cobertura de funções, posições e
   sistemas táticos.
@@ -878,12 +881,13 @@ principais; computador ou notebook de Davi para administração.
   temporal.
 - Status da atleta — condição de vínculo com o elenco; não representa
   disponibilidade para um compromisso.
-- Função — classificação esportiva ampla, como goleira, defesa, ataque,
-  especialista ou indefinida.
+- Função — classificação esportiva ampla e cadastral: goleira, defesa, ataque
+  ou indefinida.
 - Posição — papel esportivo autorizado ou efetivamente desempenhado, que pode
   variar conforme o contexto.
-- Papel tático — atribuição contextual durante o jogo; coringa pertence a esta
-  categoria e não é posição nem nome alternativo para especialista.
+- Papel tático — atribuição contextual durante o jogo; especialista é o nome
+  técnico canônico e coringa é seu sinônimo esportivo. Nenhum deles integra a
+  função ou posição cadastral permanente da atleta.
 - Compromisso — treino, competição, reunião, feedback ou outra atividade
   operacional.
 - Solicitação operacional — pedido criado por Davi que define assunto, pessoa

@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
 title: "DEC-019 — Recorte e autorização do MVP sintético"
 document_type: decisao
-version: "0.1.2"
+version: "0.1.3"
 workflow_status: CANONICA_VIGENTE
 responsible: Davi Sermenho
 permitted_uses:
@@ -28,8 +28,8 @@ prohibited_uses:
 | ID da decisão | `DEC-019` |
 | Documento | `DOC-CEPRAEA-DEC-019-MVP-SINTETICO` |
 | Produto | CEPRAEA BEACH PRO |
-| Versão | `0.1.1` |
-| Estado | `PROPOSTA_PARA_APROVACAO` |
+| Versão | `0.1.3` |
+| Estado | `CANONICA_VIGENTE` |
 | Data da proposta | 2026-07-26 |
 | Autoridade aprovadora | Davi Sermenho |
 | Efeito pretendido | Aprovar o recorte e autorizar sua implementação exclusivamente sintética |
@@ -182,15 +182,37 @@ Fica aprovada somente a cobertura quantitativa pelas funções amplas:
 - goleira;
 - defesa;
 - ataque;
-- especialista;
 - indefinida.
 
 Posições específicas, combinações e sistemas táticos não integram o MVP.
 Indicadores são descritivos e não geram convocação, escalação ou julgamento
 automático.
 
-Coringa é papel tático contextual do jogo. Não é posição nem nome alternativo
-para especialista e não integra a classificação de posição ou função do MVP.
+Especialista e coringa são denominações equivalentes do mesmo papel tático
+contextual do jogo. `ESPECIALISTA` é o nome técnico canônico e `CORINGA` é seu
+sinônimo esportivo. Nenhum deles é posição ou função cadastral permanente da
+atleta, nem integra a cobertura por função ampla do MVP.
+
+Uma atleta com função ampla goleira, defesa, ataque ou indefinida pode exercer
+o papel de especialista/coringa em uma escalação, formação ou momento do jogo.
+Esse papel não permite inferir a função ampla e sua alteração não modifica o
+cadastro permanente da atleta.
+
+### 7.1.1 Invariantes de domínio
+
+- `INV-DOM-001`: `CORINGA` e `ESPECIALISTA` são termos equivalentes.
+- `INV-DOM-002`: `ESPECIALISTA`/`CORINGA` é papel tático contextual.
+- `INV-DOM-003`: `ESPECIALISTA`/`CORINGA` não pode ser usado como função ampla
+  ou posição cadastral da atleta.
+- `INV-DOM-004`: nenhuma função ampla pode ser inferida a partir do papel de
+  especialista/coringa.
+- `INV-DOM-005`: alterar o papel em jogo não altera o cadastro permanente da
+  atleta.
+
+Valores legados `CORINGA` ou `ESPECIALISTA` devem preservar valor e fonte,
+ser marcados para revisão e receber uma função ampla validada por Davi entre
+goleira, defesa, ataque e indefinida. Eles não devem ser convertidos
+automaticamente nem gerar atribuição tática sem contexto de jogo.
 
 ### 7.2 Vínculo esportivo e conta
 

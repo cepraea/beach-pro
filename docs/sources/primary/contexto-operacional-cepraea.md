@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-FONTE-OPERACIONAL
 title: "Descrição operacional do CEPRAEA"
 document_type: contexto
-version: "0.1.1-ingestao"
+version: "0.1.2-ingestao"
 workflow_status: RASCUNHO
 responsible: Davi Sermenho
 permitted_uses:
@@ -405,6 +405,14 @@ flowchart TD
 
 As funções registradas incluem `GOLEIRA`, `DEFESA`, `ATAQUE`, `CORINGA` e
 `INDEFINIDA`.
+
+> **Nota de superação do modelo legado:** o valor `CORINGA` foi encontrado na
+> coluna de função, mas essa estrutura mistura cadastro permanente e contexto
+> tático. `CORINGA` e `ESPECIALISTA` denominam o mesmo papel tático contextual
+> do jogo e não são funções ou posições cadastrais válidas. A classificação
+> ampla vigente contém somente `GOLEIRA`, `DEFESA`, `ATAQUE` e `INDEFINIDA`.
+> Registros legados com esses valores exigem revisão humana; não se deve inferir
+> automaticamente sua função ampla.
 
 As posições registradas incluem:
 

@@ -2,7 +2,7 @@
 document_id: DOC-VAL-REL-AUDITORIA-REQUISITOS-MVP
 title: "Auditoria prática dos requisitos para definição do MVP"
 document_type: relatorio
-version: "0.1.1"
+version: "0.1.2"
 workflow_status: RASCUNHO
 responsible: Davi Sermenho
 permitted_uses:
@@ -25,7 +25,7 @@ prohibited_uses:
 | Versão | `0.1.1` |
 | Estado | `RASCUNHO` |
 | Data | 2026-07-25 |
-| Revisão | Correção de domínio: especialista substitui coringa como classificação; coringa é papel tático |
+| Revisão | Correção de domínio: especialista e coringa são o mesmo papel tático contextual; nenhum integra a classificação ampla |
 | Responsável pela validade do domínio | Davi Sermenho |
 | Catálogo auditado | `DOC-CEPRAEA-REQ-DERIVADOS-V01`, RF-001 a RF-053 |
 | Contexto vigente | `DOC-CEPRAEA-CANDIDATA-CONTEXTO`, versão 0.1 |
@@ -195,8 +195,11 @@ Os quatro RFs classificados como `DEPENDE_DE_DAVI` formam apenas três escolhas:
   posições e sistemas táticos específicos.
 - **Recomendação LEAN:** começar com funções amplas e adiar posições/sistemas
   específicos até que o vocabulário esportivo seja validado.
-- **Correção confirmada por Davi:** usar especialista, não coringa, na
-  classificação ampla. Coringa é papel tático do jogo e não posição.
+- **Correção confirmada por Davi:** a classificação ampla contém somente
+  goleira, defesa, ataque e indefinida. Especialista e coringa são
+  denominações equivalentes do mesmo papel tático contextual do jogo; nenhum
+  deles é função ampla ou posição cadastral, e o papel não permite inferir a
+  função ampla da atleta.
 
 ### PD-002 — Estados do vínculo da atleta e efeito sobre a conta
 

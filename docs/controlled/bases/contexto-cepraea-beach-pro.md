@@ -2,7 +2,7 @@
 document_id: DOC-CEPRAEA-BASE-CONTEXTO
 title: "Base controlada de conteúdo do CEPRAEA"
 document_type: contexto
-version: "0.1.1"
+version: "0.1.2"
 workflow_status: RASCUNHO
 responsible: Davi Sermenho
 permitted_uses:
@@ -244,9 +244,12 @@ prohibited_uses:
 - `CONFIRMADO_FONTE`: a operação esportiva envolve elenco, treinos, calendário,
   competições, convocações, escalações, participação real, resultados,
   planejamento, comunicação e histórico.
-- `CONFIRMADO_FONTE`: funções amplas usadas nas fontes incluem goleira, defesa,
-  ataque, coringa e indefinida; posições específicas dependem de validação
-  esportiva.
+- `CONFIRMADO_FONTE`: as fontes legadas registraram goleira, defesa, ataque,
+  coringa e indefinida na mesma classificação.
+- `NOTA_DE_SUPERACAO`: essa estrutura legada foi posteriormente identificada
+  como semanticamente incorreta. As funções amplas cadastrais válidas são
+  goleira, defesa, ataque e indefinida. Especialista/coringa é um único papel
+  tático contextual, não uma função ou posição permanente.
 - `CONFIRMADO_FONTE`: a viabilidade de treino ou competição depende não apenas
   da quantidade de atletas, mas também da cobertura de funções, posições e
   sistemas táticos.
@@ -864,8 +867,11 @@ principais; computador ou notebook de Davi para administração.
   temporal.
 - Status da atleta — condição de vínculo com o elenco; não representa
   disponibilidade para um compromisso.
-- Função — classificação esportiva ampla, como goleira, defesa, ataque, coringa
-  ou indefinida.
+- Função — no modelo legado, classificação que misturava goleira, defesa,
+  ataque, coringa e indefinida. A regra vigente exclui coringa/especialista e
+  admite como funções amplas apenas goleira, defesa, ataque e indefinida.
+- Papel tático contextual — especialista, também denominado coringa; não é
+  posição nem função cadastral permanente.
 - Posição — papel esportivo autorizado ou efetivamente desempenhado, que pode
   variar conforme o contexto.
 - Compromisso — treino, competição, reunião, feedback ou outra atividade
