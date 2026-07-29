@@ -6,5 +6,13 @@ coverage/
 *.log
 .DS_Store
 
+# Metadados Windows/WSL (Zone Identifier de arquivos copiados do Windows)
+*:Zone.Identifier
+
+# Python compilado
+__pycache__/
+*.pyc
+*.pyo
+
 # Configuração local do Claude Code (não commitada — preferências pessoais)
 .claude/settings.local.json
