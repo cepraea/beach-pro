@@ -135,7 +135,7 @@ class ConsumerMigrationTests(unittest.TestCase):
     def test_operational_docs_use_module_entrypoint(self) -> None:
         readme = OPERATIONAL_README.read_text(encoding="utf-8")
 
-        self.assertIn("version: \"0.2.2\"", readme)
+        self.assertIn("version: \"0.2.3\"", readme)
         self.assertIn(f"python3 -m {MODULE_NAME}", readme)
         self.assertNotIn(LEGACY_REFERENCE, readme)
 
@@ -191,7 +191,7 @@ class ConsumerMigrationTests(unittest.TestCase):
             for document in registry["documents"]
         }
         expected = {
-            "DOC-REG-ENTRADA-DOCUMENTACAO": (OPERATIONAL_README, "0.2.2"),
+            "DOC-REG-ENTRADA-DOCUMENTACAO": (OPERATIONAL_README, "0.2.3"),
             "DOC-REG-WF-DOCUMENTACAO": (WORKFLOW, "0.2.3"),
         }
 
