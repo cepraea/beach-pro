@@ -1,10 +1,12 @@
 approval:
   approval_id: APR-DEC-MAPA-FEATURES-002
   document_id: DOC-CEPRAEA-DEC-MAPA-FEATURES
-  version: "0.1.1"
-  content_hash: b2366998fc76a11633cb0ac80c2b7902db57e9938004f178f7b73810f9ca163c
+  version: "0.1.2"
+  content_hash: 100445cc2f1bf341b93d2ad87b4d9226d287c91a32ad9a068fc8cf30ae7707a1
   purpose: >
-    Aprovação corretiva de DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1: substitui
+    Aprovação corretiva de DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.2: corrige a
+    cobertura por função ampla para goleira, defesa, ataque e indefinida e
+    reconhece especialista/coringa como papel tático contextual; substitui
     APR-DEC-MAPA-FEATURES-001, que continha hash inconsistente com os bytes
     canônicos atuais. Autoriza o mapa de seis features do MVP sintético e a
     criação de feature specs com derivação rastreada ao DEC-019.
@@ -17,6 +19,8 @@ approval:
     - ft_treinos_incluido_m2_mvp03_mvp04
     - ft_presencas_incluido_m3_m4_mvp05_mvp06_mvp07
     - ft_avaliacoes_incluido_m3_mvp08
+    - especialista_equivale_a_coringa
+    - especialista_coringa_excluido_da_cobertura_ampla
     - ft_jogos_adiado
     - rfs_transversais_rf004_rf007_rf043_rf045
   approved_by: Davi Sermenho
@@ -29,7 +33,7 @@ approval:
   non_blocking_pending_items: []
   approved_at: "2026-07-29T00:00:00-03:00"
   evidence_ids:
-    - GATE-RESULT-G-ARCH-MAPA-FEATURES-V011
-    - GATE-RESULT-G0-MAPA-FEATURES-V011
-    - GATE-RESULT-G1-MAPA-FEATURES-V011
-    - GATE-RESULT-G-FM-MAPA-FEATURES-V011
+    - GATE-RESULT-G-ARCH-MAPA-FEATURES-V012
+    - GATE-RESULT-G0-MAPA-FEATURES-V012
+    - GATE-RESULT-G1-MAPA-FEATURES-V012
+    - GATE-RESULT-G-FM-MAPA-FEATURES-V012

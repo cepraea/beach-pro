@@ -1,18 +1,23 @@
 approval:
-  approval_id: APR-CONTEXTO-CANDIDATA-V011-002
+  approval_id: APR-CONTEXTO-CANDIDATA-V012-002
   document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
-  version: "0.1.1"
-  content_hash: 27a64560c3a131efe5e2af416e02433e89b5a504f42731521b21e59b06eb2d30
+  version: "0.1.2"
+  content_hash: ab6102ac15a4145d75e34cb2e91ca7043fe8128b9d312c890389c554789d2b7f
   purpose: >
-    Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1: substitui
+    Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2: registra a
+    equivalência entre especialista e coringa como papel tático contextual,
+    exclui ambos da função ampla cadastral e substitui
     APR-CONTEXTO-CANDIDATA-V011-001, que continha hash inconsistente com os
-    bytes canônicos atuais e referenciava evidências de gate inexistentes.
-    Promove v0.1.1 como CANONICA_VIGENTE, arquivando v0.1 como SUPERADA.
+    bytes canônicos então controlados e referenciava evidências inexistentes.
+    Promove v0.1.2 como CANONICA_VIGENTE, arquivando v0.1 como SUPERADA.
   scope:
     - correcao_de_hash_de_aprovacao
     - vinculo_com_evidencias_de_gate_existentes
     - promocao_de_v011_para_canonica_vigente
     - arquivamento_de_v01_como_superada
+    - especialista_equivale_a_coringa
+    - especialista_coringa_como_papel_tatico_contextual
+    - funcoes_amplas_goleira_defesa_ataque_indefinida
   approved_by: Davi Sermenho
   authority_role: AUTORIDADE_APROVADORA
   decision: approved
@@ -23,7 +28,7 @@ approval:
   non_blocking_pending_items: []
   approved_at: "2026-07-29T00:00:00-03:00"
   evidence_ids:
-    - GATE-RESULT-G-ARCH-CONTEXTO-V011
-    - GATE-RESULT-G0-CONTEXTO-V011
-    - GATE-RESULT-G1-CONTEXTO-V011
-    - GATE-RESULT-G-FM-CONTEXTO-V011
+    - GATE-RESULT-G-ARCH-CONTEXTO-V012
+    - GATE-RESULT-G0-CONTEXTO-V012
+    - GATE-RESULT-G1-CONTEXTO-V012
+    - GATE-RESULT-G-FM-CONTEXTO-V012
