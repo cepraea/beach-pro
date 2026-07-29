@@ -14,5 +14,21 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Caches de ferramentas Python e editores
+.pytest_cache/
+.mypy_cache/
+venv/
+env/
+Thumbs.db
+*.swp
+*.swo
+
+# Pacotes de evidência binários (mantidos localmente, não versionados)
+*.tar
+
+# Histórico de conversas de contexto (mantidos localmente, não versionados)
+.inicio/HISTORICO-*.json
+.inicio/HISTORICO-*.md
+
 # Configuração local do Claude Code (não commitada — preferências pessoais)
 .claude/settings.local.json

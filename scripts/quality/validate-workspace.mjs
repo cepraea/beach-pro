@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
 const root = process.cwd();
@@ -140,6 +141,16 @@ for (const size of [192, 512]) {
   } catch (error) {
     errors.push(`${path}: ícone obrigatório indisponível (${error.message})`);
   }
+}
+
+try {
+  const remoteUrl = execSync('git remote get-url origin', { encoding: 'utf8' }).trim();
+  check(
+    /github\.com[:/]cepraea\/beach-pro/.test(remoteUrl),
+    `Remote origin não aponta para cepraea/beach-pro: ${remoteUrl}`,
+  );
+} catch {
+  errors.push('Remote origin não configurado ou git não disponível.');
 }
 
 if (errors.length > 0) {

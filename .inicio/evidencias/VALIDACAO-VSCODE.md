@@ -8,7 +8,7 @@
 | Data da execução | 2026-07-28 |
 | Executor automatizado | Codex |
 | Diretório | `/home/davis/projetos/cepraea-beach-pro` |
-| Estado do repositório | Baseline Git criada em 2026-07-29; remote configurado em `https://github.com/cepraea/beach-pro` |
+| Estado do repositório | Baseline Git criada em 2026-07-29; remote SSH `git@github.com:cepraea/beach-pro.git` (web: `https://github.com/cepraea/beach-pro`) |
 | Resultado | Qualificação automatizada aprovada; qualificação manual pendente |
 
 ## 2. Ambiente observado

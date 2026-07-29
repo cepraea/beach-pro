@@ -5,12 +5,12 @@
 | Campo | Valor |
 | --- | --- |
 | Identificador | ESP-CEPRAEA-VSCODE-001 |
-| Versão | 1.0.0 |
+| Versão | 1.0.1 |
 | Estado | Em qualificação |
 | Proprietário | Desenvolvedor responsável pelo CEPRAEA Beach Pro |
 | Aprovador | Proprietário do produto e do repositório |
-| Data de vigência documental | 2026-07-28 |
-| Última revisão | 2026-07-28 |
+| Data de vigência documental | 2026-07-29 |
+| Última revisão | 2026-07-29 |
 | Próxima revisão | Após alteração da baseline ou, no máximo, em 2027-01-28 |
 | Relatório de origem | `RELATORIO-VSCODE.md` |
 | Histórico anterior | `.inicio/historico/VSCODE-legacy-2026-07-28.md` |
@@ -96,6 +96,7 @@ Cada elemento configurável DEVE possuir exatamente uma fonte canônica conforme
 | Variáveis públicas | `.env.example` |
 | Formatação | `.editorconfig`, `.prettierrc` e `.prettierignore` |
 | Lint | `eslint.config.js` e `.markdownlint.jsonc` |
+| Proteção de artefatos versionados | `.gitignore` |
 | Docker opcional | `Dockerfile`, `docker-compose.yml` e `.dockerignore` |
 | Requisitos | Este documento |
 | Evidência de qualificação | `.inicio/evidencias/VALIDACAO-VSCODE.md` |
@@ -386,7 +387,8 @@ O script `scripts/quality/validate-workspace.mjs` DEVE verificar:
 - versões de Node.js e npm;
 - proibição de `--passWithNoTests`;
 - contrato de `.env.example`;
-- existência e dimensões dos ícones da PWA.
+- existência e dimensões dos ícones da PWA;
+- git remote `origin` aponta para `github.com/cepraea/beach-pro`.
 
 **Critério de aceitação CA-VSC-021:** uma divergência controlada reprova o script e sua correção
 restaura o código zero.
@@ -491,7 +493,7 @@ RECOMENDA-SE evitar dependências, diretórios e abstrações sem necessidade co
 
 ## 16. Matriz de rastreabilidade
 
-| Requisito | Fonte canônica principal | Verificação | Estado em 2026-07-28 |
+| Requisito | Fonte canônica principal | Verificação | Estado em 2026-07-29 |
 | --- | --- | --- | --- |
 | REQ-VSC-001 a 002 | Esta especificação | Revisão e `quality:workspace` | Implementado |
 | REQ-VSC-003 | `.nvmrc`, `package.json` | Versões e `quality:workspace` | Implementado |
@@ -584,7 +586,8 @@ incompatíveis de forma automática.
 
 | Versão | Data | Alteração | Estado |
 | --- | --- | --- | --- |
-| 1.0.0 | 2026-07-28 | Consolidação normativa resultante de `RELATORIO-VSCODE.md` | Vigente |
+| 1.0.1 | 2026-07-29 | Adição de `.gitignore` como fonte canônica; expansão de padrões de exclusão; adição de `package.json#repository`; verificação de git remote no `quality:workspace` | Vigente |
+| 1.0.0 | 2026-07-28 | Consolidação normativa resultante de `RELATORIO-VSCODE.md` | Substituída |
 | Legado | Até 2026-07-28 | Manual acumulativo com versões concorrentes | Substituído |
 
 O conteúdo legado foi preservado como snapshot editorial em

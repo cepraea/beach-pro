@@ -2,12 +2,12 @@
 
 Auditoria do workspace e produção do backlog técnico mínimo de M0/M1; depois inicializar a aplicação React + TypeScript + Vite e o ambiente exclusivamente sintético
 
-A base M0/M1 foi criada em [cepraea-beach-pro](/home/davis/DAVI2/cepraea-beach-pro).
+A base M0/M1 foi criada em cepraea-beach-pro.
 
 Principais entregas:
 
-- [Auditoria do workspace](/home/davis/DAVI2/cepraea-beach-pro/docs/auditoria-workspace-m0.md)
-- [Backlog técnico M0/M1](/home/davis/DAVI2/cepraea-beach-pro/docs/backlog-m0-m1.md)
+- Auditoria do workspace (`docs/auditoria-workspace-m0.md`)
+- Backlog técnico M0/M1 (`docs/backlog-m0-m1.md`)
 - React + TypeScript + Vite
 - PWA instalável e estritamente online, sem cache de dados
 - repositório Git local isolado
@@ -16,7 +16,7 @@ Principais entregas:
 - guarda que bloqueia perfil diferente de `SYNTHETIC`
 - rejeição de chaves Supabase privilegiadas no frontend
 - Supabase inicializado com cadastro público fechado e MFA TOTP habilitada
-- primeira [migração de identidade e RLS](/home/davis/DAVI2/cepraea-beach-pro/supabase/migrations/20260726081207_m1_identity_foundation.sql)
+- primeira migração de identidade e RLS (`supabase/migrations/20260726081207_m1_identity_foundation.sql`)
 - esqueleto de auditoria append-only
 - interface marcada visivelmente como ambiente sintético
 
