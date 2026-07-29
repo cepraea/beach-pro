@@ -2,7 +2,7 @@
 document_id: DOC-REG-ENTRADA-DOCUMENTACAO
 title: "Documentação do CEPRAEA BEACH PRO"
 document_type: inventario
-version: "0.2.2"
+version: "0.2.3"
 workflow_status: RASCUNHO
 permitted_uses:
   - entrada_documental
@@ -36,7 +36,7 @@ migration_status: completed
 workflow_implementation: lean_active
 documento_base_status: CANONICA_VIGENTE
 working_document: DOC-CEPRAEA-CONTEXTO-TRABALHO-V02
-working_version: "0.2"
+working_version: "0.2.1"
 approved_decisions: [DEC-019]
 d0: "2026-07-26T00:24:32-03:00"
 implementation_authorization: SINTETICA_M0_M4
@@ -49,16 +49,16 @@ para o documento, versão e hash. G2 está implementado e disponível como supor
 G3 a G8 e um G-CANON separado estão adiados. Não serão criados novos contratos
 ou matrizes nesta fase.
 
-`DOC-CEPRAEA-CANDIDATA-CONTEXTO`, versão `0.1`, é o único documento-base no
+`DOC-CEPRAEA-CANDIDATA-CONTEXTO`, versão `0.1.2`, é o único documento-base no
 estado `CANONICA_VIGENTE`. Sua aprovação é exclusivamente documental e não
 autoriza implementação, dados reais, piloto ou produção.
 
-`DOC-CEPRAEA-CONTEXTO-TRABALHO-V02`, versão `0.2`, é a cópia de trabalho não
+`DOC-CEPRAEA-CONTEXTO-TRABALHO-V02`, versão `0.2.1`, é a cópia de trabalho não
 vigente usada para acumular correções encontradas durante a revisão dos
 requisitos. Agentes de IA somente devem usá-la quando a tarefa tratar
 explicitamente da revisão da futura versão `0.2`.
 
-`DOC-CEPRAEA-DEC-019-MVP-SINTETICO`, versão `0.1.1`, é a decisão vigente que
+`DOC-CEPRAEA-DEC-019-MVP-SINTETICO`, versão `0.1.3`, é a decisão vigente que
 aprova o recorte do MVP e autoriza exclusivamente a implementação sintética de
 M0 a M4, começando por M0/M1. D0 é `2026-07-26T00:24:32-03:00`. A autorização
 não abrange dados reais, migração real, V2, piloto, produção ou M5/M6
@@ -115,10 +115,16 @@ Consulte nesta ordem:
   reais, piloto ou produção; autorização de implementação exige decisão
   canônica específica;
 - aplicar a DEC-019 somente ao perfil sintético e aos marcos M0 a M4;
-- tratar `coringa` como papel tático do jogo, nunca como posição ou
-  classificação cadastral;
-- usar somente `goleira`, `defesa`, `ataque`, `especialista` e `indefinida`
-  como classificações amplas cobertas pelo MVP.
+- tratar `especialista` e `coringa` como denominações equivalentes do mesmo
+  papel tático contextual do jogo, nunca como posição ou classificação
+  cadastral permanente;
+- usar somente `goleira`, `defesa`, `ataque` e `indefinida` como funções amplas
+  cadastrais cobertas pelo MVP;
+- usar `especialista` como nome técnico canônico do papel tático contextual e
+  reconhecer `coringa` como seu sinônimo esportivo;
+- nunca inferir a função ampla de uma atleta a partir do papel
+  `especialista`/`coringa`, nem alterar seu cadastro quando o papel tático
+  mudar.
 
 ## Validação
 

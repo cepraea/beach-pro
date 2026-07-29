@@ -49,14 +49,14 @@ documents:
   - document_id: DOC-REG-ENTRADA-DOCUMENTACAO
     title: Documentação do CEPRAEA BEACH PRO
     document_type: inventario
-    version: "0.2.2"
+    version: "0.2.3"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: null
     current_path: docs/README.md
     target_path: docs/README.md
     canonical_path: null
-    content_hash: 4ed088772e3db7ec470be41b3fe1f0472638e0feff52fd9c42f8396cc49474e7
+    content_hash: 0898f60855c7b152c6a6d060651e9b262da52d4a3c0d5039cf3133acd49991be
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -78,14 +78,14 @@ documents:
     registered_at: "2026-07-25T05:30:00-03:00"
     last_verified_at: "2026-07-25T05:30:00-03:00"
     document_type: contexto
-    version: "0.1.1-ingestao"
+    version: "0.1.2-ingestao"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: FONTE_HISTORICA_AS_IS
     current_path: docs/sources/primary/contexto-operacional-cepraea.md
     target_path: docs/sources/primary/contexto-operacional-cepraea.md
     canonical_path: null
-    content_hash: 54edb95fbe2125da84970f7c46b7a146da4119d15aa47e4ec4270a608c3052ce
+    content_hash: 176711b80c80254ebb2b7cf159dbfeae7f2d9dbc4f93a1bd0640cb8beb6ed5e8
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -130,14 +130,14 @@ documents:
     registered_at: "2026-07-25T05:30:00-03:00"
     last_verified_at: "2026-07-25T05:30:00-03:00"
     document_type: contexto
-    version: "0.1.1"
+    version: "0.1.2"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: RASCUNHO_CONTROLADO_V0_APROVADO
     current_path: docs/controlled/bases/contexto-cepraea-beach-pro.md
     target_path: docs/controlled/bases/contexto-cepraea-beach-pro.md
     canonical_path: null
-    content_hash: 5dbf40c850237a071eab42340f5ca6ac38aaddca8a5d0d56a1c0eb351fb1cfba
+    content_hash: 6a19373cae4b0ef9124a432f0ae159a7320fbfcdcc7cfa494e5eee82bb0b93c6
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -201,14 +201,14 @@ documents:
     registered_at: "2026-07-28T00:00:00-03:00"
     last_verified_at: "2026-07-28T00:00:00-03:00"
     document_type: contexto
-    version: "0.1.1"
+    version: "0.1.2"
     registration_status: ATIVO_CONTROLADO
     workflow_status: CANONICA_VIGENTE
     legacy_declared_status: null
     current_path: docs/canonical/context/contexto-cepraea-beach-pro.md
     target_path: docs/canonical/context/contexto-cepraea-beach-pro.md
     canonical_path: docs/canonical/context/contexto-cepraea-beach-pro.md
-    content_hash: 27a64560c3a131efe5e2af416e02433e89b5a504f42731521b21e59b06eb2d30
+    content_hash: ab6102ac15a4145d75e34cb2e91ca7043fe8128b9d312c890389c554789d2b7f
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -224,7 +224,7 @@ documents:
         - producao
     relationships:
       revises: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
-      approval_id: [APR-CONTEXTO-CANDIDATA-V011-001, APR-CONTEXTO-CANDIDATA-V011-002]
+      approval_id: [APR-CONTEXTO-CANDIDATA-V011-001, APR-CONTEXTO-CANDIDATA-V012-002]
       transition_id: [T-DOC-001, T-DOC-003]
 
   - document_id: DOC-CEPRAEA-CONTEXTO-TRABALHO-V02
@@ -233,14 +233,14 @@ documents:
     registered_at: "2026-07-25T17:40:00-03:00"
     last_verified_at: "2026-07-26T00:18:01-03:00"
     document_type: contexto
-    version: "0.2"
+    version: "0.2.1"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: null
     current_path: docs/controlled/candidates/contexto-produto-cepraea-beach-pro.md
     target_path: docs/controlled/candidates/contexto-produto-cepraea-beach-pro.md
     canonical_path: null
-    content_hash: b21f02d2ae409d08ca270268ae28eebaa49ba416db4ff5ae2facb77ea313c47c
+    content_hash: dd0301d01e420788cc25a467da639a8a9d3324f97e1d0dc56963bbbe09ac5647
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -261,7 +261,8 @@ documents:
         - 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
       accumulated_changes:
         - reclassificacao_de_corr_001_a_corr_007
-        - correcao_taxonomica_especialista_nao_coringa
+        - correcao_taxonomica_especialista_equivale_a_coringa
+        - exclusao_de_especialista_coringa_da_funcao_ampla
 
   - document_id: DOC-CEPRAEA-PROPOSTA-MVP-SINTETICO
     title: Proposta de recorte do MVP sintético do CEPRAEA BEACH PRO
@@ -269,14 +270,14 @@ documents:
     registered_at: "2026-07-25T23:20:43-03:00"
     last_verified_at: "2026-07-28T03:56:58-03:00"
     document_type: decisao
-    version: "0.1.3"
+    version: "0.1.4"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: null
     current_path: docs/controlled/candidates/proposta-mvp-sintetico-cepraea.md
     target_path: docs/controlled/candidates/proposta-mvp-sintetico-cepraea.md
     canonical_path: null
-    content_hash: 490d092239f611ea6982955062dba2b18f4e53b9ddf1cfda790f01ff10e2231f
+    content_hash: 5435b75260283ced7cdd221de8b0a9a5541668795abce6ba890082c03479379a
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -365,14 +366,14 @@ documents:
     registered_at: "2026-07-28T00:00:00-03:00"
     last_verified_at: "2026-07-28T00:00:00-03:00"
     document_type: decisao
-    version: "0.1.2"
+    version: "0.1.3"
     registration_status: ATIVO_CONTROLADO
     workflow_status: CANONICA_VIGENTE
     legacy_declared_status: null
     current_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
     target_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
     canonical_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
-    content_hash: 447e1ee7c724482e6b26c3ffd9731858c441f627c1c2133ef41739cd6b4f27c6
+    content_hash: cce62cec78f37070aab81672ca6ee9cea5493adbe952b1d7c0c07869aab6e7d9
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -398,7 +399,7 @@ documents:
         - m5_m6_operacionais
     relationships:
       revises: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
-      approval_id: [APR-DEC-019-V012-001, APR-DEC-019-V012-002]
+      approval_id: [APR-DEC-019-V012-001, APR-DEC-019-V013-002]
       transition_id: [T-DOC-001, T-DOC-003]
       d0: ["2026-07-26T00:24:32-03:00"]
       implementation_scope: [M0, M1, M2, M3, M4]
@@ -494,14 +495,14 @@ documents:
     registered_at: "2026-07-25T21:50:57-03:00"
     last_verified_at: "2026-07-26T00:18:01-03:00"
     document_type: relatorio
-    version: "0.1.1"
+    version: "0.1.2"
     registration_status: ATIVO_CONTROLADO
     workflow_status: RASCUNHO
     legacy_declared_status: null
     current_path: docs/validation/reports/relatorio-auditoria-requisitos-mvp.md
     target_path: docs/validation/reports/relatorio-auditoria-requisitos-mvp.md
     canonical_path: null
-    content_hash: 6f335e3bea3b0502bd1e557afbb6ac3dd03348e7f0bff606ad27086f910deb9f
+    content_hash: bb891a01f50e6dd41a3150be3aa01b3604c904573c81cc3d4209464c96f642d4
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -1874,14 +1875,14 @@ documents:
     registered_at: "2026-07-28T10:00:00-03:00"
     last_verified_at: "2026-07-28T11:00:00-03:00"
     document_type: decisao
-    version: "0.1.1"
+    version: "0.1.2"
     registration_status: ATIVO_CONTROLADO
     workflow_status: CANONICA_VIGENTE
     legacy_declared_status: null
     current_path: docs/canonical/decisions/decisao-mapa-features.md
     target_path: docs/canonical/decisions/decisao-mapa-features.md
     canonical_path: docs/canonical/decisions/decisao-mapa-features.md
-    content_hash: b2366998fc76a11633cb0ac80c2b7902db57e9938004f178f7b73810f9ca163c
+    content_hash: 100445cc2f1bf341b93d2ad87b4d9226d287c91a32ad9a068fc8cf30ae7707a1
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2038,7 +2039,7 @@ documents:
   # ── Gate results corretivos (Fase 7 / corretivo 2026-07-29) ─────────────────
 
   - document_id: DOC-EVID-GATE-G-ARCH-CONTEXTO-V011
-    title: "Resultado de G-ARCH para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2050,7 +2051,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-arch-contexto-v011.yaml
     target_path: docs/evidence/gates/resultado-g-arch-contexto-v011.yaml
     canonical_path: null
-    content_hash: abbb16ee15c6813a4559e96502901f20ff22aa2b67ac90ac341823750e9c48f3
+    content_hash: daa492ebe290943faab5f4a26101b20458894b55aa173e1ad939c2c2afab043e
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2063,7 +2064,7 @@ documents:
       validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
 
   - document_id: DOC-EVID-GATE-G0-CONTEXTO-V011
-    title: "Resultado de G0 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    title: "Resultado de G0 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2075,7 +2076,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g0-contexto-v011.yaml
     target_path: docs/evidence/gates/resultado-g0-contexto-v011.yaml
     canonical_path: null
-    content_hash: 0c64539f4377be124b238ec5fb6af17be47f03bb5e09785acf81390a8ec4ce17
+    content_hash: 29eec77d4d0bd8e3850cd8be8b1ccc07329bf01723dc39c45c815a9a418c53fd
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2088,7 +2089,7 @@ documents:
       validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
 
   - document_id: DOC-EVID-GATE-G1-CONTEXTO-V011
-    title: "Resultado de G1 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    title: "Resultado de G1 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2100,7 +2101,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g1-contexto-v011.yaml
     target_path: docs/evidence/gates/resultado-g1-contexto-v011.yaml
     canonical_path: null
-    content_hash: 628929da60ce72901f314c42f2ed7d162d04b724edb475b8dc51bff5d03dd6fa
+    content_hash: ec4d0175aa7e9276513eddbb7cb7139d556ccc538fb84894902ec82ef9e5d042
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2113,7 +2114,7 @@ documents:
       validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
 
   - document_id: DOC-EVID-GATE-G-FM-CONTEXTO-V011
-    title: "Resultado de G-FM para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    title: "Resultado de G-FM para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2125,7 +2126,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-fm-contexto-v011.yaml
     target_path: docs/evidence/gates/resultado-g-fm-contexto-v011.yaml
     canonical_path: null
-    content_hash: 422bf37ddc61691e7ce22d0a5a07b44073bc7a63a23975d2d509099af3b34b56
+    content_hash: b0bbd5f22b65c4e310304364714fa43abf4a92d6331271902156899146f3e147
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2138,7 +2139,7 @@ documents:
       validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
 
   - document_id: DOC-EVID-GATE-G-ARCH-DEC019-V012
-    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.3"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2150,7 +2151,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-arch-dec019-v012.yaml
     target_path: docs/evidence/gates/resultado-g-arch-dec019-v012.yaml
     canonical_path: null
-    content_hash: 073972156e98c0a631c3eeb7f84bbcf15fd80cbfb01d11f8b9e78bb83b92fee8
+    content_hash: 84b9f91ba36d2ff6f6d40375117116cd4843f11e94fb7d22398e22b9083cb5f6
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2163,7 +2164,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
 
   - document_id: DOC-EVID-GATE-G0-DEC019-V012
-    title: "Resultado de G0 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.3"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2175,7 +2176,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g0-dec019-v012.yaml
     target_path: docs/evidence/gates/resultado-g0-dec019-v012.yaml
     canonical_path: null
-    content_hash: 625e6d4fd4a052048a83985d6871e19a0ebb03fe6847183ec6817097c4253f6b
+    content_hash: d0bdd5cd2f4036685bde85e23eec1fb53c6f216c2e24081a1b4aa750f6ad810e
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2188,7 +2189,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
 
   - document_id: DOC-EVID-GATE-G1-DEC019-V012
-    title: "Resultado de G1 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.3"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2200,7 +2201,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g1-dec019-v012.yaml
     target_path: docs/evidence/gates/resultado-g1-dec019-v012.yaml
     canonical_path: null
-    content_hash: 0cc541c7f254af3ba6e2de45a898d1fa1fc05cd2fd1a71f87206633a6dc8870e
+    content_hash: 294427923415af77606032c2efb80fc807d1a83e81079ed560e5b6df956557f2
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2213,7 +2214,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
 
   - document_id: DOC-EVID-GATE-G-FM-DEC019-V012
-    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.3"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2225,7 +2226,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-fm-dec019-v012.yaml
     target_path: docs/evidence/gates/resultado-g-fm-dec019-v012.yaml
     canonical_path: null
-    content_hash: 59d09249e9d9f4f86554ce6a2330167945fe72b1598aa8bff2ef3a79b322b2da
+    content_hash: 3f03efcc269ddd7ab32b37938c8618bb5ea91a3194f6ade80da248109593a30a
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2238,7 +2239,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
 
   - document_id: DOC-EVID-GATE-G-ARCH-MAPA-FEATURES-V011
-    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2250,7 +2251,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-arch-mapa-features-v011.yaml
     target_path: docs/evidence/gates/resultado-g-arch-mapa-features-v011.yaml
     canonical_path: null
-    content_hash: 8759251a4d206be80ff5e6941a5e9ef6a8fcdcb4d5d818980666c8aee7434a20
+    content_hash: 99a62199200c094422a3a41de2f631f6240cd110d44ae9b120645ee8ce706322
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2263,7 +2264,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
 
   - document_id: DOC-EVID-GATE-G0-MAPA-FEATURES-V011
-    title: "Resultado de G0 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2275,7 +2276,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g0-mapa-features-v011.yaml
     target_path: docs/evidence/gates/resultado-g0-mapa-features-v011.yaml
     canonical_path: null
-    content_hash: 8500cd015a62358c2bdfded4ca92a7be4e62a95381b705b451d1438a404657ae
+    content_hash: 0bb74864c1a3abc9ff8b5759d6e9b0aa687b34bf78059dcf9ae08a2de851b053
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2288,7 +2289,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
 
   - document_id: DOC-EVID-GATE-G1-MAPA-FEATURES-V011
-    title: "Resultado de G1 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2300,7 +2301,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g1-mapa-features-v011.yaml
     target_path: docs/evidence/gates/resultado-g1-mapa-features-v011.yaml
     canonical_path: null
-    content_hash: 35487a5a719b37dcfe31a515a934dbfd32ea08ef1d6e4c6b3301d52d1eded2c6
+    content_hash: 792897a9860fa569b09f18bc083332e6b2bd4af40c546491d43d61d70f24304d
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2313,7 +2314,7 @@ documents:
       validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
 
   - document_id: DOC-EVID-GATE-G-FM-MAPA-FEATURES-V011
-    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.2"
     responsible: AUTOMACAO
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2325,7 +2326,7 @@ documents:
     current_path: docs/evidence/gates/resultado-g-fm-mapa-features-v011.yaml
     target_path: docs/evidence/gates/resultado-g-fm-mapa-features-v011.yaml
     canonical_path: null
-    content_hash: 50bbc5ac3ddcdd52c93911f82c8cdaeb98910868223194daabffef5c82ce3d20
+    content_hash: 5b2f9ef429dda153c7d7ebf1f5df2556437cdd1ffb64252d5bc020fc3d50ce23
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2440,7 +2441,7 @@ documents:
   # ── Aprovações corretivas (Fase 7 / corretivo 2026-07-29) ───────────────────
 
   - document_id: DOC-EVID-APROVACAO-CONTEXTO-V011-CORRIGIDA
-    title: "Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    title: "Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.2"
     responsible: Davi Sermenho
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2452,7 +2453,7 @@ documents:
     current_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011-corrigida.yaml
     target_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011-corrigida.yaml
     canonical_path: null
-    content_hash: ad7b508f596f06118df6b95652bd51866012a56f8c91847f3353fda37e75a548
+    content_hash: a09adfe6615032d2b2fe9e4ff5e28f7d58d6a81770d7abad767074fb63bc18fa
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2466,7 +2467,7 @@ documents:
       supersedes: [DOC-EVID-APROVACAO-CONTEXTO-V011]
 
   - document_id: DOC-EVID-APROVACAO-DEC019-V012-CORRIGIDA
-    title: "Aprovação corretiva de DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    title: "Aprovação corretiva de DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.3"
     responsible: Davi Sermenho
     registered_at: "2026-07-29T00:00:00-03:00"
     last_verified_at: "2026-07-29T00:00:00-03:00"
@@ -2478,7 +2479,7 @@ documents:
     current_path: docs/evidence/approvals/aprovacao-dec-019-v012-corrigida.yaml
     target_path: docs/evidence/approvals/aprovacao-dec-019-v012-corrigida.yaml
     canonical_path: null
-    content_hash: eb9ef36e361bd4aa65de3ffe0a58af735efa112a4904ea224d335bef8e24999f
+    content_hash: f4417180f00a9e8df50ea05d9a500222a45862c3415a80066ce180e91612c791
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
@@ -2504,7 +2505,7 @@ documents:
     current_path: docs/evidence/approvals/aprovacao-mapa-features-corrigida.yaml
     target_path: docs/evidence/approvals/aprovacao-mapa-features-corrigida.yaml
     canonical_path: null
-    content_hash: 8c7a230d36547a67c77d11dcc53288ce52edd43e572d0272546f1db6751b3b03
+    content_hash: b06bbc48cfd9043d19695bbda319d188938a9b3b103ba16af5192453984ae83d
     self_hash_exempt: false
     naming_conformance: true
     directory_conformance: true
