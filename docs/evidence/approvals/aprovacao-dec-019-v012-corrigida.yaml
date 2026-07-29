@@ -1,0 +1,29 @@
+approval:
+  approval_id: APR-DEC-019-V012-002
+  document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+  version: "0.1.2"
+  content_hash: 447e1ee7c724482e6b26c3ffd9731858c441f627c1c2133ef41739cd6b4f27c6
+  purpose: >
+    Aprovação corretiva de DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2: substitui
+    APR-DEC-019-V012-001, que continha hash inconsistente com os bytes canônicos
+    atuais e referenciava evidências de gate inexistentes.
+    Promove v0.1.2 como CANONICA_VIGENTE, arquivando v0.1.1 como SUPERADA.
+  scope:
+    - correcao_de_hash_de_aprovacao
+    - vinculo_com_evidencias_de_gate_existentes
+    - promocao_de_v012_para_canonica_vigente
+    - arquivamento_de_v011_como_superada
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_autoriza_piloto_ou_producao
+  non_blocking_pending_items: []
+  approved_at: "2026-07-29T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-DEC019-V012
+    - GATE-RESULT-G0-DEC019-V012
+    - GATE-RESULT-G1-DEC019-V012
+    - GATE-RESULT-G-FM-DEC019-V012

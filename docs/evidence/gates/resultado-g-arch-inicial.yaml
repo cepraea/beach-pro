@@ -1,0 +1,37 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G-ARCH-INICIAL
+  gate_id: G-ARCH
+  document_id: null
+  version: null
+  content_hash: null
+  status: fail
+  evaluated_at: "2026-07-25T08:00:15.875528+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures:
+    - "DOC-CEPRAEA-BASE-CONTEXTO: nome físico legado requer migração"
+    - "DOC-CEPRAEA-BASE-CONTEXTO: diretório legado requer migração"
+    - "DOC-CEPRAEA-CANDIDATA-CONTEXTO: nome físico legado requer migração"
+    - "DOC-CEPRAEA-CANDIDATA-CONTEXTO: diretório legado requer migração"
+    - "DOC-CEPRAEA-DIRETRIZ-CONTEXTO: nome físico legado requer migração"
+    - "DOC-CEPRAEA-DIRETRIZ-CONTEXTO: diretório legado requer migração"
+    - "DOC-CEPRAEA-FONTE-OPERACIONAL: nome físico legado requer migração"
+    - "DOC-CEPRAEA-FONTE-OPERACIONAL: diretório legado requer migração"
+    - "DOC-CEPRAEA-REQ-DERIVADOS-V01: nome físico legado requer migração"
+    - "DOC-CEPRAEA-REQ-DERIVADOS-V01: diretório legado requer migração"
+    - "DOC-GOV-FLUXO-INICIAL: nome físico legado requer migração"
+    - "DOC-GOV-FLUXO-INICIAL: diretório legado requer migração"
+    - "DOC-GOV-PROT-QUALIDADE: nome físico legado requer migração"
+    - "DOC-GOV-PROT-QUALIDADE: diretório legado requer migração"
+    - "DOC-GOV-WORKFLOW-PLANO: nome físico legado requer migração"
+    - "DOC-GOV-WORKFLOW-PLANO: diretório legado requer migração"
+    - "DOC-REG-INVENTARIO-LEGADO: nome físico legado requer migração"
+    - "DOC-REG-INVENTARIO-LEGADO: diretório legado requer migração"
+    - "DOC-VAL-REL-CONTEXTO-V01: nome físico legado requer migração"
+    - "DOC-VAL-REL-CONTEXTO-V01: diretório legado requer migração"
+  next_actions:
+    - Executar a migração controlada dos dez artefatos legados.
+    - Recalcular hashes e atualizar o registro mestre.
+    - Executar novamente G-ARCH.
+

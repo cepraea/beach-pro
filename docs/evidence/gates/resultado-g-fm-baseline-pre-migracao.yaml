@@ -1,0 +1,39 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G-FM-BASELINE-PRE-MIGRACAO
+  gate_id: G-FM
+  document_id: null
+  version: null
+  content_hash: null
+  status: fail
+  evaluated_at: "2026-07-28T08:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures:
+    - "docs/README.md: front matter absent"
+    - "docs/canonical/context/contexto-cepraea-beach-pro.md: front matter absent"
+    - "docs/canonical/decisions/decisao-019-mvp-sintetico.md: front matter absent"
+    - "docs/controlled/bases/contexto-cepraea-beach-pro.md: front matter absent"
+    - "docs/controlled/candidates/contexto-produto-cepraea-beach-pro.md: front matter absent"
+    - "docs/controlled/candidates/decisao-autorizacao-schemas-fm.md: front matter absent"
+    - "docs/controlled/candidates/proposta-mvp-sintetico-cepraea.md: front matter absent"
+    - "docs/derived/requirements/requisitos-funcionais-cepraea.md: front matter absent"
+    - "docs/governance/policies/politica-arquitetura-documental.md: front matter absent"
+    - "docs/governance/protocols/protocolo-qualidade-documental.md: front matter absent"
+    - "docs/governance/workflows/fluxo-documentacao-inicial.md: front matter absent"
+    - "docs/governance/workflows/workflow-documentacao.md: front matter absent"
+    - "docs/governance/workflows/workflow-operacionalizacao-documental.md: front matter absent"
+    - "docs/inventario-documentos.md: front matter absent"
+    - "docs/sources/primary/contexto-operacional-cepraea.md: front matter absent"
+    - "docs/sources/supporting/diretriz-conteudo-contexto-cepraea.md: front matter absent"
+    - "docs/validation/reports/relatorio-auditoria-acervo.md: front matter absent"
+    - "docs/validation/reports/relatorio-auditoria-requisitos-mvp.md: front matter absent"
+    - "docs/validation/reports/relatorio-g2-proveniencia-aprovada.md: front matter absent"
+    - "docs/validation/reports/relatorio-g2-proveniencia-inicial.md: front matter absent"
+    - "docs/validation/reports/relatorio-ingestao-legado.md: front matter absent"
+    - "docs/validation/reports/relatorio-migracao-arquitetura.md: front matter absent"
+    - "docs/validation/reports/relatorio-validacao-contexto-cepraea.md: front matter absent"
+  next_actions:
+    - "Adicionar front matter válido a cada documento listado (Fase 6 — migração sequencial)."
+    - "Para os dois documentos CANONICA_VIGENTE, seguir o protocolo de nova revisão (Fase 7)."
+    - "Após migração completa, executar validate_documentation.py --gate G-FM para confirmar aprovação."

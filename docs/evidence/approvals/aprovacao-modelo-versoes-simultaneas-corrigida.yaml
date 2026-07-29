@@ -1,0 +1,31 @@
+approval:
+  approval_id: APR-DEC-MODELO-VERSOES-002
+  document_id: DOC-CEPRAEA-DEC-MODELO-VERSOES
+  version: "0.1.0"
+  content_hash: be9d92614026a9152f4f3785dc995f49e30dbace8d9f7cd6bb3fdc5830552e61
+  purpose: >
+    Aprovação corretiva de DOC-CEPRAEA-DEC-MODELO-VERSOES v0.1.0: substitui
+    APR-DEC-MODELO-VERSOES-001, que continha hash inconsistente com os bytes
+    canônicos atuais e referenciava evidências de gate inexistentes.
+    Autoriza o modelo de versões simultâneas no registro, habilitando a
+    coexistência de CANONICA_VIGENTE e revisão em andamento para o mesmo
+    document_id durante a Fase 7.
+  scope:
+    - correcao_de_hash_de_aprovacao
+    - extensao_da_unicidade_para_par_document_id_version
+    - aceitacao_de_docs_archive_para_versoes_superadas
+    - habilitacao_fase7b
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_permite_mais_de_uma_versao_canonica_por_document_id
+  non_blocking_pending_items: []
+  approved_at: "2026-07-29T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-MODELO-VERSOES
+    - GATE-RESULT-G0-MODELO-VERSOES
+    - GATE-RESULT-G1-MODELO-VERSOES
+    - GATE-RESULT-G-FM-MODELO-VERSOES

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/registro-canonico.schema.json",
+  "title": "Registro canônico",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "canonical_record_id",
+    "document_id",
+    "title",
+    "version",
+    "content_hash",
+    "status",
+    "authority",
+    "authority_scope",
+    "provenance",
+    "validity",
+    "precedence",
+    "repository"
+  ],
+  "properties": {
+    "canonical_record_id": {"type": "string", "pattern": "^CANON-[A-Z0-9-]+$"},
+    "document_id": {"type": "string", "pattern": "^DOC-"},
+    "title": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "status": {"const": "CANONICA_VIGENTE"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approved_by", "role", "approved_at", "approval_id", "promotion_id"],
+      "properties": {
+        "approved_by": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "approval_id": {"type": "string", "pattern": "^APR-"},
+        "promotion_id": {"type": "string", "pattern": "^PROM-"}
+      }
+    },
+    "authority_scope": {"$ref": "#/$defs/authorityScope"},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_ids", "validation_id", "evidence_package_id"],
+      "properties": {
+        "source_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "validation_id": {"type": "string", "pattern": "^VAL-"},
+        "evidence_package_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "validity": {"$ref": "#/$defs/validity"},
+    "precedence": {"$ref": "#/$defs/precedence"},
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_path", "immutable_reference"],
+      "properties": {
+        "canonical_path": {"type": "string", "pattern": "^docs/canonical/"},
+        "immutable_reference": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "authorityScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjects", "permitted_uses", "prohibited_uses"],
+      "properties": {
+        "subjects": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "permitted_uses": {"type": "array", "items": {"type": "string"}},
+        "prohibited_uses": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["effective_from", "effective_until", "review_due_at"],
+      "properties": {
+        "effective_from": {"type": "string", "format": "date-time"},
+        "effective_until": {"type": ["string", "null"], "format": "date-time"},
+        "review_due_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "precedence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supersedes", "complemented_by", "conflicts_resolved_by"],
+      "properties": {
+        "supersedes": {"type": "array", "items": {"type": "string"}},
+        "complemented_by": {"type": "array", "items": {"type": "string"}},
+        "conflicts_resolved_by": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

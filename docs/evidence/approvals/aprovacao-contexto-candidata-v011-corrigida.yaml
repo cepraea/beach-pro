@@ -1,0 +1,29 @@
+approval:
+  approval_id: APR-CONTEXTO-CANDIDATA-V011-002
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1.1"
+  content_hash: 27a64560c3a131efe5e2af416e02433e89b5a504f42731521b21e59b06eb2d30
+  purpose: >
+    Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1: substitui
+    APR-CONTEXTO-CANDIDATA-V011-001, que continha hash inconsistente com os
+    bytes canônicos atuais e referenciava evidências de gate inexistentes.
+    Promove v0.1.1 como CANONICA_VIGENTE, arquivando v0.1 como SUPERADA.
+  scope:
+    - correcao_de_hash_de_aprovacao
+    - vinculo_com_evidencias_de_gate_existentes
+    - promocao_de_v011_para_canonica_vigente
+    - arquivamento_de_v01_como_superada
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_autoriza_piloto_ou_producao
+  non_blocking_pending_items: []
+  approved_at: "2026-07-29T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-CONTEXTO-V011
+    - GATE-RESULT-G0-CONTEXTO-V011
+    - GATE-RESULT-G1-CONTEXTO-V011
+    - GATE-RESULT-G-FM-CONTEXTO-V011

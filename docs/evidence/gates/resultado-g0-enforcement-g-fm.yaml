@@ -1,0 +1,13 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G0-ENFORCEMENT-G-FM
+  gate_id: G0
+  document_id: DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM
+  version: "0.1.0"
+  content_hash: 89298c11bb44422b054251b7ca9280bee09badeb3129527dd52cdf477c3ee3f6
+  status: pass
+  evaluated_at: "2026-07-29T00:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

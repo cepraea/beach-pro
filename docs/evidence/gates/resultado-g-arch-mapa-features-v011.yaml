@@ -1,0 +1,13 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G-ARCH-MAPA-FEATURES-V011
+  gate_id: G-ARCH
+  document_id: DOC-CEPRAEA-DEC-MAPA-FEATURES
+  version: "0.1.1"
+  content_hash: b2366998fc76a11633cb0ac80c2b7902db57e9938004f178f7b73810f9ca163c
+  status: pass
+  evaluated_at: "2026-07-29T00:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

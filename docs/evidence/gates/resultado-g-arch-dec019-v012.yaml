@@ -1,0 +1,13 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G-ARCH-DEC019-V012
+  gate_id: G-ARCH
+  document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+  version: "0.1.2"
+  content_hash: 447e1ee7c724482e6b26c3ffd9731858c441f627c1c2133ef41739cd6b4f27c6
+  status: pass
+  evaluated_at: "2026-07-29T00:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

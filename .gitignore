@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.local
+*.log
+.DS_Store
+
+# Configuração local do Claude Code (não commitada — preferências pessoais)
+.claude/settings.local.json

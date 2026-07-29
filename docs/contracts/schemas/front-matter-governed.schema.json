@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/front-matter-governed.schema.json",
+  "title": "Front matter de documento governado",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "title",
+    "document_type",
+    "version",
+    "workflow_status",
+    "permitted_uses",
+    "prohibited_uses"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "document_type": {
+      "enum": [
+        "contexto",
+        "contrato",
+        "decisao",
+        "evidencia",
+        "fluxo",
+        "glossario",
+        "inventario",
+        "matriz",
+        "politica",
+        "protocolo",
+        "registro",
+        "relatorio",
+        "requisito",
+        "workflow"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$"
+    },
+    "workflow_status": {
+      "enum": [
+        null,
+        "RASCUNHO",
+        "EM_REVISAO",
+        "BASE_CONTROLADA",
+        "EM_VALIDACAO",
+        "CORRECAO_REQUERIDA",
+        "VALIDADO",
+        "CANDIDATA",
+        "EM_APROVACAO",
+        "APROVADA",
+        "CANONICA_VIGENTE",
+        "SUPERADA",
+        "REVOGADA"
+      ]
+    },
+    "responsible": { "type": "string", "minLength": 1 },
+    "permitted_uses": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "prohibited_uses": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  }
+}

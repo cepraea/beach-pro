@@ -1,0 +1,61 @@
+manifest_id: MANIFEST-INTEGRIDADE-LEGADO-001
+batch_id: ING-LEGADO-001
+hash_algorithm: sha256
+created_at: "2026-07-25T05:30:00-03:00"
+created_by: AUTOMACAO
+bundle:
+  path: docs/evidence/integrity/pacote-integridade-legado.tar
+  content_hash: 7b0d9effe3da654af63638f8850841332605f9c535a8a7181ac021b5be284cf6
+  format: tar
+  deterministic: true
+documents:
+  - document_id: DOC-CEPRAEA-FONTE-OPERACIONAL
+    version: "0.1.0-ingestao"
+    path: docs/sources/primary/contexto-operacional-cepraea.md
+    content_hash: ce0612e8330cb19a9efb2a4f7055a4abba361ef85b0a135466d5710c4f60f152
+    archive_member: docs/sources/primary/contexto-operacional-cepraea.md
+  - document_id: DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+    version: "0.1.0-ingestao"
+    path: docs/sources/supporting/diretriz-conteudo-contexto-cepraea.md
+    content_hash: a7d0d00ddb0802dd3cb332436d54d2873eab2b507ba5b7bf7f0b32926e6f76e3
+    archive_member: docs/sources/supporting/diretriz-conteudo-contexto-cepraea.md
+  - document_id: DOC-CEPRAEA-BASE-CONTEXTO
+    version: "0.1"
+    path: docs/controlled/bases/contexto-cepraea-beach-pro.md
+    content_hash: d03989852252f2b89c59fd8cabd8b6258fecd934765add0bd87f0b1b341a1d63
+    archive_member: docs/controlled/bases/contexto-cepraea-beach-pro.md
+  - document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    version: "0.1"
+    path: docs/controlled/candidates/contexto-cepraea-beach-pro.md
+    content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    archive_member: docs/controlled/candidates/contexto-cepraea-beach-pro.md
+  - document_id: DOC-GOV-PROT-QUALIDADE
+    version: "0.1.0-ingestao"
+    path: docs/governance/protocols/protocolo-qualidade-documental.md
+    content_hash: bc893f704ac190a37ed85cc271b7d8000f67f8c2fc9b38029ef3bbb1f1550561
+    archive_member: docs/governance/protocols/protocolo-qualidade-documental.md
+  - document_id: DOC-VAL-REL-CONTEXTO-V01
+    version: "0.1"
+    path: docs/validation/reports/relatorio-validacao-contexto-cepraea.md
+    content_hash: 2d37dd9ffa85e821a16012a1800c0a7e517fa4e8a47ee71339cec04025de4a6d
+    archive_member: docs/validation/reports/relatorio-validacao-contexto-cepraea.md
+  - document_id: DOC-CEPRAEA-REQ-DERIVADOS-V01
+    version: "0.1"
+    path: docs/derived/requirements/requisitos-funcionais-cepraea.md
+    content_hash: a1a29af5b1d6d4045e558a436ff824e750f90adee32423707c389d5b0fc0e478
+    archive_member: docs/derived/requirements/requisitos-funcionais-cepraea.md
+  - document_id: DOC-REG-INVENTARIO-LEGADO
+    version: "0.0.1"
+    path: docs/inventario-documentos.md
+    content_hash: 869ab928392f25522e34023e728fea593b7b161ac611a9b9a3e45e1b5dae32bf
+    archive_member: docs/inventario-documentos.md
+  - document_id: DOC-GOV-FLUXO-INICIAL
+    version: "0.1.0-ingestao"
+    path: docs/governance/workflows/fluxo-documentacao-inicial.md
+    content_hash: 9b8a1e7743fb42053702ca4172e6ab8dd4a7a4a8303f4bac7e4a83402e765167
+    archive_member: docs/governance/workflows/fluxo-documentacao-inicial.md
+  - document_id: DOC-GOV-WORKFLOW-PLANO
+    version: "0.1.0"
+    path: docs/governance/workflows/workflow-operacionalizacao-documental.md
+    content_hash: 963ab2c02e9245ebea54756bc6148d3cb2cb948bd7b1e5b3264947dc784595ee
+    archive_member: docs/governance/workflows/workflow-operacionalizacao-documental.md

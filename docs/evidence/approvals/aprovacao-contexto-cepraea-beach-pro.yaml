@@ -1,0 +1,29 @@
+approval:
+  approval_id: APR-CONTEXTO-CEPRAEA-LEAN-001
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1"
+  content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  purpose: documento-base vigente do contexto documental do CEPRAEA BEACH PRO
+  scope:
+    - contexto_documental_cepraea_beach_pro
+    - identidade
+    - dominio
+    - limites
+    - decisoes_documentais
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - não autoriza implementação
+    - não autoriza dados reais
+    - não autoriza piloto
+    - não autoriza produção
+  non_blocking_pending_items:
+    - confirmação externa da identidade cadastral
+    - confirmação externa do registro esportivo
+    - confirmação externa dos perfis sociais
+  approved_at: "2026-07-25T17:15:41-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-POS-RESTAURACAO
+    - GATE-RESULT-G0-POS-RESTAURACAO
+    - GATE-RESULT-G1-INGESTAO-LEGADO

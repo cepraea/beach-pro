@@ -1,0 +1,8 @@
+# Documentação governada e evidências com integridade controlada
+docs/**
+
+# Especificações Markdown validadas pelo markdownlint
+src/features/**/*.md
+
+# Histórico e documentos internos fora do escopo automático
+.inicio/**

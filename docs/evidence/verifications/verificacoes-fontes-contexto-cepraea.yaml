@@ -1,0 +1,294 @@
+verification_control:
+  verification_id: VER-FONTES-CONTEXTO-CEPRAEA-001
+  verified_at: "2026-07-25T18:00:00+00:00"
+  verified_by: AUTOMACAO
+  purpose: sobreposição controlada e regenerável para o pacote PROV-CEPRAEA-CONTEXTO-001
+  verification_semantics:
+    - active significa que a captura, a identidade técnica e a referência imutável foram verificadas
+    - active não transforma uma fonte em autoridade para assuntos fora de authority.scope
+    - alegações sem fonte verificável conservam incerteza explícita e não são promovidas a fato confirmado
+  preservation_bundle: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar
+  drive_capture:
+    method: exportação PDF pela conexão autenticada do Google Drive
+    accessible_sources: [SRC-002, SRC-003, SRC-004, SRC-005, SRC-007, SRC-008, SRC-009]
+    metadata_observed:
+      SRC-002:
+        file_id: 1JjFf_AstkZwp3K2RcnZGD0GTjLVqA_jAwlSdtKlrnpg
+        title: DESC-CEPRAEA
+        mime_type: application/vnd.google-apps.document
+        created_at: "2026-07-23T13:35:57.863Z"
+        modified_at: "2026-07-23T14:02:17.339Z"
+      SRC-003:
+        file_id: 1EXWEC1ULPvUgtYCFKqrSJ4j4UBZi_bsHGgulie01T-s
+        title: CEPRAEA_CONTRACT.gdoc
+        mime_type: application/vnd.google-apps.document
+        created_at: "2026-06-22T19:17:37.522Z"
+        modified_at: "2026-07-07T00:25:56.415Z"
+        permission_observation: link público com papel writer e descoberta desativada
+      SRC-004:
+        file_id: 14d3vIfkvhkTvjjTxkM7CxA9Oo1etHAgC2KUzGzzEn88
+        title: CEPRAEA JUNHO 2026
+        mime_type: application/vnd.google-apps.spreadsheet
+        created_at: "2024-05-29T18:01:14.530Z"
+        modified_at: "2026-07-25T15:37:08.696Z"
+        permission_observation: link público com papel writer
+      SRC-005:
+        file_id: 10Dv1oBIKdodWEWsK8qUeLPyazzdg4hdRkVi4gjvVSno
+        title: CEPRAEA DATABASE
+        mime_type: application/vnd.google-apps.spreadsheet
+        created_at: "2026-06-22T18:59:15.935Z"
+        modified_at: "2026-07-01T19:58:50.511Z"
+        permission_observation: link público com papel writer
+      SRC-007:
+        file_id: 1pRR6xrw_XUEWi65I01w27Bex7b0LFZCq8hK5AxFR83U
+        title: MODELAGEM_ATTENDANCE_CEPRAEA_v0.1
+        mime_type: application/vnd.google-apps.spreadsheet
+        created_at: "2026-06-19T11:08:10.848Z"
+        modified_at: "2026-06-21T12:23:21.995Z"
+      SRC-008:
+        file_id: 1Hyl3peGP6ZDS4Wm6T8t7EKJChleGB_kePiSjcLJRkxI
+        title: Engenharia Documentação
+        mime_type: application/vnd.google-apps.document
+        created_at: "2026-07-21T08:35:39.103Z"
+        modified_at: "2026-07-23T06:53:25.911Z"
+      SRC-009:
+        file_id: 12cSXeFFZnm8-RN1W8ttrfzmRoSNCmyxz_UXKkAwGBsE
+        title: PROTOCOLO OPERACIONAL DE RISCOS DE IA — CRIAÇÃO DO DESC-CEPRAEA
+        mime_type: application/vnd.google-apps.document
+        created_at: "2026-07-23T17:30:44.414Z"
+        modified_at: "2026-07-23T17:52:45.654Z"
+  public_capture:
+    method: captura HTTP das páginas oficiais
+    captured_at: "2026-07-25T18:00:00+00:00"
+    sources:
+      SRC-017: https://developers.cloudflare.com/pages/
+      SRC-018: https://supabase.com/docs/guides/database/postgres/row-level-security
+      SRC-019: https://developers.brevo.com/docs/smtp-integration
+      SRC-020: https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories
+  unresolved_sources:
+    - source_ids: [SRC-011, SRC-012]
+      reason: imagens pessoais acessíveis, mas excluídas da preservação para evitar replicação desnecessária de dados pessoais
+    - source_ids: [SRC-013, SRC-014, SRC-015, SRC-016]
+      reason: registro público exato ou identidade oficial do perfil não foram confirmados por fonte autoritativa acessível
+    - source_ids: [SRC-006, SRC-010]
+      reason: referência legada não possui identificador físico suficiente
+
+source_overrides:
+  SRC-001:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-001/capture.yaml
+    authority:
+      name: Davi Sermenho
+      role: AUTORIDADE_INTERNA_ATRIBUIDA
+      scope:
+        - identidade_equipe
+        - composicao_operacional
+        - governanca_interna
+        - decisoes_aprovadas
+        - perfis_e_acessos
+        - capacidades_do_produto
+        - escopo_fase_1
+        - fronteiras_de_escopo
+        - plataforma_cliente
+        - identidade_e_acesso
+        - privacidade_e_dados
+        - integracoes_e_migracao
+        - restricoes_operacionais
+        - comunicacao_interna
+        - modelo_de_respostas
+        - arquitetura_inicial
+        - entrega_e_continuidade
+    content_hash: 975536cbb25210401f60cc6e0d8d9bc95087c5972bc5bec265db69ffee26f965
+    status: active
+    immutable_reference: sha256:975536cbb25210401f60cc6e0d8d9bc95087c5972bc5bec265db69ffee26f965
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_interna, rastreabilidade_de_decisoes]
+    prohibited_uses: [confirmacao_externa, nova_aprovacao, canonizacao]
+  SRC-002:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-002/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: DOCUMENTO_DE_CONTEXTO
+      scope: [identidade_equipe, disponibilidade_presenca, ciclo_participacao]
+    content_hash: 152af6224d49562e36c1b3b80c6379c575ddde06d5d1db3e3247fa0e3db65d31
+    status: active
+    immutable_reference: sha256:152af6224d49562e36c1b3b80c6379c575ddde06d5d1db3e3247fa0e3db65d31
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_de_contexto]
+    prohibited_uses: [aprovacao, canonizacao]
+  SRC-003:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-003/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: GOVERNANCA_DE_PLANILHAS
+      scope: [operacao_as_is, disponibilidade_presenca, ciclo_participacao, integridade_de_fontes]
+    content_hash: 025bdc0b161d5868b7e96409f8ff993e34c87d809f53a3958cd900365866b788
+    status: active
+    immutable_reference: sha256:025bdc0b161d5868b7e96409f8ff993e34c87d809f53a3958cd900365866b788
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_operacional, evidencia_de_integridade]
+    prohibited_uses: [aprovacao, canonizacao]
+  SRC-004:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-004/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: PLANILHA_OPERACIONAL
+      scope: [identidade_equipe, operacao_as_is, estado_operacional, integridade_de_fontes]
+    content_hash: 2871c411e96433450dd64acc2224a510a0f437bc0265bdda89c335bee9e7411b
+    status: active
+    immutable_reference: sha256:2871c411e96433450dd64acc2224a510a0f437bc0265bdda89c335bee9e7411b
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_operacional, evidencia_de_integridade]
+    prohibited_uses: [aprovacao, canonizacao]
+  SRC-005:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-005/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: BASE_OPERACIONAL
+      scope: [operacao_as_is, estado_operacional, disponibilidade_presenca, ciclo_participacao, integridade_de_fontes]
+    content_hash: 8c1af00b6d9a601bebd588c42fb98dfbe6f8885e6cb3fa5a89bf262974e7449e
+    status: active
+    immutable_reference: sha256:8c1af00b6d9a601bebd588c42fb98dfbe6f8885e6cb3fa5a89bf262974e7449e
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_operacional, evidencia_de_integridade]
+    prohibited_uses: [aprovacao, canonizacao]
+  SRC-007:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-007/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: PROPOSTA_DOCUMENTAL
+      scope: [estado_de_propostas]
+    content_hash: 61ce43e67aac8af9f16f543e7f56a245dfcf5a02ec56531dc60a1cfdfb78aed3
+    status: active
+    immutable_reference: sha256:61ce43e67aac8af9f16f543e7f56a245dfcf5a02ec56531dc60a1cfdfb78aed3
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_de_proposta]
+    prohibited_uses: [requisito_aprovado, canonizacao]
+  SRC-008:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-008/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: REFERENCIA_METODOLOGICA
+      scope: [estado_de_propostas]
+    content_hash: 645567a828f7ba40d64270d476b24bb524c2d26088ee8c834f9c6d7cea86e32d
+    status: active
+    immutable_reference: sha256:645567a828f7ba40d64270d476b24bb524c2d26088ee8c834f9c6d7cea86e32d
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_metodologica]
+    prohibited_uses: [requisito_aprovado, canonizacao]
+  SRC-017:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-017/capture.html
+    authority:
+      name: Cloudflare
+      role: DOCUMENTACAO_OFICIAL
+      scope: [arquitetura_inicial]
+    content_hash: d79610cce02ef47240d38b2f4bd1616229f3679354a314fb468996eb44a6a433
+    status: active
+    immutable_reference: sha256:d79610cce02ef47240d38b2f4bd1616229f3679354a314fb468996eb44a6a433
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_tecnica]
+    prohibited_uses: [garantia_de_custo_futuro, aprovacao_de_arquitetura]
+  SRC-018:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-018/capture.html
+    authority:
+      name: Supabase
+      role: DOCUMENTACAO_OFICIAL
+      scope: [arquitetura_inicial]
+    content_hash: 51e187a1d34da52428d6de9c2e84c8891e7c9cdf934b76e011c9e95cb5bddc9b
+    status: active
+    immutable_reference: sha256:51e187a1d34da52428d6de9c2e84c8891e7c9cdf934b76e011c9e95cb5bddc9b
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_tecnica]
+    prohibited_uses: [garantia_de_custo_futuro, aprovacao_de_arquitetura]
+  SRC-019:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-019/capture.html
+    authority:
+      name: Brevo
+      role: DOCUMENTACAO_OFICIAL
+      scope: [arquitetura_inicial]
+    content_hash: d0ada88d2be9ad7244b953df624bb723ebd2a91e73683f968024ebb07fa8da0b
+    status: active
+    immutable_reference: sha256:d0ada88d2be9ad7244b953df624bb723ebd2a91e73683f968024ebb07fa8da0b
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_tecnica]
+    prohibited_uses: [garantia_de_custo_futuro, aprovacao_de_arquitetura]
+  SRC-020:
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-020/capture.html
+    authority:
+      name: GitHub
+      role: DOCUMENTACAO_OFICIAL
+      scope: [arquitetura_inicial]
+    content_hash: 3b2d241d1c507091aa3c78985d8b4b6456307d3016feecbbbbff0acc980a6f6a
+    status: active
+    immutable_reference: sha256:3b2d241d1c507091aa3c78985d8b4b6456307d3016feecbbbbff0acc980a6f6a
+    verified_at: "2026-07-25T18:00:00+00:00"
+    verified_by: AUTOMACAO
+    permitted_uses: [proveniencia_tecnica]
+    prohibited_uses: [garantia_de_custo_futuro, aprovacao_de_arquitetura]
+
+claim_overrides:
+  CLAIM-001:
+    source_reference_text: SRC-001, SRC-002 e SRC-004
+  CLAIM-004:
+    source_reference_text: SRC-003, SRC-004 e SRC-005
+    source_ids: [SRC-003, SRC-004, SRC-005]
+  CLAIM-005:
+    source_reference_text: SRC-002, SRC-003, SRC-004 e SRC-005
+    source_ids: [SRC-002, SRC-003, SRC-004, SRC-005]
+  CLAIM-008:
+    source_reference_text: SRC-002, SRC-003 e SRC-005
+  CLAIM-011:
+    source_reference_text: SRC-003, SRC-004 e SRC-005
+  CLAIM-012:
+    source_reference_text: SRC-001, SRC-007, SRC-008 e decisões DEC-002 a DEC-018 individualizadas
+    source_ids: [SRC-001, SRC-007, SRC-008]
+    decision_ids:
+      - DEC-002
+      - DEC-003
+      - DEC-003-A
+      - DEC-003-B
+      - DEC-003-C
+      - DEC-003-D
+      - DEC-003-E
+      - DEC-004
+      - DEC-005
+      - DEC-006
+      - DEC-007
+      - DEC-008
+      - DEC-009
+      - DEC-010
+      - DEC-011
+      - DEC-012
+      - DEC-013
+      - DEC-014
+      - DEC-015
+      - DEC-016
+      - DEC-016-A
+      - DEC-017
+      - DEC-018
+  CLAIM-013:
+    source_reference_text: fontes públicas SRC-013 e imagens SRC-011 e SRC-012 não confirmadas
+    source_ids: []
+    uncertainty: unknown
+    uncertainty_reason: identidade cadastral não confirmada em registro público autoritativo acessível; imagens pessoais não foram replicadas
+  CLAIM-014:
+    source_reference_text: SRC-014 não confirmada
+    source_ids: []
+    uncertainty: unknown
+    uncertainty_reason: registro esportivo exato não foi confirmado em fonte oficial acessível
+  CLAIM-015:
+    source_reference_text: SRC-015 e SRC-016 não confirmadas
+    source_ids: []
+    uncertainty: unknown
+    uncertainty_reason: identidade oficial e conteúdo dos perfis sociais não foram confirmados de forma imutável
+  CLAIM-028:
+    source_reference_text: SRC-001, SRC-017, SRC-018, SRC-019, SRC-020 e DEC-015

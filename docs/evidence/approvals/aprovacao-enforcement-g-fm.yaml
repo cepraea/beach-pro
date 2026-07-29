@@ -1,0 +1,28 @@
+approval:
+  approval_id: APR-DEC-ENFORCEMENT-G-FM-001
+  document_id: DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM
+  version: "0.1.0"
+  content_hash: 89298c11bb44422b054251b7ca9280bee09badeb3129527dd52cdf477c3ee3f6
+  purpose: >
+    Autorizar a ativação do G-FM como gate obrigatório nas transições
+    INIT-DOC-001, T-DOC-001 e T-DOC-003 do workflow documental LEAN,
+    completando a Fase 8 do PLANO-FRONT-MATTER-AUTORITATIVO.
+  scope:
+    - adicao_de_g_fm_a_required_gates_init_doc_001
+    - adicao_de_g_fm_a_required_gates_t_doc_001
+    - adicao_de_g_fm_a_required_gates_t_doc_003
+    - incremento_versao_workflow_0_2_1_para_0_2_2
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_enforcement_em_t_doc_002_t_doc_004_t_doc_005
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+  non_blocking_pending_items: []
+  approved_at: "2026-07-29T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-ENFORCEMENT-G-FM
+    - GATE-RESULT-G0-ENFORCEMENT-G-FM
+    - GATE-RESULT-G1-ENFORCEMENT-G-FM
+    - GATE-RESULT-G-FM-ENFORCEMENT-G-FM

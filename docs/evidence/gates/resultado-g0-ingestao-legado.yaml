@@ -1,0 +1,14 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G0-INGESTAO-LEGADO
+  gate_id: G0
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evaluated_at: "2026-07-25T10:42:10.403714+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids:
+    - MANIFEST-INTEGRIDADE-LEGADO-001
+  failures: []
+  next_actions: []

@@ -1,0 +1,29 @@
+approval:
+  approval_id: APR-DEC-MODELO-VERSOES-001
+  document_id: DOC-CEPRAEA-DEC-MODELO-VERSOES
+  version: "0.1.0"
+  content_hash: beabf274a8602343978d9908175f1029485e4159b7ad2e1b3455f97a2d136cf8
+  purpose: >
+    Autorizar o modelo de versões simultâneas no registro, habilitando a
+    coexistência de uma versão CANONICA_VIGENTE e uma revisão em
+    RASCUNHO/EM_REVISAO para o mesmo document_id durante a Fase 7.
+  scope:
+    - extensao_da_unicidade_para_par_document_id_version
+    - quatro_alteracoes_cirurgicas_no_validador
+    - aceitacao_de_docs_archive_para_versoes_superadas
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_permite_mais_de_uma_versao_canonica_por_document_id
+  non_blocking_pending_items:
+    - atualizacao_do_validador_ainda_nao_executada
+    - fase7b_pendente_de_execucao
+  approved_at: "2026-07-28T12:30:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-MODELO-VERSOES
+    - GATE-RESULT-G0-MODELO-VERSOES
+    - GATE-RESULT-G1-MODELO-VERSOES
+    - GATE-RESULT-G-FM-MODELO-VERSOES

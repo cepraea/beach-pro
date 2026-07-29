@@ -1,0 +1,13 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G0-MODELO-VERSOES
+  gate_id: G0
+  document_id: DOC-CEPRAEA-DEC-MODELO-VERSOES
+  version: "0.1.0"
+  content_hash: be9d92614026a9152f4f3785dc995f49e30dbace8d9f7cd6bb3fdc5830552e61
+  status: pass
+  evaluated_at: "2026-07-29T00:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

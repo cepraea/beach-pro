@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/front-matter-feature-spec.schema.json",
+  "title": "Front matter de feature spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feature_id",
+    "title",
+    "type",
+    "mvp_status"
+  ],
+  "properties": {
+    "feature_id": {
+      "type": "string",
+      "pattern": "^FT-[A-Z0-9_-]+$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "type": { "const": "feature_spec" },
+    "mvp_status": {
+      "enum": ["INCLUIDO", "ADIADO", "FORA_DO_ESCOPO"]
+    },
+    "milestones": {
+      "type": "array",
+      "items": { "enum": ["M0", "M1", "M2", "M3", "M4"] },
+      "uniqueItems": true
+    },
+    "entities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "authorized_units": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "authorized_requirements": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "authorized_by": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+    },
+    "derived_from": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "mvp_status": { "const": "INCLUIDO" } },
+        "required": ["mvp_status"]
+      },
+      "then": {
+        "required": [
+          "authorized_units",
+          "authorized_requirements",
+          "authorized_by",
+          "derived_from"
+        ],
+        "properties": {
+          "authorized_units": { "minItems": 1 },
+          "authorized_requirements": { "minItems": 1 },
+          "derived_from": { "minItems": 1 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mvp_status": { "enum": ["ADIADO", "FORA_DO_ESCOPO"] }
+        },
+        "required": ["mvp_status"]
+      },
+      "then": {
+        "properties": {
+          "milestones": { "maxItems": 0 }
+        }
+      }
+    }
+  ]
+}

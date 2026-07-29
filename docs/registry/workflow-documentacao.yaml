@@ -1,0 +1,198 @@
+schema_version: "0.2.0"
+workflow:
+  workflow_id: WF-DOC-CEPRAEA
+  title: Workflow documental LEAN do CEPRAEA BEACH PRO
+  version: "0.2.3"
+  status: APROVADO
+  profile: LEAN
+  object_type: document_version
+  initial_state: RASCUNHO
+  successful_terminal_state: CANONICA_VIGENTE
+  control_terminal_states: [SUPERADA, REVOGADA]
+  owner_role: AUTOR_DOCUMENTAL
+  approval_authority_role: AUTORIDADE_APROVADORA
+  canonization_authority_role: AUTORIDADE_APROVADORA
+
+initialization:
+  initialization_id: INIT-DOC-001
+  from_registration_status: LEGADO_INVENTARIADO
+  to_state: RASCUNHO
+  event_type: INGESTAO_REGISTRADA
+  authorized_roles: [AUTOR_DOCUMENTAL]
+  required_gates: [G-ARCH, G0, G1, G-FM]
+  required_contracts: [documento, resultado_gate, workflow]
+  required_evidence_types: [resultado_gate, registro]
+
+states:
+  - state_id: RASCUNHO
+    state_type: initial
+    authoritative_reference: false
+  - state_id: EM_REVISAO
+    state_type: intermediate
+    authoritative_reference: false
+    immutable_content_required: true
+  - state_id: CANONICA_VIGENTE
+    state_type: successful_terminal
+    authoritative_reference: true
+    immutable_content_required: true
+  - state_id: SUPERADA
+    state_type: control_terminal
+    authoritative_reference: false
+    immutable_content_required: true
+  - state_id: REVOGADA
+    state_type: control_terminal
+    authoritative_reference: false
+    immutable_content_required: true
+
+roles:
+  - role_id: AUTOR_DOCUMENTAL
+  - role_id: AUTORIDADE_APROVADORA
+  - role_id: AUTOMACAO
+
+transitions:
+  - transition_id: T-DOC-001
+    from_state: RASCUNHO
+    to_state: EM_REVISAO
+    event_type: REVISAO_SOLICITADA
+    authorized_roles: [AUTOR_DOCUMENTAL]
+    required_gates: [G-ARCH, G0, G1, G-FM]
+    required_contracts: [documento, resultado_gate]
+    required_evidence_types: [resultado_gate]
+  - transition_id: T-DOC-002
+    from_state: EM_REVISAO
+    to_state: RASCUNHO
+    event_type: REVISAO_DEVOLVIDA
+    authorized_roles: [AUTOR_DOCUMENTAL, AUTORIDADE_APROVADORA]
+    required_gates: []
+    required_contracts: [documento]
+    required_evidence_types: []
+  - transition_id: T-DOC-003
+    from_state: EM_REVISAO
+    to_state: CANONICA_VIGENTE
+    event_type: APROVACAO_LEAN_CONCEDIDA
+    authorized_roles: [AUTORIDADE_APROVADORA]
+    required_gates: [G-ARCH, G0, G1, G-FM]
+    required_contracts: [documento, aprovacao, resultado_gate]
+    required_evidence_types: [aprovacao, resultado_gate]
+  - transition_id: T-DOC-004
+    from_state: CANONICA_VIGENTE
+    to_state: SUPERADA
+    event_type: NOVA_VERSAO_VIGENTE
+    authorized_roles: [AUTORIDADE_APROVADORA]
+    required_gates: [G-ARCH, G0, G1]
+    required_contracts: [documento, aprovacao]
+    required_evidence_types: [aprovacao]
+  - transition_id: T-DOC-005
+    from_state: CANONICA_VIGENTE
+    to_state: REVOGADA
+    event_type: REVOGACAO_CONCEDIDA
+    authorized_roles: [AUTORIDADE_APROVADORA]
+    required_gates: []
+    required_contracts: [documento, aprovacao]
+    required_evidence_types: [aprovacao]
+
+gates:
+  - gate_id: G-ARCH
+    title: Arquitetura
+    implementation_status: IMPLEMENTED
+    blocking: true
+    evaluator:
+      type: command
+      command:
+        - python3
+        - -m
+        - scripts.documentation.validate_documentation
+        - --gate
+        - G-ARCH
+        - --format
+        - yaml
+    pass_condition: {exit_code: 0, result_status: pass}
+    fail_condition: {exit_code: 1, result_status: fail}
+  - gate_id: G0
+    title: Identidade
+    implementation_status: IMPLEMENTED
+    blocking: true
+    evaluator:
+      type: command
+      command:
+        - python3
+        - -m
+        - scripts.documentation.validate_documentation
+        - --gate
+        - G0
+        - --format
+        - yaml
+    pass_condition: {exit_code: 0, result_status: pass}
+    fail_condition: {exit_code: 1, result_status: fail}
+  - gate_id: G1
+    title: Integridade
+    implementation_status: IMPLEMENTED
+    blocking: true
+    evaluator:
+      type: command
+      command:
+        - python3
+        - -m
+        - scripts.documentation.validate_documentation
+        - --gate
+        - G1
+        - --format
+        - yaml
+    pass_condition: {exit_code: 0, result_status: pass}
+    fail_condition: {exit_code: 1, result_status: fail}
+  - gate_id: G-FM
+    title: Front Matter
+    implementation_status: IMPLEMENTED
+    blocking: true
+    evaluator:
+      type: command
+      command:
+        - python3
+        - -m
+        - scripts.documentation.validate_documentation
+        - --gate
+        - G-FM
+        - --format
+        - yaml
+    pass_condition: {exit_code: 0, result_status: pass}
+    fail_condition: {exit_code: 1, result_status: fail}
+
+contracts:
+  - contract_id: documento
+    schema_path: docs/contracts/schemas/documento.schema.json
+  - contract_id: aprovacao
+    schema_path: docs/contracts/schemas/aprovacao.schema.json
+  - contract_id: resultado_gate
+    schema_path: docs/contracts/schemas/resultado-gate.schema.json
+  - contract_id: workflow
+    schema_path: docs/contracts/schemas/workflow.schema.json
+
+global_invariants:
+  - invariant_id: INV-LEAN-001
+    rule: Somente Davi, no papel de AUTORIDADE_APROVADORA, torna uma versão vigente.
+  - invariant_id: INV-LEAN-002
+    rule: A aprovação identifica exatamente document_id, versão e hash.
+  - invariant_id: INV-LEAN-003
+    rule: Uma alteração no conteúdo aprovado exige nova revisão e novo hash.
+  - invariant_id: INV-LEAN-004
+    rule: Apenas um documento-base pode estar vigente para o mesmo escopo.
+  - invariant_id: INV-LEAN-005
+    rule: Vigência documental não autoriza implementação, dados reais, piloto ou produção.
+  - invariant_id: INV-LEAN-006
+    rule: Contratos, gates e evidências rigorosos existentes são suporte e não requisitos do perfil LEAN.
+
+out_of_scope:
+  - G2_OBRIGATORIO
+  - G3
+  - G4
+  - G5
+  - G6
+  - G7
+  - G8
+  - G_CANON_SEPARADO
+  - NOVOS_CONTRATOS
+  - NOVAS_MATRIZES
+  - IMPLEMENTACAO
+  - DADOS_REAIS
+  - PILOTO
+  - PRODUCAO

@@ -1,0 +1,13 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G0-CONTEXTO-V011
+  gate_id: G0
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1.1"
+  content_hash: 27a64560c3a131efe5e2af416e02433e89b5a504f42731521b21e59b06eb2d30
+  status: pass
+  evaluated_at: "2026-07-29T00:00:00-03:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

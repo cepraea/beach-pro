@@ -1,0 +1,310 @@
+// =============================================================================
+// Configuração markdownlint — CEPRAEA Beach Pro
+// =============================================================================
+//
+// Este arquivo governa a qualidade dos documentos Markdown em todo o projeto:
+//   - docs/**/*.md         — documentação governada (contratos, decisões, etc.)
+//   - src/features/**/*.md — especificações de feature (feature specs)
+//
+// Consumidores desta configuração:
+//   - VS Code (extensão davidanson.vscode-markdownlint) — feedback em tempo real
+//   - markdownlint-cli2 — validação em CI ou verificação manual
+//   - Agentes IA (Claude Code, Codex) — guia de conformidade ao criar/editar docs
+//
+// Referência de regras: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+// =============================================================================
+
+{
+  // ---------------------------------------------------------------------------
+  // LINHA DE BASE
+  // Ativa o conjunto completo de regras padrão do markdownlint.
+  // Todas as regras listadas abaixo sobrescrevem ou refinam este padrão.
+  // Por que no CEPRAEA: a documentação é governada — scripts Python validam
+  // estrutura, agentes IA navegam e citam os docs, e Davi faz revisão humana.
+  // Partir do conjunto completo garante que nenhuma inconsistência silenciosa
+  // passe despercebida; exceções são explícitas e justificadas abaixo.
+  // ---------------------------------------------------------------------------
+  "default": true,
+
+  // ---------------------------------------------------------------------------
+  // MD013 — Comprimento máximo de linha
+  // Padrão: 80 colunas. Aqui: DESABILITADO.
+  //
+  // Por que desabilitado no CEPRAEA:
+  //   - Tabelas de governança incluem caminhos canônicos longos, como
+  //     `docs/contracts/schemas/front-matter-governed.schema.json`
+  //   - IDs de documento seguem convenção obrigatória:
+  //     `DOC-CEPRAEA-DEC-019-MVP-SINTETICO`
+  //   - Células de tabela com listas de `workflow_status` ou `permitted_uses`
+  //     excedem 80 chars por necessidade semântica, não por falta de cuidado
+  //   - Agentes IA leem o conteúdo integralmente; quebrar linhas no meio de
+  //     um path ou ID prejudica a parseabilidade por regex e LLMs
+  //
+  // Efeito: linhas de qualquer comprimento são aceitas sem aviso.
+  // ---------------------------------------------------------------------------
+  "MD013": false,
+
+  // ---------------------------------------------------------------------------
+  // MD025 — Apenas um heading H1 por documento
+  // Opção `front_matter_title: ""` — campo vazio instrui o linter a NÃO
+  // considerar o campo `title:` do front matter YAML como um H1 lógico.
+  //
+  // Por que necessário no CEPRAEA:
+  //   Após a implantação do sistema de front matter (Plano autoritativo,
+  //   Fases 4–5), todo `docs/**/*.md` terá DOIS elementos que parecem ser
+  //   "títulos": o `title:` no bloco YAML `---` e o `# Título` no corpo
+  //   Markdown. Sem esta configuração, o linter sinalizaria violação de H1
+  //   duplo em absolutamente todos os documentos governados do projeto.
+  //
+  // Efeito: `title:` no front matter é ignorado; a regra verifica somente
+  // se existe mais de um `#` no corpo Markdown.
+  // ---------------------------------------------------------------------------
+  "MD025": {
+    "front_matter_title": ""
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD003 — Estilo de headings
+  // Valor: "atx" — exige `# Título`, proíbe o estilo Setext (`Título\n===`).
+  //
+  // Por que no CEPRAEA:
+  //   - Estilo ATX é o único compatível com parsers de agentes IA e indexadores
+  //   - O delimitador `---` do front matter YAML é visualmente idêntico ao
+  //     underline Setext de H2 (`Título\n---`). Misturar estilos causaria
+  //     ambiguidade em ferramentas que processam os arquivos sem contexto
+  //     completo de qual bloco é front matter e qual é heading
+  //   - Garante uniformidade nos 20+ documentos de `docs/`
+  //
+  // Efeito: qualquer heading no estilo `Título\n===` ou `Título\n---`
+  // gera erro.
+  // ---------------------------------------------------------------------------
+  "MD003": {
+    "style": "atx"
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD035 — Estilo de separador horizontal (HR)
+  // Valor: "***" — exige três asteriscos, proíbe `---` e `___`.
+  //
+  // Por que crítico no CEPRAEA:
+  //   `---` é o delimitador de abertura E fechamento do bloco de front matter
+  //   YAML. Se um autor usar `---` como HR dentro do corpo de um documento,
+  //   parsers de front matter — incluindo `validate_front_matter()` em
+  //   `scripts/documentation/validate_documentation.py` — interpretariam
+  //   o trecho como o fechamento antecipado do bloco, corrompendo o YAML.
+  //
+  // Efeito: `---` e `___` como HR geram erro; apenas `***` é válido.
+  // ---------------------------------------------------------------------------
+  "MD035": {
+    "style": "***"
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD046 — Estilo de bloco de código
+  // Valor: "fenced" — exige cercas (```), proíbe o estilo de 4 espaços.
+  //
+  // Por que no CEPRAEA:
+  //   - Documentos de decisão, schemas e protocolos contêm exemplos de YAML,
+  //     JSON, Python e Bash — todos exigem identificação explícita de linguagem
+  //   - Cercas (fenced) permitem o atributo de linguagem (ver MD040), que
+  //     habilita syntax highlighting no GitHub e permite que agentes IA
+  //     identifiquem o tipo de conteúdo sem inferência heurística
+  //   - O estilo de 4 espaços é ambíguo e não suporta identificação de linguagem
+  //
+  // Efeito: blocos indentados com 4 espaços geram erro; usar ``` obrigatório.
+  // ---------------------------------------------------------------------------
+  "MD046": {
+    "style": "fenced"
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD048 — Caractere de cerca de bloco de código
+  // Valor: "backtick" — exige crase (```), proíbe til (~~~).
+  //
+  // Por que no CEPRAEA:
+  //   Todo o projeto usa crase como padrão de fato. Uniformidade facilita
+  //   busca textual (`grep '^\`\`\`'`) e processamento pelos scripts Python
+  //   de validação. O til é raro e não traz benefício funcional aqui.
+  //
+  // Efeito: ~~~ como delimitador de cerca gera erro.
+  // ---------------------------------------------------------------------------
+  "MD048": {
+    "style": "backtick"
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD007 — Recuo de listas não ordenadas aninhadas
+  // Valor: 4 espaços (padrão markdownlint: 2).
+  //
+  // Por que no CEPRAEA:
+  //   - Compatível com PEP 8 (Python) usado nos scripts do projeto
+  //   - Alinhado com o estilo dos documentos de governança existentes em
+  //     `docs/` (listas de `permitted_uses`, `prohibited_uses`, etc.)
+  //   - 4 espaços tornam a hierarquia visualmente clara para humanos e para
+  //     agentes IA que precisam inferir a estrutura sem renderizar o HTML
+  //
+  // Efeito: listas aninhadas com 2 espaços geram aviso; usar 4 obrigatório.
+  // ---------------------------------------------------------------------------
+  "MD007": {
+    "indent": 4
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD040 — Linguagem obrigatória em blocos de código cercados
+  // Lista curada a partir do inventário REAL do repositório (762 fenced blocks
+  // em `docs/` e `.inicio/`). Somente linguagens já em uso ou planejadas.
+  //
+  // INVENTÁRIO DE LINGUAGENS ENCONTRADAS NO REPOSITÓRIO:
+  //   yaml        (42x) — front matter, registro, workflow, schemas
+  //   bash        (39x) — execução de scripts Python, exemplos de CLI
+  //   text       (138x) — saídas de terminal, logs, conteúdo sem highlight
+  //   json        (18x) — schemas JSON, respostas de API, configurações
+  //   shell       (11x) — comandos de shell genérico (não-Bash específico)
+  //   powershell   (5x) — comandos Windows para onboarding de colaboradores
+  //   markdown     (3x) — tutoriais que ensinam a própria sintaxe Markdown
+  //   ini          (3x) — arquivos de configuração de ambiente
+  //   ts           (3x) — source da aplicação React/Vite (TypeScript)
+  //   mermaid      (2x) — diagramas de fluxo em documentos de decisão
+  //   regex        (2x) — padrões de validação de path documentados em prosa
+  //   gitignore    (2x) — exemplos de regras de exclusão de VCS
+  //   env          (2x) — variáveis de ambiente (.env.example)
+  //   xml          (1x) — configurações e manifestos
+  //   dockerfile   (1x) — Dockerfile do projeto
+  //   typescript   (1x) — alias longo do "ts", mantido por compatibilidade
+  //   txt          (1x) — texto puro sem realce (alias de "text")
+  //   jsonc        (—)  — JSON com comentários (configurações VS Code, este arquivo)
+  //   python / py  (—)  — snippets dos scripts de validação documentados
+  //   html / css / js (—) — frontend React/Vite
+  //   console      (—)  — saídas interativas de terminal
+  //
+  // ESTADO ATUAL: os 115 fenced blocks em `docs/**/*.md` já declaram linguagem
+  // (0 violações MD040 nos docs governados — em conformidade). Os 82 blocks sem
+  // linguagem estão em `.inicio/**/*.md`, diretório de trabalho interno fora do
+  // escopo de governança de `validate_documentation.py`. NOVOS documentos devem
+  // sempre declarar a linguagem.
+  //
+  // Por que restringir a lista? Linguagens fora da lista indicam uso acidental
+  // ou inconsistente (ex: "sh" vs "shell", "js" vs "javascript"). A lista
+  // define o vocabulário oficial do projeto.
+  //
+  // Efeito: bloco sem linguagem = erro MD040. Linguagem fora da lista = erro.
+  // ---------------------------------------------------------------------------
+  "MD040": {
+    "allowed_languages": [
+      "bash",
+      "console",
+      "css",
+      "dockerfile",
+      "env",
+      "gitignore",
+      "html",
+      "ini",
+      "js",
+      "json",
+      "jsonc",
+      "markdown",
+      "mermaid",
+      "py",
+      "python",
+      "regex",
+      "shell",
+      "powershell",
+      "text",
+      "ts",
+      "typescript",
+      "txt",
+      "xml",
+      "yaml"
+    ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD033 — Elementos HTML permitidos dentro do Markdown
+  // Lista: somente as tags com uso legítimo e intencional neste projeto.
+  // HTML genérico é proibido; qualquer tag fora da lista gera erro.
+  //
+  // SUPORTE NO GITHUB: todos os elementos abaixo são renderizados e preservados
+  // pelo sanitizador do GitHub Markdown (html-pipeline). Nenhum é bloqueado,
+  // removido ou escapado no GitHub.com ou no GitHub Pages.
+  //
+  // ELEMENTOS PERMITIDOS E JUSTIFICATIVA:
+  //
+  //   <br>
+  //     Quebra de linha forçada. É a ÚNICA forma de quebrar linha dentro de
+  //     uma célula de tabela Markdown (a tecla Enter cria uma nova linha de
+  //     tabela, não uma quebra dentro da célula). Usado nas tabelas de
+  //     governança do CEPRAEA com conteúdo longo.
+  //     GitHub: renderiza como <br> semântico ✓
+  //
+  //   <details> + <summary>
+  //     Bloco expansível/colapsável nativo do GitHub. Permite ocultar schemas
+  //     completos, históricos de aprovação, blocos de código extensos ou
+  //     conteúdo auxiliar nos documentos canônicos sem poluir a leitura
+  //     principal. Ideal para documentos como `guia-triagem-agente.md` que
+  //     precisam ser densos mas navegáveis.
+  //     GitHub: renderiza como accordion clicável nativo ✓
+  //
+  //   <kbd>
+  //     Formata texto como tecla de teclado com estilo visual de badge.
+  //     Usado em documentos de processo para indicar atalhos de terminal
+  //     e combinações de teclas (ex: <kbd>Ctrl+C</kbd>).
+  //     GitHub: renderiza com estilo CSS de tecla física ✓
+  //
+  //   <sup>
+  //     Texto sobrescrito (expoente ou nota). Usado para referências
+  //     numéricas, indicadores de versão e símbolos técnicos em documentos
+  //     de requisito e decisão.
+  //     GitHub: renderiza como sobrescrito ✓
+  //
+  //   <sub>
+  //     Texto subscrito (índice ou nota inferior). Usado em fórmulas,
+  //     índices e notações técnicas nos documentos de protocolo.
+  //     GitHub: renderiza como subscrito ✓
+  //
+  // NOTA SOBRE PLACEHOLDERS DE TEMPLATE: os documentos existentes em `docs/`
+  // contêm 172 ocorrências de texto no formato `<PREENCHER>`, `<feature>`,
+  // `<document>` etc. Esses NÃO são HTML — são texto Markdown mal-escapado que
+  // dispara MD033. Em documentos NOVOS, usar sempre:
+  //   - Backtick:  `<PREENCHER>`  (renderiza como código inline)
+  //   - Chaves:    {PREENCHER}    (texto literal sem ambiguidade)
+  //
+  // Efeito: qualquer tag HTML fora desta lista em documentos novos gera erro.
+  // ---------------------------------------------------------------------------
+  "MD033": {
+    "allowed_elements": ["br", "details", "kbd", "context", "rules", "sub", "summary", "sup"]
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD049 — Estilo de ênfase (itálico)
+  // Valor: "asterisk" — exige `*italic*`, proíbe `_italic_`.
+  //
+  // Por que crítico no CEPRAEA:
+  //   Os documentos de governança citam frequentemente campos de schema YAML
+  //   que contêm underscores: `workflow_status`, `document_type`,
+  //   `permitted_uses`, `content_hash`, `registration_status` etc.
+  //   Usar `_` como marcador de ênfase em um documento que cita esses campos
+  //   cria ambiguidade de parsing: `_workflow_status_` seria interpretado como
+  //   `<em>workflow</em>status_` por alguns parsers, gerando ênfase incorreta
+  //   e falsos positivos para agentes IA que processam o Markdown como texto.
+  //
+  // Efeito: `_italic_` gera erro; usar `*italic*` obrigatório.
+  // ---------------------------------------------------------------------------
+  "MD049": {
+    "style": "asterisk"
+  },
+
+  // ---------------------------------------------------------------------------
+  // MD050 — Estilo de negrito
+  // Valor: "asterisk" — exige `**bold**`, proíbe `__bold__`.
+  //
+  // Mesmo motivo do MD049: campos YAML com underscore como `__version__` ou
+  // `__meta__` (se usados) colidiriam com o marcador `__`. Manter asterisco
+  // como único marcador de ênfase (simples e duplo) elimina a categoria
+  // inteira de ambiguidade.
+  //
+  // Efeito: `__bold__` gera erro; usar `**bold**` obrigatório.
+  // ---------------------------------------------------------------------------
+  "MD050": {
+    "style": "asterisk"
+  }
+}

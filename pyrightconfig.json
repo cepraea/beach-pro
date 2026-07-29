@@ -1,0 +1,9 @@
+{
+  "include": [
+    "scripts/documentation/validate_documentation",
+    "scripts/documentation/tests"
+  ],
+  "exclude": ["**/__pycache__"],
+  "typeCheckingMode": "strict",
+  "pythonVersion": "3.10"
+}

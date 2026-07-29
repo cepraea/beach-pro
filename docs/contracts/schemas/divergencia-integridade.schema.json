@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/divergencia-integridade.schema.json",
+  "title": "Divergência de integridade documental",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "divergence_id",
+    "document_id",
+    "version",
+    "workflow_status",
+    "expected_hash",
+    "observed_hash",
+    "detected_at",
+    "detected_by",
+    "materiality",
+    "criticality",
+    "status",
+    "difference",
+    "evidence_ids",
+    "corrective_action_id",
+    "resolution"
+  ],
+  "properties": {
+    "divergence_id": {"type": "string", "pattern": "^DIV-INT-[A-Z0-9-]+$"},
+    "document_id": {"type": "string", "pattern": "^DOC-"},
+    "version": {"type": "string", "minLength": 1},
+    "workflow_status": {"type": "string", "minLength": 1},
+    "expected_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "observed_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "detected_at": {"type": "string", "format": "date-time"},
+    "detected_by": {"type": "string", "minLength": 1},
+    "materiality": {"enum": ["editorial_non_semantic", "semantic", "unknown"]},
+    "criticality": {"const": "blocking"},
+    "status": {"enum": ["open", "in_progress", "resolved"]},
+    "difference": {"type": "string", "minLength": 1},
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "corrective_action_id": {"type": "string", "pattern": "^AR-[0-9]{3,}$"},
+    "resolution": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision",
+            "resolved_at",
+            "resolved_by",
+            "restored_hash",
+            "event_id"
+          ],
+          "properties": {
+            "decision": {"const": "restore_approved_snapshot"},
+            "resolved_at": {"type": "string", "format": "date-time"},
+            "resolved_by": {"type": "string", "minLength": 1},
+            "restored_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "event_id": {"type": "string", "pattern": "^EVT-"}
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "resolved"}}},
+      "then": {"properties": {"resolution": {"type": "object"}}}
+    }
+  ]
+}

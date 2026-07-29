@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/alegacao.schema.json",
+  "title": "Alegação controlada",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id",
+    "document_id",
+    "document_version",
+    "document_hash",
+    "location",
+    "statement",
+    "legacy_state",
+    "source_reference_text",
+    "classification",
+    "criticality",
+    "subjects",
+    "source_ids",
+    "decision_ids",
+    "evidence_ids",
+    "uncertainty",
+    "uncertainty_reason",
+    "status",
+    "verified_at",
+    "verified_by"
+  ],
+  "properties": {
+    "claim_id": {"type": "string", "pattern": "^CLAIM-[0-9]{3,}$"},
+    "document_id": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+    },
+    "document_version": {"type": "string", "minLength": 1},
+    "document_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "location": {"type": "string", "minLength": 1},
+    "statement": {"type": "string", "minLength": 1},
+    "legacy_state": {"type": "string", "minLength": 1},
+    "source_reference_text": {"type": "string", "minLength": 1},
+    "classification": {
+      "enum": ["fact", "observation", "inference", "hypothesis", "decision"]
+    },
+    "criticality": {"enum": ["critical", "material", "informational"]},
+    "subjects": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^SRC-"},
+      "uniqueItems": true
+    },
+    "decision_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^DEC-[0-9]{3}(?:-[A-Z])?$"},
+      "uniqueItems": true
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^EVID-[0-9]{3}$"},
+      "uniqueItems": true
+    },
+    "uncertainty": {
+      "enum": ["none", "controlled", "unknown", "contradictory"]
+    },
+    "uncertainty_reason": {"type": ["string", "null"]},
+    "status": {
+      "enum": ["confirmed", "candidate", "disputed", "superseded", "rejected"]
+    },
+    "verified_at": {"type": ["string", "null"], "format": "date-time"},
+    "verified_by": {"type": ["string", "null"]}
+  },
+  "anyOf": [
+    {"properties": {"source_ids": {"minItems": 1}}},
+    {
+      "properties": {
+        "uncertainty": {"enum": ["controlled", "unknown", "contradictory"]}
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "uncertainty": {
+            "enum": ["controlled", "unknown", "contradictory"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "uncertainty_reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+corrective_action:
+  action_id: AR-001
+  description: >-
+    Preservar a variante divergente e restaurar os bytes exatos aprovados por G1
+    para DOC-VAL-REL-CONTEXTO-V01 versão 0.1.
+  origin_id: DIV-INT-RELATORIO-VALIDACAO-V01
+  criticality: blocking
+  status: completed
+  assigned_to: Davi Sermenho
+  created_at: "2026-07-25T16:40:00+00:00"
+  closed_at: "2026-07-25T16:48:38+00:00"
+  evidence_ids:
+    - EVID-PACOTE-DIVERGENCIA-RELATORIO-VALIDACAO-V01
+    - GATE-RESULT-G-ARCH-POS-RESTAURACAO
+    - GATE-RESULT-G0-POS-RESTAURACAO
+    - GATE-RESULT-G1-POS-RESTAURACAO
+    - EVT-INTEGRIDADE-RESTAURADA-001

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/aprovacao.schema.json",
+  "title": "Aprovação documental",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approval_id",
+    "document_id",
+    "version",
+    "content_hash",
+    "purpose",
+    "scope",
+    "approved_by",
+    "authority_role",
+    "decision",
+    "reservations",
+    "non_blocking_pending_items",
+    "approved_at",
+    "evidence_ids"
+  ],
+  "properties": {
+    "approval_id": {"type": "string", "pattern": "^APR-[A-Z0-9-]+$"},
+    "document_id": {"type": "string", "pattern": "^DOC-"},
+    "version": {"type": "string", "minLength": 1},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "purpose": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "approved_by": {"type": "string", "minLength": 1},
+    "authority_role": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["approved", "rejected"]},
+    "reservations": {"type": "array", "items": {"type": "string"}},
+    "non_blocking_pending_items": {"type": "array", "items": {"type": "string"}},
+    "approved_at": {"type": "string", "format": "date-time"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  }
+}

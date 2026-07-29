@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/evidencia.schema.json",
+  "title": "Evidência",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_id",
+    "evidence_type",
+    "subject_ids",
+    "location",
+    "content_hash",
+    "created_by",
+    "created_at",
+    "classification",
+    "immutable_reference"
+  ],
+  "properties": {
+    "evidence_id": {"type": "string", "pattern": "^EVID-[A-Z0-9-]+$"},
+    "evidence_type": {
+      "enum": ["source", "validation", "gate", "approval", "promotion", "audit"]
+    },
+    "subject_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "location": {"type": "string", "minLength": 1},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "created_by": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "classification": {"enum": ["public", "internal", "restricted"]},
+    "immutable_reference": {"type": "string", "minLength": 1}
+  }
+}

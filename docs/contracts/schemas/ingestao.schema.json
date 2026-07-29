@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/ingestao.schema.json",
+  "title": "Evento de ingestão documental",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "workflow_id",
+    "batch_id",
+    "event_type",
+    "actor",
+    "occurred_at",
+    "from_registration_status",
+    "to_workflow_status",
+    "gate_result_ids",
+    "manifest_id",
+    "documents"
+  ],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^EVT-ING-[A-Z0-9-]+$"},
+    "workflow_id": {"const": "WF-DOC-CEPRAEA"},
+    "batch_id": {"type": "string", "pattern": "^ING-[A-Z0-9-]+$"},
+    "event_type": {"const": "INGESTAO_REGISTRADA"},
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "role"],
+      "properties": {
+        "actor_id": {"type": "string", "minLength": 1},
+        "role": {"const": "RESPONSAVEL_WORKFLOW"}
+      }
+    },
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "from_registration_status": {"const": "LEGADO_INVENTARIADO"},
+    "to_workflow_status": {"const": "RASCUNHO"},
+    "gate_result_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^GATE-RESULT-"},
+      "minItems": 3,
+      "uniqueItems": true
+    },
+    "manifest_id": {"type": "string", "pattern": "^MANIFEST-"},
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["document_id", "version", "content_hash"],
+        "properties": {
+          "document_id": {"type": "string", "pattern": "^DOC-"},
+          "version": {"type": "string", "minLength": 1},
+          "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  }
+}

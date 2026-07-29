@@ -1,0 +1,58 @@
+{
+  "name": "cepraea-beach-pro",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cepraea/beach-pro"
+  },
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": "24.14.1",
+    "npm": "11.11.0"
+  },
+  "packageManager": "npm@11.11.0",
+  "scripts": {
+    "assets:pwa": "node scripts/assets/generate-pwa-icons.mjs",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "lint": "eslint .",
+    "lint:md": "markdownlint-cli2 \"docs/**/*.md\" \"src/features/**/*.md\"",
+    "lint:md:vscode": "markdownlint-cli2 \".inicio/VSCODE.md\" \".inicio/evidencias/*.md\" \"RELATORIO-VSCODE.md\"",
+    "quality:workspace": "node scripts/quality/validate-workspace.mjs",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" index.html \"vite.config.*\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" index.html \"vite.config.*\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "jsdom": "^26.0.0",
+    "markdownlint-cli2": "^0.23.2",
+    "prettier": "^3.5.3",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.2.0",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^3.0.8"
+  }
+}

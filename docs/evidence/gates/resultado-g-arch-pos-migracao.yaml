@@ -1,0 +1,14 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G-ARCH-POS-MIGRACAO
+  gate_id: G-ARCH
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evaluated_at: "2026-07-25T08:16:49.921828+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids: [EVID-MIGRACAO-ARQUITETURA-INICIAL]
+  failures: []
+  next_actions: []
+

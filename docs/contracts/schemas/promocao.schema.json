@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/promocao.schema.json",
+  "title": "Promoção canônica",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "promotion_id",
+    "document_id",
+    "version",
+    "content_hash",
+    "from_status",
+    "to_status",
+    "authority_scope",
+    "validity",
+    "precedence",
+    "approval_id",
+    "gate_result_id",
+    "evidence_package_id",
+    "promoted_by",
+    "authority_role",
+    "promoted_at"
+  ],
+  "properties": {
+    "promotion_id": {"type": "string", "pattern": "^PROM-[A-Z0-9-]+$"},
+    "document_id": {"type": "string", "pattern": "^DOC-"},
+    "version": {"type": "string", "minLength": 1},
+    "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "from_status": {"const": "APROVADA"},
+    "to_status": {"const": "CANONICA_VIGENTE"},
+    "authority_scope": {"$ref": "#/$defs/authorityScope"},
+    "validity": {"$ref": "#/$defs/validity"},
+    "precedence": {"$ref": "#/$defs/precedence"},
+    "approval_id": {"type": "string", "pattern": "^APR-"},
+    "gate_result_id": {"type": "string", "pattern": "^GATE-RESULT-"},
+    "evidence_package_id": {"type": "string", "minLength": 1},
+    "promoted_by": {"type": "string", "minLength": 1},
+    "authority_role": {"type": "string", "minLength": 1},
+    "promoted_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "authorityScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjects", "permitted_uses", "prohibited_uses"],
+      "properties": {
+        "subjects": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "permitted_uses": {"type": "array", "items": {"type": "string"}},
+        "prohibited_uses": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["effective_from", "effective_until", "review_due_at"],
+      "properties": {
+        "effective_from": {"type": "string", "format": "date-time"},
+        "effective_until": {"type": ["string", "null"], "format": "date-time"},
+        "review_due_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "precedence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supersedes", "complemented_by", "conflicts_resolved_by"],
+      "properties": {
+        "supersedes": {"type": "array", "items": {"type": "string"}},
+        "complemented_by": {"type": "array", "items": {"type": "string"}},
+        "conflicts_resolved_by": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

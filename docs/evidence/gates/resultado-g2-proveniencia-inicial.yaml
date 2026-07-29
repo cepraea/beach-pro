@@ -1,0 +1,22 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G2-PROVENIENCIA-INICIAL
+  gate_id: G2
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1"
+  content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  status: fail
+  evaluated_at: "2026-07-25T16:38:07.639584+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids:
+    - PROV-CEPRAEA-CONTEXTO-001
+  failures:
+    - "A cobertura de proveniência crítica foi 3,33%, abaixo dos 100% exigidos."
+    - "As fontes referenciadas permanecem unverified, sem verificação e referência imutável."
+    - "SRC-006 e SRC-013 a SRC-020 ainda possuem localização não resolvida."
+    - "CLAIM-001, CLAIM-008, CLAIM-011 e CLAIM-012 possuem referência textual ambígua."
+    - "O baseline global detectou alteração pós-G1 em DOC-VAL-REL-CONTEXTO-V01."
+  next_actions:
+    - Preservar e verificar as fontes usadas pelos claims críticos.
+    - Resolver localizações genéricas e referências textuais ambíguas.
+    - Tratar a divergência pós-G1 sem reescrever silenciosamente o manifesto.

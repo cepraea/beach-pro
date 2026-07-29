@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/documento.schema.json",
+  "title": "Documento controlado",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "title",
+    "document_type",
+    "version",
+    "registration_status",
+    "workflow_status",
+    "legacy_declared_status",
+    "current_path",
+    "target_path",
+    "canonical_path",
+    "content_hash",
+    "self_hash_exempt",
+    "naming_conformance",
+    "directory_conformance",
+    "migration_required",
+    "authority_scope",
+    "relationships"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "pattern": "^DOC-[A-Z0-9]+(?:-[A-Z0-9]+)+$"
+    },
+    "title": {"type": "string", "minLength": 1},
+    "responsible": {"type": "string", "minLength": 1},
+    "registered_at": {"type": "string", "format": "date-time"},
+    "last_verified_at": {"type": "string", "format": "date-time"},
+    "document_type": {
+      "enum": [
+        "contexto",
+        "contrato",
+        "decisao",
+        "evidencia",
+        "fluxo",
+        "glossario",
+        "inventario",
+        "matriz",
+        "politica",
+        "protocolo",
+        "registro",
+        "relatorio",
+        "requisito",
+        "workflow"
+      ]
+    },
+    "version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+(?:\\.[0-9]+)?(?:-[a-z0-9.-]+)?$"
+    },
+    "registration_status": {
+      "enum": ["LEGADO_INVENTARIADO", "ATIVO_CONTROLADO"]
+    },
+    "workflow_status": {
+      "enum": [
+        null,
+        "RASCUNHO",
+        "EM_REVISAO",
+        "BASE_CONTROLADA",
+        "EM_VALIDACAO",
+        "CORRECAO_REQUERIDA",
+        "VALIDADO",
+        "CANDIDATA",
+        "EM_APROVACAO",
+        "APROVADA",
+        "CANONICA_VIGENTE",
+        "SUPERADA",
+        "REVOGADA"
+      ]
+    },
+    "legacy_declared_status": {"type": ["string", "null"]},
+    "current_path": {"$ref": "#/$defs/repositoryPath"},
+    "target_path": {"$ref": "#/$defs/repositoryPath"},
+    "canonical_path": {
+      "anyOf": [
+        {"$ref": "#/$defs/repositoryPath"},
+        {"type": "null"}
+      ]
+    },
+    "content_hash": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "self_hash_exempt": {"type": "boolean"},
+    "naming_conformance": {"type": "boolean"},
+    "directory_conformance": {"type": "boolean"},
+    "migration_required": {"type": "boolean"},
+    "authority_scope": {"$ref": "#/$defs/authorityScope"},
+    "relationships": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "registration_status": {"const": "LEGADO_INVENTARIADO"}
+        }
+      },
+      "then": {
+        "properties": {
+          "workflow_status": {"type": "null"},
+          "legacy_declared_status": {"type": "string"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"self_hash_exempt": {"const": false}}
+      },
+      "then": {
+        "properties": {
+          "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "repositoryPath": {
+      "type": "string",
+      "pattern": "^docs/[A-Za-z0-9._/ À-ž—-]+$"
+    },
+    "authorityScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjects", "permitted_uses", "prohibited_uses"],
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "permitted_uses": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "prohibited_uses": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

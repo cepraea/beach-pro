@@ -1,0 +1,15 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G1-POS-RESTAURACAO
+  gate_id: G1
+  document_id: DOC-VAL-REL-CONTEXTO-V01
+  version: "0.1"
+  content_hash: 2d37dd9ffa85e821a16012a1800c0a7e517fa4e8a47ee71339cec04025de4a6d
+  status: pass
+  evaluated_at: "2026-07-25T16:48:37.429489+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids:
+    - MANIFEST-INTEGRIDADE-LEGADO-001
+    - EVID-PACOTE-DIVERGENCIA-RELATORIO-VALIDACAO-V01
+  failures: []
+  next_actions: []

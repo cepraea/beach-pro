@@ -1,0 +1,1285 @@
+provenance_package:
+  provenance_id: PROV-CEPRAEA-CONTEXTO-001
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  document_version: '0.1'
+  document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  created_at: '2026-07-25T16:34:58.155518+00:00'
+  created_by: AUTOMACAO
+  policy:
+    critical_coverage_percent: 100
+    require_active_sources: true
+    reject_ambiguous_references: true
+  sources:
+  - source_id: SRC-001
+    title: 'confirmação humana de Davi: composição do CEPRAEA, autoridade exclusiva interna, retorno de
+      Gilvania e aprovação das decisões `DEC-002` a `DEC-018`, incluindo a `DEC-016-A`. Inclui escala
+      19 mais 1; fluxo integral na PWA; custo R$ 0; desenvolvimento solo; limites dos agentes e ausência
+      de APIs da OpenAI e Anthropic; modelo de respostas e justificativas; distinção entre estados e fatos;
+      proibição de julgamento automático; governança e portão de dados reais; visibilidade operacional
+      mínima; arquitetura gratuita com Cloudflare Pages, Supabase/PostgreSQL/Auth/RLS em São Paulo, Brevo
+      SMTP, GitHub privado, ambientes separados, backup próprio, restauração, monitoramento de cotas e
+      portabilidade; planejamento de 8 horas semanais, horizonte de 24 semanas após D0 e marcos M0 a M6;
+      continuidade proporcional sem custodiante ou conta emergencial; somente dois perfis operacionais,
+      Davi e atleta; e linha de base proporcional, indicadores `IND-001` a `IND-010`, metas iniciais,
+      validação V0 a V3, piloto controlado e critérios de promoção documental sem autorização automática
+      de dados reais, piloto ou produção'
+    description: 'confirmação humana de Davi: composição do CEPRAEA, autoridade exclusiva interna, retorno
+      de Gilvania e aprovação das decisões `DEC-002` a `DEC-018`, incluindo a `DEC-016-A`. Inclui escala
+      19 mais 1; fluxo integral na PWA; custo R$ 0; desenvolvimento solo; limites dos agentes e ausência
+      de APIs da OpenAI e Anthropic; modelo de respostas e justificativas; distinção entre estados e fatos;
+      proibição de julgamento automático; governança e portão de dados reais; visibilidade operacional
+      mínima; arquitetura gratuita com Cloudflare Pages, Supabase/PostgreSQL/Auth/RLS em São Paulo, Brevo
+      SMTP, GitHub privado, ambientes separados, backup próprio, restauração, monitoramento de cotas e
+      portabilidade; planejamento de 8 horas semanais, horizonte de 24 semanas após D0 e marcos M0 a M6;
+      continuidade proporcional sem custodiante ou conta emergencial; somente dois perfis operacionais,
+      Davi e atleta; e linha de base proporcional, indicadores `IND-001` a `IND-010`, metas iniciais,
+      validação V0 a V3, piloto controlado e critérios de promoção documental sem autorização automática
+      de dados reais, piloto ou produção.'
+    source_type: human
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-001/capture.yaml
+    authority:
+      name: Davi Sermenho
+      role: AUTORIDADE_INTERNA_ATRIBUIDA
+      scope:
+      - identidade_equipe
+      - composicao_operacional
+      - governanca_interna
+      - decisoes_aprovadas
+      - perfis_e_acessos
+      - capacidades_do_produto
+      - escopo_fase_1
+      - fronteiras_de_escopo
+      - plataforma_cliente
+      - identidade_e_acesso
+      - privacidade_e_dados
+      - integracoes_e_migracao
+      - restricoes_operacionais
+      - comunicacao_interna
+      - modelo_de_respostas
+      - arquitetura_inicial
+      - entrega_e_continuidade
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: primary
+    content_hash: 975536cbb25210401f60cc6e0d8d9bc95087c5972bc5bec265db69ffee26f965
+    status: active
+    immutable_reference: sha256:975536cbb25210401f60cc6e0d8d9bc95087c5972bc5bec265db69ffee26f965
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_interna
+    - rastreabilidade_de_decisoes
+    prohibited_uses:
+    - confirmacao_externa
+    - nova_aprovacao
+    - canonizacao
+  - source_id: SRC-002
+    title: DECISAO-CEPRAEA atual. Arquivo 1JjFf_AstkZwp3K2RcnZGD0GTjLVqA_jAwlSdtKlrnpg
+    description: 'DECISAO-CEPRAEA atual. Arquivo 1JjFf_AstkZwp3K2RcnZGD0GTjLVqA_jAwlSdtKlrnpg. Uso: rascunho
+      e evidência de entendimento; não é fonte soberana.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-002/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: DOCUMENTO_DE_CONTEXTO
+      scope:
+      - identidade_equipe
+      - disponibilidade_presenca
+      - ciclo_participacao
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: candidate
+    content_hash: 152af6224d49562e36c1b3b80c6379c575ddde06d5d1db3e3247fa0e3db65d31
+    status: active
+    immutable_reference: sha256:152af6224d49562e36c1b3b80c6379c575ddde06d5d1db3e3247fa0e3db65d31
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_de_contexto
+    prohibited_uses:
+    - aprovacao
+    - canonizacao
+  - source_id: SRC-003
+    title: '`CEPRAEA_CONTRACT`.gdoc. Arquivo 1EXWEC1ULPvUgtYCFKqrSJ4j4UBZi_bsHGgulie01T-s'
+    description: '`CEPRAEA_CONTRACT`.gdoc. Arquivo 1EXWEC1ULPvUgtYCFKqrSJ4j4UBZi_bsHGgulie01T-s. Uso:
+      governança da operação de planilhas, sujeito a vocabulário obsoleto e decisões posteriores.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-003/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: GOVERNANCA_DE_PLANILHAS
+      scope:
+      - operacao_as_is
+      - disponibilidade_presenca
+      - ciclo_participacao
+      - integridade_de_fontes
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: historical
+    content_hash: 025bdc0b161d5868b7e96409f8ff993e34c87d809f53a3958cd900365866b788
+    status: active
+    immutable_reference: sha256:025bdc0b161d5868b7e96409f8ff993e34c87d809f53a3958cd900365866b788
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_operacional
+    - evidencia_de_integridade
+    prohibited_uses:
+    - aprovacao
+    - canonizacao
+  - source_id: SRC-004
+    title: CEPRAEA JUNHO 2026. Arquivo 14d3vIfkvhkTvjjTxkM7CxA9Oo1etHAgC2KUzGzzEn88
+    description: 'CEPRAEA JUNHO 2026. Arquivo 14d3vIfkvhkTvjjTxkM7CxA9Oo1etHAgC2KUzGzzEn88. Uso: interface,
+      entrada humana e evidência do AS-IS.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-004/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: PLANILHA_OPERACIONAL
+      scope:
+      - identidade_equipe
+      - operacao_as_is
+      - estado_operacional
+      - integridade_de_fontes
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: historical
+    content_hash: 2871c411e96433450dd64acc2224a510a0f437bc0265bdda89c335bee9e7411b
+    status: active
+    immutable_reference: sha256:2871c411e96433450dd64acc2224a510a0f437bc0265bdda89c335bee9e7411b
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_operacional
+    - evidencia_de_integridade
+    prohibited_uses:
+    - aprovacao
+    - canonizacao
+  - source_id: SRC-005
+    title: CEPRAEA DATABASE. Arquivo 10Dv1oBIKdodWEWsK8qUeLPyazzdg4hdRkVi4gjvVSno
+    description: 'CEPRAEA DATABASE. Arquivo 10Dv1oBIKdodWEWsK8qUeLPyazzdg4hdRkVi4gjvVSno. Uso: dados estruturados
+      por assunto, sujeito a divergências com decisão humana mais recente.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-005/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: BASE_OPERACIONAL
+      scope:
+      - operacao_as_is
+      - estado_operacional
+      - disponibilidade_presenca
+      - ciclo_participacao
+      - integridade_de_fontes
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: historical
+    content_hash: 8c1af00b6d9a601bebd588c42fb98dfbe6f8885e6cb3fa5a89bf262974e7449e
+    status: active
+    immutable_reference: sha256:8c1af00b6d9a601bebd588c42fb98dfbe6f8885e6cb3fa5a89bf262974e7449e
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_operacional
+    - evidencia_de_integridade
+    prohibited_uses:
+    - aprovacao
+    - canonizacao
+  - source_id: SRC-006
+    title: documentos oficiais específicos
+    description: 'documentos oficiais específicos. Uso: relação nominal, calendário, competição, partida
+      e resultado conforme o evento.'
+    source_type: document
+    location: unresolved:SRC-006
+    authority:
+      name: Emissor não verificado
+      role: FONTE_LEGADA
+      scope:
+      - escopo_nao_verificado
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-007
+    title: MODELAGEM_ATTENDANCE_CEPRAEA_v0.1. Arquivo 1pRR6xrw_XUEWi65I01w27Bex7b0LFZCq8hK5AxFR83U
+    description: 'MODELAGEM_ATTENDANCE_CEPRAEA_v0.1. Arquivo 1pRR6xrw_XUEWi65I01w27Bex7b0LFZCq8hK5AxFR83U.
+      Uso: proposta, não decisão aprovada.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-007/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: PROPOSTA_DOCUMENTAL
+      scope:
+      - estado_de_propostas
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: 61ce43e67aac8af9f16f543e7f56a245dfcf5a02ec56531dc60a1cfdfb78aed3
+    status: active
+    immutable_reference: sha256:61ce43e67aac8af9f16f543e7f56a245dfcf5a02ec56531dc60a1cfdfb78aed3
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_de_proposta
+    prohibited_uses:
+    - requisito_aprovado
+    - canonizacao
+  - source_id: SRC-008
+    title: Engenharia Documentação. Arquivo 1Hyl3peGP6ZDS4Wm6T8t7EKJChleGB_kePiSjcLJRkxI
+    description: 'Engenharia Documentação. Arquivo 1Hyl3peGP6ZDS4Wm6T8t7EKJChleGB_kePiSjcLJRkxI. Uso:
+      referência metodológica em estado de rascunho.'
+    source_type: document
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-008/capture.pdf
+    authority:
+      name: Davi Sermenho
+      role: REFERENCIA_METODOLOGICA
+      scope:
+      - estado_de_propostas
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: 645567a828f7ba40d64270d476b24bb524c2d26088ee8c834f9c6d7cea86e32d
+    status: active
+    immutable_reference: sha256:645567a828f7ba40d64270d476b24bb524c2d26088ee8c834f9c6d7cea86e32d
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_metodologica
+    prohibited_uses:
+    - requisito_aprovado
+    - canonizacao
+  - source_id: SRC-009
+    title: PROTOCOLO OPERACIONAL DE RISCOS DE IA. Arquivo 12cSXeFFZnm8-RN1W8ttrfzmRoSNCmyxz_UXKkAwGBsE
+    description: 'PROTOCOLO OPERACIONAL DE RISCOS DE IA. Arquivo 12cSXeFFZnm8-RN1W8ttrfzmRoSNCmyxz_UXKkAwGBsE.
+      Uso: controles e gates da elaboração.'
+    source_type: document
+    location: gdrive:12cSXeFFZnm8-RN1W8ttrfzmRoSNCmyxz_UXKkAwGBsE
+    authority:
+      name: Emissor não verificado
+      role: FONTE_LEGADA
+      scope:
+      - escopo_nao_verificado
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-010
+    title: conteúdos psicológicos e avaliações individuais
+    description: 'conteúdos psicológicos e avaliações individuais. Uso: restrito; excluídos do contexto
+      geral.'
+    source_type: document
+    location: unresolved:SRC-010
+    authority:
+      name: Emissor não verificado
+      role: FONTE_LEGADA
+      scope:
+      - escopo_nao_verificado
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-011
+    title: 'comprovante fornecido por Davi Sermenho. Arquivo 1LmrmK2NUCOfOd3UZRBhGhTa-rOfTj51C. Uso limitado:
+      confirmar a convergência entre o destinatário CEPRAEA e o CNPJ 19.993.964/0001-06. Dados pessoais
+      e financeiros são excluídos'
+    description: 'comprovante fornecido por Davi Sermenho. Arquivo 1LmrmK2NUCOfOd3UZRBhGhTa-rOfTj51C.
+      Uso limitado: confirmar a convergência entre o destinatário CEPRAEA e o CNPJ 19.993.964/0001-06.
+      Dados pessoais e financeiros são excluídos.'
+    source_type: document
+    location: gdrive:1LmrmK2NUCOfOd3UZRBhGhTa-rOfTj51C
+    authority:
+      name: Emissor não verificado
+      role: FONTE_LEGADA
+      scope:
+      - escopo_nao_verificado
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-012
+    title: 'comprovante fornecido por Davi Sermenho. Arquivo 1YAMDBILE0ibG0eBR4qDrBXAlHDKG0rIF. Uso limitado:
+      confirmar a razão social Centro de Prática de Esportes de Areia e o CNPJ 19.993.964/0001-06. Dados
+      pessoais e financeiros são excluídos'
+    description: 'comprovante fornecido por Davi Sermenho. Arquivo 1YAMDBILE0ibG0eBR4qDrBXAlHDKG0rIF.
+      Uso limitado: confirmar a razão social Centro de Prática de Esportes de Areia e o CNPJ 19.993.964/0001-06.
+      Dados pessoais e financeiros são excluídos.'
+    source_type: document
+    location: gdrive:1YAMDBILE0ibG0eBR4qDrBXAlHDKG0rIF
+    authority:
+      name: Emissor não verificado
+      role: FONTE_LEGADA
+      scope:
+      - escopo_nao_verificado
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-013
+    title: Mapa das OSC/IPEA, registro 891031
+    description: 'Mapa das OSC/IPEA, registro 891031. Uso: confirmar razão social, CNPJ, nome fantasia
+      CEPRAEA, natureza jurídica Associação Privada, situação ativa e área de atuação esportiva.'
+    source_type: official_record
+    location: unresolved:SRC-013
+    authority:
+      name: Mapa das OSC/IPEA
+      role: REGISTRO_PUBLICO
+      scope:
+      - identidade_cadastral
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-014
+    title: Confederação Brasileira de Handebol, cadastro de clube 1021
+    description: 'Confederação Brasileira de Handebol, cadastro de clube 1021. Uso: confirmar a identidade
+      esportiva institucional Centro de Prática de Esportes de Areia e registros oficiais de CEPRAEA em
+      competições de handebol de praia.'
+    source_type: official_record
+    location: unresolved:SRC-014
+    authority:
+      name: Confederação Brasileira de Handebol
+      role: REGISTRO_ESPORTIVO
+      scope:
+      - identidade_esportiva
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-015
+    title: Instagram público @cepraeabeachhand
+    description: 'Instagram público @cepraeabeachhand. Uso: identidade pública e marca esportiva; não
+      valida CNPJ, natureza jurídica nem requisitos do produto.'
+    source_type: document
+    location: unresolved:SRC-015
+    authority:
+      name: CEPRAEA no Instagram
+      role: PUBLICACAO_PUBLICA
+      scope:
+      - identidade_publica
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-016
+    title: página pública CEPRAEA no Facebook
+    description: 'página pública CEPRAEA no Facebook. Uso: identidade pública e marca esportiva; não valida
+      CNPJ, natureza jurídica nem requisitos do produto.'
+    source_type: document
+    location: unresolved:SRC-016
+    authority:
+      name: CEPRAEA no Facebook
+      role: PUBLICACAO_PUBLICA
+      scope:
+      - identidade_publica
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: null
+    status: unverified
+    immutable_reference: null
+    verified_at: null
+    verified_by: null
+    permitted_uses:
+    - provenance_candidate
+    prohibited_uses:
+    - use_as_verified_source_until_preserved
+  - source_id: SRC-017
+    title: documentação oficial do Cloudflare Pages
+    description: 'documentação oficial do Cloudflare Pages. Uso: hospedagem estática, plano gratuito,
+      limites e cabeçalhos; condições devem ser revalidadas antes da produção.'
+    source_type: official_record
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-017/capture.html
+    authority:
+      name: Cloudflare
+      role: DOCUMENTACAO_OFICIAL
+      scope:
+      - arquitetura_inicial
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: d79610cce02ef47240d38b2f4bd1616229f3679354a314fb468996eb44a6a433
+    status: active
+    immutable_reference: sha256:d79610cce02ef47240d38b2f4bd1616229f3679354a314fb468996eb44a6a433
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_tecnica
+    prohibited_uses:
+    - garantia_de_custo_futuro
+    - aprovacao_de_arquitetura
+  - source_id: SRC-018
+    title: documentação oficial do Supabase
+    description: 'documentação oficial do Supabase. Uso: planos e cotas, regiões, PostgreSQL, Auth, RLS,
+      MFA, backups, tamanho do banco e pausa de projetos; condições devem ser revalidadas antes da produção.'
+    source_type: official_record
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-018/capture.html
+    authority:
+      name: Supabase
+      role: DOCUMENTACAO_OFICIAL
+      scope:
+      - arquitetura_inicial
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: 51e187a1d34da52428d6de9c2e84c8891e7c9cdf934b76e011c9e95cb5bddc9b
+    status: active
+    immutable_reference: sha256:51e187a1d34da52428d6de9c2e84c8891e7c9cdf934b76e011c9e95cb5bddc9b
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_tecnica
+    prohibited_uses:
+    - garantia_de_custo_futuro
+    - aprovacao_de_arquitetura
+  - source_id: SRC-019
+    title: documentação oficial do Brevo
+    description: 'documentação oficial do Brevo. Uso: SMTP e condições do plano gratuito; condições devem
+      ser revalidadas antes da produção.'
+    source_type: official_record
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-019/capture.html
+    authority:
+      name: Brevo
+      role: DOCUMENTACAO_OFICIAL
+      scope:
+      - arquitetura_inicial
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: d0ada88d2be9ad7244b953df624bb723ebd2a91e73683f968024ebb07fa8da0b
+    status: active
+    immutable_reference: sha256:d0ada88d2be9ad7244b953df624bb723ebd2a91e73683f968024ebb07fa8da0b
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_tecnica
+    prohibited_uses:
+    - garantia_de_custo_futuro
+    - aprovacao_de_arquitetura
+  - source_id: SRC-020
+    title: documentação oficial do GitHub
+    description: 'documentação oficial do GitHub. Uso: repositório privado, GitHub Actions e controle
+      de gastos; condições devem ser revalidadas antes da produção.'
+    source_type: official_record
+    location: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar#sources/src-020/capture.html
+    authority:
+      name: GitHub
+      role: DOCUMENTACAO_OFICIAL
+      scope:
+      - arquitetura_inicial
+    captured_at: '2026-07-25T16:34:58.155518+00:00'
+    classification: supporting
+    content_hash: 3b2d241d1c507091aa3c78985d8b4b6456307d3016feecbbbbff0acc980a6f6a
+    status: active
+    immutable_reference: sha256:3b2d241d1c507091aa3c78985d8b4b6456307d3016feecbbbbff0acc980a6f6a
+    verified_at: '2026-07-25T18:00:00+00:00'
+    verified_by: AUTOMACAO
+    permitted_uses:
+    - proveniencia_tecnica
+    prohibited_uses:
+    - garantia_de_custo_futuro
+    - aprovacao_de_arquitetura
+  claims:
+  - claim_id: CLAIM-001
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-001
+    statement: CEPRAEA é equipe adulta feminina de handebol de praia.
+    legacy_state: '`CONFIRMADO_HUMANO` e `CONFIRMADO_FONTE`'
+    source_reference_text: SRC-001, SRC-002 e SRC-004
+    classification: fact
+    criticality: critical
+    subjects:
+    - identidade_equipe
+    source_ids:
+    - SRC-001
+    - SRC-002
+    - SRC-004
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-002
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-002
+    statement: a equipe possui apenas Davi e atletas.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - composicao_operacional
+    source_ids:
+    - SRC-001
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-003
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-003
+    statement: Davi é único responsável técnico e operacional interno.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - governanca_interna
+    source_ids:
+    - SRC-001
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-004
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-004
+    statement: a operação atual depende de interface, database, entradas humanas e documentos.
+    legacy_state: '`CONFIRMADO_FONTE`'
+    source_reference_text: SRC-003, SRC-004 e SRC-005
+    classification: fact
+    criticality: critical
+    subjects:
+    - operacao_as_is
+    source_ids:
+    - SRC-003
+    - SRC-004
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-005
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-005
+    statement: o problema central é incerteza operacional.
+    legacy_state: '`INFERENCIA_CONTROLADA` sustentada por problemas observados'
+    source_reference_text: SRC-002, SRC-003, SRC-004 e SRC-005
+    classification: inference
+    criticality: critical
+    subjects:
+    - incerteza_operacional
+    source_ids:
+    - SRC-002
+    - SRC-003
+    - SRC-004
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: controlled
+    uncertainty_reason: Inferência controlada declarada no documento legado.
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-006
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-006
+    statement: retorno de Gilvania está confirmado e o database não representa a decisão.
+    legacy_state: '`CONFIRMADO_HUMANO` mais `PROBLEMA_OBSERVADO`'
+    source_reference_text: '`SRC-001`, `SRC-004` e `SRC-005`'
+    classification: observation
+    criticality: critical
+    subjects:
+    - estado_operacional
+    source_ids:
+    - SRC-001
+    - SRC-004
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-007
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-007
+    statement: disponibilidade e presença são conceitos distintos.
+    legacy_state: '`CONFIRMADO_FONTE`'
+    source_reference_text: '`SRC-002`, `SRC-003` e `SRC-005`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - disponibilidade_presenca
+    source_ids:
+    - SRC-002
+    - SRC-003
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-008
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-008
+    statement: convocação, escalação e participação são distintas.
+    legacy_state: '`CONFIRMADO_FONTE`'
+    source_reference_text: SRC-002, SRC-003 e SRC-005
+    classification: fact
+    criticality: critical
+    subjects:
+    - ciclo_participacao
+    source_ids:
+    - SRC-002
+    - SRC-003
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-009
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-009
+    statement: decisões esportivas permanecem com Davi.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - governanca_interna
+    source_ids:
+    - SRC-001
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-010
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-010
+    statement: propostas técnicas existentes não são requisitos aprovados.
+    legacy_state: '`CONFIRMADO_POR_AUDITORIA`'
+    source_reference_text: '`SRC-007` e `SRC-008`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - estado_de_propostas
+    source_ids:
+    - SRC-007
+    - SRC-008
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-011
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-011
+    statement: permissões de edição por link afetam integridade das fontes centrais.
+    legacy_state: '`PROBLEMA_OBSERVADO`'
+    source_reference_text: SRC-003, SRC-004 e SRC-005
+    classification: observation
+    criticality: critical
+    subjects:
+    - integridade_de_fontes
+    source_ids:
+    - SRC-003
+    - SRC-004
+    - SRC-005
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-012
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-012
+    statement: identidade, escopo da primeira fase, restrições, objetivos, indicadores, metas iniciais,
+      condições de sucesso, custo zero, canal interno, modelo de respostas, governança de privacidade,
+      arquitetura inicial, capacidade, marcos, continuidade proporcional, partes interessadas essenciais,
+      protocolo de validação V0 a V3, piloto controlado e critérios de promoção documental estão aprovados.
+      Permanecem pendentes a execução da linha de base, dos testes, do piloto e das evidências dos portões
+      jurídico, técnico e humano, além da autorização expressa de promoção e das autorizações separadas
+      para dados reais, piloto e produção.
+    legacy_state: '`CONFIRMADO_HUMANO` e `CONFIRMADO_POR_AUDITORIA`'
+    source_reference_text: SRC-001, SRC-007, SRC-008 e decisões DEC-002 a DEC-018 individualizadas
+    classification: fact
+    criticality: critical
+    subjects:
+    - decisoes_aprovadas
+    source_ids:
+    - SRC-001
+    - SRC-007
+    - SRC-008
+    decision_ids:
+    - DEC-002
+    - DEC-003
+    - DEC-003-A
+    - DEC-003-B
+    - DEC-003-C
+    - DEC-003-D
+    - DEC-003-E
+    - DEC-004
+    - DEC-005
+    - DEC-006
+    - DEC-007
+    - DEC-008
+    - DEC-009
+    - DEC-010
+    - DEC-011
+    - DEC-012
+    - DEC-013
+    - DEC-014
+    - DEC-015
+    - DEC-016
+    - DEC-016-A
+    - DEC-017
+    - DEC-018
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-013
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-013
+    statement: CEPRAEA é o nome fantasia de Centro de Prática de Esportes de Areia, CNPJ 19.993.964/0001-06,
+      natureza jurídica Associação Privada e situação ativa.
+    legacy_state: '`CONFIRMADO_FONTE`'
+    source_reference_text: fontes públicas SRC-013 e imagens SRC-011 e SRC-012 não confirmadas
+    classification: fact
+    criticality: critical
+    subjects:
+    - identidade_cadastral
+    source_ids: []
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: unknown
+    uncertainty_reason: identidade cadastral não confirmada em registro público autoritativo acessível;
+      imagens pessoais não foram replicadas
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-014
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-014
+    statement: a CBHb identifica Centro de Prática de Esportes de Areia como clube e registra CEPRAEA
+      em competições oficiais de handebol de praia.
+    legacy_state: '`CONFIRMADO_FONTE`'
+    source_reference_text: SRC-014 não confirmada
+    classification: fact
+    criticality: critical
+    subjects:
+    - identidade_esportiva
+    source_ids: []
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: unknown
+    uncertainty_reason: registro esportivo exato não foi confirmado em fonte oficial acessível
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-015
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-015
+    statement: os perfis públicos usam as denominações CEPRAEA Beach Hand e Cepraea Beach Handball.
+    legacy_state: '`IDENTIDADE_PUBLICA`; não é prova cadastral nem definição do produto'
+    source_reference_text: SRC-015 e SRC-016 não confirmadas
+    classification: observation
+    criticality: critical
+    subjects:
+    - identidade_publica
+    source_ids: []
+    decision_ids: []
+    evidence_ids: []
+    uncertainty: unknown
+    uncertainty_reason: identidade oficial e conteúdo dos perfis sociais não foram confirmados de forma
+      imutável
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-016
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-016
+    statement: Davi é o usuário principal; atletas respondem somente por si, justificam opcionalmente,
+      consultam o próprio histórico e pedem correção sem apagar o original. Atletas autorizadas também
+      podem consultar a lista vigente de convocação e a lista de confirmadas para treino, sem acesso a
+      justificativas ou detalhes individuais restritos.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-003`, `DEC-013` e `DEC-014`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - perfis_e_acessos
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-003
+    - DEC-013
+    - DEC-014
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-017
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-017
+    statement: 'as doze capacidades atuais possuem tratamento aprovado: onze têm a finalidade preservada
+      com correção, substituição, expansão, apoio ou controle humano conforme o caso; o feedback individual
+      pertence ao produto como módulo de fase posterior.'
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-004` e `DEC-006`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - capacidades_do_produto
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-004
+    - DEC-006
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-018
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-018
+    statement: 'a primeira fase possui escopo funcional e dezesseis critérios de conclusão: oito capacidades
+      numeradas, fatos separados das declarações, respostas estruturadas, justificativa opcional, histórico,
+      proibição de rótulos automáticos, lista vigente de convocação, lista de confirmadas para treino,
+      ciclo de vigência e exposição mínima.'
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-005`, `DEC-013` e `DEC-014`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - escopo_fase_1
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-005
+    - DEC-013
+    - DEC-014
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-019
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-019
+    statement: scout, vídeo, finanças e publicação pública pertencem a sistemas separados; feedback individual
+      pertence ao CEPRAEA BEACH PRO como módulo de fase posterior condicionado a acesso e privacidade.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-006`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - fronteiras_de_escopo
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-006
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-020
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-020
+    statement: o ambiente operacional futuro será uma PWA responsiva e instalável, compatível com os dispositivos
+      e navegadores aprovados; escrita exige conexão, enquanto o modo offline da primeira fase é somente
+      leitura com indicação de desatualização e última sincronização.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-007`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - plataforma_cliente
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-007
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-021
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-021
+    statement: o produto exige contas individuais e identidade verificada; Davi administra acessos sem
+      acessar credenciais; perfis técnicos são mínimos e auditados; recuperação, desativação, MFA e proibição
+      de impersonação são obrigatórias; respostas, justificativas e correções preservam autoria e trilha
+      separada.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-008` e `DEC-013`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - identidade_e_acesso
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-008
+    - DEC-013
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-022
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-022
+    statement: a privacidade exige minimização, retenção, autoria e separação entre dados individuais
+      restritos e composição operacional compartilhável. Justificativas permanecem restritas à atleta
+      e a Davi; listas de convocação e treino exibem somente dados mínimos autorizados; dados reais não
+      entram em ferramentas de IA; nenhum sistema infere motivo, comprometimento, disciplina, confiabilidade
+      ou decisão esportiva final.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-009`, `DEC-013` e `DEC-014`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - privacidade_e_dados
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-009
+    - DEC-013
+    - DEC-014
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-023
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-023
+    statement: não há sincronização contínua com planilhas ou mensagens; migrações são controladas; toda
+      solicitação, resposta e justificativa obrigatória ocorre dentro da PWA; respostas históricas são
+      preservadas sem justificativa inventada ou reinterpretação; documentos externos mantêm autoridade
+      própria; futuras integrações exigem decisão, proveniência, segurança e tratamento de falhas.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-010`, `DEC-012` e `DEC-013`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - integracoes_e_migracao
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-010
+    - DEC-012
+    - DEC-013
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-024
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-024
+    statement: o produto deverá atender inicialmente 19 atletas e 1 treinador, centralizar todo o fluxo
+      operacional das atletas dentro da PWA, substituir WhatsApp, e-mail, planilhas, formulários e outros
+      aplicativos nesse fluxo, operar com custo incremental obrigatório R$ 0 e ser desenvolvido e mantido
+      por Davi com uso controlado de Claude Code e Codex no VS Code, sem uso das APIs da OpenAI ou da
+      Anthropic na aplicação. A PWA deverá funcionar sem esses agentes, que não poderão receber dados
+      reais, credenciais ou segredos.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-012`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - restricoes_operacionais
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-012
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-025
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-025
+    statement: a `DEC-012` reescrita foi aprovada integralmente e aditou as `DEC-005`, `DEC-010` e `DEC-011`,
+      tornando obrigatórios o canal operacional interno, a experiência integral das atletas na PWA, a
+      caixa individual, os estados de comunicação, o custo zero, o desenvolvimento solo e os limites dos
+      agentes de codificação.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-012`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - comunicacao_interna
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-012
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-026
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-026
+    statement: a `DEC-013` aprovou um modelo geral de solicitações, respostas, justificativas e fatos
+      posteriores; incerta, não e não respondida são distintas; justificativa é opcional e minimizada;
+      declarações e fatos não se confundem; o histórico é preservado; e o sistema não produz rótulos automáticos.
+      A `DEC-014` complementa o modelo com projeções operacionais mínimas para listas autorizadas.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001`, `DEC-013` e `DEC-014`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - modelo_de_respostas
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-013
+    - DEC-014
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-027
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-027
+    statement: a `DEC-014` aprovou governança mínima de privacidade, portão verificável para dados reais,
+      canal de direitos, inventário, bases legais por operação, avaliação de fornecedores, transferências,
+      segurança, incidentes e RIPD. Também autorizou atletas a ver listas vigentes de convocação e de
+      confirmadas para treino com dados mínimos, sem justificativas ou motivos pessoais; confirmação de
+      treino continua distinta de presença real.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-014`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - privacidade_e_dados
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-014
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-028
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-028
+    statement: 'a `DEC-015` aprovou a arquitetura inicial gratuita: PWA React/TypeScript/Vite no Cloudflare
+      Pages; Supabase/PostgreSQL/Auth/Data API/RLS em São Paulo, com homologação sintética separada; Brevo
+      SMTP somente para identidade; GitHub privado; MFA privilegiada; central interna de notificações;
+      offline somente leitura condicionado à criptografia; backups próprios criptografados, restauração
+      testada, cotas monitoradas e portabilidade. Dados reais permanecem bloqueados até os portões das
+      `DEC-014` e `DEC-015`.'
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: SRC-001, SRC-017, SRC-018, SRC-019, SRC-020 e DEC-015
+    classification: fact
+    criticality: critical
+    subjects:
+    - arquitetura_inicial
+    source_ids:
+    - SRC-001
+    - SRC-017
+    - SRC-018
+    - SRC-019
+    - SRC-020
+    decision_ids:
+    - DEC-015
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-029
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-029
+    statement: a `DEC-016`, aditada pela `DEC-016-A`, aprovou capacidade-base de 8 horas semanais, horizonte-base
+      de 24 semanas após D0, marcos M0 a M6, controle de mudanças, definição de concluído, piloto e corte,
+      reserva mínima de manutenção e classificação P0 a P3. A continuidade proporcional exige backup e
+      restauração documentados e testados, proteção das credenciais por Davi, contingência temporária
+      por WhatsApp e retorno manual controlado, sem custodiante, conta emergencial, acesso técnico de
+      terceiros previamente configurado, recuperação institucional programada ou teste sem Davi. O cronograma
+      não autoriza redução de segurança, privacidade, testes ou documentação e não constitui garantia
+      de lançamento.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-016`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - entrega_e_continuidade
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-016
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null
+  - claim_id: CLAIM-030
+    document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    document_version: '0.1'
+    document_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    location: docs/controlled/candidates/contexto-cepraea-beach-pro.md#claim-030
+    statement: a `DEC-017` aprovou somente Davi e atleta como perfis operacionais da primeira fase, com
+      RLS baseada nesses contextos. Ex-atletas exercem direitos sobre os próprios dados sem conta operacional;
+      fornecedores são infraestrutura; entidades esportivas externas são fontes ou destinos tratados por
+      Davi; e público, familiares, imprensa, patrocinadores, apoiadores e parceiros não acessam a PWA.
+      A decisão não cria RBAC adicional, contas técnicas, emergência, observador ou módulos externos.
+    legacy_state: '`CONFIRMADO_HUMANO`'
+    source_reference_text: '`SRC-001` e `DEC-017`'
+    classification: fact
+    criticality: critical
+    subjects:
+    - perfis_e_acessos
+    source_ids:
+    - SRC-001
+    decision_ids:
+    - DEC-017
+    evidence_ids: []
+    uncertainty: none
+    uncertainty_reason: null
+    status: candidate
+    verified_at: null
+    verified_by: null

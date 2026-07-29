@@ -1,0 +1,25 @@
+workflow_event:
+  event_id: EVT-INTEGRIDADE-RESTAURADA-001
+  workflow_id: WF-DOC-CEPRAEA
+  transition_id: T-DOC-012
+  document_id: DOC-VAL-REL-CONTEXTO-V01
+  version: "0.1"
+  content_hash: 2d37dd9ffa85e821a16012a1800c0a7e517fa4e8a47ee71339cec04025de4a6d
+  event_type: INTEGRIDADE_RESTAURADA
+  actor:
+    actor_id: Davi Sermenho
+    role: RESPONSAVEL_WORKFLOW
+  from_state: RASCUNHO
+  to_state: RASCUNHO
+  occurred_at: "2026-07-25T16:48:38+00:00"
+  gate_result_ids:
+    - GATE-RESULT-G-ARCH-POS-RESTAURACAO
+    - GATE-RESULT-G0-POS-RESTAURACAO
+    - GATE-RESULT-G1-POS-RESTAURACAO
+  evidence_ids:
+    - EVID-PACOTE-DIVERGENCIA-RELATORIO-VALIDACAO-V01
+    - DIV-INT-RELATORIO-VALIDACAO-V01
+    - AR-001
+  reason: >-
+    Restaurar os bytes exatos aprovados por G1 após preservação da variante
+    editorial divergente, sem alterar o manifesto original.

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/decisao.schema.json",
+  "title": "Decisão controlada",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "version",
+    "status",
+    "normative_text",
+    "authority",
+    "scope",
+    "effective_from",
+    "supersedes",
+    "amends",
+    "evidence_ids"
+  ],
+  "properties": {
+    "decision_id": {"type": "string", "pattern": "^DEC-[A-Z0-9-]+$"},
+    "version": {"type": "integer", "minimum": 1},
+    "status": {
+      "enum": ["proposed", "approved", "superseded", "rejected", "revoked"]
+    },
+    "normative_text": {"type": "string", "minLength": 1},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "role"],
+      "properties": {
+        "actor_id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1}
+      }
+    },
+    "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "effective_from": {"type": ["string", "null"], "format": "date-time"},
+    "supersedes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "amends": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  }
+}

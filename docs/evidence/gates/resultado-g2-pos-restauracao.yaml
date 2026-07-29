@@ -1,0 +1,20 @@
+gate_result:
+  gate_result_id: GATE-RESULT-G2-POS-RESTAURACAO
+  gate_id: G2
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1"
+  content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  status: fail
+  evaluated_at: "2026-07-25T16:50:37.030452+00:00"
+  evaluator: scripts/documentation/validate_documentation.py
+  evaluator_role: AUTOMACAO
+  evidence_ids:
+    - PROV-CEPRAEA-CONTEXTO-001
+    - EVT-INTEGRIDADE-RESTAURADA-001
+  failures:
+    - "A cobertura de proveniência crítica permanece em 3,33%, abaixo dos 100% exigidos."
+    - "As fontes referenciadas permanecem sem verificação e referência imutável."
+    - "CLAIM-001, CLAIM-008, CLAIM-011 e CLAIM-012 possuem referência textual ambígua."
+  next_actions:
+    - Preservar e verificar as fontes usadas pelos claims críticos.
+    - Resolver localizações e referências textuais ambíguas.

@@ -1,0 +1,33 @@
+approval:
+  approval_id: APR-DEC-019-MVP-SINTETICO-001
+  document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+  version: "0.1.1"
+  content_hash: 4296ce77feab2f23b76c452253163679ebdfd3b345241ec5a5b9ca29c5f9ff8a
+  purpose: aprovar o recorte e autorizar a implementação exclusivamente sintética do MVP
+  scope:
+    - recorte_mvp_sintetico
+    - classificacoes_goleira_defesa_ataque_especialista_indefinida
+    - coringa_como_papel_tatico
+    - estados_de_vinculo
+    - retorno_como_transicao_da_mesma_identidade
+    - adiamento_integral_do_offline
+    - implementacao_sintetica_m0_m4
+    - definicao_d0
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - não autoriza dados reais
+    - não autoriza migração real
+    - não autoriza V2
+    - não autoriza piloto
+    - não autoriza produção
+    - não autoriza M5/M6 operacionais
+  non_blocking_pending_items:
+    - decompor as unidades do MVP em backlog técnico durante M0
+    - escrever critérios de aceitação durante M0
+  approved_at: "2026-07-26T00:24:32-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-POS-RESTAURACAO
+    - GATE-RESULT-G0-POS-RESTAURACAO
+    - GATE-RESULT-G1-INGESTAO-LEGADO

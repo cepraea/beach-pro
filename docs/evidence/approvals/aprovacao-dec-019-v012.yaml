@@ -1,0 +1,28 @@
+approval:
+  approval_id: APR-DEC-019-V012-001
+  document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+  version: "0.1.2"
+  content_hash: e01b35a7c5ce6245cba3452df1bbd54e91df10af97b8fbcac1174bf488f765f6
+  purpose: >
+    Promover DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2 de EM_REVISAO para
+    CANONICA_VIGENTE, substituindo a versão v0.1.1 que passa a SUPERADA e é
+    arquivada em docs/archive/superseded/. A nova versão inclui front matter
+    governado e resolve o último erro G-FM pendente.
+  scope:
+    - promocao_de_v012_para_canonica_vigente
+    - arquivamento_de_v011_como_superada
+    - resolucao_do_ultimo_erro_g_fm
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_autoriza_piloto_ou_producao
+  non_blocking_pending_items: []
+  approved_at: "2026-07-28T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-DEC019-V012
+    - GATE-RESULT-G0-DEC019-V012
+    - GATE-RESULT-G1-DEC019-V012
+    - GATE-RESULT-G-FM-DEC019-V012

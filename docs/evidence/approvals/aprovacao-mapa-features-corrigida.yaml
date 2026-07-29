@@ -1,0 +1,35 @@
+approval:
+  approval_id: APR-DEC-MAPA-FEATURES-002
+  document_id: DOC-CEPRAEA-DEC-MAPA-FEATURES
+  version: "0.1.1"
+  content_hash: b2366998fc76a11633cb0ac80c2b7902db57e9938004f178f7b73810f9ca163c
+  purpose: >
+    Aprovação corretiva de DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1: substitui
+    APR-DEC-MAPA-FEATURES-001, que continha hash inconsistente com os bytes
+    canônicos atuais. Autoriza o mapa de seis features do MVP sintético e a
+    criação de feature specs com derivação rastreada ao DEC-019.
+  scope:
+    - correcao_de_hash_de_aprovacao
+    - mapa_seis_features_mvp
+    - expansao_tematica_ft_presencas_ft_treinadores
+    - ft_atletas_incluido_m2_mvp02
+    - ft_treinadores_incluido_m1_m4_mvp01_mvp09_mvp10
+    - ft_treinos_incluido_m2_mvp03_mvp04
+    - ft_presencas_incluido_m3_m4_mvp05_mvp06_mvp07
+    - ft_avaliacoes_incluido_m3_mvp08
+    - ft_jogos_adiado
+    - rfs_transversais_rf004_rf007_rf043_rf045
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  decision: approved
+  reservations:
+    - nao_autoriza_implementacao_de_produto
+    - nao_autoriza_dados_reais
+    - nao_autoriza_piloto_ou_producao
+  non_blocking_pending_items: []
+  approved_at: "2026-07-29T00:00:00-03:00"
+  evidence_ids:
+    - GATE-RESULT-G-ARCH-MAPA-FEATURES-V011
+    - GATE-RESULT-G0-MAPA-FEATURES-V011
+    - GATE-RESULT-G1-MAPA-FEATURES-V011
+    - GATE-RESULT-G-FM-MAPA-FEATURES-V011

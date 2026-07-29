@@ -1,0 +1,24 @@
+integrity_divergence:
+  divergence_id: DIV-INT-RELATORIO-VALIDACAO-V01
+  document_id: DOC-VAL-REL-CONTEXTO-V01
+  version: "0.1"
+  workflow_status: RASCUNHO
+  expected_hash: 2d37dd9ffa85e821a16012a1800c0a7e517fa4e8a47ee71339cec04025de4a6d
+  observed_hash: 0c919d7a3314cd6c4223c8036f086b0f56cb6a4aa197e851357aae9ebd666399
+  detected_at: "2026-07-25T16:37:04.803426+00:00"
+  detected_by: scripts/documentation/validate_documentation.py
+  materiality: editorial_non_semantic
+  criticality: blocking
+  status: resolved
+  difference: >-
+    O anchor do título no sumário mudou de #validação--DECISAO-CEPRAEA-base-controlada-de-conteúdo-v01
+    para #validação--decisao-cepraea-base-controlada-de-conteúdo-v01; nenhum outro byte textual divergiu.
+  evidence_ids:
+    - EVID-PACOTE-DIVERGENCIA-RELATORIO-VALIDACAO-V01
+  corrective_action_id: AR-001
+  resolution:
+    decision: restore_approved_snapshot
+    resolved_at: "2026-07-25T16:48:38+00:00"
+    resolved_by: Davi Sermenho
+    restored_hash: 2d37dd9ffa85e821a16012a1800c0a7e517fa4e8a47ee71339cec04025de4a6d
+    event_id: EVT-INTEGRIDADE-RESTAURADA-001

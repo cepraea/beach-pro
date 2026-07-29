@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/manifesto-integridade.schema.json",
+  "title": "Manifesto de integridade documental",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_id",
+    "batch_id",
+    "hash_algorithm",
+    "created_at",
+    "created_by",
+    "bundle",
+    "documents"
+  ],
+  "properties": {
+    "manifest_id": {"type": "string", "pattern": "^MANIFEST-[A-Z0-9-]+$"},
+    "batch_id": {"type": "string", "pattern": "^ING-[A-Z0-9-]+$"},
+    "hash_algorithm": {"const": "sha256"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "created_by": {"type": "string", "minLength": 1},
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "content_hash", "format", "deterministic"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^docs/evidence/integrity/[a-z0-9-]+\\.tar$"
+        },
+        "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "format": {"const": "tar"},
+        "deterministic": {"const": true}
+      }
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["document_id", "version", "path", "content_hash", "archive_member"],
+        "properties": {
+          "document_id": {"type": "string", "pattern": "^DOC-"},
+          "version": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "pattern": "^docs/"},
+          "content_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "archive_member": {"type": "string", "pattern": "^docs/"}
+        }
+      }
+    }
+  }
+}

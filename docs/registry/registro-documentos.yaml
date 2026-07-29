@@ -1,0 +1,2699 @@
+schema_version: "0.1.0"
+registry:
+  document_id: DOC-REG-REGISTRO-DOCUMENTOS
+  title: Registro mestre de documentos
+  version: "0.1.0"
+  status: RASCUNHO
+  created_at: "2026-07-25"
+  updated_at: "2026-07-26"
+  repository_root: "."
+  documentation_root: docs
+  hash_algorithm: sha256
+  architecture_policy: docs/governance/policies/politica-arquitetura-documental.md
+  canonical_documents:
+    - DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    - DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+    - DOC-CEPRAEA-DEC-MAPA-FEATURES
+    - DOC-CEPRAEA-DEC-MODELO-VERSOES
+    - DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM
+  notes:
+    - DOC-CEPRAEA-CANDIDATA-CONTEXTO foi publicado pelo perfil LEAN mediante aprovação explícita de Davi.
+    - DOC-CEPRAEA-DEC-019-MVP-SINTETICO foi aprovado e publicado pelo perfil LEAN, com D0 em 2026-07-26T00:24:32-03:00.
+    - A DEC-019 autoriza exclusivamente a implementação sintética de M0 a M4, iniciando por M0/M1.
+    - DOC-CEPRAEA-DEC-MAPA-FEATURES foi aprovado e publicado em 2026-07-28T11:00:00-03:00.
+    - Estados legados não foram convertidos automaticamente em workflow_status.
+    - O hash deste registro deve ser preservado por referência externa imutável.
+
+documents:
+  - document_id: DOC-REG-REGISTRO-DOCUMENTOS
+    title: Registro mestre de documentos
+    document_type: registro
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/registry/registro-documentos.yaml
+    target_path: docs/registry/registro-documentos.yaml
+    canonical_path: null
+    content_hash: null
+    self_hash_exempt: true
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [estado_documental, identidade, caminhos, hashes]
+      permitted_uses: [controle_operacional, validacao]
+      prohibited_uses: [autocanonizacao]
+    relationships: {}
+
+  - document_id: DOC-REG-ENTRADA-DOCUMENTACAO
+    title: Documentação do CEPRAEA BEACH PRO
+    document_type: inventario
+    version: "0.2.2"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/README.md
+    target_path: docs/README.md
+    canonical_path: null
+    content_hash: 4ed088772e3db7ec470be41b3fe1f0472638e0feff52fd9c42f8396cc49474e7
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [orientacao_do_acervo, regras_transitorias_para_ia]
+      permitted_uses: [entrada_documental, localizacao]
+      prohibited_uses: [substituicao_do_registro, canonizacao]
+    relationships:
+      points_to:
+        - DOC-REG-REGISTRO-DOCUMENTOS
+        - DOC-GOV-POL-ARQUITETURA
+        - DOC-GOV-WORKFLOW-PLANO
+        - DOC-VAL-REL-AUDITORIA-ACERVO
+
+  - document_id: DOC-CEPRAEA-FONTE-OPERACIONAL
+    title: Descrição operacional do CEPRAEA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: contexto
+    version: "0.1.1-ingestao"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: FONTE_HISTORICA_AS_IS
+    current_path: docs/sources/primary/contexto-operacional-cepraea.md
+    target_path: docs/sources/primary/contexto-operacional-cepraea.md
+    canonical_path: null
+    content_hash: 54edb95fbe2125da84970f7c46b7a146da4119d15aa47e4ec4270a608c3052ce
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [estado_historico, dominio, operacao_as_is]
+      permitted_uses: [fonte_historica, rastreabilidade]
+      prohibited_uses: [estado_atual_sem_revalidacao, autorizacao_de_implementacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/DESCRICAO-CEPRAEA.md]
+
+  - document_id: DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+    title: Conteúdo para documentação técnica da PWA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: politica
+    version: "0.1.1-ingestao"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: DIRETRIZ_METADOCUMENTAL
+    current_path: docs/sources/supporting/diretriz-conteudo-contexto-cepraea.md
+    target_path: docs/sources/supporting/diretriz-conteudo-contexto-cepraea.md
+    canonical_path: null
+    content_hash: 36c7a5b1ffc09a223e55aaabd4d1cf149ac0774469590366e6c52d04b0533ee2
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [estrutura_de_conteudo, interpretacao_documental]
+      permitted_uses: [orientacao_de_consolidacao]
+      prohibited_uses: [especificacao_tecnica, autorizacao_de_implementacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: ["docs/CONTEUDO DESC-CEPRAEA.md"]
+
+  - document_id: DOC-CEPRAEA-BASE-CONTEXTO
+    title: Base controlada de conteúdo do CEPRAEA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: contexto
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: RASCUNHO_CONTROLADO_V0_APROVADO
+    current_path: docs/controlled/bases/contexto-cepraea-beach-pro.md
+    target_path: docs/controlled/bases/contexto-cepraea-beach-pro.md
+    canonical_path: null
+    content_hash: 5dbf40c850237a071eab42340f5ca6ac38aaddca8a5d0d56a1c0eb351fb1cfba
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [contexto, decisoes, dominio, limites]
+      permitted_uses: [fonte_controlada, rastreabilidade]
+      prohibited_uses: [canonizacao_automatica, autorizacao_de_implementacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths:
+        - "docs/DESCRICAO-CEPRAEA — BASE CONTROLADA DE CONTEÚDO v0.1.md"
+      derived_from:
+        - DOC-CEPRAEA-FONTE-OPERACIONAL
+        - DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+
+  - document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    title: Versão candidata de contexto do CEPRAEA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: contexto
+    version: "0.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: SUPERADA
+    legacy_declared_status: VERSAO_CANDIDATA_PROMOVIDA
+    current_path: docs/archive/superseded/contexto-cepraea-beach-pro.md
+    target_path: docs/archive/superseded/contexto-cepraea-beach-pro.md
+    canonical_path: null
+    content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [contexto_promovido_legado, decisoes, dominio, limites]
+      permitted_uses: [contexto_para_ia, derivacao_controlada]
+      prohibited_uses:
+        - canonizacao_por_inferencia
+        - autorizacao_de_implementacao
+        - dados_reais
+        - piloto
+        - producao
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      lean_profile: [WF-DOC-CEPRAEA-0.2.0]
+      approval_id: [APR-CONTEXTO-CEPRAEA-LEAN-001]
+      transition_id: [T-DOC-003, T-DOC-004]
+      lean_review_checks:
+        - G-ARCH
+        - G0
+        - G1
+      previous_paths:
+        - "docs/DESCRICAO-CEPRAEA — VERSÃO CANDIDATA 0.1.md"
+      legacy_promoted_from: [DOC-CEPRAEA-BASE-CONTEXTO]
+      superseded_by: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+
+  - document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+    title: Versão candidata de contexto do CEPRAEA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T00:00:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: contexto
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: CANONICA_VIGENTE
+    legacy_declared_status: null
+    current_path: docs/canonical/context/contexto-cepraea-beach-pro.md
+    target_path: docs/canonical/context/contexto-cepraea-beach-pro.md
+    canonical_path: docs/canonical/context/contexto-cepraea-beach-pro.md
+    content_hash: 27a64560c3a131efe5e2af416e02433e89b5a504f42731521b21e59b06eb2d30
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [contexto_promovido_legado, decisoes, dominio, limites]
+      permitted_uses: [contexto_para_ia, derivacao_controlada]
+      prohibited_uses:
+        - canonizacao_por_inferencia
+        - autorizacao_de_implementacao
+        - dados_reais
+        - piloto
+        - producao
+    relationships:
+      revises: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      approval_id: [APR-CONTEXTO-CANDIDATA-V011-001, APR-CONTEXTO-CANDIDATA-V011-002]
+      transition_id: [T-DOC-001, T-DOC-003]
+
+  - document_id: DOC-CEPRAEA-CONTEXTO-TRABALHO-V02
+    title: Contexto do CEPRAEA BEACH PRO — versão de trabalho
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T17:40:00-03:00"
+    last_verified_at: "2026-07-26T00:18:01-03:00"
+    document_type: contexto
+    version: "0.2"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/controlled/candidates/contexto-produto-cepraea-beach-pro.md
+    target_path: docs/controlled/candidates/contexto-produto-cepraea-beach-pro.md
+    canonical_path: null
+    content_hash: b21f02d2ae409d08ca270268ae28eebaa49ba416db4ff5ae2facb77ea313c47c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [contexto_em_revisao, decisoes, dominio, limites, requisitos]
+      permitted_uses: [revisao_da_versao_0_2, analise_de_impacto]
+      prohibited_uses:
+        - uso_como_documento_vigente
+        - autorizacao_de_implementacao
+        - dados_reais
+        - piloto
+        - producao
+    relationships:
+      revises: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      source_version: ["0.1"]
+      source_hash:
+        - 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+      accumulated_changes:
+        - reclassificacao_de_corr_001_a_corr_007
+        - correcao_taxonomica_especialista_nao_coringa
+
+  - document_id: DOC-CEPRAEA-PROPOSTA-MVP-SINTETICO
+    title: Proposta de recorte do MVP sintético do CEPRAEA BEACH PRO
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T23:20:43-03:00"
+    last_verified_at: "2026-07-28T03:56:58-03:00"
+    document_type: decisao
+    version: "0.1.3"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/controlled/candidates/proposta-mvp-sintetico-cepraea.md
+    target_path: docs/controlled/candidates/proposta-mvp-sintetico-cepraea.md
+    canonical_path: null
+    content_hash: 490d092239f611ea6982955062dba2b18f4e53b9ddf1cfda790f01ff10e2231f
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [recorte_do_mvp, implementacao_sintetica, preparacao_da_decisao]
+      permitted_uses: [revisao, preparacao_da_dec_019]
+      prohibited_uses:
+        - autorizacao_por_inferencia
+        - dados_reais
+        - piloto
+        - producao
+    relationships:
+      derived_from: [DOC-VAL-REL-AUDITORIA-REQUISITOS-MVP]
+      scopes: [DOC-CEPRAEA-REQ-DERIVADOS-V01]
+      context: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      proposed_decision: [DEC-019]
+      previous_versions:
+        - version: "0.1.0"
+          content_hash: 5b2780f3543976204b3bbd18f6064adcd2ed37625e375aad959407bf60dc229e
+        - version: "0.1.1"
+          content_hash: cdb6b7fbd81b95037fc7c705351ea80e7ff932da56b11837741d7316a98958f2
+        - version: "0.1.2"
+          content_hash: c0f7ffb89606cb6ec5ed8f71283c991e7d602446fec5710bf46fc687e946e420
+
+  - document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+    title: DEC-019 — Recorte e autorização do MVP sintético
+    responsible: Davi Sermenho
+    registered_at: "2026-07-26T00:11:21-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: decisao
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: SUPERADA
+    legacy_declared_status: PROPOSTA_PARA_APROVACAO
+    current_path: docs/archive/superseded/decisao-019-mvp-sintetico.md
+    target_path: docs/archive/superseded/decisao-019-mvp-sintetico.md
+    canonical_path: null
+    content_hash: 4296ce77feab2f23b76c452253163679ebdfd3b345241ec5a5b9ca29c5f9ff8a
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - recorte_do_mvp
+        - decisoes_de_dominio
+        - implementacao_sintetica
+        - definicao_de_d0
+      permitted_uses:
+        - decisao_vigente
+        - implementacao_exclusivamente_sintetica_m0_m4
+        - inicio_por_m0_m1
+        - definicao_de_d0
+      prohibited_uses:
+        - aprovacao_por_inferencia
+        - dados_reais
+        - migracao_real
+        - v2
+        - piloto
+        - producao
+        - m5_m6_operacionais
+    relationships:
+      derived_from:
+        - DOC-CEPRAEA-PROPOSTA-MVP-SINTETICO
+        - DOC-VAL-REL-AUDITORIA-REQUISITOS-MVP
+      scopes: [DOC-CEPRAEA-REQ-DERIVADOS-V01]
+      context: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      decision_id: [DEC-019]
+      lean_profile: [WF-DOC-CEPRAEA-0.2.0]
+      approval_id: [APR-DEC-019-MVP-SINTETICO-001]
+      transition_id: [T-DOC-003, T-DOC-004]
+      published_from: [docs/controlled/candidates/decisao-019-mvp-sintetico.md]
+      d0: ["2026-07-26T00:24:32-03:00"]
+      implementation_scope: [M0, M1, M2, M3, M4]
+      implementation_start: [M0, M1]
+      data_profile: [SINTETICO_EXCLUSIVO]
+      superseded_by: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      previous_versions:
+        - version: "0.1.0"
+          content_hash: d7d73b31f0e5438a52e19ea3d053cfdb4a18de5e59c87519ae9bb7f55861bc01
+
+  - document_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
+    title: "DEC-019 — Recorte e autorização do MVP sintético"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T00:00:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: decisao
+    version: "0.1.2"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: CANONICA_VIGENTE
+    legacy_declared_status: null
+    current_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
+    target_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
+    canonical_path: docs/canonical/decisions/decisao-019-mvp-sintetico.md
+    content_hash: 447e1ee7c724482e6b26c3ffd9731858c441f627c1c2133ef41739cd6b4f27c6
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - recorte_do_mvp
+        - decisoes_de_dominio
+        - implementacao_sintetica
+        - definicao_de_d0
+      permitted_uses:
+        - decisao_vigente
+        - implementacao_exclusivamente_sintetica_m0_m4
+        - inicio_por_m0_m1
+        - definicao_de_d0
+      prohibited_uses:
+        - aprovacao_por_inferencia
+        - dados_reais
+        - migracao_real
+        - v2
+        - piloto
+        - producao
+        - m5_m6_operacionais
+    relationships:
+      revises: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      approval_id: [APR-DEC-019-V012-001, APR-DEC-019-V012-002]
+      transition_id: [T-DOC-001, T-DOC-003]
+      d0: ["2026-07-26T00:24:32-03:00"]
+      implementation_scope: [M0, M1, M2, M3, M4]
+      implementation_start: [M0, M1]
+      data_profile: [SINTETICO_EXCLUSIVO]
+
+  - document_id: DOC-GOV-PROT-QUALIDADE
+    title: Protocolo de qualidade para documentação de contexto
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: protocolo
+    version: "0.1.1-ingestao"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: PROTOCOLO_APLICADO
+    current_path: docs/governance/protocols/protocolo-qualidade-documental.md
+    target_path: docs/governance/protocols/protocolo-qualidade-documental.md
+    canonical_path: null
+    content_hash: d805962f589a8512e9bd9f1cfda8fae465b5585a8b193ef28836940cd91dbe68
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [criterios_de_qualidade, metodo_de_validacao]
+      permitted_uses: [validacao_documental]
+      prohibited_uses: [aprovacao_automatica]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/PROTOCOLO-QUALIDADE-DOC.md]
+
+  - document_id: DOC-VAL-REL-CONTEXTO-V01
+    title: Validação da base controlada de conteúdo
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: relatorio
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: APROVADO_PROMOCAO_CONCLUIDA
+    current_path: docs/validation/reports/relatorio-validacao-contexto-cepraea.md
+    target_path: docs/validation/reports/relatorio-validacao-contexto-cepraea.md
+    canonical_path: null
+    content_hash: 06dc546af3e2057785a1d20348ec685cb9a343aac3399134dbd9912ce37593e5
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_da_validacao_v0, acoes_corretivas]
+      permitted_uses: [evidencia_historica, rastreabilidade]
+      prohibited_uses: [canonizacao_automatica]
+    relationships:
+      integrity_restoration_event:
+        - EVT-INTEGRIDADE-RESTAURADA-001
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/VALIDACAO-CEPRAEA-v0.1.md]
+      evaluates: [DOC-CEPRAEA-BASE-CONTEXTO]
+      applies: [DOC-GOV-PROT-QUALIDADE]
+
+  - document_id: DOC-CEPRAEA-REQ-DERIVADOS-V01
+    title: Requisitos funcionais derivados do CEPRAEA
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-28T10:30:00-03:00"
+    document_type: requisito
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: DERIVADO_NAO_APROVADO
+    current_path: docs/derived/requirements/requisitos-funcionais-cepraea.md
+    target_path: docs/derived/requirements/requisitos-funcionais-cepraea.md
+    canonical_path: null
+    content_hash: e0418964b8c480ecc4c1a4080ddba35b781df1cca40b28af4858369b5701e35b
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [requisitos_funcionais_derivados]
+      permitted_uses: [insumo_para_validacao]
+      prohibited_uses: [especificacao_aprovada, autorizacao_de_implementacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/RF-CEPRAEA-v0.1.md]
+      derived_from: [DOC-CEPRAEA-BASE-CONTEXTO]
+
+  - document_id: DOC-VAL-REL-AUDITORIA-REQUISITOS-MVP
+    title: Auditoria prática dos requisitos para definição do MVP
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T21:50:57-03:00"
+    last_verified_at: "2026-07-26T00:18:01-03:00"
+    document_type: relatorio
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-auditoria-requisitos-mvp.md
+    target_path: docs/validation/reports/relatorio-auditoria-requisitos-mvp.md
+    canonical_path: null
+    content_hash: 6f335e3bea3b0502bd1e557afbb6ac3dd03348e7f0bff606ad27086f910deb9f
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [auditoria_de_requisitos, prontidao_do_mvp, pontos_decisorios]
+      permitted_uses: [revisao_do_catalogo, preparacao_da_decisao_de_mvp]
+      prohibited_uses:
+        - aprovacao_automatica_de_requisitos
+        - autorizacao_de_implementacao
+        - definicao_automatica_de_d0
+    relationships:
+      audits: [DOC-CEPRAEA-REQ-DERIVADOS-V01]
+      context: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      consults: [DOC-CEPRAEA-CONTEXTO-TRABALHO-V02]
+      previous_versions:
+        - version: "0.1.0"
+          content_hash: a9e2583c836ffa3d65a888eee6c1606ff90163e4bea3432f3792b4b1a30bf5f5
+
+  - document_id: DOC-REG-INVENTARIO-LEGADO
+    title: Inventário da documentação do CEPRAEA BEACH PRO
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-28T03:59:16-03:00"
+    document_type: inventario
+    version: "0.0.3"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: APROVADA
+    current_path: docs/inventario-documentos.md
+    target_path: docs/inventario-documentos.md
+    canonical_path: null
+    content_hash: fae7b694fce15fb038bee3b4b80132fbdafa029c8c8215c352f378ca2af02a39
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [inventario_analitico, orientacao_do_acervo]
+      permitted_uses: [localizacao, sintese]
+      prohibited_uses: [substituicao_das_fontes, canonizacao_automatica]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/INVENTARIO-DOCS.md]
+      previous_versions:
+        - version: "0.0.2"
+          content_hash: 0fe7f405bd909d0bffa3f9b5043f7533f36bda0185ba0e36aaa068615d43c5e2
+      catalogs:
+        - DOC-CEPRAEA-FONTE-OPERACIONAL
+        - DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+        - DOC-CEPRAEA-BASE-CONTEXTO
+        - DOC-CEPRAEA-CANDIDATA-CONTEXTO
+        - DOC-GOV-PROT-QUALIDADE
+        - DOC-VAL-REL-CONTEXTO-V01
+        - DOC-CEPRAEA-REQ-DERIVADOS-V01
+
+  - document_id: DOC-GOV-FLUXO-INICIAL
+    title: Fluxo de criação da documentação inicial
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-28T03:59:16-03:00"
+    document_type: fluxo
+    version: "0.1.1-ingestao"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: ANALISE_DOCUMENTAL
+    current_path: docs/governance/workflows/fluxo-documentacao-inicial.md
+    target_path: docs/governance/workflows/fluxo-documentacao-inicial.md
+    canonical_path: null
+    content_hash: 6a2c0347ab49f55934ed005f83428d8c05ba19a86f11f9c60e7baf5486fe1efa
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [relacao_documental, fluxo_historico]
+      permitted_uses: [orientacao, rastreabilidade]
+      prohibited_uses: [execucao_automatica, canonizacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/FLUXO-DOCS.md]
+      previous_versions:
+        - version: "0.1.0-ingestao"
+          content_hash: 9b8a1e7743fb42053702ca4172e6ab8dd4a7a4a8303f4bac7e4a83402e765167
+      analyzes:
+        - DOC-CEPRAEA-FONTE-OPERACIONAL
+        - DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+        - DOC-CEPRAEA-BASE-CONTEXTO
+        - DOC-CEPRAEA-CANDIDATA-CONTEXTO
+        - DOC-GOV-PROT-QUALIDADE
+        - DOC-VAL-REL-CONTEXTO-V01
+        - DOC-CEPRAEA-REQ-DERIVADOS-V01
+        - DOC-REG-INVENTARIO-LEGADO
+
+  - document_id: DOC-GOV-WORKFLOW-PLANO
+    title: Plano de operacionalização do workflow documental
+    responsible: Davi Sermenho
+    registered_at: "2026-07-25T05:30:00-03:00"
+    last_verified_at: "2026-07-25T05:30:00-03:00"
+    document_type: workflow
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/governance/workflows/workflow-operacionalizacao-documental.md
+    target_path: docs/governance/workflows/workflow-operacionalizacao-documental.md
+    canonical_path: null
+    content_hash: 4585bb54920ee1780fe6bee1794797d449fc5d75b6371506a771ec9fb293d3ef
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [plano_de_implementacao, done_canonico]
+      permitted_uses: [orientacao_de_implementacao]
+      prohibited_uses: [autocanonizacao]
+    relationships:
+      ingestion_event_id: [EVT-ING-LEGADO-001]
+      previous_paths: [docs/planofluxo.md]
+      derived_from: [DOC-GOV-FLUXO-INICIAL]
+
+  - document_id: DOC-GOV-POL-ARQUITETURA
+    title: Política de arquitetura e nomenclatura documental
+    document_type: politica
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/governance/policies/politica-arquitetura-documental.md
+    target_path: docs/governance/policies/politica-arquitetura-documental.md
+    canonical_path: null
+    content_hash: eab9e832edcc89d870acdd20a319ed3787910473156325c4f229ca6e26106938
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [arquitetura_documental, nomenclatura, migracao]
+      permitted_uses: [implementacao_controlada, validacao]
+      prohibited_uses: [canonizacao_automatica]
+    relationships:
+      derived_from: [DOC-GOV-WORKFLOW-PLANO]
+
+  - document_id: DOC-VAL-REL-AUDITORIA-ACERVO
+    title: Relatório inicial de auditoria do acervo documental
+    document_type: relatorio
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-auditoria-acervo.md
+    target_path: docs/validation/reports/relatorio-auditoria-acervo.md
+    canonical_path: null
+    content_hash: cffd3e7c631066f3eda6d3cb132f90dd7488adc5b3ff338923db6e51e30e9666
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [estado_inicial_do_acervo, nao_conformidades]
+      permitted_uses: [evidencia_de_auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      applies: [DOC-GOV-POL-ARQUITETURA]
+
+  - document_id: DOC-GOV-WF-DOCUMENTACAO
+    title: Workflow documental LEAN do CEPRAEA BEACH PRO
+    document_type: workflow
+    version: "0.2.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/governance/workflows/workflow-documentacao.md
+    target_path: docs/governance/workflows/workflow-documentacao.md
+    canonical_path: null
+    content_hash: e126821b861d44c3a284d59677a93f8e0ddcdb7ef10660f09d32e9cdb93c2701
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [maquina_de_estados, transicoes, gates]
+      permitted_uses: [execucao_controlada, orientacao]
+      prohibited_uses: [autocanonizacao]
+    relationships:
+      processable_definition: [DOC-REG-WF-DOCUMENTACAO]
+
+  - document_id: DOC-REG-WF-DOCUMENTACAO
+    title: Definição processável do workflow documental LEAN
+    document_type: registro
+    version: "0.2.3"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/registry/workflow-documentacao.yaml
+    target_path: docs/registry/workflow-documentacao.yaml
+    canonical_path: null
+    content_hash: b8761f48dc0a5fc45380f2070d3cc8381b1a778d970afc155519ee113eb4b7ad
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [estados, transicoes, contratos, gates, invariantes]
+      permitted_uses: [processamento, validacao]
+      prohibited_uses: [mudanca_de_estado_sem_evento]
+    relationships:
+      human_readable_definition: [DOC-GOV-WF-DOCUMENTACAO]
+
+  - document_id: DOC-CONTRATO-DOCUMENTO
+    title: Schema do contrato de documento
+    document_type: contrato
+    version: "0.2.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/documento.schema.json
+    target_path: docs/contracts/schemas/documento.schema.json
+    canonical_path: null
+    content_hash: 8b67b7e7179fcb84aa30328de99e21c9a21db1a87e0df918ef08a33aaeee5b63
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: &contract_scope
+      subjects: [estrutura_contratual]
+      permitted_uses: [validacao_automatica]
+      prohibited_uses: [aprovacao_de_conteudo]
+    relationships:
+      contract_id: [documento]
+
+  - document_id: DOC-CONTRATO-FONTE
+    title: Schema do contrato de fonte
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/fonte.schema.json
+    target_path: docs/contracts/schemas/fonte.schema.json
+    canonical_path: null
+    content_hash: c18a7bd91488e24723eeba26412ede14dd698556c19d128556caae65c8162d31
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [fonte]
+
+  - document_id: DOC-CONTRATO-ALEGACAO
+    title: Schema do contrato de alegação
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/alegacao.schema.json
+    target_path: docs/contracts/schemas/alegacao.schema.json
+    canonical_path: null
+    content_hash: 1a007c7ef38c513779a2d5a1f167c7f82d216b89998d270d9f8030c1076da942
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [alegacao]
+
+  - document_id: DOC-CONTRATO-DECISAO
+    title: Schema do contrato de decisão
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/decisao.schema.json
+    target_path: docs/contracts/schemas/decisao.schema.json
+    canonical_path: null
+    content_hash: eb159c7d306cffa476bce82f702e0721e1d5eb03f35f8d929f7e2b3a9fe830cf
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [decisao]
+
+  - document_id: DOC-CONTRATO-REQUISITO
+    title: Schema do contrato de requisito
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/requisito.schema.json
+    target_path: docs/contracts/schemas/requisito.schema.json
+    canonical_path: null
+    content_hash: dcaefab99f3c9a8c6eed0027d449870e73fb286cdb0b133f5a90054076786f28
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [requisito]
+
+  - document_id: DOC-CONTRATO-VALIDACAO
+    title: Schema do contrato de validação
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/validacao.schema.json
+    target_path: docs/contracts/schemas/validacao.schema.json
+    canonical_path: null
+    content_hash: cb73c40e41a666c6d7bc1902d019a69c9f6d2feaf2952248e5830c8399d7870b
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [validacao]
+
+  - document_id: DOC-CONTRATO-ACAO-CORRETIVA
+    title: Schema do contrato de ação corretiva
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/acao-corretiva.schema.json
+    target_path: docs/contracts/schemas/acao-corretiva.schema.json
+    canonical_path: null
+    content_hash: a8009e3a59b340d9beb3a38ba0966e13636d67f7af65815136f9e1552fddd8f0
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [acao_corretiva]
+
+  - document_id: DOC-CONTRATO-APROVACAO
+    title: Schema do contrato de aprovação
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/aprovacao.schema.json
+    target_path: docs/contracts/schemas/aprovacao.schema.json
+    canonical_path: null
+    content_hash: 8de1c6e26d4c627062f0f77c451206394416ccb27ef7d3ee8cbc6f7b9d6b62d3
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [aprovacao]
+
+  - document_id: DOC-CONTRATO-PROMOCAO
+    title: Schema do contrato de promoção
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/promocao.schema.json
+    target_path: docs/contracts/schemas/promocao.schema.json
+    canonical_path: null
+    content_hash: 47c87277f4137477c2b37f12e100b0a5b4e8f08edfea4cf84559bab6f21defb9
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [promocao]
+
+  - document_id: DOC-CONTRATO-EVIDENCIA
+    title: Schema do contrato de evidência
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/evidencia.schema.json
+    target_path: docs/contracts/schemas/evidencia.schema.json
+    canonical_path: null
+    content_hash: aaa1b69f2d0db0bea9d399f2175d03ccaad6f66598125f2320471859c5f7f947
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [evidencia]
+
+  - document_id: DOC-CONTRATO-REGISTRO-CANONICO
+    title: Schema do contrato de registro canônico
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/registro-canonico.schema.json
+    target_path: docs/contracts/schemas/registro-canonico.schema.json
+    canonical_path: null
+    content_hash: 58016ecb9596868ac4a1fd88e5a65d4f487c1a1fe105c257f71dd203250d69f8
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [registro_canonico]
+
+  - document_id: DOC-CONTRATO-EVENTO-WORKFLOW
+    title: Schema do contrato de evento de workflow
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/evento-workflow.schema.json
+    target_path: docs/contracts/schemas/evento-workflow.schema.json
+    canonical_path: null
+    content_hash: 8ae3e170d95e54d0915e5c34c4dbf48d72e6d81e22b6fa00fbf024ce823aa538
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [evento_workflow]
+
+  - document_id: DOC-CONTRATO-RESULTADO-GATE
+    title: Schema do contrato de resultado de gate
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/resultado-gate.schema.json
+    target_path: docs/contracts/schemas/resultado-gate.schema.json
+    canonical_path: null
+    content_hash: 4b995debdf20b6ce93345a0f158c77a63aaaf7d807ba3a1540e82d3a2c3ad21a
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [resultado_gate]
+
+  - document_id: DOC-CONTRATO-WORKFLOW
+    title: Schema da máquina de estados documental
+    document_type: contrato
+    version: "0.2.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/workflow.schema.json
+    target_path: docs/contracts/schemas/workflow.schema.json
+    canonical_path: null
+    content_hash: 6d6c1d05017e8e26e38e8cdcc7004a81d230a24610ee4f744648d99271180830
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [workflow]
+
+  - document_id: DOC-CONTRATO-MANIFESTO-INTEGRIDADE
+    title: Schema do contrato de manifesto de integridade
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/manifesto-integridade.schema.json
+    target_path: docs/contracts/schemas/manifesto-integridade.schema.json
+    canonical_path: null
+    content_hash: 0ab2d0d4221bb411825547bb08d26803169433a0692efd48327135afcf8b7bbb
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [manifesto_integridade]
+
+  - document_id: DOC-CONTRATO-INGESTAO
+    title: Schema do contrato de ingestão documental
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/ingestao.schema.json
+    target_path: docs/contracts/schemas/ingestao.schema.json
+    canonical_path: null
+    content_hash: 31566cf4a236fa943c40f527be4dc417a33e2ea5c314f611d3aadfb50a60e07e
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [ingestao]
+
+  - document_id: DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO
+    title: Manifesto de integridade do lote documental legado
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/integrity/manifesto-integridade-legado.yaml
+    target_path: docs/evidence/integrity/manifesto-integridade-legado.yaml
+    canonical_path: null
+    content_hash: 256e623fb7839822b2d659d1fdfd2a82617525c558fb86d13da3798f27c633fc
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [integridade_documental, hashes, lote_legado]
+      permitted_uses: [evidencia_de_gate, auditoria, verificacao_de_integridade]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      validates:
+        - DOC-CEPRAEA-FONTE-OPERACIONAL
+        - DOC-CEPRAEA-DIRETRIZ-CONTEXTO
+        - DOC-CEPRAEA-BASE-CONTEXTO
+        - DOC-CEPRAEA-CANDIDATA-CONTEXTO
+        - DOC-GOV-PROT-QUALIDADE
+        - DOC-VAL-REL-CONTEXTO-V01
+        - DOC-CEPRAEA-REQ-DERIVADOS-V01
+        - DOC-REG-INVENTARIO-LEGADO
+        - DOC-GOV-FLUXO-INICIAL
+        - DOC-GOV-WORKFLOW-PLANO
+
+  - document_id: DOC-EVID-PACOTE-INTEGRIDADE-LEGADO
+    title: Pacote preservado do lote documental legado
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/integrity/pacote-integridade-legado.tar
+    target_path: docs/evidence/integrity/pacote-integridade-legado.tar
+    canonical_path: null
+    content_hash: 7b0d9effe3da654af63638f8850841332605f9c535a8a7181ac021b5be284cf6
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [preservacao_documental, bytes_de_origem, lote_legado]
+      permitted_uses: [recuperacao, auditoria, verificacao_de_integridade]
+      prohibited_uses: [edicao, aprovacao_de_conteudo, canonizacao]
+    relationships:
+      described_by: [DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO]
+
+  - document_id: DOC-EVID-GATE-ARCH-INICIAL
+    title: Resultado inicial do gate de arquitetura
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-inicial.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-inicial.yaml
+    canonical_path: null
+    content_hash: 3281ac58997efc47290b44845e66a3faaba87db3f2cc2f69dc3a1d64ead3f5aa
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g_arch, bloqueio_de_migracao]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-GOV-POL-ARQUITETURA]
+
+  - document_id: DOC-EVID-GATE-ARCH-POS-MIGRACAO
+    title: Resultado do gate de arquitetura após migração
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-pos-migracao.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-pos-migracao.yaml
+    canonical_path: null
+    content_hash: 170cc6cee8ee9475c1537511638256cf43c6903c7ea69a9bc9403a563c18b9d2
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g_arch, conformidade_pos_migracao]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates:
+        - DOC-GOV-POL-ARQUITETURA
+        - DOC-VAL-REL-MIGRACAO-ARQUITETURA
+
+  - document_id: DOC-VAL-REL-MIGRACAO-ARQUITETURA
+    title: Relatório da migração controlada do acervo legado
+    document_type: relatorio
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-migracao-arquitetura.md
+    target_path: docs/validation/reports/relatorio-migracao-arquitetura.md
+    canonical_path: null
+    content_hash: 8a6bc091ef1c5fe946f6e472ed902175651e5d70891a6572b1d9dc54008e4753
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [migracao_documental, mapa_de_caminhos, resultado_g_arch]
+      permitted_uses: [evidencia_de_migracao, auditoria]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      evidence_ids: [EVID-MIGRACAO-ARQUITETURA-INICIAL]
+      gate_results:
+        - DOC-EVID-GATE-ARCH-INICIAL
+        - DOC-EVID-GATE-ARCH-POS-MIGRACAO
+
+  - document_id: DOC-EVID-GATE-G0-INGESTAO-LEGADO
+    title: Resultado de G0 para ingestão do lote legado
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-ingestao-legado.yaml
+    target_path: docs/evidence/gates/resultado-g0-ingestao-legado.yaml
+    canonical_path: null
+    content_hash: cbc052c985d181b4f257d36625aa1509485957a86fa6f08a4c9813f0a9bd9585
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [identidade_documental, resultado_g0, lote_legado]
+      permitted_uses: [evidencia_de_gate, autorizacao_de_ingestao, auditoria]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      validates: [DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO]
+
+  - document_id: DOC-EVID-GATE-G1-INGESTAO-LEGADO
+    title: Resultado de G1 para ingestão do lote legado
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-ingestao-legado.yaml
+    target_path: docs/evidence/gates/resultado-g1-ingestao-legado.yaml
+    canonical_path: null
+    content_hash: 9189d21aa5a8f0697ab4e43bcc71b4ee2e6ebd40221c9796307277e770dbe3b0
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [integridade_documental, resultado_g1, lote_legado]
+      permitted_uses: [evidencia_de_gate, autorizacao_de_ingestao, auditoria]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      validates:
+        - DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO
+        - DOC-EVID-PACOTE-INTEGRIDADE-LEGADO
+
+  - document_id: DOC-EVID-INGESTAO-LEGADO-INICIAL
+    title: Evento formal de ingestão do lote documental legado
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/ingestion/ingestao-legado-inicial.yaml
+    target_path: docs/evidence/ingestion/ingestao-legado-inicial.yaml
+    canonical_path: null
+    content_hash: d03b79388b4835141e891a849872c31a73725dde96172624e7bc8be7d6e5fbae
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [evento_de_ingestao, inicializacao_do_workflow, lote_legado]
+      permitted_uses: [prova_de_transicao, processamento, auditoria]
+      prohibited_uses: [promocao_alem_de_rascunho, canonizacao]
+    relationships:
+      gate_results:
+        - DOC-EVID-GATE-ARCH-POS-MIGRACAO
+        - DOC-EVID-GATE-G0-INGESTAO-LEGADO
+        - DOC-EVID-GATE-G1-INGESTAO-LEGADO
+      manifest: [DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO]
+
+  - document_id: DOC-VAL-REL-INGESTAO-LEGADO
+    title: Relatório de ingestão do lote documental legado
+    document_type: relatorio
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-ingestao-legado.md
+    target_path: docs/validation/reports/relatorio-ingestao-legado.md
+    canonical_path: null
+    content_hash: aabe417e77f9ee35030d7fd9626498f57f6a011317125d978c4b9dd878ae106d
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [ingestao_documental, resultados_g0_g1, estado_do_lote]
+      permitted_uses: [evidencia_de_ingestao, auditoria, orientacao]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      reports: [DOC-EVID-INGESTAO-LEGADO-INICIAL]
+
+  - document_id: DOC-CONTRATO-PROVENIENCIA
+    title: Schema do pacote de proveniência documental
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/proveniencia.schema.json
+    target_path: docs/contracts/schemas/proveniencia.schema.json
+    canonical_path: null
+    content_hash: 1b287aaf463bd2123b5ddb598cd8a17c4336527bde9ad3c0e2df4d961236352c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [proveniencia]
+
+  - document_id: DOC-EVID-PROVENIENCIA-CONTEXTO
+    title: Pacote inicial de proveniência do contexto CEPRAEA
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/provenance/proveniencia-contexto-cepraea.yaml
+    target_path: docs/evidence/provenance/proveniencia-contexto-cepraea.yaml
+    canonical_path: null
+    content_hash: 20c4f532a97b098bb45dbaf616bce15e29c10362b33b53733200aa3a873d5d47
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [fontes, claims, proveniencia, contexto_cepraea]
+      permitted_uses: [avaliacao_g2, remediacao_de_fontes, auditoria]
+      prohibited_uses: [declaracao_de_fontes_verificadas, aprovacao, canonizacao]
+    relationships:
+      describes: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      contract: [DOC-CONTRATO-PROVENIENCIA]
+
+  - document_id: DOC-EVID-PACOTE-FONTES-CONTEXTO
+    title: Pacote preservado de fontes do contexto CEPRAEA
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar
+    target_path: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar
+    canonical_path: null
+    content_hash: 3f49cde024244a630cf0e4e335348d26252cf7550ec586e0e78d4ff609ecfc21
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [capturas_de_fontes, hashes, referencias_imutaveis]
+      permitted_uses: [avaliacao_g2, auditoria, reproducao_controlada]
+      prohibited_uses: [edicao_in_place, aprovacao, canonizacao]
+    relationships:
+      supports: [DOC-EVID-PROVENIENCIA-CONTEXTO]
+
+  - document_id: DOC-EVID-VERIFICACOES-FONTES-CONTEXTO
+    title: Verificações controladas das fontes do contexto CEPRAEA
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/verifications/verificacoes-fontes-contexto-cepraea.yaml
+    target_path: docs/evidence/verifications/verificacoes-fontes-contexto-cepraea.yaml
+    canonical_path: null
+    content_hash: e0b43571a758be2e7023723b30468189d5a57a9c0f705bab69a8141511af0f58
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [verificacao_de_fontes, escopo_de_autoridade, incerteza]
+      permitted_uses: [regeneracao_de_proveniencia, avaliacao_g2, auditoria]
+      prohibited_uses: [aprovacao_de_conteudo, canonizacao]
+    relationships:
+      configures: [DOC-EVID-PROVENIENCIA-CONTEXTO]
+      preserves: [DOC-EVID-PACOTE-FONTES-CONTEXTO]
+
+  - document_id: DOC-EVID-GATE-G2-PROVENIENCIA-INICIAL
+    title: Resultado inicial de G2 para proveniência do contexto
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g2-proveniencia-inicial.yaml
+    target_path: docs/evidence/gates/resultado-g2-proveniencia-inicial.yaml
+    canonical_path: null
+    content_hash: 8d6507647be10ab2a7d9e693c8a0c8073334e5d7550ab6b1c7840e781662ec51
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g2, proveniencia, cobertura_de_claims]
+      permitted_uses: [evidencia_de_gate, remediacao, auditoria]
+      prohibited_uses: [promocao, aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-PROVENIENCIA-CONTEXTO]
+
+  - document_id: DOC-VAL-REL-G2-PROVENIENCIA-INICIAL
+    title: Relatório inicial de G2 — Proveniência
+    document_type: relatorio
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-g2-proveniencia-inicial.md
+    target_path: docs/validation/reports/relatorio-g2-proveniencia-inicial.md
+    canonical_path: null
+    content_hash: 75fc1092db9e6b35afe81c162bc5543d89c8ec14445d9bbdfbc001e44ed412fa
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [implementacao_g2, bloqueios_de_proveniencia]
+      permitted_uses: [orientacao_de_remediacao, auditoria]
+      prohibited_uses: [declaracao_de_pass, promocao, canonizacao]
+    relationships:
+      reports: [DOC-EVID-GATE-G2-PROVENIENCIA-INICIAL]
+
+  - document_id: DOC-CONTRATO-DIVERGENCIA-INTEGRIDADE
+    title: Schema de divergência de integridade documental
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/divergencia-integridade.schema.json
+    target_path: docs/contracts/schemas/divergencia-integridade.schema.json
+    canonical_path: null
+    content_hash: d7fbbdbee6744639cf7b9f03faefedf9e65abca452eb6aa2d4fdd3cee11b0dd3
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [divergencia_integridade]
+
+  - document_id: DOC-EVID-PACOTE-DIVERGENCIA-RELATORIO-V01
+    title: Pacote das variantes do relatório de validação v0.1
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/integrity/pacote-divergencia-relatorio-validacao-v01.tar
+    target_path: docs/evidence/integrity/pacote-divergencia-relatorio-validacao-v01.tar
+    canonical_path: null
+    content_hash: 6dcfdc0f295e40e77fdd82be3b4dce4b47f6c04d43ef9fe553b140b375da97ec
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [snapshot_aprovado, variante_divergente, cadeia_de_custodia]
+      permitted_uses: [restauracao, auditoria, comprovacao_da_divergencia]
+      prohibited_uses: [edicao, aprovacao, canonizacao]
+    relationships:
+      preserves: [DOC-VAL-REL-CONTEXTO-V01]
+
+  - document_id: DOC-EVID-DIVERGENCIA-RELATORIO-V01
+    title: Divergência de integridade do relatório de validação v0.1
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/integrity/divergencia-relatorio-validacao-contexto-v01.yaml
+    target_path: docs/evidence/integrity/divergencia-relatorio-validacao-contexto-v01.yaml
+    canonical_path: null
+    content_hash: 1330ee096c6005a2a52ec1e9292b1f320ac688a52b2c6e532f5f830f0cfcdfc4
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [divergencia_de_hash, materialidade, resolucao]
+      permitted_uses: [controle_de_incidente, auditoria]
+      prohibited_uses: [alteracao_do_manifesto_original, promocao]
+    relationships:
+      affects: [DOC-VAL-REL-CONTEXTO-V01]
+      evidence: [DOC-EVID-PACOTE-DIVERGENCIA-RELATORIO-V01]
+
+  - document_id: DOC-EVID-ACAO-CORRETIVA-INTEGRIDADE-V01
+    title: Ação corretiva da divergência do relatório de validação
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/corrections/acao-corretiva-integridade-relatorio-validacao-v01.yaml
+    target_path: docs/evidence/corrections/acao-corretiva-integridade-relatorio-validacao-v01.yaml
+    canonical_path: null
+    content_hash: c5b85849e8ed6220a73031270b8dfa6e964b4140c05c803f1b92797d1c08a007
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [acao_corretiva, restauracao_de_integridade]
+      permitted_uses: [execucao_de_restauracao, auditoria]
+      prohibited_uses: [promocao, canonizacao]
+    relationships:
+      corrects: [DOC-EVID-DIVERGENCIA-RELATORIO-V01]
+
+  - document_id: DOC-EVID-GATE-ARCH-POS-RESTAURACAO
+    title: Resultado de G-ARCH após restauração de integridade
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-pos-restauracao.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-pos-restauracao.yaml
+    canonical_path: null
+    content_hash: 317ab6adf9ecf504f6c74c1e2f0745cfb34296dcc6e12b9f57db2840e26fcc72
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: &restoration_gate_scope
+      subjects: [resultado_de_gate, restauracao_de_integridade]
+      permitted_uses: [evidencia_de_restauracao, auditoria]
+      prohibited_uses: [promocao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-DIVERGENCIA-RELATORIO-V01]
+
+  - document_id: DOC-EVID-GATE-G0-POS-RESTAURACAO
+    title: Resultado de G0 após restauração de integridade
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-pos-restauracao.yaml
+    target_path: docs/evidence/gates/resultado-g0-pos-restauracao.yaml
+    canonical_path: null
+    content_hash: 6ab6b7d4cd05e416957fd1ecf60bf349b61ecf7ce6f3887c519beae001d5e835
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *restoration_gate_scope
+    relationships:
+      validates: [DOC-EVID-DIVERGENCIA-RELATORIO-V01]
+
+  - document_id: DOC-EVID-GATE-G1-POS-RESTAURACAO
+    title: Resultado de G1 após restauração de integridade
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-pos-restauracao.yaml
+    target_path: docs/evidence/gates/resultado-g1-pos-restauracao.yaml
+    canonical_path: null
+    content_hash: 7bc4256706a5f6494f4bce109cab02d9e40a0d062c7984b09a0a5c595c34e093
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *restoration_gate_scope
+    relationships:
+      validates:
+        - DOC-EVID-DIVERGENCIA-RELATORIO-V01
+        - DOC-EVID-MANIFESTO-INTEGRIDADE-LEGADO
+
+  - document_id: DOC-EVID-EVENTO-INTEGRIDADE-RESTAURADA-V01
+    title: Evento de integridade restaurada do relatório de validação
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/events/evento-integridade-restaurada-relatorio-validacao-v01.yaml
+    target_path: docs/evidence/events/evento-integridade-restaurada-relatorio-validacao-v01.yaml
+    canonical_path: null
+    content_hash: afd16012153fe569d8206e829ff1048b436bd14a9876f4d08876f97483503c50
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [evento_de_workflow, restauracao_de_integridade]
+      permitted_uses: [prova_de_transicao, auditoria]
+      prohibited_uses: [promocao, canonizacao]
+    relationships:
+      transition: [T-DOC-012]
+      resolves: [DOC-EVID-DIVERGENCIA-RELATORIO-V01]
+
+  - document_id: DOC-EVID-GATE-G2-POS-RESTAURACAO
+    title: Resultado de G2 após restauração de integridade
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g2-pos-restauracao.yaml
+    target_path: docs/evidence/gates/resultado-g2-pos-restauracao.yaml
+    canonical_path: null
+    content_hash: f3bd3169c54e45c76c8d38974c61e3ee28603157e7ec3dcdb32d79050429eb53
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g2, proveniencia_pos_restauracao]
+      permitted_uses: [remediacao_de_proveniencia, auditoria]
+      prohibited_uses: [promocao, aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-PROVENIENCIA-CONTEXTO]
+      follows:
+        - DOC-EVID-GATE-G2-PROVENIENCIA-INICIAL
+        - DOC-EVID-EVENTO-INTEGRIDADE-RESTAURADA-V01
+
+  - document_id: DOC-EVID-GATE-G2-PROVENIENCIA-APROVADA
+    title: Resultado aprovado de G2 — Proveniência
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g2-proveniencia-aprovada.yaml
+    target_path: docs/evidence/gates/resultado-g2-proveniencia-aprovada.yaml
+    canonical_path: null
+    content_hash: 6d1c72a80d6432d2c4825ac0d27920905fed721c09d69826ae02e1faf581d6de
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g2, proveniencia, escopo_de_autoridade]
+      permitted_uses: [evidencia_de_gate, transicao_para_g3, auditoria]
+      prohibited_uses: [promocao_automatica, aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-PROVENIENCIA-CONTEXTO]
+      supported_by:
+        - DOC-EVID-PACOTE-FONTES-CONTEXTO
+        - DOC-EVID-VERIFICACOES-FONTES-CONTEXTO
+
+  - document_id: DOC-VAL-REL-G2-PROVENIENCIA-APROVADA
+    title: Relatório de G2 — Proveniência aprovada
+    document_type: relatorio
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/validation/reports/relatorio-g2-proveniencia-aprovada.md
+    target_path: docs/validation/reports/relatorio-g2-proveniencia-aprovada.md
+    canonical_path: null
+    content_hash: e1e30581c1accf1765573b654e4770f534ad5ec9e861ed4ef6f19840e77df551
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [implementacao_g2, cobertura_de_proveniencia, incerteza]
+      permitted_uses: [orientacao_para_g3, auditoria]
+      prohibited_uses: [promocao_automatica, aprovacao, canonizacao]
+    relationships:
+      reports: [DOC-EVID-GATE-G2-PROVENIENCIA-APROVADA]
+
+  - document_id: DOC-EVID-APROVACAO-CONTEXTO-LEAN
+    title: Aprovação LEAN do documento-base de contexto
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-contexto-cepraea-beach-pro.yaml
+    target_path: docs/evidence/approvals/aprovacao-contexto-cepraea-beach-pro.yaml
+    canonical_path: null
+    content_hash: 46f65cc1d6f78b20626f9b0c6d3df4346d7108c9fb9d70dd3e8c3edb10260658
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, contexto_documental_cepraea]
+      permitted_uses: [comprovacao_da_aprovacao_lean, auditoria]
+      prohibited_uses: [autorizacao_de_implementacao, dados_reais, piloto, producao]
+    relationships:
+      approves: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      transition: [T-DOC-003]
+
+  - document_id: DOC-EVID-APROVACAO-DEC-019-MVP-SINTETICO
+    title: Aprovação da DEC-019 e autorização do MVP sintético
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-dec-019-mvp-sintetico.yaml
+    target_path: docs/evidence/approvals/aprovacao-dec-019-mvp-sintetico.yaml
+    canonical_path: null
+    content_hash: aae7da6e4128b90523326975e8110168368c8346822ed6554741530fc2075122
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, decisao_mvp, autorizacao_sintetica, d0]
+      permitted_uses: [comprovacao_da_aprovacao_lean, autorizacao_sintetica_m0_m4, auditoria]
+      prohibited_uses: [dados_reais, migracao_real, v2, piloto, producao, m5_m6_operacionais]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      transition: [T-DOC-003]
+      establishes_d0: ["2026-07-26T00:24:32-03:00"]
+
+  - document_id: DOC-EVID-ACAO-CORRETIVA-BASELINE-PRE-FM
+    title: Ação corretiva do baseline anterior ao front matter
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T04:00:00-03:00"
+    last_verified_at: "2026-07-28T04:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/corrections/acao-corretiva-baseline-pre-fm.yaml
+    target_path: docs/evidence/corrections/acao-corretiva-baseline-pre-fm.yaml
+    canonical_path: null
+    content_hash: 8010788fefe7b5ce252c77a1ef912e1a643d8e7445c88fd3a48e4e3bf6b2aa9c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [acao_corretiva, baseline_pre_front_matter, integridade]
+      permitted_uses: [comprovacao_de_saneamento, auditoria]
+      prohibited_uses: [aprovacao, canonizacao, autorizacao_de_front_matter]
+    relationships:
+      corrects:
+        - DOC-CEPRAEA-PROPOSTA-MVP-SINTETICO
+        - DOC-CEPRAEA-CANDIDATA-CONTEXTO
+      evidence:
+        - DOC-EVID-GATE-ARCH-BASELINE-PRE-FM
+        - DOC-EVID-GATE-G0-BASELINE-PRE-FM
+        - DOC-EVID-GATE-G1-BASELINE-PRE-FM
+
+  - document_id: DOC-EVID-GATE-ARCH-BASELINE-PRE-FM
+    title: Resultado de G-ARCH do baseline anterior ao front matter
+    responsible: AUTOMACAO
+    registered_at: "2026-07-28T04:00:00-03:00"
+    last_verified_at: "2026-07-28T04:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-baseline-pre-fm.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-baseline-pre-fm.yaml
+    canonical_path: null
+    content_hash: ebbc58c80f2467adbbf979315e3b30580f6a17b9070fa0de3b650cac0e3ab0f8
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g_arch, baseline_pre_front_matter]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-ACAO-CORRETIVA-BASELINE-PRE-FM]
+
+  - document_id: DOC-EVID-GATE-G0-BASELINE-PRE-FM
+    title: Resultado de G0 do baseline anterior ao front matter
+    responsible: AUTOMACAO
+    registered_at: "2026-07-28T04:00:00-03:00"
+    last_verified_at: "2026-07-28T04:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-baseline-pre-fm.yaml
+    target_path: docs/evidence/gates/resultado-g0-baseline-pre-fm.yaml
+    canonical_path: null
+    content_hash: b369f0703a66a7cc82d56c110dd00f7050aa963a0c4a19a653a8bf82f95adc6c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g0, baseline_pre_front_matter]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-ACAO-CORRETIVA-BASELINE-PRE-FM]
+
+  - document_id: DOC-EVID-GATE-G1-BASELINE-PRE-FM
+    title: Resultado de G1 do baseline anterior ao front matter
+    responsible: AUTOMACAO
+    registered_at: "2026-07-28T04:00:00-03:00"
+    last_verified_at: "2026-07-28T04:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-baseline-pre-fm.yaml
+    target_path: docs/evidence/gates/resultado-g1-baseline-pre-fm.yaml
+    canonical_path: null
+    content_hash: f284dc54d96628ec4305e800af368553a18b3d0e84461fb166b3f39374a908cd
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g1, baseline_pre_front_matter]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-EVID-ACAO-CORRETIVA-BASELINE-PRE-FM]
+
+  - document_id: DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM
+    title: "DEC-FM-000 — Autorização dos schemas de front matter"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T00:00:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: decisao
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/controlled/candidates/decisao-autorizacao-schemas-fm.md
+    target_path: docs/controlled/candidates/decisao-autorizacao-schemas-fm.md
+    canonical_path: null
+    content_hash: cfe4ab62fe5d0a8ec8a87e3080c4588ac934933b695e4fc9fe51087f12a9657c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - autorizacao_schemas_front_matter
+        - reconciliacao_novos_contratos
+      permitted_uses:
+        - autorizacao_fase0
+        - criacao_schema_front_matter_governed
+        - criacao_schema_front_matter_feature_spec
+      prohibited_uses:
+        - autorizacao_outros_schemas
+        - ativacao_g_fm_obrigatorio
+        - alteracao_documento_schema
+        - alteracao_workflow_schema
+    relationships:
+      authorizes:
+        - front-matter-governed.schema.json
+        - front-matter-feature-spec.schema.json
+      governed_by: [WF-DOC-CEPRAEA-0.2.0]
+      references: [DOC-GOV-WF-DOCUMENTACAO, DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+
+  - document_id: DOC-CONTRATO-FM-GOVERNED
+    title: Schema de front matter para documentos governados
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/front-matter-governed.schema.json
+    target_path: docs/contracts/schemas/front-matter-governed.schema.json
+    canonical_path: null
+    content_hash: 8fd8c7276f52cc4bb7e3f42cbcb566cdcbc85b6c39c036b347ce44cd9a992f3a
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [front_matter_governed]
+      authorized_by: [DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM]
+
+  - document_id: DOC-CONTRATO-FM-FEATURE-SPEC
+    title: Schema de front matter para feature specs
+    document_type: contrato
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/contracts/schemas/front-matter-feature-spec.schema.json
+    target_path: docs/contracts/schemas/front-matter-feature-spec.schema.json
+    canonical_path: null
+    content_hash: fc5abc688cf009eae016db343d9ec5c089ed7a3887cf0d3006c4e546e665fa17
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope: *contract_scope
+    relationships:
+      contract_id: [front_matter_feature_spec]
+      authorized_by: [DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM]
+
+  - document_id: DOC-EVID-GATE-G-FM-BASELINE-PRE-MIGRACAO
+    title: Resultado de G-FM do baseline anterior à migração de front matter
+    responsible: AUTOMACAO
+    registered_at: "2026-07-28T08:00:00-03:00"
+    last_verified_at: "2026-07-28T08:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-baseline-pre-migracao.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-baseline-pre-migracao.yaml
+    canonical_path: null
+    content_hash: af153490395ce2e6c2a35c31f3ff9d6a351655868aa9400085b099e277a793b3
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_g_fm, baseline_pre_migracao_front_matter]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates_gate: [G-FM]
+      references: [DOC-REG-WF-DOCUMENTACAO, DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM]
+
+  - document_id: DOC-CEPRAEA-DEC-MAPA-FEATURES
+    title: "Mapa de features do MVP sintético"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T10:00:00-03:00"
+    last_verified_at: "2026-07-28T11:00:00-03:00"
+    document_type: decisao
+    version: "0.1.1"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: CANONICA_VIGENTE
+    legacy_declared_status: null
+    current_path: docs/canonical/decisions/decisao-mapa-features.md
+    target_path: docs/canonical/decisions/decisao-mapa-features.md
+    canonical_path: docs/canonical/decisions/decisao-mapa-features.md
+    content_hash: b2366998fc76a11633cb0ac80c2b7902db57e9938004f178f7b73810f9ca163c
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - mapa_features_mvp
+        - autorizacao_feature_specs
+      permitted_uses:
+        - decisao_vigente
+        - criacao_feature_specs
+      prohibited_uses:
+        - aprovacao_por_inferencia
+        - dados_reais
+        - criacao_sem_derivacao_dec019
+    relationships:
+      derives_from: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      governed_by: [WF-DOC-CEPRAEA-0.2.1]
+      references: [DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM]
+      approval_id: [APR-DEC-MAPA-FEATURES-002]
+
+  - document_id: DOC-CEPRAEA-DEC-MODELO-VERSOES
+    title: "Autorização do modelo de versões simultâneas"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T12:00:00-03:00"
+    last_verified_at: "2026-07-28T12:30:00-03:00"
+    document_type: decisao
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: CANONICA_VIGENTE
+    legacy_declared_status: null
+    current_path: docs/canonical/decisions/decisao-modelo-versoes-simultaneas.md
+    target_path: docs/canonical/decisions/decisao-modelo-versoes-simultaneas.md
+    canonical_path: docs/canonical/decisions/decisao-modelo-versoes-simultaneas.md
+    content_hash: be9d92614026a9152f4f3785dc995f49e30dbace8d9f7cd6bb3fdc5830552e61
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [modelo_de_versoes_simultaneas, extensao_do_registro]
+      permitted_uses: [extensao_do_registro_para_versoes_simultaneas, autorizacao_fase7]
+      prohibited_uses: [autorizacao_de_implementacao, dados_reais, canonizacao_automatica]
+    relationships:
+      derived_from: [DOC-GOV-WORKFLOW-PLANO]
+      authorizes: [DOC-CEPRAEA-CANDIDATA-CONTEXTO, DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      approval_id: [APR-DEC-MODELO-VERSOES-002]
+
+  - document_id: DOC-EVID-APROVACAO-MODELO-VERSOES
+    title: "Aprovação do modelo de versões simultâneas"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T12:30:00-03:00"
+    last_verified_at: "2026-07-28T12:30:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-modelo-versoes-simultaneas.yaml
+    target_path: docs/evidence/approvals/aprovacao-modelo-versoes-simultaneas.yaml
+    canonical_path: null
+    content_hash: f34fe50a7b9475c3b119674fcadecfb864b39f9b124636afde84a64b6db22b33
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, modelo_versoes_simultaneas]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+      superseded_by: [DOC-EVID-APROVACAO-MODELO-VERSOES-CORRIGIDA]
+
+  - document_id: DOC-EVID-APROVACAO-MAPA-FEATURES
+    title: Aprovação do mapa de features do MVP sintético
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T10:30:00-03:00"
+    last_verified_at: "2026-07-28T10:30:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-mapa-features.yaml
+    target_path: docs/evidence/approvals/aprovacao-mapa-features.yaml
+    canonical_path: null
+    content_hash: 8df618a10ebd4749b9292254c12cfab9be69e11528b8fc40ce627d723d2c72f7
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, mapa_features_mvp]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+      references: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      superseded_by: [DOC-EVID-APROVACAO-MAPA-FEATURES-CORRIGIDA]
+
+  - document_id: DOC-EVID-APROVACAO-CONTEXTO-V011
+    title: "Aprovação de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T00:00:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011.yaml
+    target_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011.yaml
+    canonical_path: null
+    content_hash: 5ab8ecf5633a625f4e23f2d04ff3bc304a79d273dc31901ecc6590b64e7682a4
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, contexto_candidata_v011]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      superseded_by: [DOC-EVID-APROVACAO-CONTEXTO-V011-CORRIGIDA]
+
+  - document_id: DOC-EVID-APROVACAO-DEC019-V012
+    title: "Aprovação de DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-28T00:00:00-03:00"
+    last_verified_at: "2026-07-28T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-dec-019-v012.yaml
+    target_path: docs/evidence/approvals/aprovacao-dec-019-v012.yaml
+    canonical_path: null
+    content_hash: cf5e34ae1a361103b61fbb56a68f14598d17ee1c8ac4fdbf1668f8fea533d8d5
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, dec019_v012]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      superseded_by: [DOC-EVID-APROVACAO-DEC019-V012-CORRIGIDA]
+
+  # ── Gate results corretivos (Fase 7 / corretivo 2026-07-29) ─────────────────
+
+  - document_id: DOC-EVID-GATE-G-ARCH-CONTEXTO-V011
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-contexto-v011.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-contexto-v011.yaml
+    canonical_path: null
+    content_hash: abbb16ee15c6813a4559e96502901f20ff22aa2b67ac90ac341823750e9c48f3
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_arch, contexto_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+
+  - document_id: DOC-EVID-GATE-G0-CONTEXTO-V011
+    title: "Resultado de G0 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-contexto-v011.yaml
+    target_path: docs/evidence/gates/resultado-g0-contexto-v011.yaml
+    canonical_path: null
+    content_hash: 0c64539f4377be124b238ec5fb6af17be47f03bb5e09785acf81390a8ec4ce17
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g0, contexto_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+
+  - document_id: DOC-EVID-GATE-G1-CONTEXTO-V011
+    title: "Resultado de G1 para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-contexto-v011.yaml
+    target_path: docs/evidence/gates/resultado-g1-contexto-v011.yaml
+    canonical_path: null
+    content_hash: 628929da60ce72901f314c42f2ed7d162d04b724edb475b8dc51bff5d03dd6fa
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g1, contexto_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+
+  - document_id: DOC-EVID-GATE-G-FM-CONTEXTO-V011
+    title: "Resultado de G-FM para DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-contexto-v011.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-contexto-v011.yaml
+    canonical_path: null
+    content_hash: 422bf37ddc61691e7ce22d0a5a07b44073bc7a63a23975d2d509099af3b34b56
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_fm, contexto_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+
+  - document_id: DOC-EVID-GATE-G-ARCH-DEC019-V012
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-dec019-v012.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-dec019-v012.yaml
+    canonical_path: null
+    content_hash: 073972156e98c0a631c3eeb7f84bbcf15fd80cbfb01d11f8b9e78bb83b92fee8
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_arch, dec019_v012]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+
+  - document_id: DOC-EVID-GATE-G0-DEC019-V012
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-dec019-v012.yaml
+    target_path: docs/evidence/gates/resultado-g0-dec019-v012.yaml
+    canonical_path: null
+    content_hash: 625e6d4fd4a052048a83985d6871e19a0ebb03fe6847183ec6817097c4253f6b
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g0, dec019_v012]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+
+  - document_id: DOC-EVID-GATE-G1-DEC019-V012
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-dec019-v012.yaml
+    target_path: docs/evidence/gates/resultado-g1-dec019-v012.yaml
+    canonical_path: null
+    content_hash: 0cc541c7f254af3ba6e2de45a898d1fa1fc05cd2fd1a71f87206633a6dc8870e
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g1, dec019_v012]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+
+  - document_id: DOC-EVID-GATE-G-FM-DEC019-V012
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-dec019-v012.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-dec019-v012.yaml
+    canonical_path: null
+    content_hash: 59d09249e9d9f4f86554ce6a2330167945fe72b1598aa8bff2ef3a79b322b2da
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_fm, dec019_v012]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+
+  - document_id: DOC-EVID-GATE-G-ARCH-MAPA-FEATURES-V011
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-mapa-features-v011.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-mapa-features-v011.yaml
+    canonical_path: null
+    content_hash: 8759251a4d206be80ff5e6941a5e9ef6a8fcdcb4d5d818980666c8aee7434a20
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_arch, mapa_features_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+
+  - document_id: DOC-EVID-GATE-G0-MAPA-FEATURES-V011
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-mapa-features-v011.yaml
+    target_path: docs/evidence/gates/resultado-g0-mapa-features-v011.yaml
+    canonical_path: null
+    content_hash: 8500cd015a62358c2bdfded4ca92a7be4e62a95381b705b451d1438a404657ae
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g0, mapa_features_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+
+  - document_id: DOC-EVID-GATE-G1-MAPA-FEATURES-V011
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-mapa-features-v011.yaml
+    target_path: docs/evidence/gates/resultado-g1-mapa-features-v011.yaml
+    canonical_path: null
+    content_hash: 35487a5a719b37dcfe31a515a934dbfd32ea08ef1d6e4c6b3301d52d1eded2c6
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g1, mapa_features_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+
+  - document_id: DOC-EVID-GATE-G-FM-MAPA-FEATURES-V011
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-MAPA-FEATURES v0.1.1"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-mapa-features-v011.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-mapa-features-v011.yaml
+    canonical_path: null
+    content_hash: 50bbc5ac3ddcdd52c93911f82c8cdaeb98910868223194daabffef5c82ce3d20
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_fm, mapa_features_v011]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+
+  - document_id: DOC-EVID-GATE-G-ARCH-MODELO-VERSOES
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-MODELO-VERSOES v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-modelo-versoes.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-modelo-versoes.yaml
+    canonical_path: null
+    content_hash: 4e259ed49d8314f0f2cb8f987b99c9f69b122e94087f59ce70265731d3e25596
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_arch, modelo_versoes]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+
+  - document_id: DOC-EVID-GATE-G0-MODELO-VERSOES
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-MODELO-VERSOES v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-modelo-versoes.yaml
+    target_path: docs/evidence/gates/resultado-g0-modelo-versoes.yaml
+    canonical_path: null
+    content_hash: 974fdac03740f4158917933277da59836ed9f844a4abcc077eee6f810b8ec21b
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g0, modelo_versoes]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+
+  - document_id: DOC-EVID-GATE-G1-MODELO-VERSOES
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-MODELO-VERSOES v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-modelo-versoes.yaml
+    target_path: docs/evidence/gates/resultado-g1-modelo-versoes.yaml
+    canonical_path: null
+    content_hash: a9d5dc0c8fdc3b447893f6b37625904d2577cc15473da1cbf70c8f53411f6807
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g1, modelo_versoes]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+
+  - document_id: DOC-EVID-GATE-G-FM-MODELO-VERSOES
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-MODELO-VERSOES v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-modelo-versoes.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-modelo-versoes.yaml
+    canonical_path: null
+    content_hash: 7bebe93ea18976357e063b49fa5d696455b39d4d26947479f9133cf1c11555af
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_fm, modelo_versoes]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+
+  # ── Aprovações corretivas (Fase 7 / corretivo 2026-07-29) ───────────────────
+
+  - document_id: DOC-EVID-APROVACAO-CONTEXTO-V011-CORRIGIDA
+    title: "Aprovação corretiva de DOC-CEPRAEA-CANDIDATA-CONTEXTO v0.1.1"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011-corrigida.yaml
+    target_path: docs/evidence/approvals/aprovacao-contexto-candidata-v011-corrigida.yaml
+    canonical_path: null
+    content_hash: ad7b508f596f06118df6b95652bd51866012a56f8c91847f3353fda37e75a548
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, contexto_candidata_v011, corretiva]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-CANDIDATA-CONTEXTO]
+      supersedes: [DOC-EVID-APROVACAO-CONTEXTO-V011]
+
+  - document_id: DOC-EVID-APROVACAO-DEC019-V012-CORRIGIDA
+    title: "Aprovação corretiva de DOC-CEPRAEA-DEC-019-MVP-SINTETICO v0.1.2"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-dec-019-v012-corrigida.yaml
+    target_path: docs/evidence/approvals/aprovacao-dec-019-v012-corrigida.yaml
+    canonical_path: null
+    content_hash: eb9ef36e361bd4aa65de3ffe0a58af735efa112a4904ea224d335bef8e24999f
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, dec019_v012, corretiva]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      supersedes: [DOC-EVID-APROVACAO-DEC019-V012]
+
+  - document_id: DOC-EVID-APROVACAO-MAPA-FEATURES-CORRIGIDA
+    title: "Aprovação corretiva do mapa de features do MVP sintético"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-mapa-features-corrigida.yaml
+    target_path: docs/evidence/approvals/aprovacao-mapa-features-corrigida.yaml
+    canonical_path: null
+    content_hash: 8c7a230d36547a67c77d11dcc53288ce52edd43e572d0272546f1db6751b3b03
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, mapa_features_mvp, corretiva]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-MAPA-FEATURES]
+      references: [DOC-CEPRAEA-DEC-019-MVP-SINTETICO]
+      supersedes: [DOC-EVID-APROVACAO-MAPA-FEATURES]
+
+  - document_id: DOC-EVID-APROVACAO-MODELO-VERSOES-CORRIGIDA
+    title: "Aprovação corretiva do modelo de versões simultâneas"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-modelo-versoes-simultaneas-corrigida.yaml
+    target_path: docs/evidence/approvals/aprovacao-modelo-versoes-simultaneas-corrigida.yaml
+    canonical_path: null
+    content_hash: 9925835646f77af2e47c6ea6da17d7256484f145e9b1793d6606b3c9f70c00d8
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, modelo_versoes_simultaneas, corretiva]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-MODELO-VERSOES]
+      supersedes: [DOC-EVID-APROVACAO-MODELO-VERSOES]
+
+  # ── Fase 8: Enforcement G-FM (2026-07-29) ───────────────────────────────────
+
+  - document_id: DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM
+    title: "DEC — Ativação do G-FM como gate obrigatório"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: decisao
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: CANONICA_VIGENTE
+    legacy_declared_status: null
+    current_path: docs/canonical/decisions/decisao-enforcement-g-fm.md
+    target_path: docs/canonical/decisions/decisao-enforcement-g-fm.md
+    canonical_path: docs/canonical/decisions/decisao-enforcement-g-fm.md
+    content_hash: 89298c11bb44422b054251b7ca9280bee09badeb3129527dd52cdf477c3ee3f6
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [enforcement_g_fm, required_gates_workflow]
+      permitted_uses: [enforcement_g_fm, autorizacao_fase8]
+      prohibited_uses: [aprovacao_por_inferencia, dados_reais, canonizacao_automatica]
+    relationships:
+      derived_from: [DOC-CEPRAEA-DEC-AUTORIZACAO-SCHEMAS-FM]
+      approves_gate: [G-FM]
+      approval_id: [APR-DEC-ENFORCEMENT-G-FM-001]
+
+  - document_id: DOC-EVID-GATE-G-ARCH-ENFORCEMENT-G-FM
+    title: "Resultado de G-ARCH para DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-arch-enforcement-g-fm.yaml
+    target_path: docs/evidence/gates/resultado-g-arch-enforcement-g-fm.yaml
+    canonical_path: null
+    content_hash: 95777ba558e5f3e3185d3254420c4ad3c456b84ca0b96f0044a922f063bd2400
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_arch, enforcement_g_fm]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]
+
+  - document_id: DOC-EVID-GATE-G0-ENFORCEMENT-G-FM
+    title: "Resultado de G0 para DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g0-enforcement-g-fm.yaml
+    target_path: docs/evidence/gates/resultado-g0-enforcement-g-fm.yaml
+    canonical_path: null
+    content_hash: 36ef35f158560c3fc6e829b262d1f8a7ea3cdc783fdbcefd9ff0e488d0178100
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g0, enforcement_g_fm]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]
+
+  - document_id: DOC-EVID-GATE-G1-ENFORCEMENT-G-FM
+    title: "Resultado de G1 para DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g1-enforcement-g-fm.yaml
+    target_path: docs/evidence/gates/resultado-g1-enforcement-g-fm.yaml
+    canonical_path: null
+    content_hash: 577309d300ec8d26dc59610b9f4b87e2d7183c61c1cb165e855e3223747494a5
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g1, enforcement_g_fm]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]
+
+  - document_id: DOC-EVID-GATE-G-FM-ENFORCEMENT-G-FM
+    title: "Resultado de G-FM para DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM v0.1.0"
+    responsible: AUTOMACAO
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/gates/resultado-g-fm-enforcement-g-fm.yaml
+    target_path: docs/evidence/gates/resultado-g-fm-enforcement-g-fm.yaml
+    canonical_path: null
+    content_hash: 836f972cfbf7224f3e7ab82cedcb7d2a2beae453ea63db5c49d539544ecb52b7
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [resultado_gate, g_fm, enforcement_g_fm]
+      permitted_uses: [evidencia_de_gate, auditoria]
+      prohibited_uses: [aprovacao, canonizacao]
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]
+
+  - document_id: DOC-EVID-APROVACAO-ENFORCEMENT-G-FM
+    title: "Aprovação da ativação do G-FM como gate obrigatório"
+    responsible: Davi Sermenho
+    registered_at: "2026-07-29T00:00:00-03:00"
+    last_verified_at: "2026-07-29T00:00:00-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/approvals/aprovacao-enforcement-g-fm.yaml
+    target_path: docs/evidence/approvals/aprovacao-enforcement-g-fm.yaml
+    canonical_path: null
+    content_hash: bbab991f7683a852ef15fecbf91cb7803f655859a43e8c05941c41b06008a2e0
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects: [aprovacao_documental, enforcement_g_fm]
+      permitted_uses: [evidencia_de_aprovacao, auditoria]
+      prohibited_uses: [canonizacao, autorizacao_implementacao]
+    relationships:
+      approves: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]

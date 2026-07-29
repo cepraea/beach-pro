@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/workflow.schema.json",
+  "title": "Máquina de estados documental",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow",
+    "initialization",
+    "states",
+    "roles",
+    "transitions",
+    "gates",
+    "contracts",
+    "global_invariants",
+    "out_of_scope"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflow_id",
+        "title",
+        "version",
+        "status",
+        "profile",
+        "object_type",
+        "initial_state",
+        "successful_terminal_state",
+        "control_terminal_states",
+        "owner_role",
+        "approval_authority_role",
+        "canonization_authority_role"
+      ],
+      "properties": {
+        "workflow_id": {"const": "WF-DOC-CEPRAEA"},
+        "title": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "status": {"enum": ["RASCUNHO", "APROVADO", "REVOGADO"]},
+        "profile": {"const": "LEAN"},
+        "object_type": {"const": "document_version"},
+        "initial_state": {"const": "RASCUNHO"},
+        "successful_terminal_state": {"const": "CANONICA_VIGENTE"},
+        "control_terminal_states": {
+          "type": "array",
+          "items": {"enum": ["SUPERADA", "REVOGADA"]},
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "owner_role": {"type": "string"},
+        "approval_authority_role": {"type": "string"},
+        "canonization_authority_role": {"type": "string"}
+      }
+    },
+    "initialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initialization_id",
+        "from_registration_status",
+        "to_state",
+        "event_type",
+        "authorized_roles",
+        "required_gates",
+        "required_contracts",
+        "required_evidence_types"
+      ],
+      "properties": {
+        "initialization_id": {"const": "INIT-DOC-001"},
+        "from_registration_status": {"const": "LEGADO_INVENTARIADO"},
+        "to_state": {"const": "RASCUNHO"},
+        "event_type": {"const": "INGESTAO_REGISTRADA"},
+        "authorized_roles": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "required_gates": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 3
+        },
+        "required_contracts": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 3
+        },
+        "required_evidence_types": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["state_id", "state_type", "authoritative_reference"],
+        "properties": {
+          "state_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
+          "state_type": {
+            "enum": ["initial", "intermediate", "control", "successful_terminal", "control_terminal"]
+          },
+          "authoritative_reference": {"type": "boolean"},
+          "immutable_content_required": {"type": "boolean"}
+        }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role_id"],
+        "properties": {"role_id": {"type": "string", "pattern": "^[A-Z0-9_]+$"}}
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "transition_id",
+          "from_state",
+          "to_state",
+          "event_type",
+          "authorized_roles",
+          "required_gates",
+          "required_contracts",
+          "required_evidence_types"
+        ],
+        "properties": {
+          "transition_id": {"type": "string", "pattern": "^T-DOC-[0-9]{3}$"},
+          "from_state": {"type": "string"},
+          "to_state": {"type": "string"},
+          "event_type": {"type": "string"},
+          "authorized_roles": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "required_gates": {"type": "array", "items": {"type": "string"}},
+          "required_contracts": {"type": "array", "items": {"type": "string"}},
+          "required_evidence_types": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["gate_id", "title", "implementation_status", "blocking"],
+        "properties": {
+          "gate_id": {"type": "string"},
+          "title": {"type": "string"},
+          "implementation_status": {"enum": ["PLANNED", "IMPLEMENTED"]},
+          "blocking": {"const": true},
+          "evaluator": {"type": "object"},
+          "pass_condition": {"type": "object"},
+          "fail_condition": {"type": "object"}
+        }
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contract_id", "schema_path"],
+        "properties": {
+          "contract_id": {"type": "string"},
+          "schema_path": {"type": "string", "pattern": "^docs/contracts/schemas/"}
+        }
+      }
+    },
+    "global_invariants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["invariant_id", "rule"],
+        "properties": {
+          "invariant_id": {"type": "string"},
+          "rule": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "out_of_scope": {"type": "array", "items": {"type": "string"}}
+  }
+}

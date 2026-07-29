@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.cepraea.local/schemas/acao-corretiva.schema.json",
+  "title": "Ação corretiva",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action_id",
+    "description",
+    "origin_id",
+    "criticality",
+    "status",
+    "assigned_to",
+    "created_at",
+    "closed_at",
+    "evidence_ids"
+  ],
+  "properties": {
+    "action_id": {"type": "string", "pattern": "^AR-[0-9]{3,}$"},
+    "description": {"type": "string", "minLength": 1},
+    "origin_id": {"type": "string", "minLength": 1},
+    "criticality": {"enum": ["blocking", "non_blocking"]},
+    "status": {"enum": ["open", "in_progress", "completed", "cancelled"]},
+    "assigned_to": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "closed_at": {"type": ["string", "null"], "format": "date-time"},
+    "evidence_ids": {"type": "array", "items": {"type": "string"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "completed"}}},
+      "then": {
+        "properties": {
+          "closed_at": {"type": "string", "format": "date-time"},
+          "evidence_ids": {"minItems": 1}
+        }
+      }
+    }
+  ]
+}
