@@ -1,0 +1,48 @@
+schema_version: "1.0"
+record_type: operational_authorization
+authorization:
+  authorization_id: AUTH-MODULARIZATION-VALIDATOR-20260730-001
+  status: approved
+  approved_by: Davi Sermenho
+  authority_role: AUTORIDADE_APROVADORA
+  approved_at: "2026-07-30T12:23:28Z"
+  statement: |-
+    Eu, Davi Sermenho, no papel de AUTORIDADE_APROVADORA, aprovo as decisões BEH-01 a BEH-07 conforme o plano incorporado no commit 6fbfdad, respeitadas as limitações residuais nele registradas, e autorizo o início da modularização incremental após `GIT-WORKFLOW-READY = PASS`.
+  plan:
+    path: .inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md
+    merge_commit: 6fbfdad55240b5b9f6d377f8b436e314d7feeb8a
+    content_hash: 75d9a943a92f9f91121c21806ef6991525a76bbc49531e2c9f53ac78761c5fce
+  decisions:
+    - decision_id: BEH-01
+      status: approved
+      authorized_behavior: descoberta do workspace por marcadores
+    - decision_id: BEH-02
+      status: approved
+      authorized_behavior: rejeição de itens inválidos em documents
+    - decision_id: BEH-03
+      status: approved
+      authorized_behavior: tratamento controlado de chaves YAML complexas
+    - decision_id: BEH-04
+      status: approved
+      authorized_behavior: rejeição de UTF-8 inválido
+    - decision_id: BEH-05
+      status: approved
+      authorized_behavior: tratamento controlado de falhas de leitura
+    - decision_id: BEH-06
+      status: approved
+      authorized_behavior: parse_args(argv) e main(argv)
+    - decision_id: BEH-07
+      status: approved
+      authorized_behavior: fachada pública restrita a main
+  conditions:
+    - GIT-WORKFLOW-READY deve estar em estado PASS antes da primeira alteração
+    - cada mudança comportamental deve seguir RED-GREEN próprio
+    - extrações estruturais não podem ocultar mudanças de comportamento
+    - cada fase continua condicionada ao gate de saída da fase anterior
+  reservations:
+    - não declara prontidão para gate bloqueante de produção
+    - não resolve a identidade dos gates globais nas aprovações
+    - não resolve a comprovação dos bytes de fontes locais em G2
+    - não decide a obrigatoriedade de G2 para aprovação
+    - não remove a quantidade fixa de registros de ingestão
+    - não amplia o perfil Markdown suportado
