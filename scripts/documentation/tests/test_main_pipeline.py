@@ -1,13 +1,10 @@
 """Tests for fail-fast stage orchestration and gate dispatch."""
 
-import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation import validate_documentation as validator
 
 
 def _args(

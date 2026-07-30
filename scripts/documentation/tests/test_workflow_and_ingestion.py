@@ -1,6 +1,5 @@
 """Tests for workflow references and immutable ingestion snapshots."""
 
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,9 +7,7 @@ from unittest.mock import patch
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation import validate_documentation as validator
 
 
 def _workflow() -> validator.JsonObject:

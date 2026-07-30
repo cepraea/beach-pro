@@ -1,13 +1,10 @@
 """Tests for G-FM front matter parsing and validation."""
 
-import sys
 import unittest
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from validate_documentation import (  # noqa: E402
+from scripts.documentation.validate_documentation import (
     JsonObject,
     Reporter,
     parse_front_matter,

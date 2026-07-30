@@ -1,15 +1,12 @@
 """Tests for registry identity, path, and canonicality invariants."""
 
 import hashlib
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation import validate_documentation as validator
 
 
 class RegistryInvariantTests(unittest.TestCase):

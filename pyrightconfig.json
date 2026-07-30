@@ -1,7 +1,8 @@
 {
   "include": [
     "scripts/documentation/validate_documentation",
-    "scripts/documentation/tests"
+    "scripts/documentation/tests",
+    "scripts/documentation/integration_tests"
   ],
   "exclude": ["**/__pycache__"],
   "typeCheckingMode": "strict",
