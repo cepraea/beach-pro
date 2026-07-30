@@ -112,6 +112,7 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `config.py`: paths e descoberta do workspace pelos quatro marcadores
   canônicos;
 - `filesystem.py`: resolução segura de paths e SHA-256 em streaming.
+- `reporter.py`: coleta determinística e emissão única em texto ou YAML.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
