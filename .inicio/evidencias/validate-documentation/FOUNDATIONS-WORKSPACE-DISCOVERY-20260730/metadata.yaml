@@ -1,0 +1,63 @@
+evidence_id: FOUNDATIONS-WORKSPACE-DISCOVERY-20260730
+gate_ids:
+  - FOUNDATIONS
+  - WORKSPACE-DISCOVERY
+phase: 4
+status: pass
+effective_when: "PR #7 incorporada à branch main"
+generated_at: "2026-07-30T19:47:27Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-4
+base_commit: d59ba2a4c669cc0e0e0662007f49208c63f45b18
+evaluated_commit: 1d62826
+pull_request:
+  number: 7
+  url: "https://github.com/cepraea/beach-pro/pull/7"
+  state_at_evaluation: draft
+change_sets:
+  - commit: a2ecc8b
+    purpose: "extrair tipos JSON"
+  - commit: b0e1205
+    purpose: "extrair modelo da CLI"
+  - commit: 6258919
+    purpose: "extrair configuração e migrar patches"
+  - commit: 74bd383
+    purpose: "extrair helpers de filesystem"
+  - commit: 9ee25db
+    purpose: "materializar BEH-01 por RED-GREEN"
+  - commit: 1d62826
+    purpose: "atualizar README e mapa operacional"
+structural:
+  extracted_modules:
+    - json_types.py
+    - models.py
+    - config.py
+    - filesystem.py
+  monolith_lines_before: 2181
+  monolith_lines_after: 2145
+  config_patches_at_legacy_lookup: 0
+  unit_tests_before: 92
+  unit_tests_after: 98
+  integration_tests: 1
+behavior:
+  authorization: BEH-01
+  red_status: expected_failure
+  red_failures: 6
+  green_status: pass
+  green_tests: 6
+validation:
+  compileall: pass
+  unittest_unit: pass
+  unittest_integration: pass
+  pyright_1_1_411:
+    status: pass
+    errors: 0
+    warnings: 0
+    information: 0
+  npm_validate: pass
+  normalized_gate_comparison: pass
+next_phase:
+  phase: 5
+  gate: REPORTER-EXTRACTION
+  status: blocked_until_pull_request_merge

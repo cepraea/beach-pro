@@ -21,7 +21,7 @@
 | Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
 | Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Fase 3 concluída na PR #6; `CANONICAL-IMPORT-IDENTITY = PASS` efetivo após merge; Fase 4 bloqueada até a incorporação |
+| Estado deste plano | Fase 3 incorporada; Fase 4 implementada na PR #7 com gates locais aprovados, efetivos após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -925,8 +925,8 @@ CANONICAL-IMPORT-IDENTITY = PASS
 Evidência:
 `.inicio/evidencias/validate-documentation/CANONICAL-IMPORT-IDENTITY-20260730/`.
 O resultado foi produzido na branch
-`agent/modularizacao-validator-fase-3` e entregue pela PR #6. Ele se torna
-canônico após o merge; até lá, a Fase 4 permanece bloqueada.
+`agent/modularizacao-validator-fase-3` e incorporado pela PR #6. O merge
+materializou o gate e desbloqueou a Fase 4.
 
 Aceitação adicional:
 
@@ -1021,6 +1021,19 @@ Não usar os TARs como marcadores de raiz.
 FOUNDATIONS = PASS
 WORKSPACE-DISCOVERY = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+FOUNDATIONS = PASS
+WORKSPACE-DISCOVERY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FOUNDATIONS-WORKSPACE-DISCOVERY-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-4` e entregue pela PR #7. Os gates tornam-se
+efetivos após o merge; até lá, a Fase 5 permanece bloqueada.
 
 ## 15. Fase 5 — Reporter
 
