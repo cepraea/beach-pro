@@ -153,19 +153,14 @@ repetir literalmente a operação da linha seguinte.
 
 ## Testes
 
-Os testes usam `unittest`. Durante o estado transitório, a suíte fica em
-[`scripts/documentation/tests/`](../tests/) e ainda contém um teste de entrada
-que executa G-ARCH contra o repositório. Por isso, a execução completa atual
-depende dos três TARs ignorados pelo Git descritos no plano.
-
-A Fase 3 separará:
+Os testes usam `unittest` e estão separados por responsabilidade:
 
 - testes unitários em `scripts/documentation/tests/`, independentes dos TARs;
 - integração do repositório em
   `scripts/documentation/integration_tests/`, executada somente depois de
   `TAR-MATERIALIZATION = PASS`.
 
-A suíte atual é dividida por responsabilidade:
+A suíte unitária é dividida por responsabilidade:
 
 | Módulo | Escopo principal |
 | --- | --- |
@@ -179,22 +174,15 @@ A suíte atual é dividida por responsabilidade:
 | `test_cli_and_resolution.py` | CLI, versões e links |
 | `test_front_matter.py` | Front Matter e G-FM |
 
-`test_package_entrypoints.py` protege a execução por `-m`, a raiz do workspace,
-a existência de uma única implementação, a localização do mapa, os consumidores
-operacionais, as versões e os hashes controlados e a documentação dos testes
-neste README.
+`test_package_entrypoints.py` protege a execução de `--help` por `-m`, a
+identidade canônica do pacote, a raiz do workspace, a existência de uma única
+implementação, a localização do mapa, os consumidores operacionais, as versões
+e os hashes controlados e a documentação dos testes neste README.
 
-### Suíte completa no estado transitório
+`integration_tests/test_repository_entrypoint.py` executa G-ARCH contra o
+acervo real. A ausência dos TARs é falha de precondição e não causa `skip`.
 
-```bash
-python3 -m unittest discover \
-  -s scripts/documentation/tests \
-  -v
-```
-
-### Suítes depois da separação da Fase 3
-
-Unidade:
+### Suíte unitária
 
 ```bash
 python3 -m unittest discover \
@@ -203,7 +191,7 @@ python3 -m unittest discover \
   -v
 ```
 
-Integração, com os TARs materializados:
+### Integração com os TARs materializados
 
 ```bash
 python3 -m unittest discover \
