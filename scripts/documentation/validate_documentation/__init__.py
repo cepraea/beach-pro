@@ -9,49 +9,18 @@ import json
 from pathlib import Path
 import re
 import tarfile
-from typing import Any
+from typing import Any, cast
 from urllib.parse import unquote, urlparse
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import SchemaError
 import yaml
 
-
-JsonObject = dict[str, Any]
-
-
-def _accept_dynamic_value(value: Any) -> Any:
-    """Keep third-party parser and schema values inside one typed boundary."""
-    return value
-
-
-def _accept_dynamic_mapping(value: Any) -> JsonObject:
-    """Mark a runtime-checked mapping as the YAML/JSON typing boundary."""
-    return value
-
-
-def as_json_object(value: Any) -> JsonObject | None:
-    """Return a typed mapping only after its dynamic container is checked.
-
-    PyYAML and ``json.loads`` intentionally return dynamic values.  Centralizing
-    this transition prevents ``Unknown`` from leaking through the validator
-    while retaining the runtime check required for malformed input.
-    """
-    if not isinstance(value, dict):
-        return None
-    return _accept_dynamic_mapping(value)
-
-
-def _accept_dynamic_array(value: Any) -> list[Any]:
-    """Type a list only after the caller has checked its runtime container."""
-    return value
-
-
-def as_json_array(value: Any) -> list[Any] | None:
-    """Return a dynamic JSON/YAML array after checking its container."""
-    if not isinstance(value, list):
-        return None
-    return _accept_dynamic_array(value)
+from .json_types import (
+    JsonObject as JsonObject,
+    as_json_array as as_json_array,
+    as_json_object as as_json_object,
+)
 
 
 # The package adds one path level; the authorized workspace remains the
@@ -616,7 +585,7 @@ def validate_schema_definition(
     reporter: Reporter,
 ) -> None:
     """Check a schema while isolating incomplete jsonschema type metadata."""
-    validator_class: Any = _accept_dynamic_value(Draft202012Validator)
+    validator_class = cast(Any, Draft202012Validator)
     try:
         validator_class.check_schema(schema)
     except SchemaError as error:
@@ -629,8 +598,8 @@ def schema_validation_errors(
     instance: Any,
 ) -> list[Any]:
     """Return deterministic errors from the dynamically typed library edge."""
-    validator_class: Any = _accept_dynamic_value(Draft202012Validator)
-    format_checker: Any = _accept_dynamic_value(FormatChecker())
+    validator_class = cast(Any, Draft202012Validator)
+    format_checker = cast(Any, FormatChecker())
     validator: Any = validator_class(
         schema,
         format_checker=format_checker,
@@ -1839,11 +1808,9 @@ class _DuplicateKeyLoader(yaml.SafeLoader):
         self, node: yaml.MappingNode, deep: bool = False
     ) -> dict[Any, Any]:
         seen: dict[Any, Any] = {}
-        loader: Any = _accept_dynamic_value(self)
+        loader = cast(Any, self)
         for key_node, _ in node.value:
-            key: Any = _accept_dynamic_value(
-                loader.construct_object(key_node, deep=deep)
-            )
+            key = loader.construct_object(key_node, deep=deep)
             if key in seen:
                 raise yaml.constructor.ConstructorError(
                     "while constructing a mapping",
