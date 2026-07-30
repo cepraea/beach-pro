@@ -15,7 +15,7 @@
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Fase 0 em execução; `GIT-WORKFLOW-READY = PASS`; `BEH-01…BEH-07 = APPROVED`; fases posteriores bloqueadas por `GOVERNANCE-MODULARIZATION` |
+| Estado deste plano | Fase 0 concluída na PR #3; `GOVERNANCE-MODULARIZATION = PASS` efetivo após merge; Fase 1 bloqueada até a incorporação |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -491,6 +491,18 @@ desta fase; fases posteriores continuam condicionadas aos respectivos gates.
 ```text
 GOVERNANCE-MODULARIZATION = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+GOVERNANCE-MODULARIZATION = PASS
+```
+
+O resultado está registrado em
+`.inicio/evidencias/validate-documentation/GOVERNANCE-MODULARIZATION-20260730/`
+e é efetivo quando a PR #3 for incorporada à `main`. Até o merge, a Fase 1
+permanece bloqueada para impedir que código seja extraído a partir de
+governança ainda não canônica.
 
 Bloqueios:
 
