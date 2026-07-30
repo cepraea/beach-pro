@@ -6,6 +6,10 @@ completed_at: "2026-07-30T17:45:33Z"
 executor: "Codex, sob solicitação de Davi Sermenho"
 repository: cepraea/beach-pro
 branch: agent/modularizacao-validator-fase-2
+pull_request:
+  number: 5
+  url: "https://github.com/cepraea/beach-pro/pull/5"
+  state_at_evaluation: draft
 commit_base: 88c3bc530fd0cc2496d9b2812b31d47ef7306d5e
 worktree:
   path: "/home/davis/projetos/cepraea-beach-pro-validator-phase2"
