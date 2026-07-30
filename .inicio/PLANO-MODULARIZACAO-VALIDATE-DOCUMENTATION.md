@@ -11,11 +11,13 @@
 | Branch de ajuste do plano | `codex/ajustar-plano-modularizacao-validator` |
 | Branch de autorização operacional | `agent/autorizar-modularizacao-validator` |
 | Branch de execução da Fase 0 | `agent/modularizacao-validator-fase-0` |
+| Branch de execução da Fase 1 | `agent/modularizacao-validator-fase-1` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
+| Commit de incorporação da governança | `2bbb23c2e9dbbbe5da77203eb00266f52ac99ccf` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Fase 0 concluída na PR #3; `GOVERNANCE-MODULARIZATION = PASS` efetivo após merge; Fase 1 bloqueada até a incorporação |
+| Estado deste plano | Fase 1 concluída na PR #4; `TAR-MATERIALIZATION = PASS` no worktree verificado; Fase 2 bloqueada até o merge e a reverificação dos TARs |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -567,6 +569,20 @@ reconstrua arquivos ignorados.
 ```text
 TAR-MATERIALIZATION = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+TAR-MATERIALIZATION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/TAR-MATERIALIZATION-20260730/`.
+A execução ocorreu na branch `agent/modularizacao-validator-fase-1` e foi
+entregue pela PR #4. Os três TARs permanecem ignorados pelo Git; por isso, o
+resultado comprova o worktree registrado e não transfere os bytes para outro
+clone. A Fase 2 exige o merge da evidência e nova verificação dos hashes no
+worktree de baseline.
 
 Se qualquer fonte estiver indisponível:
 
