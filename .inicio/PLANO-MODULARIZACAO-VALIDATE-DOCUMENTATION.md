@@ -10,10 +10,12 @@
 | Branch de baseline inspecionada | `main` |
 | Branch de ajuste do plano | `codex/ajustar-plano-modularizacao-validator` |
 | Branch de autorização operacional | `agent/autorizar-modularizacao-validator` |
+| Branch de execução da Fase 0 | `agent/modularizacao-validator-fase-0` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
+| Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Execução autorizada; `GIT-WORKFLOW-READY = PASS`; `BEH-01…BEH-07 = APPROVED`; iniciar Fase 0 |
+| Estado deste plano | Fase 0 em execução; `GIT-WORKFLOW-READY = PASS`; `BEH-01…BEH-07 = APPROVED`; fases posteriores bloqueadas por `GOVERNANCE-MODULARIZATION` |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -23,11 +25,9 @@ fragmentadas produzidas durante a migração do script para pacote. Ele não
 reescreve os planos históricos. A autorização operacional é um registro
 separado, vinculado ao conteúdo incorporado no commit `6fbfdad`.
 
-Destino recomendado após aprovação:
-
-```text
-.inicio/Plano-modularizacao-validate-documentation.md
-```
+Este arquivo, em
+`.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`, é o plano ativo da
+modularização.
 
 ## 2. Objetivo
 
@@ -417,6 +417,11 @@ O worktree de execução foi criado limpo a partir de
 `main@6fbfdad55240b5b9f6d377f8b436e314d7feeb8a`; as mudanças preexistentes do
 worktree de origem foram classificadas como não relacionadas e intocáveis.
 
+Após a incorporação da autorização, a Fase 0 foi iniciada em novo worktree,
+na branch `agent/modularizacao-validator-fase-0`, a partir de
+`main@fcbc84dc19ca42c57ece96132def71c1a7420b19`. O worktree original permanece
+fora do escopo e não foi alterado.
+
 ## 10. Fase 0 — autorização e governança
 
 ### 10.1 Entrada
@@ -573,9 +578,28 @@ git ls-files --others --exclude-standard
 
 Condições:
 
-- se `git rev-parse HEAD` não retornar exatamente
-  `defaa0439e5163b159dfd18359dd31cc65f469f4`, parar e regenerar os dois
-  inventários antes de executar qualquer fase;
+- `defaa0439e5163b159dfd18359dd31cc65f469f4` permanece como fonte histórica
+  dos inventários registrados na seção 4;
+- registrar o `HEAD` real no início da baseline, sem exigir que ele seja igual
+  ao commit histórico;
+- comparar, entre o commit histórico e o `HEAD`, somente os caminhos capazes
+  de invalidar os inventários:
+
+  ```bash
+  git diff --name-status \
+    defaa0439e5163b159dfd18359dd31cc65f469f4..HEAD -- \
+    scripts/documentation/validate_documentation \
+    scripts/documentation/tests \
+    pyrightconfig.json
+  ```
+
+- se essa comparação apontar mudança, regenerar os inventários de funções,
+  classes, testes e patches antes da primeira extração;
+- commits exclusivamente documentais ou de governança não invalidam os
+  inventários, mas seu `HEAD` continua obrigatório na evidência;
+- no início da primeira extração de código, fixar no `metadata.yaml` o novo
+  commit de baseline executável. As comparações seguintes usam essa identidade
+  registrada, e não uma igualdade impossível com um commit anterior;
 - se o worktree estiver limpo, HEAD e hashes permitem reconstrução;
 - se estiver sujo, preservar `git diff --binary HEAD`;
 - arquivos não rastreados precisam ter conteúdo preservado, não apenas hash;
@@ -684,9 +708,14 @@ python3 -m scripts.documentation.validate_documentation \
 python3 -m scripts.documentation.validate_documentation \
   --gate G-FM \
   --document-id DOC-CEPRAEA-CANDIDATA-CONTEXTO \
-  --version 0.1.1 \
+  --version 0.1.2 \
   --format yaml
 ```
+
+O comando G2 conserva a versão histórica `0.1` porque o pacote de proveniência
+materializado corresponde a essa versão. A versão canônica `0.1.2` não possui
+pacote G2 registrado; essa limitação não deve ser ocultada nem corrigida dentro
+deste plano.
 
 Executar também a validação global:
 
