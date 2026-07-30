@@ -17,6 +17,7 @@ from jsonschema.exceptions import SchemaError
 import yaml
 
 from . import config
+from . import filesystem
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -44,6 +45,8 @@ CORRECTIVE_ACTION_SCHEMA = config.CORRECTIVE_ACTION_SCHEMA
 WORKFLOW_EVENT_SCHEMA = config.WORKFLOW_EVENT_SCHEMA
 APPROVAL_SCHEMA = config.APPROVAL_SCHEMA
 INTEGRITY_MANIFEST = config.INTEGRITY_MANIFEST
+workspace_path = filesystem.workspace_path
+sha256 = filesystem.sha256
 MANAGED_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".tar"}
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)+\.(?:md|ya?ml)$")
 SCHEMA_NAME_RE = re.compile(
@@ -234,24 +237,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     return not reporter.errors
 
 
-def workspace_path(raw_path: str, reporter: Reporter) -> Path | None:
-    candidate = (config.WORKSPACE_ROOT / raw_path).resolve()
-    try:
-        candidate.relative_to(config.WORKSPACE_ROOT)
-    except ValueError:
-        reporter.error(f"path escapes workspace: {raw_path}")
-        return None
-    return candidate
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def valid_name(path: Path) -> bool:
     if path.name == "README.md":
         return True
@@ -357,7 +342,7 @@ def validate_record(
         reporter.error(f"{document_id}: current_path must be a string")
         return None, None
 
-    absolute_path = workspace_path(current_path, reporter)
+    absolute_path = filesystem.workspace_path(current_path, reporter)
     if absolute_path is None:
         return document_id, current_path
     if not absolute_path.is_file():
@@ -386,7 +371,7 @@ def validate_record(
     elif not isinstance(expected_hash, str):
         reporter.error(f"{document_id}: content_hash must be a SHA-256 string")
     else:
-        actual_hash = sha256(absolute_path)
+        actual_hash = filesystem.sha256(absolute_path)
         if expected_hash != actual_hash:
             reporter.error(
                 f"{document_id}: hash mismatch for {current_path}; "
@@ -672,7 +657,7 @@ def validate_workflow_instance(reporter: Reporter) -> None:
         if isinstance(schema_path, str):
             contract_paths.add(schema_path)
     for raw_path in sorted(contract_paths):
-        path = workspace_path(raw_path, reporter)
+        path = filesystem.workspace_path(raw_path, reporter)
         if path is not None and not path.is_file():
             reporter.error(f"workflow contract not found: {raw_path}")
 
@@ -1466,11 +1451,14 @@ def validate_g1(documents: list[JsonObject], reporter: Reporter) -> None:
     if bundle is None:
         reporter.error("G1 bundle record missing")
         return
-    bundle_path = workspace_path(str(bundle.get("path", "")), reporter)
+    bundle_path = filesystem.workspace_path(
+        str(bundle.get("path", "")),
+        reporter,
+    )
     if bundle_path is None or not bundle_path.is_file():
         reporter.error("G1 preservation bundle not found")
         return
-    if sha256(bundle_path) != bundle.get("content_hash"):
+    if filesystem.sha256(bundle_path) != bundle.get("content_hash"):
         reporter.error("G1 preservation bundle hash mismatch")
         return
 
