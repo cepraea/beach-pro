@@ -6,11 +6,12 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 def _args(**overrides: object) -> validator.ValidatorArgs:
     args = validator.ValidatorArgs()
-    args.registry = validator.DEFAULT_REGISTRY
+    args.registry = config.DEFAULT_REGISTRY
     args.strict_legacy = False
     args.gate = None
     args.document_id = None
@@ -117,7 +118,7 @@ class LinkBoundaryTests(unittest.TestCase):
             if existing is not None:
                 (docs / existing).write_text("# target\n", encoding="utf-8")
             reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
+            with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_links(reporter)
             return reporter.errors
 

@@ -35,6 +35,7 @@ LEGACY_REFERENCE = "scripts/documentation/validate_documentation.py"
 MODULE_NAME = "scripts.documentation.validate_documentation"
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 class PackageLayoutTests(unittest.TestCase):
@@ -59,7 +60,7 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertTrue(callable(validator.main))
 
     def test_package_workspace_root_is_repository_root(self) -> None:
-        self.assertEqual(REPOSITORY_ROOT, validator.WORKSPACE_ROOT)
+        self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)
 
     def test_legacy_entrypoint_is_removed(self) -> None:
         self.assertTrue(PACKAGE_INIT.is_file())

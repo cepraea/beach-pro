@@ -8,6 +8,7 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 class InstanceValidationTests(unittest.TestCase):
@@ -29,7 +30,7 @@ class InstanceValidationTests(unittest.TestCase):
             workflow_path.write_text("{}\n", encoding="utf-8")
             reporter = validator.Reporter()
             with patch.object(
-                validator,
+                config,
                 "DEFAULT_WORKFLOW",
                 workflow_path,
             ):
@@ -49,7 +50,7 @@ class InstanceValidationTests(unittest.TestCase):
                 encoding="utf-8",
             )
             reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
+            with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_gate_result_instances(reporter)
 
         self.assertTrue(
@@ -59,7 +60,7 @@ class InstanceValidationTests(unittest.TestCase):
 
     def test_schema_valid_but_unknown_reference_still_fails(self) -> None:
         raw_workflow = yaml.safe_load(
-            validator.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
+            config.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
         )
         workflow = validator.as_json_object(raw_workflow)
         self.assertIsNotNone(workflow)
@@ -73,7 +74,7 @@ class InstanceValidationTests(unittest.TestCase):
 
         schema = validator.as_json_object(
             validator.load_json(
-                validator.WORKFLOW_SCHEMA,
+                config.WORKFLOW_SCHEMA,
                 validator.Reporter(),
             )
         )

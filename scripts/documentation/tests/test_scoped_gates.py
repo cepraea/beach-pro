@@ -8,6 +8,7 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 class FrontMatterScopeTests(unittest.TestCase):
@@ -101,7 +102,7 @@ class ProvenanceScopeTests(unittest.TestCase):
                 },
             ]
             reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
+            with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_g2(
                     documents,
                     reporter,
