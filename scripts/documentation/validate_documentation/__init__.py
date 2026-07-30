@@ -21,6 +21,7 @@ from .json_types import (
     as_json_array as as_json_array,
     as_json_object as as_json_object,
 )
+from .models import ValidatorArgs as ValidatorArgs
 
 
 # The package adds one path level; the authorized workspace remains the
@@ -99,18 +100,6 @@ REQUIRED_FIELDS = {
     "relationships",
 }
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
-
-
-class ValidatorArgs(argparse.Namespace):
-    """Typed command-line values consumed by the validation orchestrator."""
-
-    registry: Path
-    strict_legacy: bool
-    gate: str | None
-    document_id: str | None
-    version: str | None
-    format: str
-    result_id: str | None
 
 
 class Reporter:
