@@ -80,6 +80,7 @@ def validate_top_level(
     data: object,
     reporter: reporter_module.Reporter,
 ) -> list[JsonObject]:
+    """Validate the registry envelope without hiding malformed documents."""
     typed_data = as_json_object(data)
     if typed_data is None:
         reporter.error("registry root must be a mapping")
@@ -94,10 +95,13 @@ def validate_top_level(
         reporter.error("documents must be a list")
         return []
     documents: list[JsonObject] = []
-    for item in raw_documents:
+    for index, item in enumerate(raw_documents):
         typed_item = as_json_object(item)
-        if typed_item is not None:
-            documents.append(typed_item)
+        if typed_item is None:
+            # Continue after the error so valid siblings still receive diagnostics.
+            reporter.error(f"documents[{index}] must be a mapping")
+            continue
+        documents.append(typed_item)
     return documents
 
 

@@ -15,6 +15,29 @@ from scripts.documentation.validate_documentation import (
 
 
 class RegistryInvariantTests(unittest.TestCase):
+    def test_non_mapping_document_reports_index_and_preserves_valid_items(
+        self,
+    ) -> None:
+        reporter = reporter_module.Reporter()
+        first_document: validator.JsonObject = {"document_id": "DOC-FIRST"}
+        last_document: validator.JsonObject = {"document_id": "DOC-LAST"}
+
+        documents = registry_module.validate_top_level(
+            {
+                "schema_version": "1.0",
+                "registry": {},
+                "documents": [
+                    first_document,
+                    "INVALID-SCALAR",
+                    last_document,
+                ],
+            },
+            reporter,
+        )
+
+        self.assertEqual([first_document, last_document], documents)
+        self.assertIn("documents[1] must be a mapping", reporter.errors)
+
     def test_duplicate_document_version_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
