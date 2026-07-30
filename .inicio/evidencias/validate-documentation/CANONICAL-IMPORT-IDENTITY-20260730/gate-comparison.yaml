@@ -1,0 +1,32 @@
+baseline: BASELINE-88c3bc5-20260730T174342Z
+normalization:
+  removed_fields:
+    - evaluated_at
+    - gate_result_id
+result: pass
+comparisons:
+  - execution: G-ARCH
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+  - execution: G0
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+  - execution: G1
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+  - execution: G2_CONTEXT_0_1
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+  - execution: G-FM_CONTEXT_0_1_2
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+  - execution: GLOBAL
+    exit_code: 0
+    status: pass
+    semantically_equal: true
+differences: []

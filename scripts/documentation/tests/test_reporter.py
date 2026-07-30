@@ -1,16 +1,12 @@
 """Tests for the validator's single output boundary."""
 
 import io
-import sys
 import unittest
 from contextlib import redirect_stdout
-from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation import validate_documentation as validator
 
 
 class ReporterTests(unittest.TestCase):

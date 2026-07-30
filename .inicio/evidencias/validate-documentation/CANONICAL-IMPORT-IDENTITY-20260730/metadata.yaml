@@ -1,0 +1,46 @@
+evidence_id: CANONICAL-IMPORT-IDENTITY-20260730
+gate_id: CANONICAL-IMPORT-IDENTITY
+phase: 3
+status: pass
+effective_when: "PR #6 incorporada à branch main"
+generated_at: "2026-07-30T18:58:18Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-3
+base_commit: e8292e6368557f6dd5384a2c380c1301bfb5279d
+pull_request:
+  number: 6
+  url: "https://github.com/cepraea/beach-pro/pull/6"
+  state_at_evaluation: draft
+change_sets:
+  - commit: ab02d12
+    purpose: "identidade canônica e separação atômica dos testes"
+  - commit: 0936c1d
+    purpose: "taxonomia operacional no README e no mapa"
+structural:
+  scripts_regular_package: true
+  documentation_regular_package: true
+  dynamic_sys_path_occurrences_before: 10
+  dynamic_sys_path_occurrences_after: 0
+  short_import_occurrences_before: 10
+  short_import_occurrences_after: 0
+  unit_tests: 92
+  integration_tests: 1
+  patch_object_occurrences: 49
+validation:
+  compileall: pass
+  unittest_unit: pass
+  unittest_integration: pass
+  pyright_1_1_411:
+    status: pass
+    files_analyzed: 16
+    errors: 0
+    warnings: 0
+    information: 0
+  npm_validate: pass
+  normalized_gate_comparison: pass
+  validator_implementation_hashes_unchanged: true
+next_phase:
+  phase: 4
+  gate: FOUNDATIONS
+  status: blocked_until_pull_request_merge

@@ -121,13 +121,18 @@ Diagnósticos prioritários:
 Usar `unittest`, já adotado no repositório.
 
 ```bash
-python3 -m unittest discover scripts/documentation/tests
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
 ```
 
 - Vermelho válido: falha pela regra que será corrigida.
 - Verde válido: o mesmo cenário passa depois do patch.
 - Falha por sintaxe, import ou fixture incorreta não é teste vermelho válido.
 - Depois do teste localizado, executar a suíte completa.
+- A integração do repositório fica em `integration_tests/` e exige
+  `TAR-MATERIALIZATION = PASS`; TAR ausente não autoriza `skip`.
 
 ### 2.6 Fail-fast
 
@@ -169,7 +174,14 @@ Comandos finais de cada unidade:
 
 ```bash
 python3 -m compileall -q scripts/documentation/validate_documentation
-python3 -m unittest discover scripts/documentation/tests
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
+python3 -m unittest discover \
+  -s scripts/documentation/integration_tests \
+  -t . \
+  -v
 npx --yes pyright@1.1.411 --project pyrightconfig.json
 npm run validate
 ```
