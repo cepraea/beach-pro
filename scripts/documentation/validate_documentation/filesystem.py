@@ -9,10 +9,13 @@ from typing import TYPE_CHECKING
 from . import config
 
 if TYPE_CHECKING:
-    from . import Reporter
+    from . import reporter as reporter_module
 
 
-def workspace_path(raw_path: str, reporter: Reporter) -> Path | None:
+def workspace_path(
+    raw_path: str,
+    reporter: reporter_module.Reporter,
+) -> Path | None:
     """Resolve a repository path without allowing it to escape the workspace."""
     candidate = (config.WORKSPACE_ROOT / raw_path).resolve()
     try:

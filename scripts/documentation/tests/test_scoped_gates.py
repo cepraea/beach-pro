@@ -8,7 +8,10 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class FrontMatterScopeTests(unittest.TestCase):
@@ -29,7 +32,7 @@ class FrontMatterScopeTests(unittest.TestCase):
         ]
 
     def test_scoped_front_matter_unknown_version_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_front_matter(
             self.documents,
@@ -43,7 +46,7 @@ class FrontMatterScopeTests(unittest.TestCase):
         )
 
     def test_scoped_front_matter_ambiguous_version_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_front_matter(
             self.documents,
@@ -67,7 +70,7 @@ class ProvenanceScopeTests(unittest.TestCase):
         sources: list[validator.JsonObject] | None = None,
         claims: list[validator.JsonObject] | None = None,
         coverage: int = 0,
-    ) -> validator.Reporter:
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             provenance_root = root / "docs/evidence/provenance"
@@ -101,7 +104,7 @@ class ProvenanceScopeTests(unittest.TestCase):
                     "content_hash": "b" * 64,
                 },
             ]
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_g2(
                     documents,

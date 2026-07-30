@@ -6,7 +6,10 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 def _args(**overrides: object) -> validator.ValidatorArgs:
@@ -25,7 +28,7 @@ def _args(**overrides: object) -> validator.ValidatorArgs:
 
 class CliScopeTests(unittest.TestCase):
     def test_version_without_document_id_is_rejected(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         accepted = validator.validate_cli_args(
             _args(gate="G2", version="0.1.2"),
@@ -36,7 +39,7 @@ class CliScopeTests(unittest.TestCase):
         self.assertIn("--version requires --document-id", reporter.errors)
 
     def test_global_gate_rejects_document_scope(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         accepted = validator.validate_cli_args(
             _args(gate="G0", document_id="DOC-1"),
@@ -65,7 +68,7 @@ class DocumentResolutionTests(unittest.TestCase):
         ]
 
     def test_resolver_does_not_return_first_version(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         selected = validator.resolve_document_version(
             self.documents,
@@ -79,7 +82,7 @@ class DocumentResolutionTests(unittest.TestCase):
         self.assertEqual("b" * 64, reporter.content_hash)
 
     def test_resolver_rejects_unknown_version(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         selected = validator.resolve_document_version(
             self.documents,
@@ -93,7 +96,7 @@ class DocumentResolutionTests(unittest.TestCase):
         self.assertTrue(reporter.errors)
 
     def test_resolver_rejects_ambiguous_id(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         selected = validator.resolve_document_version(
             self.documents,
@@ -117,7 +120,7 @@ class LinkBoundaryTests(unittest.TestCase):
             (docs / "source.md").write_text(markdown, encoding="utf-8")
             if existing is not None:
                 (docs / existing).write_text("# target\n", encoding="utf-8")
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_links(reporter)
             return reporter.errors

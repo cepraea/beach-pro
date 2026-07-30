@@ -6,8 +6,8 @@ from typing import Any
 
 from scripts.documentation.validate_documentation import (
     JsonObject,
-    Reporter,
     parse_front_matter,
+    reporter as reporter_module,
     validate_feature_spec,
     validate_governed,
 )
@@ -99,8 +99,11 @@ class TestParseGoverned(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _parse(self, content: str) -> tuple[JsonObject | None, Reporter]:
-        r = Reporter()
+    def _parse(
+        self,
+        content: str,
+    ) -> tuple[JsonObject | None, reporter_module.Reporter]:
+        r = reporter_module.Reporter()
         path = _tmp(self.tmp, content)
         result = parse_front_matter(path, "governed", r)
         return result, r
@@ -187,11 +190,15 @@ class TestValidateGoverned(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _run(self, content: str, record: JsonObject) -> Reporter:
+    def _run(
+        self,
+        content: str,
+        record: JsonObject,
+    ) -> reporter_module.Reporter:
         path = _tmp(self.tmp, content)
         record = dict(record)
         record["current_path"] = str(path)
-        r = Reporter()
+        r = reporter_module.Reporter()
         validate_governed(record, r)
         return r
 
@@ -218,7 +225,7 @@ class TestValidateGoverned(unittest.TestCase):
         record.pop("responsible")
         path = _tmp(self.tmp, VALID_GOVERNED, "resp_test.md")
         record["current_path"] = str(path)
-        r = Reporter()
+        r = reporter_module.Reporter()
         validate_governed(record, r)
         self.assertTrue(
             any("responsible" in e for e in r.errors),
@@ -263,9 +270,9 @@ class TestValidateFeatureSpec(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _run(self, content: str) -> Reporter:
+    def _run(self, content: str) -> reporter_module.Reporter:
         path = _tmp(self.tmp, content)
-        r = Reporter()
+        r = reporter_module.Reporter()
         validate_feature_spec(path, r)
         return r
 

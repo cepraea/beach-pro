@@ -35,7 +35,10 @@ LEGACY_REFERENCE = "scripts/documentation/validate_documentation.py"
 MODULE_NAME = "scripts.documentation.validate_documentation"
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class PackageLayoutTests(unittest.TestCase):
@@ -58,6 +61,7 @@ class PackageLayoutTests(unittest.TestCase):
 
     def test_package_exports_main(self) -> None:
         self.assertTrue(callable(validator.main))
+        self.assertIs(validator.Reporter, reporter_module.Reporter)
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)
@@ -108,7 +112,7 @@ class EntrypointBehaviorTests(unittest.TestCase):
     def test_new_result_uses_package_evaluator_identity(self) -> None:
         output = io.StringIO()
         with redirect_stdout(output):
-            status = validator.Reporter().emit("yaml", "G1")
+            status = reporter_module.Reporter().emit("yaml", "G1")
 
         payload = yaml.safe_load(output.getvalue())
         gate_result = payload["gate_result"]

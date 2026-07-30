@@ -5,6 +5,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import (
+    reporter as reporter_module,
+)
 
 
 def _args(
@@ -33,7 +36,7 @@ def _registry_data() -> validator.JsonObject:
 
 class MainPipelineTests(unittest.TestCase):
     def test_main_stops_before_files_when_contract_stage_fails(self) -> None:
-        def fail_contract(reporter: validator.Reporter) -> None:
+        def fail_contract(reporter: reporter_module.Reporter) -> None:
             reporter.error("contract stage failed")
 
         with (
@@ -53,7 +56,7 @@ class MainPipelineTests(unittest.TestCase):
                 validator,
                 "validate_registry_integrity",
             ) as registry_stage,
-            patch.object(validator.Reporter, "emit", return_value=1) as emit,
+            patch.object(reporter_module.Reporter, "emit", return_value=1) as emit,
         ):
             status = validator.main()
 
@@ -64,7 +67,7 @@ class MainPipelineTests(unittest.TestCase):
     def test_main_stops_before_gate_when_registry_stage_fails(self) -> None:
         def fail_registry(
             documents: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            reporter: reporter_module.Reporter,
             strict_legacy: bool,
         ) -> None:
             del documents, strict_legacy
@@ -88,7 +91,7 @@ class MainPipelineTests(unittest.TestCase):
                 validator,
                 "dispatch_gate",
             ) as gate_stage,
-            patch.object(validator.Reporter, "emit", return_value=1),
+            patch.object(reporter_module.Reporter, "emit", return_value=1),
         ):
             status = validator.main()
 
@@ -99,7 +102,7 @@ class MainPipelineTests(unittest.TestCase):
         def fail_gate(
             args: validator.ValidatorArgs,
             documents: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            reporter: reporter_module.Reporter,
         ) -> None:
             del args, documents
             reporter.error("gate failed")
@@ -121,7 +124,7 @@ class MainPipelineTests(unittest.TestCase):
                 side_effect=fail_gate,
             ),
             patch.object(validator, "validate_links") as link_stage,
-            patch.object(validator.Reporter, "emit", return_value=1),
+            patch.object(reporter_module.Reporter, "emit", return_value=1),
         ):
             status = validator.main()
 
@@ -146,7 +149,7 @@ class MainPipelineTests(unittest.TestCase):
         def capture_gate(
             args: validator.ValidatorArgs,
             records: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            reporter: reporter_module.Reporter,
         ) -> None:
             del args, records
             observed["version"] = reporter.version
@@ -173,7 +176,7 @@ class MainPipelineTests(unittest.TestCase):
                 side_effect=capture_gate,
             ),
             patch.object(validator, "validate_links"),
-            patch.object(validator.Reporter, "emit", return_value=0) as emit,
+            patch.object(reporter_module.Reporter, "emit", return_value=0) as emit,
         ):
             status = validator.main()
 
@@ -186,7 +189,7 @@ class MainPipelineTests(unittest.TestCase):
         observed: validator.JsonObject = {}
 
         def capture_emit(
-            reporter: validator.Reporter,
+            reporter: reporter_module.Reporter,
             output_format: str,
             gate_id: str | None,
             result_id: str | None,
@@ -211,7 +214,7 @@ class MainPipelineTests(unittest.TestCase):
             patch.object(validator, "dispatch_gate"),
             patch.object(validator, "validate_links"),
             patch.object(
-                validator.Reporter,
+                reporter_module.Reporter,
                 "emit",
                 autospec=True,
                 side_effect=capture_emit,
@@ -226,7 +229,7 @@ class MainPipelineTests(unittest.TestCase):
 
     def test_garch_has_explicit_dispatch(self) -> None:
         args = _args("G-ARCH")
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         with patch.object(validator, "validate_garch") as garch:
             validator.dispatch_gate(args, [], reporter)
 

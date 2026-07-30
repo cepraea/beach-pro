@@ -8,7 +8,10 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 def _workflow() -> validator.JsonObject:
@@ -53,7 +56,7 @@ def _workflow() -> validator.JsonObject:
 
 class WorkflowReferenceTests(unittest.TestCase):
     def test_valid_workflow_resolves_all_references(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_workflow_references(_workflow(), reporter)
 
@@ -65,7 +68,7 @@ class WorkflowReferenceTests(unittest.TestCase):
         transition = validator.as_json_object((transitions or [None])[0])
         self.assertIsNotNone(transition)
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_workflow_references(workflow, reporter)
 
@@ -78,7 +81,7 @@ class WorkflowReferenceTests(unittest.TestCase):
         states = validator.as_json_array(workflow.get("states"))
         self.assertIsNotNone(states)
         (states or []).append({"state_id": "S0"})
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_workflow_references(workflow, reporter)
 
@@ -96,7 +99,7 @@ class IngestionConsistencyTests(unittest.TestCase):
         record_version: str = snapshot_version,
         record_hash: str = snapshot_hash,
         event_gate_ids: list[str] | None = None,
-    ) -> validator.Reporter:
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             ingestion_root = root / "docs/evidence/ingestion"
@@ -167,7 +170,7 @@ class IngestionConsistencyTests(unittest.TestCase):
                     },
                 }
             ]
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with (
                 patch.object(config, "WORKSPACE_ROOT", root),
                 patch.object(

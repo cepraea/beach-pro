@@ -8,7 +8,10 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class ApprovalCrossReferenceTests(unittest.TestCase):
@@ -24,7 +27,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
         gate_overrides: dict[str, validator.JsonObject] | None = None,
         artifact_relationships: validator.JsonObject | None = None,
         duplicate_gate_id: bool = False,
-    ) -> validator.Reporter:
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             gate_root = root / "docs/evidence/gates"
@@ -110,7 +113,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
                     }
                 )
 
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_approval_cross_references(
                     documents,

@@ -7,13 +7,16 @@ from contextlib import redirect_stdout
 import yaml
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class ReporterTests(unittest.TestCase):
     def _emit_yaml(
         self,
-        reporter: validator.Reporter,
+        reporter: reporter_module.Reporter,
         result_id: str | None = None,
     ) -> validator.JsonObject:
         output = io.StringIO()
@@ -25,7 +28,7 @@ class ReporterTests(unittest.TestCase):
         return payload or {}
 
     def test_yaml_result_matches_gate_result_schema(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         reporter.document_id = "DOC-TESTE"
         reporter.version = "0.1.0"
         reporter.content_hash = "a" * 64
@@ -37,7 +40,7 @@ class ReporterTests(unittest.TestCase):
         schema = validator.as_json_object(
             validator.load_json(
                 config.GATE_RESULT_SCHEMA,
-                validator.Reporter(),
+                reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
@@ -51,7 +54,7 @@ class ReporterTests(unittest.TestCase):
 
     def test_explicit_result_id_replaces_runtime_identity(self) -> None:
         payload = self._emit_yaml(
-            validator.Reporter(),
+            reporter_module.Reporter(),
             "GATE-RESULT-G1-AUDITORIA-001",
         )
         gate_result = validator.as_json_object(payload.get("gate_result"))
@@ -63,7 +66,7 @@ class ReporterTests(unittest.TestCase):
         )
 
     def test_failure_returns_nonzero_and_sorted_failures(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         reporter.error("zeta")
         reporter.error("alfa")
 

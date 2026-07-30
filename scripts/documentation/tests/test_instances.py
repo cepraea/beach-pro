@@ -8,12 +8,15 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class InstanceValidationTests(unittest.TestCase):
     def test_invalid_document_instance_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_document_instances(
             [{"document_id": "DOC-INCOMPLETE"}],
@@ -28,7 +31,7 @@ class InstanceValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workflow_path = Path(directory) / "workflow.yaml"
             workflow_path.write_text("{}\n", encoding="utf-8")
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(
                 config,
                 "DEFAULT_WORKFLOW",
@@ -49,7 +52,7 @@ class InstanceValidationTests(unittest.TestCase):
                 "gate_result:\n  gate_id: G1\n",
                 encoding="utf-8",
             )
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_gate_result_instances(reporter)
 
@@ -75,7 +78,7 @@ class InstanceValidationTests(unittest.TestCase):
         schema = validator.as_json_object(
             validator.load_json(
                 config.WORKFLOW_SCHEMA,
-                validator.Reporter(),
+                reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
@@ -83,7 +86,7 @@ class InstanceValidationTests(unittest.TestCase):
             schema or {},
             workflow,
         )
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         validator.validate_workflow_references(workflow or {}, reporter)
 
         self.assertEqual([], schema_errors)
