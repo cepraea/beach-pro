@@ -5,10 +5,12 @@ Guia operacional de
 O script valida o registro documental, arquivos gerenciados, contratos JSON
 Schema, evidências, workflow, links, hashes e gates do CEPRAEA BEACH PRO.
 
-O roteiro de correção incremental está em
-[`.inicio/Plano-validator.md`](../../../.inicio/Plano-validator.md). O mapa
-destinado a agentes está em
+O plano ativo de modularização está em
+[`PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`](../../../.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md).
+O mapa destinado a agentes está em
 [`MAPA-VALIDADOR-DOC.md`](MAPA-VALIDADOR-DOC.md).
+`Plano-validator.md` e `Plano-migracao-validator.md` são registros históricos,
+preservados sem governar novas extrações.
 
 ## Requisitos
 
@@ -69,7 +71,7 @@ diagnóstico; ela não deve ser persistida como evidência.
 python3 -m scripts.documentation.validate_documentation \
   --gate G-FM \
   --document-id DOC-CEPRAEA-CANDIDATA-CONTEXTO \
-  --version 0.1.1 \
+  --version 0.1.2 \
   --format yaml
 ```
 
@@ -82,12 +84,13 @@ um ID possuir várias versões, a versão é obrigatória.
 
 ## Estado e limites operacionais
 
-O plano incremental está implementado. A validação global e os gates G-ARCH,
-G0 e G1 passam no estado atual do repositório. G-FM passa para o canônico de
-contexto `0.1.1`.
+A migração do script para pacote executável está implementada. A modularização
+interna está autorizada, mas será incremental e governada pelo plano ativo. A
+validação global e os gates G-ARCH, G0 e G1 passam no estado atual do
+repositório. G-FM passa para o canônico de contexto `0.1.2`.
 
 G2 exige um pacote ligado à versão e ao hash exatos. O pacote existente cobre
-o contexto `0.1`; portanto:
+o contexto histórico `0.1`; portanto:
 
 ```bash
 python3 -m scripts.documentation.validate_documentation \
@@ -96,34 +99,47 @@ python3 -m scripts.documentation.validate_documentation \
   --version 0.1
 ```
 
-passa, enquanto solicitar `0.1.1` falha com ausência de pacote. Isso é uma
-lacuna de evidência da versão, não uma razão para relaxar o validador.
+passa, enquanto solicitar o canônico `0.1.2` falha com ausência de pacote. Isso
+é uma lacuna de evidência da versão, não uma razão para relaxar o validador.
 
 ## Arquitetura para manutenção
 
-A implementação única está em `validate_documentation/__init__.py`, mas deve
-ser editada por unidades:
+A implementação ainda está temporariamente concentrada em
+`validate_documentation/__init__.py`. Esse monólito é uma etapa transitória
+protegida pelos testes, não a arquitetura final. Nenhuma funcionalidade
+relevante nova deve ser acrescentada a ele.
 
-1. imports, constantes e tipos;
-2. `Reporter`;
-3. CLI e resolução documental;
-4. caminhos, nomes, links e hashes;
-5. registro e unicidade;
-6. schemas e instâncias;
-7. aprovações e evidências;
-8. workflow e ingestão;
-9. gates G-ARCH, G0, G1 e G2;
-10. Front Matter e G-FM;
-11. `main()` como orquestrador.
+As responsabilidades serão extraídas, uma por change set, na direção:
 
-Ao corrigir uma unidade:
+```text
+json_types / models
+        ↓
+config / filesystem / reporter
+        ↓
+contratos e domínios
+        ↓
+gates
+        ↓
+pipeline
+        ↓
+cli
+        ↓
+__init__ / __main__
+```
 
-- crie primeiro um teste vermelho;
-- aplique o menor patch possível;
-- execute o teste verde;
-- execute toda a suíte;
-- não adicione imports fora da ação central de tipagem;
-- não altere documentos ou schemas para esconder uma falha do script.
+Uma extração estrutural move código sem alterar sua regra e mantém reexports
+transitórios quando necessários. Uma mudança comportamental cita a decisão
+`BEH` autorizadora, registra RED pelo motivo esperado e somente então aplica a
+correção mínima. Os dois subciclos não são misturados no mesmo commit.
+
+`pipeline.run_validation(args, reporter) -> None` será responsável pelo
+fail-fast e não emitirá resultados. `cli.main(argv)` validará argumentos,
+chamará o pipeline e controlará a emissão única. O `__init__.py` terminará como
+fachada pública restrita a `main`.
+
+O mapa operacional identifica, para cada unidade, o arquivo que deve ser criado
+ou editado. Não se deve criar todos os módulos de uma vez nem alterar documentos
+ou schemas para esconder uma falha do código.
 
 ## Regra de qualidade
 
@@ -137,9 +153,19 @@ repetir literalmente a operação da linha seguinte.
 
 ## Testes
 
-Os testes ficam em
-[`scripts/documentation/tests/`](../tests/) e usam `unittest`. A suíte atual é
-dividida por responsabilidade:
+Os testes usam `unittest`. Durante o estado transitório, a suíte fica em
+[`scripts/documentation/tests/`](../tests/) e ainda contém um teste de entrada
+que executa G-ARCH contra o repositório. Por isso, a execução completa atual
+depende dos três TARs ignorados pelo Git descritos no plano.
+
+A Fase 3 separará:
+
+- testes unitários em `scripts/documentation/tests/`, independentes dos TARs;
+- integração do repositório em
+  `scripts/documentation/integration_tests/`, executada somente depois de
+  `TAR-MATERIALIZATION = PASS`.
+
+A suíte atual é dividida por responsabilidade:
 
 | Módulo | Escopo principal |
 | --- | --- |
@@ -158,10 +184,32 @@ a existência de uma única implementação, a localização do mapa, os consumi
 operacionais, as versões e os hashes controlados e a documentação dos testes
 neste README.
 
-### Suíte completa
+### Suíte completa no estado transitório
 
 ```bash
-python3 -m unittest discover scripts/documentation/tests
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -v
+```
+
+### Suítes depois da separação da Fase 3
+
+Unidade:
+
+```bash
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
+```
+
+Integração, com os TARs materializados:
+
+```bash
+python3 -m unittest discover \
+  -s scripts/documentation/integration_tests \
+  -t . \
+  -v
 ```
 
 ### Testes da migração para pacote
@@ -213,7 +261,7 @@ python3 -m compileall -q scripts/documentation/validate_documentation
 O repositório usa `pyrightconfig.json` com Pylance/Pyright em modo `strict`:
 
 ```bash
-npx --yes pyright
+npx --yes pyright@1.1.411 --project pyrightconfig.json
 ```
 
 - [Pylance: type checking mode](https://github.com/microsoft/pylance-release/blob/main/docs/settings/python_analysis_typeCheckingMode.md)
@@ -221,6 +269,12 @@ npx --yes pyright
 - [Python: type hints](https://docs.python.org/3/library/typing.html)
 
 A verificação deve permanecer com zero diagnósticos e sem supressões genéricas.
+
+Depois de qualquer change set de código ou configuração, executar também:
+
+```bash
+npm run validate
+```
 
 ## Segurança
 
