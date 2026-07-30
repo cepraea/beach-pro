@@ -1,0 +1,3 @@
+branch=agent/modularizacao-validator-fase-2
+tracking=origin/main
+porcelain_v1=(empty)

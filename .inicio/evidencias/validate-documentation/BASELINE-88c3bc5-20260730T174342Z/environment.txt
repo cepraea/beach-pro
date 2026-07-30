@@ -1,0 +1,5 @@
+Linux Serrmenho 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+Python 3.12.3
+Node.js v24.14.1
+npm 11.11.0
+Pyright 1.1.411

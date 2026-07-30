@@ -1,0 +1,34 @@
+baseline_id: BASELINE-88c3bc5-20260730T174342Z
+source_commit: 88c3bc530fd0cc2496d9b2812b31d47ef7306d5e
+evaluated_at: "2026-07-30T17:45:33Z"
+gates:
+  - gate_id: BASELINE-CODE
+    status: pass
+    evidence:
+      - compile.txt
+      - pyright.json
+      - tests-unit.txt
+      - functions.tsv
+      - api-publica.tsv
+      - patches.tsv
+  - gate_id: BASELINE-INTEGRATION
+    status: pass
+    evidence:
+      - tar-manifest.sha256
+      - tar-acquisition.yaml
+      - tests-integration.txt
+      - gates/raw/g-arch.yaml
+  - gate_id: BASELINE-VALIDATE-DOCUMENTATION
+    status: pass
+    evidence:
+      - gates/raw
+      - gates/normalized
+      - hashes.sha256
+  - gate_id: BASELINE-NPM-VALIDATE
+    status: pass
+    evidence:
+      - npm-validate.txt
+failures: []
+next_actions:
+  - "Incorporar a evidência por pull request."
+  - "Executar a Fase 3 sem alterar comportamento documental."
