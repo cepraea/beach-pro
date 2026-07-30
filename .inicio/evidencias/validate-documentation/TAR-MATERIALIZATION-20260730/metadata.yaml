@@ -24,6 +24,7 @@ materialization:
   git_ignored_files: 3
 validation:
   sha256_manifest: pass
+  npm_validate: pass
   unittest:
     status: pass
     discovered: 92

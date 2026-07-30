@@ -56,3 +56,17 @@ exit code: 0
 
 Não houve alteração de código, schema ou regra documental para alcançar esses
 resultados.
+
+## Porta geral do projeto
+
+Após `npm ci`, a porta obrigatória também foi executada:
+
+```text
+npm run validate
+exit code: 0
+```
+
+ESLint, Markdownlint governado pelo script, validação do workspace, TypeScript,
+Vitest e build da PWA passaram. O npm informou dez vulnerabilidades de
+severidade alta na resolução existente do lockfile; nenhuma dependência foi
+alterada porque a remediação desse inventário não pertence ao escopo da Fase 1.
