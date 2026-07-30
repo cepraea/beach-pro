@@ -1,0 +1,48 @@
+evidence_id: REPORTER-EXTRACTION-20260730
+gate_id: REPORTER-EXTRACTION
+phase: 5
+status: pass
+effective_when: "PR #8 incorporada à branch main"
+generated_at: "2026-07-30T20:27:06Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-5
+base_commit: 5d1f55aec9a5551292c03d5b76598285750c564d
+evaluated_commit: 0c325fb
+pull_request:
+  number: 8
+  url: "https://github.com/cepraea/beach-pro/pull/8"
+  state_at_evaluation: draft
+change_sets:
+  - commit: 0c325fb
+    purpose: "extrair Reporter e migrar consumidores e patches"
+structural:
+  module: reporter.py
+  monolith_lines_before: 2145
+  monolith_lines_after: 2072
+  reporter_methods_moved: 4
+  unit_tests: 98
+  integration_tests: 1
+  reporter_emit_patches_migrated: 5
+  reporter_emit_patches_at_legacy_owner: 0
+  transient_reexport_preserved: true
+behavior:
+  intentional_changes: 0
+  output_contract_preserved: true
+validation:
+  compileall: pass
+  unittest_unit: pass
+  unittest_integration: pass
+  pyright_1_1_411:
+    status: pass
+    errors: 0
+    warnings: 0
+    information: 0
+  npm_validate: pass
+  normalized_gate_comparison: pass
+next_phase:
+  phase: 6
+  gates:
+    - CONTRACTS-EXTRACTION
+    - REGISTRY-EXTRACTION
+  status: blocked_until_pull_request_merge

@@ -14,6 +14,8 @@
 | Branch de execução da Fase 1 | `agent/modularizacao-validator-fase-1` |
 | Branch de execução da Fase 2 | `agent/modularizacao-validator-fase-2` |
 | Branch de execução da Fase 3 | `agent/modularizacao-validator-fase-3` |
+| Branch de execução da Fase 4 | `agent/modularizacao-validator-fase-4` |
+| Branch de execução da Fase 5 | `agent/modularizacao-validator-fase-5` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
@@ -21,7 +23,7 @@
 | Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
 | Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Fase 3 incorporada; Fase 4 implementada na PR #7 com gates locais aprovados, efetivos após merge |
+| Estado deste plano | Fase 4 incorporada; Fase 5 implementada na PR #8 com gate local aprovado, efetivo após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -1032,8 +1034,8 @@ WORKSPACE-DISCOVERY = PASS
 Evidência:
 `.inicio/evidencias/validate-documentation/FOUNDATIONS-WORKSPACE-DISCOVERY-20260730/`.
 O resultado foi produzido na branch
-`agent/modularizacao-validator-fase-4` e entregue pela PR #7. Os gates tornam-se
-efetivos após o merge; até lá, a Fase 5 permanece bloqueada.
+`agent/modularizacao-validator-fase-4` e incorporado pela PR #7. O merge
+materializou os gates e desbloqueou a Fase 5.
 
 ## 15. Fase 5 — Reporter
 
@@ -1062,6 +1064,18 @@ Não realizar alterações comportamentais em 5A.
 ```text
 REPORTER-EXTRACTION = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+REPORTER-EXTRACTION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/REPORTER-EXTRACTION-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-5` e entregue pela PR #8. O gate torna-se
+efetivo após o merge; até lá, a Fase 6 permanece bloqueada.
 
 ## 16. Fase 6 — contratos e registro
 

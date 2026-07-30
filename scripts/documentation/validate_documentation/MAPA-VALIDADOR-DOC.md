@@ -239,7 +239,8 @@ consumidor consulta configuração mutável por `config.WORKSPACE_ROOT`.
 
 ### Unidade 2 — Reporter
 
-**Origem atual:** `class Reporter` no `__init__.py`.
+**Estado atual:** extraída na Fase 5. O pacote mantém somente o reexport
+transitório necessário até a contração autorizada da fachada.
 
 **Destino:** `reporter.py`.
 
@@ -258,7 +259,8 @@ consumidor consulta configuração mutável por `config.WORKSPACE_ROOT`.
 compatíveis.
 
 **Aceitação:** schema do resultado passa; sucesso retorna `0`; falha retorna
-`1`; IDs persistidos não colidem.
+`1`; IDs persistidos não colidem; consumidores e patches consultam
+`reporter.Reporter`.
 
 ### Unidade 3 — CLI
 

@@ -7,12 +7,15 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
-from scripts.documentation.validate_documentation import config
+from scripts.documentation.validate_documentation import (
+    config,
+    reporter as reporter_module,
+)
 
 
 class RegistryInvariantTests(unittest.TestCase):
     def test_duplicate_document_version_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "1.0.0")],
@@ -25,7 +28,7 @@ class RegistryInvariantTests(unittest.TestCase):
         )
 
     def test_two_distinct_versions_are_accepted(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "2.0.0")],
@@ -36,7 +39,7 @@ class RegistryInvariantTests(unittest.TestCase):
         self.assertEqual([], reporter.errors)
 
     def test_duplicate_path_casefold_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
         validator.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-2", "1.0.0")],
@@ -51,7 +54,7 @@ class RegistryInvariantTests(unittest.TestCase):
     def _validate_record(
         self,
         overrides: validator.JsonObject,
-    ) -> validator.Reporter:
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             relative_path = "docs/evidence/test-document.md"
@@ -79,7 +82,7 @@ class RegistryInvariantTests(unittest.TestCase):
                 "relationships": {},
             }
             record.update(overrides)
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_record(record, reporter, False)
             return reporter
