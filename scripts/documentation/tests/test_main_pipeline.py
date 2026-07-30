@@ -7,6 +7,7 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     contracts as contracts_module,
+    registry as registry_module,
     reporter as reporter_module,
 )
 
@@ -43,7 +44,7 @@ class MainPipelineTests(unittest.TestCase):
         with (
             patch.object(validator, "parse_args", return_value=_args()),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
@@ -54,7 +55,7 @@ class MainPipelineTests(unittest.TestCase):
             ),
             patch.object(validator, "validate_instances"),
             patch.object(
-                validator,
+                registry_module,
                 "validate_registry_integrity",
             ) as registry_stage,
             patch.object(reporter_module.Reporter, "emit", return_value=1) as emit,
@@ -77,14 +78,14 @@ class MainPipelineTests(unittest.TestCase):
         with (
             patch.object(validator, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
             patch.object(validator, "validate_instances"),
             patch.object(
-                validator,
+                registry_module,
                 "validate_registry_integrity",
                 side_effect=fail_registry,
             ),
@@ -111,14 +112,14 @@ class MainPipelineTests(unittest.TestCase):
         with (
             patch.object(validator, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
             patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
                 validator,
                 "dispatch_gate",
@@ -163,14 +164,14 @@ class MainPipelineTests(unittest.TestCase):
                 return_value=_args("G2", "DOC-1", "2.0.0"),
             ),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), documents),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
             patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
                 validator,
                 "dispatch_gate",
@@ -204,14 +205,14 @@ class MainPipelineTests(unittest.TestCase):
         with (
             patch.object(validator, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
             patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
             patch.object(validator, "dispatch_gate"),
             patch.object(validator, "validate_links"),
             patch.object(

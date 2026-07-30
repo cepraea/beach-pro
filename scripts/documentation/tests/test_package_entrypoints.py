@@ -38,6 +38,7 @@ from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
     contracts as contracts_module,
+    registry as registry_module,
     reporter as reporter_module,
 )
 
@@ -79,6 +80,30 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_yaml_instance,
             contracts_module.validate_yaml_instance,
+        )
+        self.assertIs(validator.valid_name, registry_module.valid_name)
+        self.assertIs(
+            validator.validate_top_level,
+            registry_module.validate_top_level,
+        )
+        self.assertIs(
+            validator.resolve_document_version,
+            registry_module.resolve_document_version,
+        )
+        self.assertIs(validator.validate_record, registry_module.validate_record)
+        self.assertIs(
+            validator.validate_uniqueness,
+            registry_module.validate_uniqueness,
+        )
+        self.assertIs(validator.managed_files, registry_module.managed_files)
+        self.assertIs(
+            validator.validate_canonical_registry,
+            registry_module.validate_canonical_registry,
+        )
+        self.assertIs(validator.load_registry, registry_module.load_registry)
+        self.assertIs(
+            validator.validate_registry_integrity,
+            registry_module.validate_registry_integrity,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

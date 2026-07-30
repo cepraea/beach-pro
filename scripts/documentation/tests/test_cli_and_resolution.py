@@ -8,6 +8,7 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    registry as registry_module,
     reporter as reporter_module,
 )
 
@@ -70,7 +71,7 @@ class DocumentResolutionTests(unittest.TestCase):
     def test_resolver_does_not_return_first_version(self) -> None:
         reporter = reporter_module.Reporter()
 
-        selected = validator.resolve_document_version(
+        selected = registry_module.resolve_document_version(
             self.documents,
             "DOC-1",
             "0.1.2",
@@ -84,7 +85,7 @@ class DocumentResolutionTests(unittest.TestCase):
     def test_resolver_rejects_unknown_version(self) -> None:
         reporter = reporter_module.Reporter()
 
-        selected = validator.resolve_document_version(
+        selected = registry_module.resolve_document_version(
             self.documents,
             "DOC-1",
             "9.9.9",
@@ -98,7 +99,7 @@ class DocumentResolutionTests(unittest.TestCase):
     def test_resolver_rejects_ambiguous_id(self) -> None:
         reporter = reporter_module.Reporter()
 
-        selected = validator.resolve_document_version(
+        selected = registry_module.resolve_document_version(
             self.documents,
             "DOC-1",
             None,
