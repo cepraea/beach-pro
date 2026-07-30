@@ -1,0 +1,12 @@
+exit_code: 0
+gate_result:
+  gate_id: G-ARCH
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evaluator: scripts.documentation.validate_documentation
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

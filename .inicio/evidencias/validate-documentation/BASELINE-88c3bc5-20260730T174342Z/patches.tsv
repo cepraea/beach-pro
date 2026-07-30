@@ -1,0 +1,65 @@
+file	line	target	attribute
+test_approvals.py	116	validator	WORKSPACE_ROOT
+test_cli_and_resolution.py	123	validator	WORKSPACE_ROOT
+test_instances.py	34	validator	DEFAULT_WORKFLOW
+test_instances.py	55	validator	WORKSPACE_ROOT
+test_main_pipeline.py	43	validator	parse_args
+test_main_pipeline.py	44	validator	load_registry
+test_main_pipeline.py	49	validator	validate_contract_schemas
+test_main_pipeline.py	54	validator	validate_instances
+test_main_pipeline.py	55	validator	validate_registry_integrity
+test_main_pipeline.py	59	validator.Reporter	emit
+test_main_pipeline.py	77	validator	parse_args
+test_main_pipeline.py	78	validator	load_registry
+test_main_pipeline.py	83	validator	validate_contract_schemas
+test_main_pipeline.py	84	validator	validate_instances
+test_main_pipeline.py	85	validator	validate_registry_integrity
+test_main_pipeline.py	90	validator	dispatch_gate
+test_main_pipeline.py	94	validator.Reporter	emit
+test_main_pipeline.py	111	validator	parse_args
+test_main_pipeline.py	112	validator	load_registry
+test_main_pipeline.py	117	validator	validate_contract_schemas
+test_main_pipeline.py	118	validator	validate_instances
+test_main_pipeline.py	119	validator	validate_registry_integrity
+test_main_pipeline.py	120	validator	validate_canonical_registry
+test_main_pipeline.py	121	validator	dispatch_gate
+test_main_pipeline.py	126	validator	validate_links
+test_main_pipeline.py	127	validator.Reporter	emit
+test_main_pipeline.py	159	validator	parse_args
+test_main_pipeline.py	164	validator	load_registry
+test_main_pipeline.py	169	validator	validate_contract_schemas
+test_main_pipeline.py	170	validator	validate_instances
+test_main_pipeline.py	171	validator	validate_registry_integrity
+test_main_pipeline.py	172	validator	validate_canonical_registry
+test_main_pipeline.py	173	validator	dispatch_gate
+test_main_pipeline.py	178	validator	validate_links
+test_main_pipeline.py	179	validator.Reporter	emit
+test_main_pipeline.py	204	validator	parse_args
+test_main_pipeline.py	205	validator	load_registry
+test_main_pipeline.py	210	validator	validate_contract_schemas
+test_main_pipeline.py	211	validator	validate_instances
+test_main_pipeline.py	212	validator	validate_registry_integrity
+test_main_pipeline.py	213	validator	validate_canonical_registry
+test_main_pipeline.py	214	validator	dispatch_gate
+test_main_pipeline.py	215	validator	validate_links
+test_main_pipeline.py	216	validator.Reporter	emit
+test_main_pipeline.py	233	validator	validate_garch
+test_registry_invariants.py	85	validator	WORKSPACE_ROOT
+test_scoped_gates.py	107	validator	WORKSPACE_ROOT
+test_workflow_and_ingestion.py	174	validator	WORKSPACE_ROOT
+test_workflow_and_ingestion.py	175	validator	INTEGRITY_MANIFEST
+
+group	count
+DEFAULT_WORKFLOW	1
+INTEGRITY_MANIFEST	1
+WORKSPACE_ROOT	6
+dispatch_gate	4
+emit	5
+load_registry	5
+parse_args	5
+validate_canonical_registry	3
+validate_contract_schemas	5
+validate_garch	1
+validate_instances	5
+validate_links	3
+validate_registry_integrity	5

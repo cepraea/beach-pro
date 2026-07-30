@@ -1,0 +1,4 @@
+command: python3 -m compileall -q scripts/documentation/validate_documentation scripts/documentation/tests
+exit_code: 0
+stdout: (empty)
+stderr: (empty)

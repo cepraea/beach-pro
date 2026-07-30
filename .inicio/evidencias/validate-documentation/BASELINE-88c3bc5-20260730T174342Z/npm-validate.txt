@@ -1,0 +1,27 @@
+> cepraea-beach-pro@0.1.0 validate
+> npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build
+
+eslint: PASS
+
+markdownlint-cli2 v0.23.2
+Finding: .inicio/VSCODE.md .inicio/evidencias/*.md RELATORIO-VSCODE.md
+Summary: 0 issues in 0 files
+
+quality:workspace:
+Validação do Workspace aprovada.
+
+typecheck:
+tsc --noEmit
+PASS
+
+vitest:
+Test Files  1 passed (1)
+Tests       1 passed (1)
+
+build:
+vite v6.4.3
+28 modules transformed
+PWA generateSW
+PASS
+
+exit_code: 0
