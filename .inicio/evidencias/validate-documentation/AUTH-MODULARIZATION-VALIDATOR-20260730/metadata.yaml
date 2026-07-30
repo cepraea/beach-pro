@@ -1,0 +1,68 @@
+schema_version: "1.0"
+execution:
+  execution_id: AUTH-MODULARIZATION-VALIDATOR-20260730
+  recorded_at: "2026-07-30T12:23:28Z"
+  plan_path: .inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md
+  authorization_id: AUTH-MODULARIZATION-VALIDATOR-20260730-001
+  artifacts:
+    authorization: authorization.yaml
+    impact_analysis: impact-analysis.md
+    git_state: git-state.md
+    validation: validation.md
+git_workflow_gate:
+  gate_id: GIT-WORKFLOW-READY
+  status: pass
+  base_branch: main
+  base_commit: 6fbfdad55240b5b9f6d377f8b436e314d7feeb8a
+  execution_branch: agent/autorizar-modularizacao-validator
+  implementation_branch_required: true
+  isolated_worktree: true
+  initial_execution_worktree_clean: true
+  delivery:
+    type: pull_request
+    base_branch: main
+    draft_by_default: true
+source_worktree:
+  state: dirty_and_preserved
+  untracked_file_count: 61
+  classification:
+    - path: RELATORIO-VSCODE.md
+      state: deleted
+      classification: unrelated_untouchable
+    - path: .inicio/RELATORIO-VSCODE.md
+      state: untracked
+      classification: unrelated_untouchable
+    - path: .inicio/VALIDAR-MOLDURA.md
+      state: untracked
+      classification: unrelated_untouchable
+    - path: .inicio/archs/
+      state: untracked_recursive
+      classification: unrelated_untouchable
+    - path: AGENTS.md
+      state: untracked
+      classification: instruction_source_untouchable
+    - path: BEACH HANDBALL/
+      state: untracked_recursive
+      classification: unrelated_untouchable
+scope:
+  included:
+    - autorização operacional de BEH-01 a BEH-07
+    - evidência de GIT-WORKFLOW-READY
+    - análise de impacto das decisões
+    - atualização do estado do plano
+  excluded:
+    - alterações preexistentes do source_worktree
+    - implementação dos módulos do validador
+    - correções das quatro limitações residuais
+    - segredos e .env.local
+authorization_status:
+  BEH-01: approved
+  BEH-02: approved
+  BEH-03: approved
+  BEH-04: approved
+  BEH-05: approved
+  BEH-06: approved
+  BEH-07: approved
+plan_execution:
+  status: unlocked_for_phase_0
+  next_gate: GOVERNANCE-MODULARIZATION

@@ -9,17 +9,19 @@
 | Repositório | `cepraea/beach-pro` |
 | Branch de baseline inspecionada | `main` |
 | Branch de ajuste do plano | `codex/ajustar-plano-modularizacao-validator` |
+| Branch de autorização operacional | `agent/autorizar-modularizacao-validator` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
+| Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Apto para aprovação; implementação bloqueada até `GIT-WORKFLOW-READY` e `BEH-01…BEH-07` |
+| Estado deste plano | Execução autorizada; `GIT-WORKFLOW-READY = PASS`; `BEH-01…BEH-07 = APPROVED`; iniciar Fase 0 |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
 
 Este documento substitui, para a futura modularização, as recomendações
 fragmentadas produzidas durante a migração do script para pacote. Ele não
-reescreve os planos históricos e não autoriza por si só alterações no
-repositório.
+reescreve os planos históricos. A autorização operacional é um registro
+separado, vinculado ao conteúdo incorporado no commit `6fbfdad`.
 
 Destino recomendado após aprovação:
 
@@ -401,6 +403,20 @@ Aceitação:
 
 Qualquer falha bloqueia a Fase 0.
 
+Estado materializado em 2026-07-30:
+
+```text
+GIT-WORKFLOW-READY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/metadata.yaml`.
+Estado Git detalhado:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/git-state.md`.
+O worktree de execução foi criado limpo a partir de
+`main@6fbfdad55240b5b9f6d377f8b436e314d7feeb8a`; as mudanças preexistentes do
+worktree de origem foram classificadas como não relacionadas e intocáveis.
+
 ## 10. Fase 0 — autorização e governança
 
 ### 10.1 Entrada
@@ -444,6 +460,27 @@ Qualquer falha bloqueia a Fase 0.
 8. Registrar que branch e pull request são obrigatórios; commit e push somente
    integram a execução quando necessários para entregar o pull request.
 
+Estado das decisões em 2026-07-30:
+
+```text
+BEH-01 = APPROVED
+BEH-02 = APPROVED
+BEH-03 = APPROVED
+BEH-04 = APPROVED
+BEH-05 = APPROVED
+BEH-06 = APPROVED
+BEH-07 = APPROVED
+```
+
+Autorização:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/authorization.yaml`.
+Análise de impacto:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/impact-analysis.md`.
+
+Esses registros desbloqueiam a execução da Fase 0. O gate
+`GOVERNANCE-MODULARIZATION` permanece pendente até concluir as demais ações
+desta fase; fases posteriores continuam condicionadas aos respectivos gates.
+
 ### 10.3 Gate de saída da Fase 0
 
 ```text
@@ -455,7 +492,7 @@ Bloqueios:
 - plano não aprovado;
 - mapa ainda proíbe movimentação;
 - README ainda descreve somente o monólito;
-- tentativa de reescrever fatos históricos.
+- tentativa de reescrever fatos históricos;
 - qualquer decisão entre `BEH-01` e `BEH-07` ausente, ambígua ou sem aprovador.
 
 ## 11. Fase 1 — materialização dos TARs
