@@ -13,13 +13,15 @@
 | Branch de execução da Fase 0 | `agent/modularizacao-validator-fase-0` |
 | Branch de execução da Fase 1 | `agent/modularizacao-validator-fase-1` |
 | Branch de execução da Fase 2 | `agent/modularizacao-validator-fase-2` |
+| Branch de execução da Fase 3 | `agent/modularizacao-validator-fase-3` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
 | Commit de incorporação da governança | `2bbb23c2e9dbbbe5da77203eb00266f52ac99ccf` |
 | Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
+| Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
 | Data da validação | 2026-07-30 |
-| Estado deste plano | Fase 2 concluída na PR #5; quatro gates `BASELINE-* = PASS`; Fase 3 bloqueada até a incorporação da baseline |
+| Estado deste plano | Fase 3 concluída na PR #6; `CANONICAL-IMPORT-IDENTITY = PASS` efetivo após merge; Fase 4 bloqueada até a incorporação |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -913,6 +915,18 @@ Esperado:
 ```text
 CANONICAL-IMPORT-IDENTITY = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+CANONICAL-IMPORT-IDENTITY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/CANONICAL-IMPORT-IDENTITY-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-3` e entregue pela PR #6. Ele se torna
+canônico após o merge; até lá, a Fase 4 permanece bloqueada.
 
 Aceitação adicional:
 
