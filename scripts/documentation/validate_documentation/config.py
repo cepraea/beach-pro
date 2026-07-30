@@ -5,9 +5,51 @@ from __future__ import annotations
 from pathlib import Path
 
 
-# This fixed depth preserves the behavior authorized for the current package
-# layout. BEH-01 replaces it with marker-based discovery in the next change set.
-WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
+_WORKSPACE_FILE_MARKERS = (
+    Path("docs/registry/registro-documentos.yaml"),
+    Path("docs/registry/workflow-documentacao.yaml"),
+    Path("docs/contracts/schemas/documento.schema.json"),
+)
+_WORKSPACE_DIRECTORY_MARKERS = (
+    Path("scripts/documentation/validate_documentation"),
+)
+_WORKSPACE_MARKERS = (
+    *_WORKSPACE_FILE_MARKERS,
+    *_WORKSPACE_DIRECTORY_MARKERS,
+)
+
+
+def find_workspace_root(start: Path | None = None) -> Path:
+    """Find the nearest complete documentation workspace.
+
+    Requiring the registry, workflow, base schema, and validator package
+    together prevents an unrelated ancestor with a generic ``docs`` directory
+    from being accepted as the repository root.
+    """
+    current = (start if start is not None else Path(__file__)).resolve()
+    if current.is_file():
+        current = current.parent
+
+    for candidate in (current, *current.parents):
+        has_files = all(
+            (candidate / marker).is_file()
+            for marker in _WORKSPACE_FILE_MARKERS
+        )
+        has_directories = all(
+            (candidate / marker).is_dir()
+            for marker in _WORKSPACE_DIRECTORY_MARKERS
+        )
+        if has_files and has_directories:
+            return candidate
+
+    markers = ", ".join(str(marker) for marker in _WORKSPACE_MARKERS)
+    raise RuntimeError(
+        "Não foi possível localizar o workspace documental. "
+        f"Marcadores obrigatórios: {markers}"
+    )
+
+
+WORKSPACE_ROOT = find_workspace_root()
 DEFAULT_REGISTRY = WORKSPACE_ROOT / "docs/registry/registro-documentos.yaml"
 DEFAULT_WORKFLOW = WORKSPACE_ROOT / "docs/registry/workflow-documentacao.yaml"
 SCHEMA_ROOT = WORKSPACE_ROOT / "docs/contracts/schemas"
