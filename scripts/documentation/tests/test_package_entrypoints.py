@@ -37,6 +37,7 @@ MODULE_NAME = "scripts.documentation.validate_documentation"
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    contracts as contracts_module,
     reporter as reporter_module,
 )
 
@@ -62,6 +63,23 @@ class PackageLayoutTests(unittest.TestCase):
     def test_package_exports_main(self) -> None:
         self.assertTrue(callable(validator.main))
         self.assertIs(validator.Reporter, reporter_module.Reporter)
+        self.assertIs(validator.load_json, contracts_module.load_json)
+        self.assertIs(
+            validator.validate_schema_definition,
+            contracts_module.validate_schema_definition,
+        )
+        self.assertIs(
+            validator.schema_validation_errors,
+            contracts_module.schema_validation_errors,
+        )
+        self.assertIs(
+            validator.validate_contract_schemas,
+            contracts_module.validate_contract_schemas,
+        )
+        self.assertIs(
+            validator.validate_yaml_instance,
+            contracts_module.validate_yaml_instance,
+        )
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)

@@ -11,11 +11,10 @@ import tarfile
 from typing import Any, cast
 from urllib.parse import unquote, urlparse
 
-from jsonschema import Draft202012Validator, FormatChecker
-from jsonschema.exceptions import SchemaError
 import yaml
 
 from . import config
+from . import contracts as contracts_module
 from . import filesystem
 from . import reporter as reporter_module
 from .json_types import (
@@ -48,6 +47,11 @@ INTEGRITY_MANIFEST = config.INTEGRITY_MANIFEST
 workspace_path = filesystem.workspace_path
 sha256 = filesystem.sha256
 Reporter = reporter_module.Reporter
+load_json = contracts_module.load_json
+validate_schema_definition = contracts_module.validate_schema_definition
+schema_validation_errors = contracts_module.schema_validation_errors
+validate_contract_schemas = contracts_module.validate_contract_schemas
+validate_yaml_instance = contracts_module.validate_yaml_instance
 MANAGED_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".tar"}
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)+\.(?:md|ya?ml)$")
 SCHEMA_NAME_RE = re.compile(
@@ -477,70 +481,22 @@ def validate_canonical_registry(
         )
 
 
-def load_json(path: Path, reporter: Reporter) -> Any:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        reporter.error(
-            "cannot load JSON "
-            f"{path.relative_to(config.WORKSPACE_ROOT)}: {error}"
-        )
-        return None
-
-
-def validate_schema_definition(
-    schema: JsonObject,
-    schema_path: Path,
-    reporter: Reporter,
-) -> None:
-    """Check a schema while isolating incomplete jsonschema type metadata."""
-    validator_class = cast(Any, Draft202012Validator)
-    try:
-        validator_class.check_schema(schema)
-    except SchemaError as error:
-        relative = schema_path.relative_to(config.WORKSPACE_ROOT)
-        reporter.error(f"invalid JSON Schema {relative}: {error.message}")
-
-
-def schema_validation_errors(
-    schema: JsonObject,
-    instance: Any,
-) -> list[Any]:
-    """Return deterministic errors from the dynamically typed library edge."""
-    validator_class = cast(Any, Draft202012Validator)
-    format_checker = cast(Any, FormatChecker())
-    validator: Any = validator_class(
-        schema,
-        format_checker=format_checker,
-    )
-    errors: list[Any] = list(validator.iter_errors(instance))
-    return sorted(errors, key=lambda item: list(item.absolute_path))
-
-
-def validate_contract_schemas(reporter: Reporter) -> None:
-    if not config.SCHEMA_ROOT.is_dir():
-        reporter.error("schema directory not found")
-        return
-    for schema_path in sorted(config.SCHEMA_ROOT.glob("*.schema.json")):
-        schema = as_json_object(load_json(schema_path, reporter))
-        if schema is None:
-            continue
-        validate_schema_definition(schema, schema_path, reporter)
-
-
 def validate_document_instances(
     documents: list[JsonObject],
     reporter: Reporter,
 ) -> None:
     """Validate registry records against the document contract."""
     document_schema = as_json_object(
-        load_json(config.DOCUMENT_SCHEMA, reporter)
+        contracts_module.load_json(config.DOCUMENT_SCHEMA, reporter)
     )
     if document_schema is None:
         return
     for record in documents:
         document_id = record.get("document_id", "<missing-id>")
-        for error in schema_validation_errors(document_schema, record):
+        for error in contracts_module.schema_validation_errors(
+            document_schema,
+            record,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 f"{document_id}: document contract failure at "
@@ -551,7 +507,7 @@ def validate_document_instances(
 def validate_workflow_instance(reporter: Reporter) -> None:
     """Validate workflow shape before resolving its internal references."""
     workflow_schema = as_json_object(
-        load_json(config.WORKFLOW_SCHEMA, reporter)
+        contracts_module.load_json(config.WORKFLOW_SCHEMA, reporter)
     )
     try:
         workflow_data = yaml.safe_load(
@@ -561,7 +517,10 @@ def validate_workflow_instance(reporter: Reporter) -> None:
         reporter.error(f"cannot load processable workflow: {error}")
         return
     if workflow_schema is not None:
-        for error in schema_validation_errors(workflow_schema, workflow_data):
+        for error in contracts_module.schema_validation_errors(
+            workflow_schema,
+            workflow_data,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 "workflow contract failure at "
@@ -592,7 +551,7 @@ def validate_workflow_instance(reporter: Reporter) -> None:
 def validate_gate_result_instances(reporter: Reporter) -> None:
     """Validate each persisted gate result independently of approvals."""
     gate_result_schema = as_json_object(
-        load_json(config.GATE_RESULT_SCHEMA, reporter)
+        contracts_module.load_json(config.GATE_RESULT_SCHEMA, reporter)
     )
     if gate_result_schema is None:
         return
@@ -611,7 +570,7 @@ def validate_gate_result_instances(reporter: Reporter) -> None:
             if result_mapping is not None
             else None
         )
-        for error in schema_validation_errors(
+        for error in contracts_module.schema_validation_errors(
             gate_result_schema,
             instance,
         ):
@@ -632,7 +591,7 @@ def validate_evidence_instances(
     Schema validation proves local structure only. Cross-reference validators
     remain mandatory because a well-formed ID can still point to no artifact.
     """
-    validate_yaml_instance(
+    contracts_module.validate_yaml_instance(
         config.INTEGRITY_MANIFEST,
         config.INTEGRITY_MANIFEST_SCHEMA,
         None,
@@ -641,7 +600,7 @@ def validate_evidence_instances(
     )
     ingestion_root = config.WORKSPACE_ROOT / "docs/evidence/ingestion"
     for ingestion_path in sorted(ingestion_root.glob("*.yaml")):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             ingestion_path,
             config.INGESTION_SCHEMA,
             "ingestion_event",
@@ -655,7 +614,7 @@ def validate_evidence_instances(
             "divergencia-*.yaml"
         )
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             divergence_path,
             config.DIVERGENCE_SCHEMA,
             "integrity_divergence",
@@ -665,7 +624,7 @@ def validate_evidence_instances(
     for action_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/corrections").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             action_path,
             config.CORRECTIVE_ACTION_SCHEMA,
             "corrective_action",
@@ -675,7 +634,7 @@ def validate_evidence_instances(
     for event_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/events").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             event_path,
             config.WORKFLOW_EVENT_SCHEMA,
             "workflow_event",
@@ -685,7 +644,7 @@ def validate_evidence_instances(
     for approval_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             approval_path,
             config.APPROVAL_SCHEMA,
             "approval",
@@ -912,45 +871,17 @@ def validate_approval_cross_references(
             )
 
 
-def validate_yaml_instance(
-    instance_path: Path,
-    schema_path: Path,
-    wrapper_key: str | None,
-    label: str,
-    reporter: Reporter,
-) -> None:
-    if not instance_path.is_file():
-        return
-    schema = as_json_object(load_json(schema_path, reporter))
-    if schema is None:
-        return
-    try:
-        data = yaml.safe_load(instance_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, yaml.YAMLError) as error:
-        reporter.error(f"cannot load {label} {instance_path}: {error}")
-        return
-    data_mapping = as_json_object(data)
-    instance = (
-        data_mapping.get(wrapper_key)
-        if wrapper_key and data_mapping is not None
-        else data
-    )
-    for error in schema_validation_errors(schema, instance):
-        relative = instance_path.relative_to(config.WORKSPACE_ROOT)
-        location = ".".join(str(part) for part in error.absolute_path)
-        reporter.error(
-            f"{relative}: {label} contract failure at "
-            f"{location or '<root>'}: {error.message}"
-        )
-
-
 def validate_provenance_packages(reporter: Reporter) -> None:
     provenance_root = config.WORKSPACE_ROOT / "docs/evidence/provenance"
     package_schema = as_json_object(
-        load_json(config.PROVENANCE_SCHEMA, reporter)
+        contracts_module.load_json(config.PROVENANCE_SCHEMA, reporter)
     )
-    source_schema = as_json_object(load_json(config.SOURCE_SCHEMA, reporter))
-    claim_schema = as_json_object(load_json(config.CLAIM_SCHEMA, reporter))
+    source_schema = as_json_object(
+        contracts_module.load_json(config.SOURCE_SCHEMA, reporter)
+    )
+    claim_schema = as_json_object(
+        contracts_module.load_json(config.CLAIM_SCHEMA, reporter)
+    )
     if (
         package_schema is None
         or source_schema is None
@@ -970,7 +901,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
             else None
         )
         relative = package_path.relative_to(config.WORKSPACE_ROOT)
-        for error in schema_validation_errors(package_schema, package):
+        for error in contracts_module.schema_validation_errors(
+            package_schema,
+            package,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 f"{relative}: provenance contract failure at "
@@ -980,7 +914,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
             continue
         sources = as_json_array(package.get("sources")) or []
         for index, source in enumerate(sources):
-            for error in schema_validation_errors(source_schema, source):
+            for error in contracts_module.schema_validation_errors(
+                source_schema,
+                source,
+            ):
                 location = ".".join(str(part) for part in error.absolute_path)
                 reporter.error(
                     f"{relative}: source[{index}] contract failure at "
@@ -988,7 +925,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
                 )
         claims = as_json_array(package.get("claims")) or []
         for index, claim in enumerate(claims):
-            for error in schema_validation_errors(claim_schema, claim):
+            for error in contracts_module.schema_validation_errors(
+                claim_schema,
+                claim,
+            ):
                 location = ".".join(str(part) for part in error.absolute_path)
                 reporter.error(
                     f"{relative}: claim[{index}] contract failure at "
@@ -1817,7 +1757,10 @@ def parse_front_matter(
     if typed_schema is None:
         reporter.error(f"{path}: schema {schema_path.name} is not a mapping")
         return None
-    schema_errors = schema_validation_errors(typed_schema, typed_data)
+    schema_errors = contracts_module.schema_validation_errors(
+        typed_schema,
+        typed_data,
+    )
     for err in schema_errors:
         field = ".".join(str(p) for p in err.absolute_path) or "(root)"
         reporter.error(f"{path}: front matter {field}: {err.message}")
@@ -2051,7 +1994,7 @@ def main() -> int:
     ) is None:
         return finish()
 
-    validate_contract_schemas(reporter)
+    contracts_module.validate_contract_schemas(reporter)
     validate_instances(documents, reporter)
     if reporter.errors:
         return finish()

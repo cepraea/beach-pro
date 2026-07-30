@@ -10,6 +10,7 @@ import yaml
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    contracts as contracts_module,
     reporter as reporter_module,
 )
 
@@ -76,13 +77,13 @@ class InstanceValidationTests(unittest.TestCase):
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
 
         schema = validator.as_json_object(
-            validator.load_json(
+            contracts_module.load_json(
                 config.WORKFLOW_SCHEMA,
                 reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
-        schema_errors = validator.schema_validation_errors(
+        schema_errors = contracts_module.schema_validation_errors(
             schema or {},
             workflow,
         )
