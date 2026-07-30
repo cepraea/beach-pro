@@ -9,72 +9,44 @@ import json
 from pathlib import Path
 import re
 import tarfile
-from typing import Any
+from typing import Any, cast
 from urllib.parse import unquote, urlparse
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import SchemaError
 import yaml
 
-
-JsonObject = dict[str, Any]
-
-
-def _accept_dynamic_value(value: Any) -> Any:
-    """Keep third-party parser and schema values inside one typed boundary."""
-    return value
-
-
-def _accept_dynamic_mapping(value: Any) -> JsonObject:
-    """Mark a runtime-checked mapping as the YAML/JSON typing boundary."""
-    return value
-
-
-def as_json_object(value: Any) -> JsonObject | None:
-    """Return a typed mapping only after its dynamic container is checked.
-
-    PyYAML and ``json.loads`` intentionally return dynamic values.  Centralizing
-    this transition prevents ``Unknown`` from leaking through the validator
-    while retaining the runtime check required for malformed input.
-    """
-    if not isinstance(value, dict):
-        return None
-    return _accept_dynamic_mapping(value)
-
-
-def _accept_dynamic_array(value: Any) -> list[Any]:
-    """Type a list only after the caller has checked its runtime container."""
-    return value
-
-
-def as_json_array(value: Any) -> list[Any] | None:
-    """Return a dynamic JSON/YAML array after checking its container."""
-    if not isinstance(value, list):
-        return None
-    return _accept_dynamic_array(value)
-
-
-# The package adds one path level; the authorized workspace remains the
-# repository root used before the structural migration.
-WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_REGISTRY = WORKSPACE_ROOT / "docs/registry/registro-documentos.yaml"
-DEFAULT_WORKFLOW = WORKSPACE_ROOT / "docs/registry/workflow-documentacao.yaml"
-SCHEMA_ROOT = WORKSPACE_ROOT / "docs/contracts/schemas"
-DOCUMENT_SCHEMA = SCHEMA_ROOT / "documento.schema.json"
-WORKFLOW_SCHEMA = SCHEMA_ROOT / "workflow.schema.json"
-GATE_RESULT_SCHEMA = SCHEMA_ROOT / "resultado-gate.schema.json"
-INTEGRITY_MANIFEST_SCHEMA = SCHEMA_ROOT / "manifesto-integridade.schema.json"
-INGESTION_SCHEMA = SCHEMA_ROOT / "ingestao.schema.json"
-SOURCE_SCHEMA = SCHEMA_ROOT / "fonte.schema.json"
-CLAIM_SCHEMA = SCHEMA_ROOT / "alegacao.schema.json"
-PROVENANCE_SCHEMA = SCHEMA_ROOT / "proveniencia.schema.json"
-DIVERGENCE_SCHEMA = SCHEMA_ROOT / "divergencia-integridade.schema.json"
-CORRECTIVE_ACTION_SCHEMA = SCHEMA_ROOT / "acao-corretiva.schema.json"
-WORKFLOW_EVENT_SCHEMA = SCHEMA_ROOT / "evento-workflow.schema.json"
-APPROVAL_SCHEMA = SCHEMA_ROOT / "aprovacao.schema.json"
-INTEGRITY_MANIFEST = (
-    WORKSPACE_ROOT / "docs/evidence/integrity/manifesto-integridade-legado.yaml"
+from . import config
+from . import filesystem
+from .json_types import (
+    JsonObject as JsonObject,
+    as_json_array as as_json_array,
+    as_json_object as as_json_object,
 )
+from .models import ValidatorArgs as ValidatorArgs
+
+
+# Transitional re-exports preserve the package API while implementations consult
+# ``config`` directly so tests can patch the canonical lookup location.
+WORKSPACE_ROOT = config.WORKSPACE_ROOT
+DEFAULT_REGISTRY = config.DEFAULT_REGISTRY
+DEFAULT_WORKFLOW = config.DEFAULT_WORKFLOW
+SCHEMA_ROOT = config.SCHEMA_ROOT
+DOCUMENT_SCHEMA = config.DOCUMENT_SCHEMA
+WORKFLOW_SCHEMA = config.WORKFLOW_SCHEMA
+GATE_RESULT_SCHEMA = config.GATE_RESULT_SCHEMA
+INTEGRITY_MANIFEST_SCHEMA = config.INTEGRITY_MANIFEST_SCHEMA
+INGESTION_SCHEMA = config.INGESTION_SCHEMA
+SOURCE_SCHEMA = config.SOURCE_SCHEMA
+CLAIM_SCHEMA = config.CLAIM_SCHEMA
+PROVENANCE_SCHEMA = config.PROVENANCE_SCHEMA
+DIVERGENCE_SCHEMA = config.DIVERGENCE_SCHEMA
+CORRECTIVE_ACTION_SCHEMA = config.CORRECTIVE_ACTION_SCHEMA
+WORKFLOW_EVENT_SCHEMA = config.WORKFLOW_EVENT_SCHEMA
+APPROVAL_SCHEMA = config.APPROVAL_SCHEMA
+INTEGRITY_MANIFEST = config.INTEGRITY_MANIFEST
+workspace_path = filesystem.workspace_path
+sha256 = filesystem.sha256
 MANAGED_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".tar"}
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)+\.(?:md|ya?ml)$")
 SCHEMA_NAME_RE = re.compile(
@@ -130,18 +102,6 @@ REQUIRED_FIELDS = {
     "relationships",
 }
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
-
-
-class ValidatorArgs(argparse.Namespace):
-    """Typed command-line values consumed by the validation orchestrator."""
-
-    registry: Path
-    strict_legacy: bool
-    gate: str | None
-    document_id: str | None
-    version: str | None
-    format: str
-    result_id: str | None
 
 
 class Reporter:
@@ -223,7 +183,7 @@ def parse_args() -> ValidatorArgs:
     parser.add_argument(
         "--registry",
         type=Path,
-        default=DEFAULT_REGISTRY,
+        default=config.DEFAULT_REGISTRY,
         help="Registry path; defaults to the controlled CEPRAEA registry.",
     )
     parser.add_argument(
@@ -275,24 +235,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     ):
         reporter.error("--result-id must match GATE-RESULT-[A-Z0-9-]+")
     return not reporter.errors
-
-
-def workspace_path(raw_path: str, reporter: Reporter) -> Path | None:
-    candidate = (WORKSPACE_ROOT / raw_path).resolve()
-    try:
-        candidate.relative_to(WORKSPACE_ROOT)
-    except ValueError:
-        reporter.error(f"path escapes workspace: {raw_path}")
-        return None
-    return candidate
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def valid_name(path: Path) -> bool:
@@ -400,7 +342,7 @@ def validate_record(
         reporter.error(f"{document_id}: current_path must be a string")
         return None, None
 
-    absolute_path = workspace_path(current_path, reporter)
+    absolute_path = filesystem.workspace_path(current_path, reporter)
     if absolute_path is None:
         return document_id, current_path
     if not absolute_path.is_file():
@@ -429,7 +371,7 @@ def validate_record(
     elif not isinstance(expected_hash, str):
         reporter.error(f"{document_id}: content_hash must be a SHA-256 string")
     else:
-        actual_hash = sha256(absolute_path)
+        actual_hash = filesystem.sha256(absolute_path)
         if expected_hash != actual_hash:
             reporter.error(
                 f"{document_id}: hash mismatch for {current_path}; "
@@ -516,9 +458,9 @@ def validate_uniqueness(
 
 
 def managed_files() -> set[str]:
-    docs_root = WORKSPACE_ROOT / "docs"
+    docs_root = config.WORKSPACE_ROOT / "docs"
     return {
-        path.relative_to(WORKSPACE_ROOT).as_posix()
+        path.relative_to(config.WORKSPACE_ROOT).as_posix()
         for path in docs_root.rglob("*")
         if (
             path.is_file()
@@ -553,23 +495,29 @@ def normalize_link_target(markdown_path: Path, raw_target: str) -> Path | None:
 
 
 def validate_links(reporter: Reporter) -> None:
-    for markdown_path in sorted((WORKSPACE_ROOT / "docs").rglob("*.md")):
+    for markdown_path in sorted(
+        (config.WORKSPACE_ROOT / "docs").rglob("*.md")
+    ):
         text = markdown_path.read_text(encoding="utf-8")
         for raw_target in MARKDOWN_LINK_RE.findall(text):
             target = normalize_link_target(markdown_path, raw_target)
             if target is None:
                 continue
             try:
-                target.relative_to(WORKSPACE_ROOT)
+                target.relative_to(config.WORKSPACE_ROOT)
             except ValueError:
-                relative_source = markdown_path.relative_to(WORKSPACE_ROOT)
+                relative_source = markdown_path.relative_to(
+                    config.WORKSPACE_ROOT
+                )
                 reporter.error(
                     f"{relative_source}: local link escapes workspace: "
                     f"{raw_target}"
                 )
                 continue
             if not target.exists():
-                relative_source = markdown_path.relative_to(WORKSPACE_ROOT)
+                relative_source = markdown_path.relative_to(
+                    config.WORKSPACE_ROOT
+                )
                 reporter.error(
                     f"{relative_source}: broken local link: {raw_target}"
                 )
@@ -606,7 +554,10 @@ def load_json(path: Path, reporter: Reporter) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        reporter.error(f"cannot load JSON {path.relative_to(WORKSPACE_ROOT)}: {error}")
+        reporter.error(
+            "cannot load JSON "
+            f"{path.relative_to(config.WORKSPACE_ROOT)}: {error}"
+        )
         return None
 
 
@@ -616,11 +567,11 @@ def validate_schema_definition(
     reporter: Reporter,
 ) -> None:
     """Check a schema while isolating incomplete jsonschema type metadata."""
-    validator_class: Any = _accept_dynamic_value(Draft202012Validator)
+    validator_class = cast(Any, Draft202012Validator)
     try:
         validator_class.check_schema(schema)
     except SchemaError as error:
-        relative = schema_path.relative_to(WORKSPACE_ROOT)
+        relative = schema_path.relative_to(config.WORKSPACE_ROOT)
         reporter.error(f"invalid JSON Schema {relative}: {error.message}")
 
 
@@ -629,8 +580,8 @@ def schema_validation_errors(
     instance: Any,
 ) -> list[Any]:
     """Return deterministic errors from the dynamically typed library edge."""
-    validator_class: Any = _accept_dynamic_value(Draft202012Validator)
-    format_checker: Any = _accept_dynamic_value(FormatChecker())
+    validator_class = cast(Any, Draft202012Validator)
+    format_checker = cast(Any, FormatChecker())
     validator: Any = validator_class(
         schema,
         format_checker=format_checker,
@@ -640,10 +591,10 @@ def schema_validation_errors(
 
 
 def validate_contract_schemas(reporter: Reporter) -> None:
-    if not SCHEMA_ROOT.is_dir():
+    if not config.SCHEMA_ROOT.is_dir():
         reporter.error("schema directory not found")
         return
-    for schema_path in sorted(SCHEMA_ROOT.glob("*.schema.json")):
+    for schema_path in sorted(config.SCHEMA_ROOT.glob("*.schema.json")):
         schema = as_json_object(load_json(schema_path, reporter))
         if schema is None:
             continue
@@ -655,7 +606,9 @@ def validate_document_instances(
     reporter: Reporter,
 ) -> None:
     """Validate registry records against the document contract."""
-    document_schema = as_json_object(load_json(DOCUMENT_SCHEMA, reporter))
+    document_schema = as_json_object(
+        load_json(config.DOCUMENT_SCHEMA, reporter)
+    )
     if document_schema is None:
         return
     for record in documents:
@@ -670,10 +623,12 @@ def validate_document_instances(
 
 def validate_workflow_instance(reporter: Reporter) -> None:
     """Validate workflow shape before resolving its internal references."""
-    workflow_schema = as_json_object(load_json(WORKFLOW_SCHEMA, reporter))
+    workflow_schema = as_json_object(
+        load_json(config.WORKFLOW_SCHEMA, reporter)
+    )
     try:
         workflow_data = yaml.safe_load(
-            DEFAULT_WORKFLOW.read_text(encoding="utf-8")
+            config.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
         )
     except (OSError, UnicodeError, yaml.YAMLError) as error:
         reporter.error(f"cannot load processable workflow: {error}")
@@ -702,7 +657,7 @@ def validate_workflow_instance(reporter: Reporter) -> None:
         if isinstance(schema_path, str):
             contract_paths.add(schema_path)
     for raw_path in sorted(contract_paths):
-        path = workspace_path(raw_path, reporter)
+        path = filesystem.workspace_path(raw_path, reporter)
         if path is not None and not path.is_file():
             reporter.error(f"workflow contract not found: {raw_path}")
 
@@ -710,11 +665,11 @@ def validate_workflow_instance(reporter: Reporter) -> None:
 def validate_gate_result_instances(reporter: Reporter) -> None:
     """Validate each persisted gate result independently of approvals."""
     gate_result_schema = as_json_object(
-        load_json(GATE_RESULT_SCHEMA, reporter)
+        load_json(config.GATE_RESULT_SCHEMA, reporter)
     )
     if gate_result_schema is None:
         return
-    gate_root = WORKSPACE_ROOT / "docs/evidence/gates"
+    gate_root = config.WORKSPACE_ROOT / "docs/evidence/gates"
     for result_path in sorted(gate_root.glob("*.yaml")):
         try:
             result_data = yaml.safe_load(
@@ -733,7 +688,7 @@ def validate_gate_result_instances(reporter: Reporter) -> None:
             gate_result_schema,
             instance,
         ):
-            relative = result_path.relative_to(WORKSPACE_ROOT)
+            relative = result_path.relative_to(config.WORKSPACE_ROOT)
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 f"{relative}: gate result contract failure at "
@@ -751,17 +706,17 @@ def validate_evidence_instances(
     remain mandatory because a well-formed ID can still point to no artifact.
     """
     validate_yaml_instance(
-        INTEGRITY_MANIFEST,
-        INTEGRITY_MANIFEST_SCHEMA,
+        config.INTEGRITY_MANIFEST,
+        config.INTEGRITY_MANIFEST_SCHEMA,
         None,
         "integrity manifest",
         reporter,
     )
-    ingestion_root = WORKSPACE_ROOT / "docs/evidence/ingestion"
+    ingestion_root = config.WORKSPACE_ROOT / "docs/evidence/ingestion"
     for ingestion_path in sorted(ingestion_root.glob("*.yaml")):
         validate_yaml_instance(
             ingestion_path,
-            INGESTION_SCHEMA,
+            config.INGESTION_SCHEMA,
             "ingestion_event",
             "ingestion event",
             reporter,
@@ -769,41 +724,43 @@ def validate_evidence_instances(
     validate_ingestion_consistency(documents, reporter)
     validate_provenance_packages(reporter)
     for divergence_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/integrity").glob("divergencia-*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/integrity").glob(
+            "divergencia-*.yaml"
+        )
     ):
         validate_yaml_instance(
             divergence_path,
-            DIVERGENCE_SCHEMA,
+            config.DIVERGENCE_SCHEMA,
             "integrity_divergence",
             "integrity divergence",
             reporter,
         )
     for action_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/corrections").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/corrections").glob("*.yaml")
     ):
         validate_yaml_instance(
             action_path,
-            CORRECTIVE_ACTION_SCHEMA,
+            config.CORRECTIVE_ACTION_SCHEMA,
             "corrective_action",
             "corrective action",
             reporter,
         )
     for event_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/events").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/events").glob("*.yaml")
     ):
         validate_yaml_instance(
             event_path,
-            WORKFLOW_EVENT_SCHEMA,
+            config.WORKFLOW_EVENT_SCHEMA,
             "workflow_event",
             "workflow event",
             reporter,
         )
     for approval_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
     ):
         validate_yaml_instance(
             approval_path,
-            APPROVAL_SCHEMA,
+            config.APPROVAL_SCHEMA,
             "approval",
             "approval",
             reporter,
@@ -850,7 +807,7 @@ def validate_approval_cross_references(
 
     gate_results: dict[str, JsonObject] = {}
     for result_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/gates").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/gates").glob("*.yaml")
     ):
         try:
             data = yaml.safe_load(result_path.read_text(encoding="utf-8"))
@@ -870,9 +827,11 @@ def validate_approval_cross_references(
             gate_results[result_id] = result
 
     for approval_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
     ):
-        relative = approval_path.relative_to(WORKSPACE_ROOT).as_posix()
+        relative = approval_path.relative_to(
+            config.WORKSPACE_ROOT
+        ).as_posix()
         reg_entry = path_to_registry.get(relative)
         if reg_entry is not None:
             rels = as_json_object(reg_entry.get("relationships"))
@@ -1050,7 +1009,7 @@ def validate_yaml_instance(
         else data
     )
     for error in schema_validation_errors(schema, instance):
-        relative = instance_path.relative_to(WORKSPACE_ROOT)
+        relative = instance_path.relative_to(config.WORKSPACE_ROOT)
         location = ".".join(str(part) for part in error.absolute_path)
         reporter.error(
             f"{relative}: {label} contract failure at "
@@ -1059,10 +1018,12 @@ def validate_yaml_instance(
 
 
 def validate_provenance_packages(reporter: Reporter) -> None:
-    provenance_root = WORKSPACE_ROOT / "docs/evidence/provenance"
-    package_schema = as_json_object(load_json(PROVENANCE_SCHEMA, reporter))
-    source_schema = as_json_object(load_json(SOURCE_SCHEMA, reporter))
-    claim_schema = as_json_object(load_json(CLAIM_SCHEMA, reporter))
+    provenance_root = config.WORKSPACE_ROOT / "docs/evidence/provenance"
+    package_schema = as_json_object(
+        load_json(config.PROVENANCE_SCHEMA, reporter)
+    )
+    source_schema = as_json_object(load_json(config.SOURCE_SCHEMA, reporter))
+    claim_schema = as_json_object(load_json(config.CLAIM_SCHEMA, reporter))
     if (
         package_schema is None
         or source_schema is None
@@ -1081,7 +1042,7 @@ def validate_provenance_packages(reporter: Reporter) -> None:
             if data_mapping is not None
             else None
         )
-        relative = package_path.relative_to(WORKSPACE_ROOT)
+        relative = package_path.relative_to(config.WORKSPACE_ROOT)
         for error in schema_validation_errors(package_schema, package):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
@@ -1245,7 +1206,7 @@ def validate_ingestion_consistency(
     A later version can replace the working document without rewriting the
     historical event. The same version, however, must retain the snapshot hash.
     """
-    ingestion_root = WORKSPACE_ROOT / "docs/evidence/ingestion"
+    ingestion_root = config.WORKSPACE_ROOT / "docs/evidence/ingestion"
     if not ingestion_root.is_dir():
         return
     records: dict[tuple[str, str], JsonObject] = {}
@@ -1255,10 +1216,10 @@ def validate_ingestion_consistency(
         if isinstance(document_id, str) and isinstance(version, str):
             records[(document_id, version)] = record
     manifest: JsonObject = {}
-    if INTEGRITY_MANIFEST.is_file():
+    if config.INTEGRITY_MANIFEST.is_file():
         try:
             loaded = yaml.safe_load(
-                INTEGRITY_MANIFEST.read_text(encoding="utf-8")
+                config.INTEGRITY_MANIFEST.read_text(encoding="utf-8")
             )
             loaded_manifest = as_json_object(loaded)
             if loaded_manifest is not None:
@@ -1282,7 +1243,7 @@ def validate_ingestion_consistency(
 
     gate_results: dict[str, JsonObject] = {}
     for result_path in sorted(
-        (WORKSPACE_ROOT / "docs/evidence/gates").glob("*.yaml")
+        (config.WORKSPACE_ROOT / "docs/evidence/gates").glob("*.yaml")
     ):
         try:
             data = yaml.safe_load(result_path.read_text(encoding="utf-8"))
@@ -1429,12 +1390,12 @@ def validate_g0(documents: list[JsonObject], reporter: Reporter) -> None:
 def validate_g1(documents: list[JsonObject], reporter: Reporter) -> None:
     """Validate the immutable global ingestion snapshot and preservation TAR."""
     candidates = ingestion_records(documents)
-    if not INTEGRITY_MANIFEST.is_file():
+    if not config.INTEGRITY_MANIFEST.is_file():
         reporter.error("G1 integrity manifest not found")
         return
     try:
         manifest = yaml.safe_load(
-            INTEGRITY_MANIFEST.read_text(encoding="utf-8")
+            config.INTEGRITY_MANIFEST.read_text(encoding="utf-8")
         )
     except (OSError, UnicodeError, yaml.YAMLError) as error:
         reporter.error(f"G1 cannot load integrity manifest: {error}")
@@ -1490,11 +1451,14 @@ def validate_g1(documents: list[JsonObject], reporter: Reporter) -> None:
     if bundle is None:
         reporter.error("G1 bundle record missing")
         return
-    bundle_path = workspace_path(str(bundle.get("path", "")), reporter)
+    bundle_path = filesystem.workspace_path(
+        str(bundle.get("path", "")),
+        reporter,
+    )
     if bundle_path is None or not bundle_path.is_file():
         reporter.error("G1 preservation bundle not found")
         return
-    if sha256(bundle_path) != bundle.get("content_hash"):
+    if filesystem.sha256(bundle_path) != bundle.get("content_hash"):
         reporter.error("G1 preservation bundle hash mismatch")
         return
 
@@ -1585,7 +1549,7 @@ def validate_g2(
         version = record.get("version")
         if isinstance(document_id, str) and isinstance(version, str):
             records[(document_id, version)] = record
-    provenance_root = WORKSPACE_ROOT / "docs/evidence/provenance"
+    provenance_root = config.WORKSPACE_ROOT / "docs/evidence/provenance"
     selected: list[tuple[Path, JsonObject]] = []
     for package_path in sorted(provenance_root.glob("*.yaml")):
         try:
@@ -1712,9 +1676,11 @@ def validate_g2(
                 location = str(source.get("location", ""))
                 if "#" in location:
                     archive_name, member_name = location.split("#", 1)
-                    archive_path = (WORKSPACE_ROOT / archive_name).resolve()
+                    archive_path = (
+                        config.WORKSPACE_ROOT / archive_name
+                    ).resolve()
                     try:
-                        archive_path.relative_to(WORKSPACE_ROOT)
+                        archive_path.relative_to(config.WORKSPACE_ROOT)
                     except ValueError:
                         reporter.error(
                             f"{provenance_id}: source {source_id} archive "
@@ -1822,8 +1788,6 @@ def validate_g2(
 
 # ── G-FM: Front Matter ────────────────────────────────────────────────────────
 
-FM_GOVERNED_SCHEMA = SCHEMA_ROOT / "front-matter-governed.schema.json"
-FM_FEATURE_SPEC_SCHEMA = SCHEMA_ROOT / "front-matter-feature-spec.schema.json"
 FM_FEATURE_SPEC_GLOB = "src/features/**/*.md"
 
 # Paths whose current_path matches are excluded from the governed profile.
@@ -1839,11 +1803,9 @@ class _DuplicateKeyLoader(yaml.SafeLoader):
         self, node: yaml.MappingNode, deep: bool = False
     ) -> dict[Any, Any]:
         seen: dict[Any, Any] = {}
-        loader: Any = _accept_dynamic_value(self)
+        loader = cast(Any, self)
         for key_node, _ in node.value:
-            key: Any = _accept_dynamic_value(
-                loader.construct_object(key_node, deep=deep)
-            )
+            key = loader.construct_object(key_node, deep=deep)
             if key in seen:
                 raise yaml.constructor.ConstructorError(
                     "while constructing a mapping",
@@ -1911,9 +1873,9 @@ def parse_front_matter(
         return None
 
     if profile == "governed":
-        schema_path = FM_GOVERNED_SCHEMA
+        schema_path = config.FM_GOVERNED_SCHEMA
     elif profile == "feature-spec":
-        schema_path = FM_FEATURE_SPEC_SCHEMA
+        schema_path = config.FM_FEATURE_SPEC_SCHEMA
     else:
         reporter.error(f"{path}: unknown front matter profile: {profile}")
         return None
@@ -1949,7 +1911,7 @@ def validate_governed(
     if _FM_EXCLUSIONS.match(current_path):
         return
 
-    path = WORKSPACE_ROOT / current_path
+    path = config.WORKSPACE_ROOT / current_path
     fm = parse_front_matter(path, "governed", reporter)
     if fm is None:
         return
@@ -2055,7 +2017,9 @@ def validate_front_matter(
     for rec in governed_docs:
         validate_governed(rec, reporter)
 
-    for spec_path in sorted(WORKSPACE_ROOT.glob(FM_FEATURE_SPEC_GLOB)):
+    for spec_path in sorted(
+        config.WORKSPACE_ROOT.glob(FM_FEATURE_SPEC_GLOB)
+    ):
         validate_feature_spec(spec_path, reporter)
 
 

@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 class RegistryInvariantTests(unittest.TestCase):
@@ -79,7 +80,7 @@ class RegistryInvariantTests(unittest.TestCase):
             }
             record.update(overrides)
             reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
+            with patch.object(config, "WORKSPACE_ROOT", root):
                 validator.validate_record(record, reporter, False)
             return reporter
 

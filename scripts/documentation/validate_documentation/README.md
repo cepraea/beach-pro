@@ -104,10 +104,18 @@ passa, enquanto solicitar o canônico `0.1.2` falha com ausência de pacote. Iss
 
 ## Arquitetura para manutenção
 
-A implementação ainda está temporariamente concentrada em
-`validate_documentation/__init__.py`. Esse monólito é uma etapa transitória
-protegida pelos testes, não a arquitetura final. Nenhuma funcionalidade
-relevante nova deve ser acrescentada a ele.
+A implementação de domínio ainda está temporariamente concentrada em
+`validate_documentation/__init__.py`. As fundações já extraídas são:
+
+- `json_types.py`: fronteiras tipadas de JSON e YAML;
+- `models.py`: `ValidatorArgs`;
+- `config.py`: paths e descoberta do workspace pelos quatro marcadores
+  canônicos;
+- `filesystem.py`: resolução segura de paths e SHA-256 em streaming.
+
+O monólito remanescente é uma etapa transitória protegida pelos testes, não a
+arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
+a ele.
 
 As responsabilidades serão extraídas, uma por change set, na direção:
 
@@ -173,6 +181,7 @@ A suíte unitária é dividida por responsabilidade:
 | `test_reporter.py` | Coleta e emissão de achados |
 | `test_cli_and_resolution.py` | CLI, versões e links |
 | `test_front_matter.py` | Front Matter e G-FM |
+| `test_workspace_discovery.py` | Marcadores canônicos e descoberta da raiz |
 
 `test_package_entrypoints.py` protege a execução de `--help` por `-m`, a
 identidade canônica do pacote, a raiz do workspace, a existência de uma única
@@ -181,6 +190,10 @@ e os hashes controlados e a documentação dos testes neste README.
 
 `integration_tests/test_repository_entrypoint.py` executa G-ARCH contra o
 acervo real. A ausência dos TARs é falha de precondição e não causa `skip`.
+
+A baseline anterior à Fase 4 possuía 92 testes unitários. BEH-01 acrescentou
+seis cenários RED–GREEN, totalizando 98 testes unitários, além do teste de
+integração.
 
 ### Suíte unitária
 

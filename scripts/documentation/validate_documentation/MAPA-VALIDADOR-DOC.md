@@ -209,10 +209,11 @@ vez. Cada módulo nasce somente na fase e no change set correspondente do plano.
 
 ### Unidade 1 — Imports, tipos e constantes
 
-**Origem atual:** início do `__init__.py` até `class Reporter`.
+**Estado atual:** extraída na Fase 4.
 
 **Destinos:** `json_types.py`, `models.py`, `config.py` e `filesystem.py`,
-extraídos separadamente na ordem do plano.
+extraídos separadamente na ordem do plano. O `__init__.py` mantém reexports
+transitórios, mas consumidores e patches devem consultar o módulo proprietário.
 
 **Responsabilidade:** disponibilizar somente dependências e constantes comuns.
 
@@ -223,6 +224,15 @@ reformular suas regras; cada módulo recebe apenas os próprios imports.
 
 **Porquê:** YAML e JSON são dinâmicos na entrada, mas o restante do script não
 deve propagar tipos desconhecidos.
+
+**Descoberta do workspace:** `config.find_workspace_root()` exige,
+simultaneamente, o registro, o workflow, o schema documental e o diretório do
+pacote. Não substituir essa composição por nomes genéricos como `docs` e
+`scripts`, nem usar os TARs como marcadores.
+
+**Aceitação materializada:** início na raiz, em arquivo, em subdiretório e em
+symlink retorna a raiz completa; marcadores parciais ou ausentes geram
+`RuntimeError` determinístico.
 
 **Aceitação:** nenhum import não utilizado; nenhum ciclo entre módulos; cada
 consumidor consulta configuração mutável por `config.WORKSPACE_ROOT`.
@@ -290,7 +300,8 @@ falham; Reporter recebe metadados do par exato.
 
 ### Unidade 5 — Caminhos, nomes, links e hash
 
-**Origem atual:** `workspace_path()` até `validate_links()`.
+**Origem atual:** `workspace_path()` e `sha256()` já estão em
+`filesystem.py`; `validate_links()` permanece no `__init__.py` até sua fase.
 
 **Destinos:** `workspace_path()` e `sha256()` em `filesystem.py`;
 `validate_links()` e seus helpers em `links.py`.

@@ -7,6 +7,7 @@ from contextlib import redirect_stdout
 import yaml
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 class ReporterTests(unittest.TestCase):
@@ -35,7 +36,7 @@ class ReporterTests(unittest.TestCase):
         )
         schema = validator.as_json_object(
             validator.load_json(
-                validator.GATE_RESULT_SCHEMA,
+                config.GATE_RESULT_SCHEMA,
                 validator.Reporter(),
             )
         )

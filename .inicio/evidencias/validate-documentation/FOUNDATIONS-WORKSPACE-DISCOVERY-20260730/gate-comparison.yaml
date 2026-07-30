@@ -1,0 +1,24 @@
+baseline: BASELINE-88c3bc5-20260730T174342Z
+normalization_removed_only:
+  - evaluated_at
+  - gate_result_id
+results:
+  g_arch:
+    exit_code: 0
+    semantic_comparison: equal
+  g0:
+    exit_code: 0
+    semantic_comparison: equal
+  g1:
+    exit_code: 0
+    semantic_comparison: equal
+  g2_context_0_1:
+    exit_code: 0
+    semantic_comparison: equal
+  g_fm_context_0_1_2:
+    exit_code: 0
+    semantic_comparison: equal
+  global:
+    exit_code: 0
+    semantic_comparison: equal
+status: pass

@@ -8,6 +8,7 @@ from unittest.mock import patch
 import yaml
 
 from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import config
 
 
 def _workflow() -> validator.JsonObject:
@@ -168,9 +169,9 @@ class IngestionConsistencyTests(unittest.TestCase):
             ]
             reporter = validator.Reporter()
             with (
-                patch.object(validator, "WORKSPACE_ROOT", root),
+                patch.object(config, "WORKSPACE_ROOT", root),
                 patch.object(
-                    validator,
+                    config,
                     "INTEGRITY_MANIFEST",
                     manifest_path,
                 ),
