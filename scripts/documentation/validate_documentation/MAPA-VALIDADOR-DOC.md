@@ -283,7 +283,7 @@ documenta todos os gates.
 
 ### Unidade 4 — Resolução documental
 
-**Origem atual:** após `validate_top_level()` e antes de `validate_record()`.
+**Estado atual:** extraída na Fase 6.
 
 **Destino:** `registry.py`, incluindo `resolve_document_version`.
 
@@ -322,8 +322,8 @@ para acessar fora da raiz.
 
 ### Unidade 6 — Registro e unicidade
 
-**Origem atual:** `validate_top_level()`, `validate_record()`,
-`validate_uniqueness()`, `managed_files()` e `validate_canonical_registry()`.
+**Estado atual:** extraída na Fase 6. BEH-02 foi materializada no módulo
+proprietário com teste RED–GREEN.
 
 **Destino:** `registry.py`.
 
@@ -337,12 +337,14 @@ para acessar fora da raiz.
 registro mestre.
 
 **Aceitação:** par ID/versão e caminho são únicos; hash divergir falha; canônico
-ativo usa o próprio caminho canônico; terminal pode preservar caminho histórico.
+ativo usa o próprio caminho canônico; terminal pode preservar caminho histórico;
+um item não mapeamento em `documents` informa o índice exato sem impedir a
+verificação dos demais itens.
 
 ### Unidade 7 — Schemas e instâncias
 
-**Origem atual:** `load_json()` até antes de
-`validate_approval_cross_references()`.
+**Estado atual:** a parte de contratos foi extraída na Fase 6; a validação de
+instâncias permanece no `__init__.py` até a Fase 7.
 
 **Destinos:** validação de schemas em `contracts.py` e validação de instâncias
 em `instances.py`.

@@ -1,0 +1,45 @@
+evidence_id: CONTRACTS-REGISTRY-EXTRACTION-20260730
+phase: 6
+status: pass
+evaluated_at: "2026-07-30T17:45:00-03:00"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-6
+pull_request:
+  number: 9
+  url: "https://github.com/cepraea/beach-pro/pull/9"
+  state_at_evaluation: draft
+base_commit: a2d1ded91a9a1a63731a57e5ab9509e827c98daa
+implementation_commits:
+  contracts: 7b18d70
+  registry: f5468fd
+  beh_02: d26075e
+authorization:
+  decision: BEH-02
+  status: approved
+  evidence: ../AUTH-MODULARIZATION-VALIDATOR-20260730/authorization.yaml
+contract_confirmation:
+  registry_envelope_schema: absent
+  document_item_schema: docs/contracts/schemas/documento.schema.json
+  document_item_root_type: object
+validation:
+  unit_tests:
+    status: pass
+    tests: 99
+  integration_tests:
+    status: pass
+    tests: 1
+  pyright:
+    version: 1.1.411
+    status: pass
+    errors: 0
+    warnings: 0
+  npm_validate: pass
+  baseline_comparison: pass
+gates:
+  CONTRACTS-EXTRACTION: pass
+  REGISTRY-EXTRACTION: pass
+  BEH-02: pass
+next_phase:
+  phase: 7
+  status: blocked_until_pull_request_merge

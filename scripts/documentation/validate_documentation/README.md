@@ -111,8 +111,10 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `models.py`: `ValidatorArgs`;
 - `config.py`: paths e descoberta do workspace pelos quatro marcadores
   canônicos;
-- `filesystem.py`: resolução segura de paths e SHA-256 em streaming.
-- `reporter.py`: coleta determinística e emissão única em texto ou YAML.
+- `filesystem.py`: resolução segura de paths e SHA-256 em streaming;
+- `reporter.py`: coleta determinística e emissão única em texto ou YAML;
+- `contracts.py`: carregamento e validação dos contratos JSON Schema;
+- `registry.py`: envelope, identidade, paths, hashes e integridade do registro.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
@@ -193,8 +195,9 @@ e os hashes controlados e a documentação dos testes neste README.
 acervo real. A ausência dos TARs é falha de precondição e não causa `skip`.
 
 A baseline anterior à Fase 4 possuía 92 testes unitários. BEH-01 acrescentou
-seis cenários RED–GREEN, totalizando 98 testes unitários, além do teste de
-integração.
+seis cenários RED–GREEN. BEH-02 acrescentou um cenário que exige o índice do
+item não mapeamento e preserva os registros válidos adjacentes. A suíte
+totaliza 99 testes unitários, além do teste de integração.
 
 ### Suíte unitária
 
