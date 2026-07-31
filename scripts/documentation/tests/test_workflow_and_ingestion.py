@@ -7,7 +7,11 @@ from unittest.mock import patch
 
 import yaml
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import (
+    JsonObject,
+    as_json_array,
+    as_json_object,
+)
 from scripts.documentation.validate_documentation import (
     config,
     ingestion as ingestion_module,
@@ -16,8 +20,8 @@ from scripts.documentation.validate_documentation import (
 )
 
 
-def _workflow() -> validator.JsonObject:
-    gates: list[validator.JsonObject] = [
+def _workflow() -> JsonObject:
+    gates: list[JsonObject] = [
         {
             "gate_id": gate_id,
             "implementation_status": "IMPLEMENTED",
@@ -66,8 +70,8 @@ class WorkflowReferenceTests(unittest.TestCase):
 
     def test_workflow_unknown_gate_reference_fails(self) -> None:
         workflow = _workflow()
-        transitions = validator.as_json_array(workflow.get("transitions"))
-        transition = validator.as_json_object((transitions or [None])[0])
+        transitions = as_json_array(workflow.get("transitions"))
+        transition = as_json_object((transitions or [None])[0])
         self.assertIsNotNone(transition)
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
         reporter = reporter_module.Reporter()
@@ -80,7 +84,7 @@ class WorkflowReferenceTests(unittest.TestCase):
 
     def test_duplicate_workflow_identifier_fails(self) -> None:
         workflow = _workflow()
-        states = validator.as_json_array(workflow.get("states"))
+        states = as_json_array(workflow.get("states"))
         self.assertIsNotNone(states)
         (states or []).append({"state_id": "S0"})
         reporter = reporter_module.Reporter()
@@ -112,7 +116,7 @@ class IngestionConsistencyTests(unittest.TestCase):
             integrity_root.mkdir(parents=True)
 
             manifest_path = integrity_root / "manifest.yaml"
-            manifest: validator.JsonObject = {
+            manifest: JsonObject = {
                 "manifest_id": "MANIFEST-001",
                 "documents": [
                     {
@@ -131,7 +135,7 @@ class IngestionConsistencyTests(unittest.TestCase):
             for gate_id in ("G-ARCH", "G0", "G1"):
                 result_id = f"GATE-RESULT-{gate_id}-INGESTION"
                 persisted_ids.append(result_id)
-                result: validator.JsonObject = {
+                result: JsonObject = {
                     "gate_result_id": result_id,
                     "gate_id": gate_id,
                     "status": "pass",
@@ -141,7 +145,7 @@ class IngestionConsistencyTests(unittest.TestCase):
                     encoding="utf-8",
                 )
 
-            event: validator.JsonObject = {
+            event: JsonObject = {
                 "event_id": self.event_id,
                 "manifest_id": "MANIFEST-001",
                 "documents": [
@@ -162,7 +166,7 @@ class IngestionConsistencyTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            documents: list[validator.JsonObject] = [
+            documents: list[JsonObject] = [
                 {
                     "document_id": self.document_id,
                     "version": record_version,

@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import JsonObject
+from scripts.documentation.validate_documentation.models import ValidatorArgs
 from scripts.documentation.validate_documentation import (
     cli as cli_module,
     contracts as contracts_module,
@@ -24,8 +25,8 @@ def _args(
     gate: str | None = None,
     document_id: str | None = None,
     version: str | None = None,
-) -> validator.ValidatorArgs:
-    args = validator.ValidatorArgs()
+) -> ValidatorArgs:
+    args = ValidatorArgs()
     args.registry = Path("/controlled/registry.yaml")
     args.strict_legacy = False
     args.gate = gate
@@ -36,7 +37,7 @@ def _args(
     return args
 
 
-def _registry_data() -> validator.JsonObject:
+def _registry_data() -> JsonObject:
     return {
         "schema_version": "1.0.0",
         "registry": {"canonical_documents": []},
@@ -116,7 +117,7 @@ class MainPipelineTests(unittest.TestCase):
 
     def test_main_stops_before_gate_when_registry_stage_fails(self) -> None:
         def fail_registry(
-            documents: list[validator.JsonObject],
+            documents: list[JsonObject],
             reporter: reporter_module.Reporter,
             strict_legacy: bool,
         ) -> None:
@@ -150,8 +151,8 @@ class MainPipelineTests(unittest.TestCase):
 
     def test_main_stops_before_links_when_gate_fails(self) -> None:
         def fail_gate(
-            args: validator.ValidatorArgs,
-            documents: list[validator.JsonObject],
+            args: ValidatorArgs,
+            documents: list[JsonObject],
             reporter: reporter_module.Reporter,
         ) -> None:
             del args, documents
@@ -182,7 +183,7 @@ class MainPipelineTests(unittest.TestCase):
         link_stage.assert_not_called()
 
     def test_main_uses_exact_scoped_record(self) -> None:
-        documents: list[validator.JsonObject] = [
+        documents: list[JsonObject] = [
             {
                 "document_id": "DOC-1",
                 "version": "1.0.0",
@@ -194,11 +195,11 @@ class MainPipelineTests(unittest.TestCase):
                 "content_hash": "b" * 64,
             },
         ]
-        observed: validator.JsonObject = {}
+        observed: JsonObject = {}
 
         def capture_gate(
-            args: validator.ValidatorArgs,
-            records: list[validator.JsonObject],
+            args: ValidatorArgs,
+            records: list[JsonObject],
             reporter: reporter_module.Reporter,
         ) -> None:
             del args, records
@@ -236,7 +237,7 @@ class MainPipelineTests(unittest.TestCase):
         emit.assert_called_once()
 
     def test_global_gate_emits_null_document_metadata(self) -> None:
-        observed: validator.JsonObject = {}
+        observed: JsonObject = {}
 
         def capture_emit(
             reporter: reporter_module.Reporter,

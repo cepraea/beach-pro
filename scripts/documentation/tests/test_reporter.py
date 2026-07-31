@@ -6,7 +6,10 @@ from contextlib import redirect_stdout
 
 import yaml
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import (
+    JsonObject,
+    as_json_object,
+)
 from scripts.documentation.validate_documentation import (
     config,
     contracts as contracts_module,
@@ -19,12 +22,12 @@ class ReporterTests(unittest.TestCase):
         self,
         reporter: reporter_module.Reporter,
         result_id: str | None = None,
-    ) -> validator.JsonObject:
+    ) -> JsonObject:
         output = io.StringIO()
         with redirect_stdout(output):
             status = reporter.emit("yaml", "G1", result_id)
         self.assertEqual(1 if reporter.errors else 0, status)
-        payload = validator.as_json_object(yaml.safe_load(output.getvalue()))
+        payload = as_json_object(yaml.safe_load(output.getvalue()))
         self.assertIsNotNone(payload)
         return payload or {}
 
@@ -38,7 +41,7 @@ class ReporterTests(unittest.TestCase):
             reporter,
             "GATE-RESULT-G1-TESTE-001",
         )
-        schema = validator.as_json_object(
+        schema = as_json_object(
             contracts_module.load_json(
                 config.GATE_RESULT_SCHEMA,
                 reporter_module.Reporter(),
@@ -58,7 +61,7 @@ class ReporterTests(unittest.TestCase):
             reporter_module.Reporter(),
             "GATE-RESULT-G1-AUDITORIA-001",
         )
-        gate_result = validator.as_json_object(payload.get("gate_result"))
+        gate_result = as_json_object(payload.get("gate_result"))
 
         self.assertIsNotNone(gate_result)
         self.assertEqual(
@@ -72,7 +75,7 @@ class ReporterTests(unittest.TestCase):
         reporter.error("alfa")
 
         payload = self._emit_yaml(reporter)
-        gate_result = validator.as_json_object(payload.get("gate_result"))
+        gate_result = as_json_object(payload.get("gate_result"))
 
         self.assertEqual(
             ["alfa", "zeta"],

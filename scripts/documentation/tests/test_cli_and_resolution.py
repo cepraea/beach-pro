@@ -5,7 +5,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import JsonObject
+from scripts.documentation.validate_documentation.models import ValidatorArgs
 from scripts.documentation.validate_documentation import (
     cli as cli_module,
     config,
@@ -16,8 +17,8 @@ from scripts.documentation.validate_documentation import (
 )
 
 
-def _args(**overrides: object) -> validator.ValidatorArgs:
-    args = validator.ValidatorArgs()
+def _args(**overrides: object) -> ValidatorArgs:
+    args = ValidatorArgs()
     args.registry = config.DEFAULT_REGISTRY
     args.strict_legacy = False
     args.gate = None
@@ -96,7 +97,7 @@ class CliScopeTests(unittest.TestCase):
 
 class DocumentResolutionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.documents: list[validator.JsonObject] = [
+        self.documents: list[JsonObject] = [
             {
                 "document_id": "DOC-1",
                 "version": "0.1.1",

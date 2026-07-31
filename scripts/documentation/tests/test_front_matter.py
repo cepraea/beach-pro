@@ -5,10 +5,10 @@ from pathlib import Path
 from typing import Any
 
 from scripts.documentation.validate_documentation import (
-    JsonObject,
     front_matter as front_matter_module,
     reporter as reporter_module,
 )
+from scripts.documentation.validate_documentation.json_types import JsonObject
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
