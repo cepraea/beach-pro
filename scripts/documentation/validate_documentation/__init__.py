@@ -15,6 +15,7 @@ from . import ingestion as ingestion_module
 from . import instances as instances_module
 from . import links as links_module
 from . import provenance as provenance_module
+from . import pipeline as pipeline_module
 from . import reporter as reporter_module
 from . import registry as registry_module
 from . import workflow as workflow_module
@@ -93,6 +94,7 @@ validate_g1 = g1_module.validate_g1
 validate_g2 = g2_module.validate_g2
 validate_front_matter = g_fm_module.validate_front_matter
 dispatch_gate = dispatcher_module.dispatch_gate
+run_validation = pipeline_module.run_validation
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -170,47 +172,5 @@ def main() -> int:
 
     if not validate_cli_args(args, reporter):
         return finish()
-    strict_legacy = args.strict_legacy or args.gate == "G-ARCH"
-
-    typed_data, documents = registry_module.load_registry(
-        args.registry.resolve(),
-        reporter,
-    )
-    if reporter.errors or typed_data is None:
-        return finish()
-
-    if args.document_id and registry_module.resolve_document_version(
-        documents,
-        args.document_id,
-        args.version,
-        reporter,
-    ) is None:
-        return finish()
-
-    contracts_module.validate_contract_schemas(reporter)
-    instances_module.validate_instances(documents, reporter)
-    if reporter.errors:
-        return finish()
-
-    registry_module.validate_registry_integrity(
-        documents,
-        reporter,
-        strict_legacy,
-    )
-    if reporter.errors:
-        return finish()
-
-    registry_module.validate_canonical_registry(
-        typed_data,
-        documents,
-        reporter,
-    )
-    if reporter.errors:
-        return finish()
-
-    dispatcher_module.dispatch_gate(args, documents, reporter)
-    if reporter.errors:
-        return finish()
-
-    links_module.validate_links(reporter)
+    pipeline_module.run_validation(args, reporter)
     return finish()
