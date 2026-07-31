@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
+    cli as cli_module,
     config,
     links as links_module,
     registry as registry_module,
@@ -32,7 +33,7 @@ class CliScopeTests(unittest.TestCase):
     def test_version_without_document_id_is_rejected(self) -> None:
         reporter = reporter_module.Reporter()
 
-        accepted = validator.validate_cli_args(
+        accepted = cli_module.validate_cli_args(
             _args(gate="G2", version="0.1.2"),
             reporter,
         )
@@ -43,7 +44,7 @@ class CliScopeTests(unittest.TestCase):
     def test_global_gate_rejects_document_scope(self) -> None:
         reporter = reporter_module.Reporter()
 
-        accepted = validator.validate_cli_args(
+        accepted = cli_module.validate_cli_args(
             _args(gate="G0", document_id="DOC-1"),
             reporter,
         )

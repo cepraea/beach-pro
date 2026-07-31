@@ -2,11 +2,8 @@
 
 from __future__ import annotations
 
-import argparse
-from pathlib import Path
-import re
-
 from . import approvals as approvals_module
+from . import cli as cli_module
 from . import config
 from . import contracts as contracts_module
 from . import filesystem
@@ -95,82 +92,6 @@ validate_g2 = g2_module.validate_g2
 validate_front_matter = g_fm_module.validate_front_matter
 dispatch_gate = dispatcher_module.dispatch_gate
 run_validation = pipeline_module.run_validation
-GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
-
-
-def parse_args() -> ValidatorArgs:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--registry",
-        type=Path,
-        default=config.DEFAULT_REGISTRY,
-        help="Registry path; defaults to the controlled CEPRAEA registry.",
-    )
-    parser.add_argument(
-        "--strict-legacy",
-        action="store_true",
-        help="Treat known legacy naming and directory deviations as errors.",
-    )
-    parser.add_argument(
-        "--gate",
-        choices=["G-ARCH", "G0", "G1", "G2", "G-FM"],
-        help="Execute a named blocking gate.",
-    )
-    parser.add_argument(
-        "--document-id",
-        help="Restrict a document-scoped gate to this document ID.",
-    )
-    parser.add_argument(
-        "--version",
-        help="Restrict a document-scoped gate to this version.",
-    )
-    parser.add_argument(
-        "--format",
-        choices=["text", "yaml"],
-        default="text",
-        help="Output format; YAML emits a processable gate result.",
-    )
-    parser.add_argument(
-        "--result-id",
-        help=(
-            "Explicit GATE-RESULT-* identity for YAML that will be persisted; "
-            "the default RUNTIME identity is diagnostic only."
-        ),
-    )
-    args = ValidatorArgs()
-    parser.parse_args(namespace=args)
-    return args
-
-
-def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
-    """Reject argument combinations whose scope has no defined semantics."""
-    if args.version and not args.document_id:
-        reporter.error("--version requires --document-id")
-    if args.gate in GLOBAL_GATES and (args.document_id or args.version):
-        reporter.error(f"{args.gate} is global and does not accept document scope")
-    if args.document_id and args.gate not in {"G2", "G-FM"}:
-        reporter.error("--document-id requires gate G2 or G-FM")
-    if args.result_id and not re.fullmatch(
-        r"GATE-RESULT-[A-Z0-9-]+", args.result_id
-    ):
-        reporter.error("--result-id must match GATE-RESULT-[A-Z0-9-]+")
-    return not reporter.errors
-
-
-def main() -> int:
-    """Run validation stages with fail-fast boundaries and one final emission.
-
-    Each stage collects all of its own findings. Stopping before the next stage
-    avoids producing secondary errors from inputs whose prerequisites already
-    failed, while the single ``emit`` call keeps CLI output deterministic.
-    """
-    args = parse_args()
-    reporter = reporter_module.Reporter()
-
-    def finish() -> int:
-        return reporter.emit(args.format, args.gate, args.result_id)
-
-    if not validate_cli_args(args, reporter):
-        return finish()
-    pipeline_module.run_validation(args, reporter)
-    return finish()
+parse_args = cli_module.parse_args
+validate_cli_args = cli_module.validate_cli_args
+main = cli_module.main

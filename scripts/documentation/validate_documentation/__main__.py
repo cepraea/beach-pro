@@ -1,6 +1,6 @@
 """Run the documentation validator through its canonical module entrypoint."""
 
-from . import main
+from .cli import main
 
 
 if __name__ == "__main__":
