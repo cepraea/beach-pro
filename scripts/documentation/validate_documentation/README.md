@@ -104,8 +104,9 @@ passa, enquanto solicitar o canônico `0.1.2` falha com ausência de pacote. Iss
 
 ## Arquitetura para manutenção
 
-A implementação de domínio ainda está temporariamente concentrada em
-`validate_documentation/__init__.py`. As fundações já extraídas são:
+A implementação está modularizada por responsabilidade. O `__init__.py` é a
+fachada pública mínima aprovada por `BEH-07` e exporta somente `main`. Os
+módulos proprietários são:
 
 - `json_types.py`: fronteiras tipadas de JSON e YAML;
 - `models.py`: `ValidatorArgs`;
@@ -128,9 +129,9 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `pipeline.py`: sequência fail-fast sem criação ou emissão de Reporter;
 - `cli.py`: argumentos, validação da CLI e emissão única do resultado.
 
-O monólito remanescente é uma etapa transitória protegida pelos testes, não a
-arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
-a ele.
+Consumidores internos devem importar símbolos de seus módulos proprietários;
+novos reexports não devem ser acrescentados à fachada sem nova decisão de
+contrato.
 
 As responsabilidades serão extraídas, uma por change set, na direção:
 
@@ -155,10 +156,10 @@ transitórios quando necessários. Uma mudança comportamental cita a decisão
 `BEH` autorizadora, registra RED pelo motivo esperado e somente então aplica a
 correção mínima. Os dois subciclos não são misturados no mesmo commit.
 
-`pipeline.run_validation(args, reporter) -> None` será responsável pelo
-fail-fast e não emitirá resultados. `cli.main(argv)` validará argumentos,
-chamará o pipeline e controlará a emissão única. O `__init__.py` terminará como
-fachada pública restrita a `main`.
+`pipeline.run_validation(args, reporter) -> None` é responsável pelo fail-fast
+e não emite resultados. `cli.main(argv)` valida argumentos, chama o pipeline e
+controla a emissão única. O `__init__.py` permanece como fachada pública
+restrita a `main`, conforme `test_public_api_matches_beh_07`.
 
 O mapa operacional identifica, para cada unidade, o arquivo que deve ser criado
 ou editado. Não se deve criar todos os módulos de uma vez nem alterar documentos

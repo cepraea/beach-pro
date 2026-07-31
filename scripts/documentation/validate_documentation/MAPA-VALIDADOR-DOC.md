@@ -2,11 +2,12 @@
 
 ## 1. Finalidade
 
-Este mapa ensina agentes de IA a extrair e corrigir o pacote
+Este mapa ensina agentes de IA a corrigir o pacote
 `scripts.documentation.validate_documentation` por unidades pequenas. A
-implementação ainda está temporariamente concentrada em `__init__.py`; cada
-unidade abaixo identifica o módulo proprietário que deve ser criado ou editado.
-O mapa não é uma cópia da implementação e não substitui o código executável.
+implementação está modularizada; cada unidade abaixo identifica o módulo
+proprietário que deve ser editado. O `__init__.py` é a fachada mínima aprovada
+por `BEH-07` e exporta somente `main`. O mapa não é uma cópia da implementação
+e não substitui o código executável.
 
 Plano de execução e critérios completos:
 [`PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`](../../../.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md).
@@ -53,9 +54,8 @@ Comentários não devem repetir operações óbvias.
 - Não usar supressões genéricas de tipo.
 - Adicionar somente os imports exigidos pelo módulo em extração, respeitando a
   direção de dependências.
-- Não acrescentar funcionalidade relevante ao `__init__.py` monolítico.
-- Manter reexports transitórios apenas enquanto forem necessários para
-  compatibilidade e removê-los no change set previsto pelo plano.
+- Não acrescentar funcionalidade relevante nem novos reexports a `__init__.py`
+  sem nova decisão de contrato.
 
 ### 2.3 Subciclos e dependências
 
@@ -471,7 +471,7 @@ controlada; corpo permanece intacto.
 ### Unidade 13 — Main
 
 **Estado atual:** dispatcher extraído na Fase 9; pipeline e CLI extraídos na
-Fase 10. `__init__.py` mantém reexports transitórios até a Fase 11.
+Fase 10; fachada pública contraída para somente `main` na Fase 11.
 
 **Destinos:** `pipeline.py`, `gates/dispatcher.py` e `cli.py`.
 
@@ -505,7 +505,8 @@ reutilizado.
 válida.
 
 **Aceitação:** vermelho/verde por unidade, suíte completa verde, strict-mode sem
-supressões e README coerente com `--help`.
+supressões, README coerente com `--help` e
+`test_public_api_matches_beh_07` comprovando `__all__ == ["main"]`.
 
 ## 5. Referências das bibliotecas
 
