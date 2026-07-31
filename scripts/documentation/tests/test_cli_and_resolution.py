@@ -8,6 +8,7 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    links as links_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -123,7 +124,7 @@ class LinkBoundaryTests(unittest.TestCase):
                 (docs / existing).write_text("# target\n", encoding="utf-8")
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_links(reporter)
+                links_module.validate_links(reporter)
             return reporter.errors
 
     def test_markdown_link_cannot_escape_workspace(self) -> None:
@@ -145,6 +146,34 @@ class LinkBoundaryTests(unittest.TestCase):
         errors = self._validate("[missing](missing.md)")
 
         self.assertTrue(any("broken local link" in error for error in errors))
+
+    def test_markdown_read_failure_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            docs = root / "docs"
+            docs.mkdir()
+            source = docs / "source.md"
+            source.write_text("# source\n", encoding="utf-8")
+            reporter = reporter_module.Reporter()
+
+            with (
+                patch.object(config, "WORKSPACE_ROOT", root),
+                patch.object(
+                    Path,
+                    "read_text",
+                    side_effect=OSError("permission denied"),
+                ),
+            ):
+                links_module.validate_links(reporter)
+
+            self.assertTrue(
+                any(
+                    "docs/source.md" in error
+                    and "cannot read Markdown" in error
+                    and "permission denied" in error
+                    for error in reporter.errors
+                )
+            )
 
 
 if __name__ == "__main__":

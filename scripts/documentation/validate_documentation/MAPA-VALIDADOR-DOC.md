@@ -302,8 +302,10 @@ falham; Reporter recebe metadados do par exato.
 
 ### Unidade 5 — Caminhos, nomes, links e hash
 
-**Origem atual:** `workspace_path()` e `sha256()` já estão em
-`filesystem.py`; `validate_links()` permanece no `__init__.py` até sua fase.
+**Estado atual:** extraída na Fase 8. `workspace_path()` e `sha256()` estão em
+`filesystem.py`; `normalize_link_target()` e `validate_links()` estão em
+`links.py`. BEH-05 foi materializada no módulo proprietário com teste
+RED–GREEN.
 
 **Destinos:** `workspace_path()` e `sha256()` em `filesystem.py`;
 `validate_links()` e seus helpers em `links.py`.
@@ -312,13 +314,15 @@ falham; Reporter recebe metadados do par exato.
 
 **Editar:** validação de links locais, narrowing e tipos.
 
-**Não editar:** regexes e convenções sem teste específico.
+**Não editar:** regexes, perfil Markdown e convenções sem decisão normativa e
+teste específico.
 
 **Porquê:** `Path.resolve()` normaliza o caminho, mas não concede autorização
 para acessar fora da raiz.
 
 **Aceitação:** link interno válido passa; quebrado falha; absoluto externo e
-`..` externo falham; URL e âncora não são arquivos locais.
+`..` externo falham; URL e âncora não são arquivos locais; `OSError` de leitura
+identifica o arquivo no Reporter e não produz traceback inesperado.
 
 ### Unidade 6 — Registro e unicidade
 
@@ -441,7 +445,10 @@ externo falham; claims críticos mantêm cobertura.
 
 ### Unidade 12 — Front Matter e G-FM
 
-**Origem atual:** `_DuplicateKeyLoader` até `validate_front_matter()`.
+**Estado atual:** parsing e validação estrutural extraídos na Fase 8.
+`validate_front_matter()`, por implementar o gate G-FM, permanece no
+`__init__.py` até a Fase 9. BEH-03 e BEH-04 foram materializadas em
+`front_matter.py` com testes RED–GREEN independentes.
 
 **Destinos:** parsing e validação em `front_matter.py`; implementação do gate
 em `gates/g_fm.py`.
@@ -455,8 +462,9 @@ em `gates/g_fm.py`.
 **Porquê:** arquivos arquivados são snapshots históricos e ficam fora do perfil
 ativo; feature specs têm contrato independente do registro.
 
-**Aceitação:** alvo vazio falha; versão exata passa; chaves duplicadas, YAML
-inválido e divergências continuam falhando; corpo permanece intacto.
+**Aceitação:** alvo vazio falha; versão exata passa; chaves duplicadas, chave
+complexa, YAML inválido, UTF-8 inválido e divergências falham de forma
+controlada; corpo permanece intacto.
 
 ### Unidade 13 — Main
 

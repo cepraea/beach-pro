@@ -8,6 +8,7 @@ from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     contracts as contracts_module,
     instances as instances_module,
+    links as links_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -126,7 +127,7 @@ class MainPipelineTests(unittest.TestCase):
                 "dispatch_gate",
                 side_effect=fail_gate,
             ),
-            patch.object(validator, "validate_links") as link_stage,
+            patch.object(links_module, "validate_links") as link_stage,
             patch.object(reporter_module.Reporter, "emit", return_value=1),
         ):
             status = validator.main()
@@ -178,7 +179,7 @@ class MainPipelineTests(unittest.TestCase):
                 "dispatch_gate",
                 side_effect=capture_gate,
             ),
-            patch.object(validator, "validate_links"),
+            patch.object(links_module, "validate_links"),
             patch.object(reporter_module.Reporter, "emit", return_value=0) as emit,
         ):
             status = validator.main()
@@ -215,7 +216,7 @@ class MainPipelineTests(unittest.TestCase):
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(validator, "dispatch_gate"),
-            patch.object(validator, "validate_links"),
+            patch.object(links_module, "validate_links"),
             patch.object(
                 reporter_module.Reporter,
                 "emit",

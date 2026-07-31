@@ -1,0 +1,63 @@
+evidence_id: FRONT-MATTER-LINKS-EXTRACTION-20260731
+phase: 8
+status: pass
+evaluated_at: "2026-07-31T04:37:10-03:00"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-8
+pull_request:
+  number: 11
+  url: "https://github.com/cepraea/beach-pro/pull/11"
+  state_at_evaluation: draft
+base_commit: 0d5dbbf0e9436118842d261ae200c090a22dc62d
+implementation_commits:
+  front_matter: 9c27629
+  links: 366273e
+  BEH-03: a1453bc
+  BEH-04: 5513494
+  BEH-05: 1b94e12
+authorization:
+  authority: Davi Sermenho
+  role: AUTORIDADE_APROVADORA
+  decisions:
+    - BEH-03
+    - BEH-04
+    - BEH-05
+tar_materialization:
+  status: pass
+  matching_hashes: 3
+validation:
+  unit_tests:
+    status: pass
+    tests: 102
+  integration_tests:
+    status: pass
+    tests: 1
+  pyright:
+    version: 1.1.411
+    status: pass
+    errors: 0
+    warnings: 0
+  npm_validate:
+    status: pass
+    executions_after_code_change_sets: 5
+  baseline_comparison: pass
+structure:
+  extracted_modules: 2
+  extracted_functions: 5
+  extracted_classes: 1
+  pipeline_patches_migrated: 3
+gates:
+  FRONT-MATTER-EXTRACTION: pass
+  LINKS-EXTRACTION: pass
+  BEH-03: pass
+  BEH-04: pass
+  BEH-05: pass
+next_phase:
+  phase: 9
+  status: blocked_until_pull_request_merge
+residual_limitations:
+  - identidade dos gates globais em aprovações
+  - comprovação dos bytes de fontes locais em G2
+  - obrigatoriedade e cobertura de G2
+  - quantidade fixa de registros de ingestão
