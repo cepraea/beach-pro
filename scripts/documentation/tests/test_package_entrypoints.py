@@ -36,10 +36,15 @@ MODULE_NAME = "scripts.documentation.validate_documentation"
 
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
+    approvals as approvals_module,
     config,
     contracts as contracts_module,
+    ingestion as ingestion_module,
+    instances as instances_module,
+    provenance as provenance_module,
     registry as registry_module,
     reporter as reporter_module,
+    workflow as workflow_module,
 )
 
 
@@ -104,6 +109,46 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_registry_integrity,
             registry_module.validate_registry_integrity,
+        )
+        self.assertIs(
+            validator.validate_workflow_references,
+            workflow_module.validate_workflow_references,
+        )
+        self.assertIs(
+            validator.validate_approval_cross_references,
+            approvals_module.validate_approval_cross_references,
+        )
+        self.assertIs(
+            validator.validate_provenance_packages,
+            provenance_module.validate_provenance_packages,
+        )
+        self.assertIs(
+            validator.ingestion_records,
+            ingestion_module.ingestion_records,
+        )
+        self.assertIs(
+            validator.validate_ingestion_consistency,
+            ingestion_module.validate_ingestion_consistency,
+        )
+        self.assertIs(
+            validator.validate_document_instances,
+            instances_module.validate_document_instances,
+        )
+        self.assertIs(
+            validator.validate_workflow_instance,
+            instances_module.validate_workflow_instance,
+        )
+        self.assertIs(
+            validator.validate_gate_result_instances,
+            instances_module.validate_gate_result_instances,
+        )
+        self.assertIs(
+            validator.validate_evidence_instances,
+            instances_module.validate_evidence_instances,
+        )
+        self.assertIs(
+            validator.validate_instances,
+            instances_module.validate_instances,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

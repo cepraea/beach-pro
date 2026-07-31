@@ -1,0 +1,52 @@
+evidence_id: DOMAIN-INSTANCES-EXTRACTION-20260731
+phase: 7
+status: pass
+evaluated_at: "2026-07-31T02:25:13-03:00"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-7
+pull_request:
+  number: 10
+  url: "https://github.com/cepraea/beach-pro/pull/10"
+  state_at_evaluation: draft
+base_commit: edc1785d3336b1554a8143cc9e28d7f20dca0868
+implementation_commits:
+  workflow: 0c4d65d
+  approvals: a669440
+  provenance: 759be11
+  ingestion: b526a94
+  instances: b4798e6
+tar_materialization:
+  status: pass
+  matching_hashes: 3
+validation:
+  unit_tests:
+    status: pass
+    tests: 99
+  integration_tests:
+    status: pass
+    tests: 1
+  pyright:
+    version: 1.1.411
+    status: pass
+    errors: 0
+    warnings: 0
+  npm_validate:
+    status: pass
+    executions_after_code_change_sets: 5
+  baseline_comparison: pass
+structure:
+  extracted_functions: 10
+  extracted_modules: 5
+  validate_instances_patches_migrated: 5
+  total_patch_object_occurrences: 49
+gate:
+  DOMAIN-INSTANCES-EXTRACTION: pass
+next_phase:
+  phase: 8
+  status: blocked_until_pull_request_merge
+residual_limitations:
+  - identidade dos gates globais em aprovações
+  - comprovação dos bytes de fontes locais em G2
+  - obrigatoriedade e cobertura de G2
+  - quantidade fixa de registros de ingestão

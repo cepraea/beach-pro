@@ -343,8 +343,9 @@ verificação dos demais itens.
 
 ### Unidade 7 — Schemas e instâncias
 
-**Estado atual:** a parte de contratos foi extraída na Fase 6; a validação de
-instâncias permanece no `__init__.py` até a Fase 7.
+**Estado atual:** contratos extraídos na Fase 6 e instâncias extraídas na
+Fase 7. `instances.py` delega relações aos módulos proprietários, sem
+reimplementar suas regras.
 
 **Destinos:** validação de schemas em `contracts.py` e validação de instâncias
 em `instances.py`.
@@ -364,7 +365,8 @@ executadas.
 
 ### Unidade 8 — Aprovações e evidências
 
-**Origem atual:** `validate_approval_cross_references()`.
+**Estado atual:** aprovações e validação estrutural de proveniência extraídas
+na Fase 7. A implementação de G2 permanece no `__init__.py` até a Fase 9.
 
 **Destino:** `approvals.py`. Validação de pacotes de proveniência pertence a
 `provenance.py`; a implementação do gate pertence a `gates/g2.py`.
@@ -384,7 +386,8 @@ supersessão sem sucessora falham; cadeia exata passa.
 
 ### Unidade 9 — Workflow e ingestão
 
-**Origem atual:** `validate_workflow_references()` até antes de `validate_g0()`.
+**Estado atual:** workflow e ingestão extraídos na Fase 7. G0 e G1 consultam
+`ingestion.ingestion_records()` diretamente.
 
 **Destinos:** `workflow.py` e `ingestion.py`.
 

@@ -10,7 +10,9 @@ import yaml
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    ingestion as ingestion_module,
     reporter as reporter_module,
+    workflow as workflow_module,
 )
 
 
@@ -58,7 +60,7 @@ class WorkflowReferenceTests(unittest.TestCase):
     def test_valid_workflow_resolves_all_references(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(_workflow(), reporter)
+        workflow_module.validate_workflow_references(_workflow(), reporter)
 
         self.assertEqual([], reporter.errors)
 
@@ -70,7 +72,7 @@ class WorkflowReferenceTests(unittest.TestCase):
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
         reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(workflow, reporter)
+        workflow_module.validate_workflow_references(workflow, reporter)
 
         self.assertTrue(
             any("unknown required gate" in error for error in reporter.errors)
@@ -83,7 +85,7 @@ class WorkflowReferenceTests(unittest.TestCase):
         (states or []).append({"state_id": "S0"})
         reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(workflow, reporter)
+        workflow_module.validate_workflow_references(workflow, reporter)
 
         self.assertIn("duplicate workflow state: S0", reporter.errors)
 
@@ -179,7 +181,10 @@ class IngestionConsistencyTests(unittest.TestCase):
                     manifest_path,
                 ),
             ):
-                validator.validate_ingestion_consistency(documents, reporter)
+                ingestion_module.validate_ingestion_consistency(
+                    documents,
+                    reporter,
+                )
             return reporter
 
     def test_ingestion_unknown_gate_result_fails(self) -> None:
