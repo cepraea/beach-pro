@@ -45,6 +45,9 @@ def _registry_data() -> validator.JsonObject:
 
 
 class MainPipelineTests(unittest.TestCase):
+    def test_pipeline_does_not_import_cli(self) -> None:
+        self.assertFalse(hasattr(pipeline_module, "cli_module"))
+
     def test_pipeline_never_emits_results(self) -> None:
         args = _args()
         reporter = reporter_module.Reporter()
@@ -61,6 +64,26 @@ class MainPipelineTests(unittest.TestCase):
 
         self.assertIsNone(result)
         emit.assert_not_called()
+
+    def test_unknown_scope_stops_before_contracts(self) -> None:
+        args = _args("G2", "DOC-UNKNOWN", "1.0.0")
+        reporter = reporter_module.Reporter()
+
+        with (
+            patch.object(
+                registry_module,
+                "load_registry",
+                return_value=(_registry_data(), []),
+            ),
+            patch.object(
+                contracts_module,
+                "validate_contract_schemas",
+            ) as contracts,
+        ):
+            pipeline_module.run_validation(args, reporter)
+
+        self.assertTrue(reporter.errors)
+        contracts.assert_not_called()
 
     def test_main_stops_before_files_when_contract_stage_fails(self) -> None:
         def fail_contract(reporter: reporter_module.Reporter) -> None:
