@@ -39,6 +39,7 @@ from scripts.documentation.validate_documentation import (
     approvals as approvals_module,
     config,
     contracts as contracts_module,
+    front_matter as front_matter_module,
     ingestion as ingestion_module,
     instances as instances_module,
     provenance as provenance_module,
@@ -149,6 +150,18 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_instances,
             instances_module.validate_instances,
+        )
+        self.assertIs(
+            validator.parse_front_matter,
+            front_matter_module.parse_front_matter,
+        )
+        self.assertIs(
+            validator.validate_governed,
+            front_matter_module.validate_governed,
+        )
+        self.assertIs(
+            validator.validate_feature_spec,
+            front_matter_module.validate_feature_spec,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

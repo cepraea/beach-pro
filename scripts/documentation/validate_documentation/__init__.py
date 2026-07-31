@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import json
 from pathlib import Path
 import re
 import tarfile
-from typing import Any, cast
 from urllib.parse import unquote, urlparse
 
 import yaml
@@ -17,6 +15,7 @@ from . import approvals as approvals_module
 from . import config
 from . import contracts as contracts_module
 from . import filesystem
+from . import front_matter as front_matter_module
 from . import ingestion as ingestion_module
 from . import instances as instances_module
 from . import provenance as provenance_module
@@ -81,6 +80,9 @@ validate_workflow_instance = instances_module.validate_workflow_instance
 validate_gate_result_instances = instances_module.validate_gate_result_instances
 validate_evidence_instances = instances_module.validate_evidence_instances
 validate_instances = instances_module.validate_instances
+parse_front_matter = front_matter_module.parse_front_matter
+validate_governed = front_matter_module.validate_governed
+validate_feature_spec = front_matter_module.validate_feature_spec
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 LINE_REFERENCE_RE = re.compile(
     r"^(.*\.(?:md|yaml|yml|json))(?::[0-9]+)?(?:#.*)?$",
@@ -634,204 +636,6 @@ def validate_g2(
             )
 
 
-# ── G-FM: Front Matter ────────────────────────────────────────────────────────
-
-FM_FEATURE_SPEC_GLOB = "src/features/**/*.md"
-
-# Paths whose current_path matches are excluded from the governed profile.
-_FM_EXCLUSIONS = re.compile(
-    r"^(?:CLAUDE\.md|README\.md|\.inicio/|node_modules/|docs/archive/)"
-)
-
-
-class _DuplicateKeyLoader(yaml.SafeLoader):
-    """SafeLoader that raises on duplicate mapping keys."""
-
-    def construct_mapping(
-        self, node: yaml.MappingNode, deep: bool = False
-    ) -> dict[Any, Any]:
-        seen: dict[Any, Any] = {}
-        loader = cast(Any, self)
-        for key_node, _ in node.value:
-            key = loader.construct_object(key_node, deep=deep)
-            if key in seen:
-                raise yaml.constructor.ConstructorError(
-                    "while constructing a mapping",
-                    node.start_mark,
-                    f"found duplicate key: '{key}'",
-                    key_node.start_mark,
-                )
-            seen[key] = True
-        return super().construct_mapping(node, deep=deep)
-
-
-def parse_front_matter(
-    path: Path, profile: str, reporter: Reporter
-) -> JsonObject | None:
-    """Extract and validate the YAML front matter block from a Markdown file.
-
-    Accepts only BOM-UTF-8 before the opening ``---``.  Returns the parsed
-    mapping on success, or None after reporting every error found.
-    """
-    try:
-        raw = path.read_bytes()
-    except OSError as exc:
-        reporter.error(f"{path}: cannot read: {exc}")
-        return None
-
-    if raw.startswith(b"\xef\xbb\xbf"):
-        raw = raw[3:]
-
-    if not raw.startswith(b"---"):
-        reporter.error(f"{path}: front matter absent")
-        return None
-
-    text = raw.decode("utf-8", errors="replace")
-    lines = text.splitlines(keepends=True)
-
-    if lines[0].rstrip("\r\n") != "---":
-        reporter.error(f"{path}: front matter absent")
-        return None
-
-    close_idx: int | None = None
-    for i in range(1, len(lines)):
-        if lines[i].rstrip("\r\n") == "---":
-            close_idx = i
-            break
-
-    if close_idx is None:
-        reporter.error(f"{path}: front matter missing closing delimiter")
-        return None
-
-    yaml_block = "".join(lines[1:close_idx])
-
-    try:
-        data = yaml.load(yaml_block, Loader=_DuplicateKeyLoader)
-    except yaml.YAMLError as exc:
-        reporter.error(f"{path}: invalid YAML in front matter: {exc}")
-        return None
-
-    if data is None:
-        reporter.error(f"{path}: front matter is empty")
-        return None
-
-    typed_data = as_json_object(data)
-    if typed_data is None:
-        reporter.error(f"{path}: front matter root must be a mapping")
-        return None
-
-    if profile == "governed":
-        schema_path = config.FM_GOVERNED_SCHEMA
-    elif profile == "feature-spec":
-        schema_path = config.FM_FEATURE_SPEC_SCHEMA
-    else:
-        reporter.error(f"{path}: unknown front matter profile: {profile}")
-        return None
-
-    try:
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        reporter.error(f"{path}: cannot load schema {schema_path.name}: {exc}")
-        return None
-
-    typed_schema = as_json_object(schema)
-    if typed_schema is None:
-        reporter.error(f"{path}: schema {schema_path.name} is not a mapping")
-        return None
-    schema_errors = contracts_module.schema_validation_errors(
-        typed_schema,
-        typed_data,
-    )
-    for err in schema_errors:
-        field = ".".join(str(p) for p in err.absolute_path) or "(root)"
-        reporter.error(f"{path}: front matter {field}: {err.message}")
-
-    return typed_data if not schema_errors else None
-
-
-def validate_governed(
-    registered_doc: JsonObject, reporter: Reporter
-) -> None:
-    """Validate front matter of a governed .md document against the registry."""
-    document_id = registered_doc.get("document_id", "<missing-id>")
-    current_path = registered_doc.get("current_path", "")
-    if not isinstance(current_path, str):
-        reporter.error(f"{document_id}: governed current_path must be a string")
-        return
-
-    if _FM_EXCLUSIONS.match(current_path):
-        return
-
-    path = config.WORKSPACE_ROOT / current_path
-    fm = parse_front_matter(path, "governed", reporter)
-    if fm is None:
-        return
-
-    sync_fields = ("document_id", "title", "document_type", "version", "workflow_status")
-    for field in sync_fields:
-        expected = registered_doc.get(field)
-        actual = fm.get(field)
-        if actual != expected:
-            reporter.error(
-                f"{document_id}: front matter {field} '{actual}'"
-                f" differs from registry '{expected}'"
-            )
-
-    reg_responsible = registered_doc.get("responsible")
-    fm_responsible = fm.get("responsible")
-    if reg_responsible and fm_responsible != reg_responsible:
-        reporter.error(
-            f"{document_id}: front matter responsible '{fm_responsible}'"
-            f" differs from registry '{reg_responsible}'"
-        )
-    if fm_responsible and not reg_responsible:
-        reporter.error(
-            f"{document_id}: front matter has responsible but registry does not"
-        )
-
-    reg_scope = as_json_object(registered_doc.get("authority_scope")) or {}
-    reg_permitted = {
-        item
-        for item in as_json_array(reg_scope.get("permitted_uses")) or []
-        if isinstance(item, str)
-    }
-    reg_prohibited = {
-        item
-        for item in as_json_array(reg_scope.get("prohibited_uses")) or []
-        if isinstance(item, str)
-    }
-
-    fm_permitted = {
-        item
-        for item in as_json_array(fm.get("permitted_uses")) or []
-        if isinstance(item, str)
-    }
-    fm_prohibited = {
-        item
-        for item in as_json_array(fm.get("prohibited_uses")) or []
-        if isinstance(item, str)
-    }
-
-    excess = fm_permitted - reg_permitted
-    if excess:
-        reporter.error(
-            f"{document_id}: front matter permitted_uses contains"
-            f" unauthorized entries: {sorted(excess)}"
-        )
-
-    missing = reg_prohibited - fm_prohibited
-    if missing:
-        reporter.error(
-            f"{document_id}: front matter prohibited_uses missing"
-            f" registry entries: {sorted(missing)}"
-        )
-
-
-def validate_feature_spec(path: Path, reporter: Reporter) -> None:
-    """Validate front matter of a feature spec discovered via glob."""
-    parse_front_matter(path, "feature-spec", reporter)
-
-
 def validate_front_matter(
     documents: list[JsonObject],
     reporter: Reporter,
@@ -844,7 +648,7 @@ def validate_front_matter(
         for rec in documents
         if isinstance(rec.get("current_path"), str)
         and rec["current_path"].endswith(".md")
-        and not _FM_EXCLUSIONS.match(rec["current_path"])
+        and not front_matter_module.FM_EXCLUSIONS.match(rec["current_path"])
     ]
 
     if document_id:
@@ -862,16 +666,18 @@ def validate_front_matter(
                 + (f" v{version}" if version else "")
             )
             return
-        validate_governed(selected, reporter)
+        front_matter_module.validate_governed(selected, reporter)
         return
 
     for rec in governed_docs:
-        validate_governed(rec, reporter)
+        front_matter_module.validate_governed(rec, reporter)
 
     for spec_path in sorted(
-        config.WORKSPACE_ROOT.glob(FM_FEATURE_SPEC_GLOB)
+        config.WORKSPACE_ROOT.glob(
+            front_matter_module.FM_FEATURE_SPEC_GLOB
+        )
     ):
-        validate_feature_spec(spec_path, reporter)
+        front_matter_module.validate_feature_spec(spec_path, reporter)
 
 
 def dispatch_gate(

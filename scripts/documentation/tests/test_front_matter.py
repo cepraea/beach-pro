@@ -6,10 +6,8 @@ from typing import Any
 
 from scripts.documentation.validate_documentation import (
     JsonObject,
-    parse_front_matter,
+    front_matter as front_matter_module,
     reporter as reporter_module,
-    validate_feature_spec,
-    validate_governed,
 )
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -105,7 +103,7 @@ class TestParseGoverned(unittest.TestCase):
     ) -> tuple[JsonObject | None, reporter_module.Reporter]:
         r = reporter_module.Reporter()
         path = _tmp(self.tmp, content)
-        result = parse_front_matter(path, "governed", r)
+        result = front_matter_module.parse_front_matter(path, "governed", r)
         return result, r
 
     def test_valid_document(self) -> None:
@@ -199,7 +197,7 @@ class TestValidateGoverned(unittest.TestCase):
         record = dict(record)
         record["current_path"] = str(path)
         r = reporter_module.Reporter()
-        validate_governed(record, r)
+        front_matter_module.validate_governed(record, r)
         return r
 
     def test_valid_sync(self) -> None:
@@ -226,7 +224,7 @@ class TestValidateGoverned(unittest.TestCase):
         path = _tmp(self.tmp, VALID_GOVERNED, "resp_test.md")
         record["current_path"] = str(path)
         r = reporter_module.Reporter()
-        validate_governed(record, r)
+        front_matter_module.validate_governed(record, r)
         self.assertTrue(
             any("responsible" in e for e in r.errors),
             msg="FM has responsible but registry does not — should error",
@@ -273,7 +271,7 @@ class TestValidateFeatureSpec(unittest.TestCase):
     def _run(self, content: str) -> reporter_module.Reporter:
         path = _tmp(self.tmp, content)
         r = reporter_module.Reporter()
-        validate_feature_spec(path, r)
+        front_matter_module.validate_feature_spec(path, r)
         return r
 
     def test_valid_incluido(self) -> None:
