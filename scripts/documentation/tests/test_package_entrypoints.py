@@ -39,6 +39,7 @@ from scripts.documentation.validate_documentation import (
     approvals as approvals_module,
     config,
     contracts as contracts_module,
+    ingestion as ingestion_module,
     provenance as provenance_module,
     registry as registry_module,
     reporter as reporter_module,
@@ -119,6 +120,14 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_provenance_packages,
             provenance_module.validate_provenance_packages,
+        )
+        self.assertIs(
+            validator.ingestion_records,
+            ingestion_module.ingestion_records,
+        )
+        self.assertIs(
+            validator.validate_ingestion_consistency,
+            ingestion_module.validate_ingestion_consistency,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

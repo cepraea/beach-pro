@@ -10,6 +10,7 @@ import yaml
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    ingestion as ingestion_module,
     reporter as reporter_module,
     workflow as workflow_module,
 )
@@ -180,7 +181,10 @@ class IngestionConsistencyTests(unittest.TestCase):
                     manifest_path,
                 ),
             ):
-                validator.validate_ingestion_consistency(documents, reporter)
+                ingestion_module.validate_ingestion_consistency(
+                    documents,
+                    reporter,
+                )
             return reporter
 
     def test_ingestion_unknown_gate_result_fails(self) -> None:
