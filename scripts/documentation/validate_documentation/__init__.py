@@ -7,7 +7,6 @@ import hashlib
 from pathlib import Path
 import re
 import tarfile
-from urllib.parse import unquote, urlparse
 
 import yaml
 
@@ -18,6 +17,7 @@ from . import filesystem
 from . import front_matter as front_matter_module
 from . import ingestion as ingestion_module
 from . import instances as instances_module
+from . import links as links_module
 from . import provenance as provenance_module
 from . import reporter as reporter_module
 from . import registry as registry_module
@@ -83,11 +83,8 @@ validate_instances = instances_module.validate_instances
 parse_front_matter = front_matter_module.parse_front_matter
 validate_governed = front_matter_module.validate_governed
 validate_feature_spec = front_matter_module.validate_feature_spec
-MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
-LINE_REFERENCE_RE = re.compile(
-    r"^(.*\.(?:md|yaml|yml|json))(?::[0-9]+)?(?:#.*)?$",
-    re.IGNORECASE,
-)
+normalize_link_target = links_module.normalize_link_target
+validate_links = links_module.validate_links
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -148,59 +145,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     ):
         reporter.error("--result-id must match GATE-RESULT-[A-Z0-9-]+")
     return not reporter.errors
-
-
-def normalize_link_target(markdown_path: Path, raw_target: str) -> Path | None:
-    target = raw_target.strip()
-    if target.startswith("<") and target.endswith(">"):
-        target = target[1:-1]
-    target = unquote(target)
-    parsed = urlparse(target)
-    if parsed.scheme or target.startswith("#"):
-        return None
-
-    match = LINE_REFERENCE_RE.match(target)
-    if match:
-        target = match.group(1)
-    else:
-        target = target.split("#", 1)[0]
-
-    candidate = Path(target)
-    resolved = (
-        candidate.resolve()
-        if candidate.is_absolute()
-        else (markdown_path.parent / candidate).resolve()
-    )
-    return resolved
-
-
-def validate_links(reporter: Reporter) -> None:
-    for markdown_path in sorted(
-        (config.WORKSPACE_ROOT / "docs").rglob("*.md")
-    ):
-        text = markdown_path.read_text(encoding="utf-8")
-        for raw_target in MARKDOWN_LINK_RE.findall(text):
-            target = normalize_link_target(markdown_path, raw_target)
-            if target is None:
-                continue
-            try:
-                target.relative_to(config.WORKSPACE_ROOT)
-            except ValueError:
-                relative_source = markdown_path.relative_to(
-                    config.WORKSPACE_ROOT
-                )
-                reporter.error(
-                    f"{relative_source}: local link escapes workspace: "
-                    f"{raw_target}"
-                )
-                continue
-            if not target.exists():
-                relative_source = markdown_path.relative_to(
-                    config.WORKSPACE_ROOT
-                )
-                reporter.error(
-                    f"{relative_source}: broken local link: {raw_target}"
-                )
 
 
 def validate_g0(documents: list[JsonObject], reporter: Reporter) -> None:
@@ -760,5 +704,5 @@ def main() -> int:
     if reporter.errors:
         return finish()
 
-    validate_links(reporter)
+    links_module.validate_links(reporter)
     return finish()

@@ -42,6 +42,7 @@ from scripts.documentation.validate_documentation import (
     front_matter as front_matter_module,
     ingestion as ingestion_module,
     instances as instances_module,
+    links as links_module,
     provenance as provenance_module,
     registry as registry_module,
     reporter as reporter_module,
@@ -162,6 +163,14 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_feature_spec,
             front_matter_module.validate_feature_spec,
+        )
+        self.assertIs(
+            validator.normalize_link_target,
+            links_module.normalize_link_target,
+        )
+        self.assertIs(
+            validator.validate_links,
+            links_module.validate_links,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

@@ -8,6 +8,7 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    links as links_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -123,7 +124,7 @@ class LinkBoundaryTests(unittest.TestCase):
                 (docs / existing).write_text("# target\n", encoding="utf-8")
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_links(reporter)
+                links_module.validate_links(reporter)
             return reporter.errors
 
     def test_markdown_link_cannot_escape_workspace(self) -> None:
