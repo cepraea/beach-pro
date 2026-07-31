@@ -119,6 +119,26 @@ class TestParseGoverned(unittest.TestCase):
         _, r = self._parse("---\nkey: [unclosed\n---\n# body\n")
         self.assertTrue(any("invalid YAML" in e for e in r.errors))
 
+    def test_invalid_utf8_reports_file_and_stops_validation(self) -> None:
+        path = self.tmp / "invalid-utf8.md"
+        path.write_bytes(b"---\ntitle: \xff\n---\n# body\n")
+        reporter = reporter_module.Reporter()
+
+        data = front_matter_module.parse_front_matter(
+            path,
+            "governed",
+            reporter,
+        )
+
+        self.assertIsNone(data)
+        self.assertTrue(
+            any(
+                str(path) in error and "invalid UTF-8" in error
+                for error in reporter.errors
+            ),
+            msg=f"expected controlled UTF-8 error, got: {reporter.errors}",
+        )
+
     def test_missing_closing_delimiter(self) -> None:
         _, r = self._parse(
             "---\ndocument_id: DOC-CEPRAEA-DEC-019-MVP-SINTETICO\n# no closing\n"

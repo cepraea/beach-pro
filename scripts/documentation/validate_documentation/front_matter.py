@@ -89,7 +89,13 @@ def parse_front_matter(
         reporter.error(f"{path}: front matter absent")
         return None
 
-    text = raw.decode("utf-8", errors="replace")
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        # Replacement characters would allow different source bytes to be
+        # validated as if they represented the same governed text.
+        reporter.error(f"{path}: invalid UTF-8: {exc}")
+        return None
     lines = text.splitlines(keepends=True)
 
     if lines[0].rstrip("\r\n") != "---":
