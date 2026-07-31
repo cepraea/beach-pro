@@ -2,11 +2,8 @@
 
 from __future__ import annotations
 
-import argparse
-from pathlib import Path
-import re
-
 from . import approvals as approvals_module
+from . import cli as cli_module
 from . import config
 from . import contracts as contracts_module
 from . import filesystem
@@ -15,6 +12,7 @@ from . import ingestion as ingestion_module
 from . import instances as instances_module
 from . import links as links_module
 from . import provenance as provenance_module
+from . import pipeline as pipeline_module
 from . import reporter as reporter_module
 from . import registry as registry_module
 from . import workflow as workflow_module
@@ -93,124 +91,7 @@ validate_g1 = g1_module.validate_g1
 validate_g2 = g2_module.validate_g2
 validate_front_matter = g_fm_module.validate_front_matter
 dispatch_gate = dispatcher_module.dispatch_gate
-GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
-
-
-def parse_args() -> ValidatorArgs:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--registry",
-        type=Path,
-        default=config.DEFAULT_REGISTRY,
-        help="Registry path; defaults to the controlled CEPRAEA registry.",
-    )
-    parser.add_argument(
-        "--strict-legacy",
-        action="store_true",
-        help="Treat known legacy naming and directory deviations as errors.",
-    )
-    parser.add_argument(
-        "--gate",
-        choices=["G-ARCH", "G0", "G1", "G2", "G-FM"],
-        help="Execute a named blocking gate.",
-    )
-    parser.add_argument(
-        "--document-id",
-        help="Restrict a document-scoped gate to this document ID.",
-    )
-    parser.add_argument(
-        "--version",
-        help="Restrict a document-scoped gate to this version.",
-    )
-    parser.add_argument(
-        "--format",
-        choices=["text", "yaml"],
-        default="text",
-        help="Output format; YAML emits a processable gate result.",
-    )
-    parser.add_argument(
-        "--result-id",
-        help=(
-            "Explicit GATE-RESULT-* identity for YAML that will be persisted; "
-            "the default RUNTIME identity is diagnostic only."
-        ),
-    )
-    args = ValidatorArgs()
-    parser.parse_args(namespace=args)
-    return args
-
-
-def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
-    """Reject argument combinations whose scope has no defined semantics."""
-    if args.version and not args.document_id:
-        reporter.error("--version requires --document-id")
-    if args.gate in GLOBAL_GATES and (args.document_id or args.version):
-        reporter.error(f"{args.gate} is global and does not accept document scope")
-    if args.document_id and args.gate not in {"G2", "G-FM"}:
-        reporter.error("--document-id requires gate G2 or G-FM")
-    if args.result_id and not re.fullmatch(
-        r"GATE-RESULT-[A-Z0-9-]+", args.result_id
-    ):
-        reporter.error("--result-id must match GATE-RESULT-[A-Z0-9-]+")
-    return not reporter.errors
-
-
-def main() -> int:
-    """Run validation stages with fail-fast boundaries and one final emission.
-
-    Each stage collects all of its own findings. Stopping before the next stage
-    avoids producing secondary errors from inputs whose prerequisites already
-    failed, while the single ``emit`` call keeps CLI output deterministic.
-    """
-    args = parse_args()
-    reporter = reporter_module.Reporter()
-
-    def finish() -> int:
-        return reporter.emit(args.format, args.gate, args.result_id)
-
-    if not validate_cli_args(args, reporter):
-        return finish()
-    strict_legacy = args.strict_legacy or args.gate == "G-ARCH"
-
-    typed_data, documents = registry_module.load_registry(
-        args.registry.resolve(),
-        reporter,
-    )
-    if reporter.errors or typed_data is None:
-        return finish()
-
-    if args.document_id and registry_module.resolve_document_version(
-        documents,
-        args.document_id,
-        args.version,
-        reporter,
-    ) is None:
-        return finish()
-
-    contracts_module.validate_contract_schemas(reporter)
-    instances_module.validate_instances(documents, reporter)
-    if reporter.errors:
-        return finish()
-
-    registry_module.validate_registry_integrity(
-        documents,
-        reporter,
-        strict_legacy,
-    )
-    if reporter.errors:
-        return finish()
-
-    registry_module.validate_canonical_registry(
-        typed_data,
-        documents,
-        reporter,
-    )
-    if reporter.errors:
-        return finish()
-
-    dispatcher_module.dispatch_gate(args, documents, reporter)
-    if reporter.errors:
-        return finish()
-
-    links_module.validate_links(reporter)
-    return finish()
+run_validation = pipeline_module.run_validation
+parse_args = cli_module.parse_args
+validate_cli_args = cli_module.validate_cli_args
+main = cli_module.main

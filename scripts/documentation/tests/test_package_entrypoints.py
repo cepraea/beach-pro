@@ -37,12 +37,14 @@ MODULE_NAME = "scripts.documentation.validate_documentation"
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     approvals as approvals_module,
+    cli as cli_module,
     config,
     contracts as contracts_module,
     front_matter as front_matter_module,
     ingestion as ingestion_module,
     instances as instances_module,
     links as links_module,
+    pipeline as pipeline_module,
     provenance as provenance_module,
     registry as registry_module,
     reporter as reporter_module,
@@ -189,6 +191,10 @@ class PackageLayoutTests(unittest.TestCase):
             g_fm_module.validate_front_matter,
         )
         self.assertIs(validator.dispatch_gate, dispatcher_module.dispatch_gate)
+        self.assertIs(validator.run_validation, pipeline_module.run_validation)
+        self.assertIs(validator.parse_args, cli_module.parse_args)
+        self.assertIs(validator.validate_cli_args, cli_module.validate_cli_args)
+        self.assertIs(validator.main, cli_module.main)
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)

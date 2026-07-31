@@ -264,7 +264,8 @@ compatíveis.
 
 ### Unidade 3 — CLI
 
-**Origem atual:** `parse_args()` e helper de validação de argumentos.
+**Estado atual:** extraída na Fase 10 para `cli.py`. BEH-06 permite argumentos
+explícitos em `parse_args(argv)` e `main(argv)` sem alterar `argv=None`.
 
 **Destino:** `cli.py`.
 
@@ -469,8 +470,8 @@ controlada; corpo permanece intacto.
 
 ### Unidade 13 — Main
 
-**Estado atual:** o dispatcher foi extraído na Fase 9; `main()` e a
-orquestração permanecem no `__init__.py` até a Fase 10.
+**Estado atual:** dispatcher extraído na Fase 9; pipeline e CLI extraídos na
+Fase 10. `__init__.py` mantém reexports transitórios até a Fase 11.
 
 **Destinos:** `pipeline.py`, `gates/dispatcher.py` e `cli.py`.
 

@@ -7,8 +7,10 @@ from unittest.mock import patch
 
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
+    cli as cli_module,
     config,
     links as links_module,
+    pipeline as pipeline_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -29,10 +31,48 @@ def _args(**overrides: object) -> validator.ValidatorArgs:
 
 
 class CliScopeTests(unittest.TestCase):
+    def test_parse_args_accepts_explicit_argv(self) -> None:
+        args = cli_module.parse_args(["--gate", "G1", "--format", "yaml"])
+
+        self.assertEqual("G1", args.gate)
+        self.assertEqual("yaml", args.format)
+
+    def test_main_accepts_explicit_argv_and_emits_once(self) -> None:
+        with (
+            patch.object(pipeline_module, "run_validation") as pipeline,
+            patch.object(
+                reporter_module.Reporter,
+                "emit",
+                return_value=0,
+            ) as emit,
+        ):
+            status = cli_module.main(["--gate", "G1"])
+
+        self.assertEqual(0, status)
+        pipeline.assert_called_once()
+        parsed_args = pipeline.call_args.args[0]
+        self.assertEqual("G1", parsed_args.gate)
+        emit.assert_called_once()
+
+    def test_invalid_explicit_argv_skips_pipeline_and_emits_once(self) -> None:
+        with (
+            patch.object(pipeline_module, "run_validation") as pipeline,
+            patch.object(
+                reporter_module.Reporter,
+                "emit",
+                return_value=1,
+            ) as emit,
+        ):
+            status = cli_module.main(["--version", "1.0.0"])
+
+        self.assertEqual(1, status)
+        pipeline.assert_not_called()
+        emit.assert_called_once()
+
     def test_version_without_document_id_is_rejected(self) -> None:
         reporter = reporter_module.Reporter()
 
-        accepted = validator.validate_cli_args(
+        accepted = cli_module.validate_cli_args(
             _args(gate="G2", version="0.1.2"),
             reporter,
         )
@@ -43,7 +83,7 @@ class CliScopeTests(unittest.TestCase):
     def test_global_gate_rejects_document_scope(self) -> None:
         reporter = reporter_module.Reporter()
 
-        accepted = validator.validate_cli_args(
+        accepted = cli_module.validate_cli_args(
             _args(gate="G0", document_id="DOC-1"),
             reporter,
         )

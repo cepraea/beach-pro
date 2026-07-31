@@ -125,6 +125,8 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `gates/g_arch.py`, `g0.py` e `g1.py`: gates globais;
 - `gates/g2.py` e `g_fm.py`: gates com escopo documental;
 - `gates/dispatcher.py`: despacho por identidade e escopo do gate.
+- `pipeline.py`: sequência fail-fast sem criação ou emissão de Reporter;
+- `cli.py`: argumentos, validação da CLI e emissão única do resultado.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
@@ -209,8 +211,9 @@ seis cenários RED–GREEN. BEH-02 acrescentou um cenário que exige o índice d
 item não mapeamento e preserva os registros válidos adjacentes. A Fase 8
 acrescentou três regressões: BEH-03 rejeita chaves YAML complexas de forma
 controlada, BEH-04 rejeita Front Matter fora de UTF-8 e BEH-05 converte falhas
-de leitura de Markdown em erros do Reporter. A suíte totaliza 102 testes
-unitários, além do teste de integração.
+de leitura de Markdown em erros do Reporter. A Fase 10 acrescentou seis
+caracterizações de `argv`, emissão única e fronteiras do pipeline. A suíte
+totaliza 108 testes unitários, além do teste de integração.
 
 ### Suíte unitária
 
