@@ -23,6 +23,7 @@ from . import reporter as reporter_module
 from . import registry as registry_module
 from . import workflow as workflow_module
 from .gates import g_arch as g_arch_module
+from .gates import g0 as g0_module
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -87,6 +88,7 @@ validate_feature_spec = front_matter_module.validate_feature_spec
 normalize_link_target = links_module.normalize_link_target
 validate_links = links_module.validate_links
 validate_garch = g_arch_module.validate_garch
+validate_g0 = g0_module.validate_g0
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -147,40 +149,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     ):
         reporter.error("--result-id must match GATE-RESULT-[A-Z0-9-]+")
     return not reporter.errors
-
-
-def validate_g0(documents: list[JsonObject], reporter: Reporter) -> None:
-    """Validate the identity and migration completeness of the global batch."""
-    candidates = ingestion_module.ingestion_records(documents)
-    if len(candidates) != 10:
-        reporter.error(
-            f"G0 requires exactly 10 ingestion records; found {len(candidates)}"
-        )
-    for record in candidates:
-        document_id = record.get("document_id", "<missing-id>")
-        required = {
-            "document_id",
-            "title",
-            "document_type",
-            "version",
-            "responsible",
-            "registered_at",
-            "last_verified_at",
-            "current_path",
-        }
-        for field in sorted(required):
-            value = record.get(field)
-            if not isinstance(value, str) or not value.strip():
-                reporter.error(f"{document_id}: G0 missing identity field {field}")
-        if record.get("naming_conformance") is not True:
-            reporter.error(f"{document_id}: G0 requires naming_conformance")
-        if record.get("directory_conformance") is not True:
-            reporter.error(f"{document_id}: G0 requires directory_conformance")
-        if record.get("migration_required") is not False:
-            reporter.error(f"{document_id}: G0 requires completed migration")
-        scope = as_json_object(record.get("authority_scope"))
-        if scope is None or not scope.get("subjects"):
-            reporter.error(f"{document_id}: G0 requires authority scope")
 
 
 def validate_g1(documents: list[JsonObject], reporter: Reporter) -> None:
@@ -610,7 +578,7 @@ def dispatch_gate(
     if args.gate == "G-ARCH":
         g_arch_module.validate_garch(documents, reporter)
     elif args.gate == "G0":
-        validate_g0(documents, reporter)
+        g0_module.validate_g0(documents, reporter)
     elif args.gate == "G1":
         validate_g1(documents, reporter)
     elif args.gate == "G2":
