@@ -39,6 +39,7 @@ from scripts.documentation.validate_documentation import (
     approvals as approvals_module,
     config,
     contracts as contracts_module,
+    provenance as provenance_module,
     registry as registry_module,
     reporter as reporter_module,
     workflow as workflow_module,
@@ -114,6 +115,10 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_approval_cross_references,
             approvals_module.validate_approval_cross_references,
+        )
+        self.assertIs(
+            validator.validate_provenance_packages,
+            provenance_module.validate_provenance_packages,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:

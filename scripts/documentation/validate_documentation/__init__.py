@@ -17,6 +17,7 @@ from . import approvals as approvals_module
 from . import config
 from . import contracts as contracts_module
 from . import filesystem
+from . import provenance as provenance_module
 from . import reporter as reporter_module
 from . import registry as registry_module
 from . import workflow as workflow_module
@@ -68,6 +69,7 @@ validate_workflow_references = workflow_module.validate_workflow_references
 validate_approval_cross_references = (
     approvals_module.validate_approval_cross_references
 )
+validate_provenance_packages = provenance_module.validate_provenance_packages
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 LINE_REFERENCE_RE = re.compile(
     r"^(.*\.(?:md|yaml|yml|json))(?::[0-9]+)?(?:#.*)?$",
@@ -315,7 +317,7 @@ def validate_evidence_instances(
             reporter,
         )
     validate_ingestion_consistency(documents, reporter)
-    validate_provenance_packages(reporter)
+    provenance_module.validate_provenance_packages(reporter)
     for divergence_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/integrity").glob(
             "divergencia-*.yaml"
@@ -370,71 +372,6 @@ def validate_instances(
     validate_workflow_instance(reporter)
     validate_gate_result_instances(reporter)
     validate_evidence_instances(documents, reporter)
-
-
-def validate_provenance_packages(reporter: Reporter) -> None:
-    provenance_root = config.WORKSPACE_ROOT / "docs/evidence/provenance"
-    package_schema = as_json_object(
-        contracts_module.load_json(config.PROVENANCE_SCHEMA, reporter)
-    )
-    source_schema = as_json_object(
-        contracts_module.load_json(config.SOURCE_SCHEMA, reporter)
-    )
-    claim_schema = as_json_object(
-        contracts_module.load_json(config.CLAIM_SCHEMA, reporter)
-    )
-    if (
-        package_schema is None
-        or source_schema is None
-        or claim_schema is None
-    ):
-        return
-    for package_path in sorted(provenance_root.glob("*.yaml")):
-        try:
-            data = yaml.safe_load(package_path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, yaml.YAMLError) as error:
-            reporter.error(f"cannot load provenance package: {error}")
-            continue
-        data_mapping = as_json_object(data)
-        package = as_json_object(
-            data_mapping.get("provenance_package")
-            if data_mapping is not None
-            else None
-        )
-        relative = package_path.relative_to(config.WORKSPACE_ROOT)
-        for error in contracts_module.schema_validation_errors(
-            package_schema,
-            package,
-        ):
-            location = ".".join(str(part) for part in error.absolute_path)
-            reporter.error(
-                f"{relative}: provenance contract failure at "
-                f"{location or '<root>'}: {error.message}"
-            )
-        if package is None:
-            continue
-        sources = as_json_array(package.get("sources")) or []
-        for index, source in enumerate(sources):
-            for error in contracts_module.schema_validation_errors(
-                source_schema,
-                source,
-            ):
-                location = ".".join(str(part) for part in error.absolute_path)
-                reporter.error(
-                    f"{relative}: source[{index}] contract failure at "
-                    f"{location or '<root>'}: {error.message}"
-                )
-        claims = as_json_array(package.get("claims")) or []
-        for index, claim in enumerate(claims):
-            for error in contracts_module.schema_validation_errors(
-                claim_schema,
-                claim,
-            ):
-                location = ".".join(str(part) for part in error.absolute_path)
-                reporter.error(
-                    f"{relative}: claim[{index}] contract failure at "
-                    f"{location or '<root>'}: {error.message}"
-                )
 
 
 def ingestion_records(documents: list[JsonObject]) -> list[JsonObject]:
