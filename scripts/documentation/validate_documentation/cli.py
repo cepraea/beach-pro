@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from collections.abc import Sequence
 from pathlib import Path
 import re
 
@@ -15,7 +16,7 @@ from .models import ValidatorArgs
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
-def parse_args() -> ValidatorArgs:
+def parse_args(argv: Sequence[str] | None = None) -> ValidatorArgs:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--registry",
@@ -55,7 +56,7 @@ def parse_args() -> ValidatorArgs:
         ),
     )
     args = ValidatorArgs()
-    parser.parse_args(namespace=args)
+    parser.parse_args(argv, namespace=args)
     return args
 
 
@@ -77,9 +78,9 @@ def validate_cli_args(
     return not reporter.errors
 
 
-def main() -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """Validate CLI input, run the pipeline, and emit exactly once."""
-    args = parse_args()
+    args = parse_args(argv)
     reporter = reporter_module.Reporter()
 
     if validate_cli_args(args, reporter):

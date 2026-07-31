@@ -10,6 +10,7 @@ from scripts.documentation.validate_documentation import (
     contracts as contracts_module,
     instances as instances_module,
     links as links_module,
+    pipeline as pipeline_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -44,6 +45,23 @@ def _registry_data() -> validator.JsonObject:
 
 
 class MainPipelineTests(unittest.TestCase):
+    def test_pipeline_never_emits_results(self) -> None:
+        args = _args()
+        reporter = reporter_module.Reporter()
+
+        with (
+            patch.object(
+                registry_module,
+                "load_registry",
+                return_value=(None, []),
+            ),
+            patch.object(reporter_module.Reporter, "emit") as emit,
+        ):
+            result = pipeline_module.run_validation(args, reporter)
+
+        self.assertIsNone(result)
+        emit.assert_not_called()
+
     def test_main_stops_before_files_when_contract_stage_fails(self) -> None:
         def fail_contract(reporter: reporter_module.Reporter) -> None:
             reporter.error("contract stage failed")
