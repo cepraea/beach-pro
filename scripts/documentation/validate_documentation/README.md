@@ -120,6 +120,8 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `provenance.py`: contratos de pacotes, fontes e alegações;
 - `ingestion.py`: snapshots históricos e sua linhagem;
 - `instances.py`: famílias de instâncias e delegação de relações.
+- `front_matter.py`: parsing e validação estrutural do Front Matter;
+- `links.py`: normalização e validação dos links locais.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
@@ -201,8 +203,11 @@ acervo real. A ausência dos TARs é falha de precondição e não causa `skip`.
 
 A baseline anterior à Fase 4 possuía 92 testes unitários. BEH-01 acrescentou
 seis cenários RED–GREEN. BEH-02 acrescentou um cenário que exige o índice do
-item não mapeamento e preserva os registros válidos adjacentes. A suíte
-totaliza 99 testes unitários, além do teste de integração.
+item não mapeamento e preserva os registros válidos adjacentes. A Fase 8
+acrescentou três regressões: BEH-03 rejeita chaves YAML complexas de forma
+controlada, BEH-04 rejeita Front Matter fora de UTF-8 e BEH-05 converte falhas
+de leitura de Markdown em erros do Reporter. A suíte totaliza 102 testes
+unitários, além do teste de integração.
 
 ### Suíte unitária
 
