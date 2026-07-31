@@ -9,15 +9,39 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    registry as registry_module,
     reporter as reporter_module,
 )
 
 
 class RegistryInvariantTests(unittest.TestCase):
+    def test_non_mapping_document_reports_index_and_preserves_valid_items(
+        self,
+    ) -> None:
+        reporter = reporter_module.Reporter()
+        first_document: validator.JsonObject = {"document_id": "DOC-FIRST"}
+        last_document: validator.JsonObject = {"document_id": "DOC-LAST"}
+
+        documents = registry_module.validate_top_level(
+            {
+                "schema_version": "1.0",
+                "registry": {},
+                "documents": [
+                    first_document,
+                    "INVALID-SCALAR",
+                    last_document,
+                ],
+            },
+            reporter,
+        )
+
+        self.assertEqual([first_document, last_document], documents)
+        self.assertIn("documents[1] must be a mapping", reporter.errors)
+
     def test_duplicate_document_version_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_uniqueness(
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "1.0.0")],
             ["docs/one.md", "docs/two.md"],
             reporter,
@@ -30,7 +54,7 @@ class RegistryInvariantTests(unittest.TestCase):
     def test_two_distinct_versions_are_accepted(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_uniqueness(
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "2.0.0")],
             ["docs/one.md", "docs/two.md"],
             reporter,
@@ -41,7 +65,7 @@ class RegistryInvariantTests(unittest.TestCase):
     def test_duplicate_path_casefold_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_uniqueness(
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-2", "1.0.0")],
             ["docs/Test.md", "docs/test.md"],
             reporter,
@@ -84,7 +108,7 @@ class RegistryInvariantTests(unittest.TestCase):
             record.update(overrides)
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_record(record, reporter, False)
+                registry_module.validate_record(record, reporter, False)
             return reporter
 
     def test_self_hash_exemption_outside_registry_fails(self) -> None:

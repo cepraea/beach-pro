@@ -11,13 +11,13 @@ import tarfile
 from typing import Any, cast
 from urllib.parse import unquote, urlparse
 
-from jsonschema import Draft202012Validator, FormatChecker
-from jsonschema.exceptions import SchemaError
 import yaml
 
 from . import config
+from . import contracts as contracts_module
 from . import filesystem
 from . import reporter as reporter_module
+from . import registry as registry_module
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -48,60 +48,25 @@ INTEGRITY_MANIFEST = config.INTEGRITY_MANIFEST
 workspace_path = filesystem.workspace_path
 sha256 = filesystem.sha256
 Reporter = reporter_module.Reporter
-MANAGED_SUFFIXES = {".md", ".yaml", ".yml", ".json", ".tar"}
-NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)+\.(?:md|ya?ml)$")
-SCHEMA_NAME_RE = re.compile(
-    r"^[a-z0-9]+(?:-[a-z0-9]+)*\.schema\.json$"
-)
+load_json = contracts_module.load_json
+validate_schema_definition = contracts_module.validate_schema_definition
+schema_validation_errors = contracts_module.schema_validation_errors
+validate_contract_schemas = contracts_module.validate_contract_schemas
+validate_yaml_instance = contracts_module.validate_yaml_instance
+valid_name = registry_module.valid_name
+validate_top_level = registry_module.validate_top_level
+resolve_document_version = registry_module.resolve_document_version
+validate_record = registry_module.validate_record
+validate_uniqueness = registry_module.validate_uniqueness
+managed_files = registry_module.managed_files
+validate_canonical_registry = registry_module.validate_canonical_registry
+load_registry = registry_module.load_registry
+validate_registry_integrity = registry_module.validate_registry_integrity
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 LINE_REFERENCE_RE = re.compile(
     r"^(.*\.(?:md|yaml|yml|json))(?::[0-9]+)?(?:#.*)?$",
     re.IGNORECASE,
 )
-EXPECTED_PATH_RE = {
-    "contexto": re.compile(
-        r"^docs/(?:sources/(?:primary|supporting)|"
-        r"controlled/(?:bases|candidates)|canonical/context)/"
-    ),
-    "contrato": re.compile(r"^docs/contracts/schemas/"),
-    "decisao": re.compile(r"^docs/(?:controlled|canonical/decisions)/"),
-    "evidencia": re.compile(r"^docs/evidence/"),
-    "fluxo": re.compile(r"^docs/governance/workflows/"),
-    "glossario": re.compile(r"^docs/canonical/glossary/"),
-    "inventario": re.compile(
-        r"^docs/(?:README\.md|inventario-documentos\.md)$"
-    ),
-    "matriz": re.compile(r"^docs/governance/matrices/"),
-    "politica": re.compile(
-        r"^docs/(?:governance/policies|sources/supporting)/"
-    ),
-    "protocolo": re.compile(r"^docs/governance/protocols/"),
-    "registro": re.compile(r"^docs/registry/"),
-    "relatorio": re.compile(r"^docs/validation/reports/"),
-    "requisito": re.compile(
-        r"^docs/(?:derived/requirements|canonical/requirements)/"
-    ),
-    "workflow": re.compile(r"^docs/governance/workflows/"),
-}
-REQUIRED_FIELDS = {
-    "document_id",
-    "title",
-    "document_type",
-    "version",
-    "registration_status",
-    "workflow_status",
-    "legacy_declared_status",
-    "current_path",
-    "target_path",
-    "canonical_path",
-    "content_hash",
-    "self_hash_exempt",
-    "naming_conformance",
-    "directory_conformance",
-    "migration_required",
-    "authority_scope",
-    "relationships",
-}
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -164,239 +129,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     return not reporter.errors
 
 
-def valid_name(path: Path) -> bool:
-    if path.name == "README.md":
-        return True
-    if path.name.endswith(".schema.json"):
-        return bool(SCHEMA_NAME_RE.fullmatch(path.name))
-    if path.suffix == ".tar":
-        return bool(
-            re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)+\.tar", path.name)
-        )
-    return bool(NAME_RE.fullmatch(path.name))
-
-
-def validate_top_level(data: object, reporter: Reporter) -> list[JsonObject]:
-    typed_data = as_json_object(data)
-    if typed_data is None:
-        reporter.error("registry root must be a mapping")
-        return []
-    if not isinstance(typed_data.get("schema_version"), str):
-        reporter.error("schema_version must be a string")
-    registry = typed_data.get("registry")
-    if not isinstance(registry, dict):
-        reporter.error("registry metadata must be a mapping")
-    raw_documents = as_json_array(typed_data.get("documents"))
-    if raw_documents is None:
-        reporter.error("documents must be a list")
-        return []
-    documents: list[JsonObject] = []
-    for item in raw_documents:
-        typed_item = as_json_object(item)
-        if typed_item is not None:
-            documents.append(typed_item)
-    return documents
-
-
-def resolve_document_version(
-    documents: list[JsonObject],
-    document_id: str,
-    version: str | None,
-    reporter: Reporter,
-) -> JsonObject | None:
-    """Resolve one immutable document version without first-match ambiguity.
-
-    ``document_id`` is permanent and can legitimately coexist in the registry
-    at several versions.  Therefore absence of ``version`` is accepted only
-    when exactly one record matches.
-    """
-    matches = [
-        record
-        for record in documents
-        if record.get("document_id") == document_id
-    ]
-    if not matches:
-        reporter.error(f"unknown document_id: {document_id}")
-        return None
-
-    if version is None:
-        if len(matches) != 1:
-            reporter.error(
-                f"{document_id} has multiple versions; --version is required"
-            )
-            return None
-        selected = matches[0]
-    else:
-        exact_matches = [
-            record for record in matches if record.get("version") == version
-        ]
-        if len(exact_matches) != 1:
-            reporter.error(
-                f"unknown document version: {document_id} v{version}"
-            )
-            return None
-        selected = exact_matches[0]
-
-    selected_version = selected.get("version")
-    selected_hash = selected.get("content_hash")
-    reporter.document_id = document_id
-    reporter.version = (
-        selected_version if isinstance(selected_version, str) else None
-    )
-    reporter.content_hash = (
-        selected_hash if isinstance(selected_hash, str) else None
-    )
-    return selected
-
-
-def validate_record(
-    record: JsonObject,
-    reporter: Reporter,
-    strict_legacy: bool,
-) -> tuple[str | None, str | None]:
-    missing = REQUIRED_FIELDS - record.keys()
-    raw_document_id = record.get("document_id")
-    document_id = (
-        raw_document_id
-        if isinstance(raw_document_id, str)
-        else "<missing-id>"
-    )
-    for field in sorted(missing):
-        reporter.error(f"{document_id}: missing field {field}")
-
-    current_path = record.get("current_path")
-    if not isinstance(current_path, str):
-        reporter.error(f"{document_id}: current_path must be a string")
-        return None, None
-
-    absolute_path = filesystem.workspace_path(current_path, reporter)
-    if absolute_path is None:
-        return document_id, current_path
-    if not absolute_path.is_file():
-        reporter.error(f"{document_id}: file not found: {current_path}")
-        return document_id, current_path
-
-    registration_status = record.get("registration_status")
-    is_legacy = registration_status == "LEGADO_INVENTARIADO"
-    workflow_status = record.get("workflow_status")
-    if is_legacy and workflow_status is not None:
-        reporter.error(
-            f"{document_id}: legacy record must not infer workflow_status"
-        )
-    if not is_legacy and workflow_status is None:
-        reporter.error(
-            f"{document_id}: controlled record requires workflow_status"
-        )
-
-    expected_hash = record.get("content_hash")
-    self_hash_exempt = record.get("self_hash_exempt") is True
-    if self_hash_exempt:
-        if current_path != "docs/registry/registro-documentos.yaml":
-            reporter.error(
-                f"{document_id}: self_hash_exempt is restricted to the registry"
-            )
-    elif not isinstance(expected_hash, str):
-        reporter.error(f"{document_id}: content_hash must be a SHA-256 string")
-    else:
-        actual_hash = filesystem.sha256(absolute_path)
-        if expected_hash != actual_hash:
-            reporter.error(
-                f"{document_id}: hash mismatch for {current_path}; "
-                f"expected {expected_hash}, actual {actual_hash}"
-            )
-
-    actual_name_conformance = valid_name(absolute_path)
-    declared_name_conformance = record.get("naming_conformance")
-    if declared_name_conformance is not actual_name_conformance:
-        reporter.error(
-            f"{document_id}: naming_conformance does not match filename"
-        )
-    if not actual_name_conformance:
-        message = f"{document_id}: legacy filename requires migration: {current_path}"
-        if strict_legacy or not is_legacy and not record.get("migration_required"):
-            reporter.error(message)
-        else:
-            reporter.warning(message)
-
-    document_type = record.get("document_type")
-    expected_path_re = (
-        EXPECTED_PATH_RE.get(document_type)
-        if isinstance(document_type, str)
-        else None
-    )
-    _terminal = workflow_status in ("SUPERADA", "REVOGADA")
-    if record.get("directory_conformance") is True and expected_path_re:
-        if not _terminal and not expected_path_re.match(current_path):
-            reporter.error(
-                f"{document_id}: directory incompatible with document_type"
-            )
-    if record.get("directory_conformance") is False:
-        message = f"{document_id}: legacy directory requires migration: {current_path}"
-        if strict_legacy or not record.get("migration_required"):
-            reporter.error(message)
-        else:
-            reporter.warning(message)
-
-    canonical_path = record.get("canonical_path")
-    if workflow_status == "CANONICA_VIGENTE":
-        if not isinstance(canonical_path, str):
-            reporter.error(
-                f"{document_id}: canonical document requires canonical_path"
-            )
-        elif canonical_path != current_path:
-            reporter.error(
-                f"{document_id}: active canonical paths must be identical"
-            )
-    elif canonical_path is not None and workflow_status not in {
-        "SUPERADA",
-        "REVOGADA",
-    }:
-        reporter.error(
-            f"{document_id}: canonical_path set without canonical history"
-        )
-
-    return document_id, current_path
-
-
-def validate_uniqueness(
-    id_version_pairs: list[tuple[str, str]],
-    paths: list[str],
-    reporter: Reporter,
-) -> None:
-    duplicates = sorted(
-        {p for p in id_version_pairs if id_version_pairs.count(p) > 1}
-    )
-    for doc_id, version in duplicates:
-        reporter.error(
-            f"duplicate (document_id, version): ({doc_id}, {version})"
-        )
-
-    for value in sorted({v for v in paths if paths.count(v) > 1}):
-        reporter.error(f"duplicate current_path: {value}")
-
-    folded: dict[str, str] = {}
-    for path in paths:
-        key = path.casefold()
-        if key in folded and folded[key] != path:
-            reporter.error(
-                f"case-insensitive path collision: {folded[key]} <> {path}"
-            )
-        folded[key] = path
-
-
-def managed_files() -> set[str]:
-    docs_root = config.WORKSPACE_ROOT / "docs"
-    return {
-        path.relative_to(config.WORKSPACE_ROOT).as_posix()
-        for path in docs_root.rglob("*")
-        if (
-            path.is_file()
-            and not path.is_symlink()
-            and path.suffix.lower() in MANAGED_SUFFIXES
-        )
-    }
-
-
 def normalize_link_target(markdown_path: Path, raw_target: str) -> Path | None:
     target = raw_target.strip()
     if target.startswith("<") and target.endswith(">"):
@@ -450,97 +182,22 @@ def validate_links(reporter: Reporter) -> None:
                 )
 
 
-def validate_canonical_registry(
-    data: JsonObject,
-    documents: list[JsonObject],
-    reporter: Reporter,
-) -> None:
-    registry = as_json_object(data.get("registry")) or {}
-    declared = as_json_array(registry.get("canonical_documents"))
-    if declared is None:
-        reporter.error("registry.canonical_documents must be a list")
-        return
-    actual: list[str] = []
-    for record in documents:
-        document_id = record.get("document_id")
-        if (
-            record.get("workflow_status") == "CANONICA_VIGENTE"
-            and isinstance(document_id, str)
-        ):
-            actual.append(document_id)
-    declared_ids: list[str] = [
-        item for item in declared if isinstance(item, str)
-    ]
-    if sorted(declared_ids) != sorted(actual):
-        reporter.error(
-            "canonical_documents differs from CANONICA_VIGENTE records"
-        )
-
-
-def load_json(path: Path, reporter: Reporter) -> Any:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
-        reporter.error(
-            "cannot load JSON "
-            f"{path.relative_to(config.WORKSPACE_ROOT)}: {error}"
-        )
-        return None
-
-
-def validate_schema_definition(
-    schema: JsonObject,
-    schema_path: Path,
-    reporter: Reporter,
-) -> None:
-    """Check a schema while isolating incomplete jsonschema type metadata."""
-    validator_class = cast(Any, Draft202012Validator)
-    try:
-        validator_class.check_schema(schema)
-    except SchemaError as error:
-        relative = schema_path.relative_to(config.WORKSPACE_ROOT)
-        reporter.error(f"invalid JSON Schema {relative}: {error.message}")
-
-
-def schema_validation_errors(
-    schema: JsonObject,
-    instance: Any,
-) -> list[Any]:
-    """Return deterministic errors from the dynamically typed library edge."""
-    validator_class = cast(Any, Draft202012Validator)
-    format_checker = cast(Any, FormatChecker())
-    validator: Any = validator_class(
-        schema,
-        format_checker=format_checker,
-    )
-    errors: list[Any] = list(validator.iter_errors(instance))
-    return sorted(errors, key=lambda item: list(item.absolute_path))
-
-
-def validate_contract_schemas(reporter: Reporter) -> None:
-    if not config.SCHEMA_ROOT.is_dir():
-        reporter.error("schema directory not found")
-        return
-    for schema_path in sorted(config.SCHEMA_ROOT.glob("*.schema.json")):
-        schema = as_json_object(load_json(schema_path, reporter))
-        if schema is None:
-            continue
-        validate_schema_definition(schema, schema_path, reporter)
-
-
 def validate_document_instances(
     documents: list[JsonObject],
     reporter: Reporter,
 ) -> None:
     """Validate registry records against the document contract."""
     document_schema = as_json_object(
-        load_json(config.DOCUMENT_SCHEMA, reporter)
+        contracts_module.load_json(config.DOCUMENT_SCHEMA, reporter)
     )
     if document_schema is None:
         return
     for record in documents:
         document_id = record.get("document_id", "<missing-id>")
-        for error in schema_validation_errors(document_schema, record):
+        for error in contracts_module.schema_validation_errors(
+            document_schema,
+            record,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 f"{document_id}: document contract failure at "
@@ -551,7 +208,7 @@ def validate_document_instances(
 def validate_workflow_instance(reporter: Reporter) -> None:
     """Validate workflow shape before resolving its internal references."""
     workflow_schema = as_json_object(
-        load_json(config.WORKFLOW_SCHEMA, reporter)
+        contracts_module.load_json(config.WORKFLOW_SCHEMA, reporter)
     )
     try:
         workflow_data = yaml.safe_load(
@@ -561,7 +218,10 @@ def validate_workflow_instance(reporter: Reporter) -> None:
         reporter.error(f"cannot load processable workflow: {error}")
         return
     if workflow_schema is not None:
-        for error in schema_validation_errors(workflow_schema, workflow_data):
+        for error in contracts_module.schema_validation_errors(
+            workflow_schema,
+            workflow_data,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 "workflow contract failure at "
@@ -592,7 +252,7 @@ def validate_workflow_instance(reporter: Reporter) -> None:
 def validate_gate_result_instances(reporter: Reporter) -> None:
     """Validate each persisted gate result independently of approvals."""
     gate_result_schema = as_json_object(
-        load_json(config.GATE_RESULT_SCHEMA, reporter)
+        contracts_module.load_json(config.GATE_RESULT_SCHEMA, reporter)
     )
     if gate_result_schema is None:
         return
@@ -611,7 +271,7 @@ def validate_gate_result_instances(reporter: Reporter) -> None:
             if result_mapping is not None
             else None
         )
-        for error in schema_validation_errors(
+        for error in contracts_module.schema_validation_errors(
             gate_result_schema,
             instance,
         ):
@@ -632,7 +292,7 @@ def validate_evidence_instances(
     Schema validation proves local structure only. Cross-reference validators
     remain mandatory because a well-formed ID can still point to no artifact.
     """
-    validate_yaml_instance(
+    contracts_module.validate_yaml_instance(
         config.INTEGRITY_MANIFEST,
         config.INTEGRITY_MANIFEST_SCHEMA,
         None,
@@ -641,7 +301,7 @@ def validate_evidence_instances(
     )
     ingestion_root = config.WORKSPACE_ROOT / "docs/evidence/ingestion"
     for ingestion_path in sorted(ingestion_root.glob("*.yaml")):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             ingestion_path,
             config.INGESTION_SCHEMA,
             "ingestion_event",
@@ -655,7 +315,7 @@ def validate_evidence_instances(
             "divergencia-*.yaml"
         )
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             divergence_path,
             config.DIVERGENCE_SCHEMA,
             "integrity_divergence",
@@ -665,7 +325,7 @@ def validate_evidence_instances(
     for action_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/corrections").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             action_path,
             config.CORRECTIVE_ACTION_SCHEMA,
             "corrective_action",
@@ -675,7 +335,7 @@ def validate_evidence_instances(
     for event_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/events").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             event_path,
             config.WORKFLOW_EVENT_SCHEMA,
             "workflow_event",
@@ -685,7 +345,7 @@ def validate_evidence_instances(
     for approval_path in sorted(
         (config.WORKSPACE_ROOT / "docs/evidence/approvals").glob("*.yaml")
     ):
-        validate_yaml_instance(
+        contracts_module.validate_yaml_instance(
             approval_path,
             config.APPROVAL_SCHEMA,
             "approval",
@@ -912,45 +572,17 @@ def validate_approval_cross_references(
             )
 
 
-def validate_yaml_instance(
-    instance_path: Path,
-    schema_path: Path,
-    wrapper_key: str | None,
-    label: str,
-    reporter: Reporter,
-) -> None:
-    if not instance_path.is_file():
-        return
-    schema = as_json_object(load_json(schema_path, reporter))
-    if schema is None:
-        return
-    try:
-        data = yaml.safe_load(instance_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, yaml.YAMLError) as error:
-        reporter.error(f"cannot load {label} {instance_path}: {error}")
-        return
-    data_mapping = as_json_object(data)
-    instance = (
-        data_mapping.get(wrapper_key)
-        if wrapper_key and data_mapping is not None
-        else data
-    )
-    for error in schema_validation_errors(schema, instance):
-        relative = instance_path.relative_to(config.WORKSPACE_ROOT)
-        location = ".".join(str(part) for part in error.absolute_path)
-        reporter.error(
-            f"{relative}: {label} contract failure at "
-            f"{location or '<root>'}: {error.message}"
-        )
-
-
 def validate_provenance_packages(reporter: Reporter) -> None:
     provenance_root = config.WORKSPACE_ROOT / "docs/evidence/provenance"
     package_schema = as_json_object(
-        load_json(config.PROVENANCE_SCHEMA, reporter)
+        contracts_module.load_json(config.PROVENANCE_SCHEMA, reporter)
     )
-    source_schema = as_json_object(load_json(config.SOURCE_SCHEMA, reporter))
-    claim_schema = as_json_object(load_json(config.CLAIM_SCHEMA, reporter))
+    source_schema = as_json_object(
+        contracts_module.load_json(config.SOURCE_SCHEMA, reporter)
+    )
+    claim_schema = as_json_object(
+        contracts_module.load_json(config.CLAIM_SCHEMA, reporter)
+    )
     if (
         package_schema is None
         or source_schema is None
@@ -970,7 +602,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
             else None
         )
         relative = package_path.relative_to(config.WORKSPACE_ROOT)
-        for error in schema_validation_errors(package_schema, package):
+        for error in contracts_module.schema_validation_errors(
+            package_schema,
+            package,
+        ):
             location = ".".join(str(part) for part in error.absolute_path)
             reporter.error(
                 f"{relative}: provenance contract failure at "
@@ -980,7 +615,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
             continue
         sources = as_json_array(package.get("sources")) or []
         for index, source in enumerate(sources):
-            for error in schema_validation_errors(source_schema, source):
+            for error in contracts_module.schema_validation_errors(
+                source_schema,
+                source,
+            ):
                 location = ".".join(str(part) for part in error.absolute_path)
                 reporter.error(
                     f"{relative}: source[{index}] contract failure at "
@@ -988,7 +626,10 @@ def validate_provenance_packages(reporter: Reporter) -> None:
                 )
         claims = as_json_array(package.get("claims")) or []
         for index, claim in enumerate(claims):
-            for error in schema_validation_errors(claim_schema, claim):
+            for error in contracts_module.schema_validation_errors(
+                claim_schema,
+                claim,
+            ):
                 location = ".".join(str(part) for part in error.absolute_path)
                 reporter.error(
                     f"{relative}: claim[{index}] contract failure at "
@@ -1463,7 +1104,7 @@ def validate_g2(
     Indexing by both ID and version prevents a later revision from silently
     replacing the target against which sources and critical claims were proven.
     """
-    if document_id_filter and resolve_document_version(
+    if document_id_filter and registry_module.resolve_document_version(
         documents,
         document_id_filter,
         version_filter,
@@ -1817,7 +1458,10 @@ def parse_front_matter(
     if typed_schema is None:
         reporter.error(f"{path}: schema {schema_path.name} is not a mapping")
         return None
-    schema_errors = schema_validation_errors(typed_schema, typed_data)
+    schema_errors = contracts_module.schema_validation_errors(
+        typed_schema,
+        typed_data,
+    )
     for err in schema_errors:
         field = ".".join(str(p) for p in err.absolute_path) or "(root)"
         reporter.error(f"{path}: front matter {field}: {err.message}")
@@ -1924,7 +1568,7 @@ def validate_front_matter(
     ]
 
     if document_id:
-        selected = resolve_document_version(
+        selected = registry_module.resolve_document_version(
             documents,
             document_id,
             version,
@@ -1948,55 +1592,6 @@ def validate_front_matter(
         config.WORKSPACE_ROOT.glob(FM_FEATURE_SPEC_GLOB)
     ):
         validate_feature_spec(spec_path, reporter)
-
-
-def load_registry(
-    registry_path: Path,
-    reporter: Reporter,
-) -> tuple[JsonObject | None, list[JsonObject]]:
-    """Load and narrow the registry before any downstream validation."""
-    if not registry_path.is_file():
-        reporter.error(f"registry not found: {registry_path}")
-        return None, []
-    try:
-        data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, yaml.YAMLError) as error:
-        reporter.error(f"cannot load registry: {error}")
-        return None, []
-
-    documents = validate_top_level(data, reporter)
-    typed_data = as_json_object(data)
-    return typed_data, documents
-
-
-def validate_registry_integrity(
-    documents: list[JsonObject],
-    reporter: Reporter,
-    strict_legacy: bool,
-) -> None:
-    """Validate record bytes, uniqueness, and filesystem registration."""
-    id_version_pairs: list[tuple[str, str]] = []
-    paths: list[str] = []
-    for record in documents:
-        document_id, current_path = validate_record(
-            record,
-            reporter,
-            strict_legacy,
-        )
-        if document_id:
-            version = record.get("version", "")
-            id_version_pairs.append((document_id, str(version)))
-        if current_path:
-            paths.append(current_path)
-
-    validate_uniqueness(id_version_pairs, paths, reporter)
-
-    registered_files = set(paths)
-    for orphan in sorted(managed_files() - registered_files):
-        reporter.error(f"unregistered documentation file: {orphan}")
-    for missing in sorted(registered_files - managed_files()):
-        reporter.error(f"registered path outside managed files: {missing}")
-
 
 
 def dispatch_gate(
@@ -2039,11 +1634,14 @@ def main() -> int:
         return finish()
     strict_legacy = args.strict_legacy or args.gate == "G-ARCH"
 
-    typed_data, documents = load_registry(args.registry.resolve(), reporter)
+    typed_data, documents = registry_module.load_registry(
+        args.registry.resolve(),
+        reporter,
+    )
     if reporter.errors or typed_data is None:
         return finish()
 
-    if args.document_id and resolve_document_version(
+    if args.document_id and registry_module.resolve_document_version(
         documents,
         args.document_id,
         args.version,
@@ -2051,16 +1649,24 @@ def main() -> int:
     ) is None:
         return finish()
 
-    validate_contract_schemas(reporter)
+    contracts_module.validate_contract_schemas(reporter)
     validate_instances(documents, reporter)
     if reporter.errors:
         return finish()
 
-    validate_registry_integrity(documents, reporter, strict_legacy)
+    registry_module.validate_registry_integrity(
+        documents,
+        reporter,
+        strict_legacy,
+    )
     if reporter.errors:
         return finish()
 
-    validate_canonical_registry(typed_data, documents, reporter)
+    registry_module.validate_canonical_registry(
+        typed_data,
+        documents,
+        reporter,
+    )
     if reporter.errors:
         return finish()
 

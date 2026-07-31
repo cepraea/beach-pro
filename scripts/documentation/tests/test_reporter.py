@@ -9,6 +9,7 @@ import yaml
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
+    contracts as contracts_module,
     reporter as reporter_module,
 )
 
@@ -38,14 +39,14 @@ class ReporterTests(unittest.TestCase):
             "GATE-RESULT-G1-TESTE-001",
         )
         schema = validator.as_json_object(
-            validator.load_json(
+            contracts_module.load_json(
                 config.GATE_RESULT_SCHEMA,
                 reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
         gate_result = payload.get("gate_result")
-        errors = validator.schema_validation_errors(
+        errors = contracts_module.schema_validation_errors(
             schema or {},
             gate_result,
         )

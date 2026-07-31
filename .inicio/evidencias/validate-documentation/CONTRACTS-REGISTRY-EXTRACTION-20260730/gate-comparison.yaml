@@ -1,0 +1,30 @@
+baseline: BASELINE-88c3bc5-20260730T174342Z
+normalization:
+  removed_fields:
+    - gate_result.gate_result_id
+    - gate_result.evaluated_at
+results:
+  G-ARCH:
+    status: identical
+    exit_code: 0
+  G0:
+    status: identical
+    exit_code: 0
+  G1:
+    status: identical
+    exit_code: 0
+  G2_CONTEXT_0_1:
+    status: identical
+    exit_code: 0
+  G-FM_CONTEXT_0_1_2:
+    status: identical
+    exit_code: 0
+  GLOBAL:
+    status: identical
+    exit_code: 0
+    summary:
+      errors: 0
+      warnings: 0
+notes:
+  - BEH-02 não altera o acervo válido atual.
+  - A comparação global usa a execução sem argumentos.
