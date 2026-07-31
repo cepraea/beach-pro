@@ -410,7 +410,8 @@ invalida snapshot; mesma versão divergente falha.
 
 ### Unidade 10 — G-ARCH, G0 e G1
 
-**Origem atual:** `validate_g0()`, `validate_g1()` e despacho relacionado.
+**Estado atual:** gates extraídos na Fase 9 para `gates/g_arch.py`,
+`gates/g0.py` e `gates/g1.py`. O despacho está em `gates/dispatcher.py`.
 
 **Destinos:** `gates/g_arch.py`, `gates/g0.py` e `gates/g1.py`. O despacho
 pertence exclusivamente a `gates/dispatcher.py`.
@@ -428,7 +429,8 @@ semântica corresponde ao workflow.
 
 ### Unidade 11 — G2
 
-**Origem atual:** `validate_g2()` e helpers diretos.
+**Estado atual:** extraída na Fase 9 para `gates/g2.py`, preservando as
+limitações residuais de proveniência registradas no plano.
 
 **Destino:** `gates/g2.py`, consumindo `provenance.py`.
 
@@ -445,10 +447,9 @@ externo falham; claims críticos mantêm cobertura.
 
 ### Unidade 12 — Front Matter e G-FM
 
-**Estado atual:** parsing e validação estrutural extraídos na Fase 8.
-`validate_front_matter()`, por implementar o gate G-FM, permanece no
-`__init__.py` até a Fase 9. BEH-03 e BEH-04 foram materializadas em
-`front_matter.py` com testes RED–GREEN independentes.
+**Estado atual:** parsing e validação estrutural extraídos na Fase 8; G-FM foi
+extraído na Fase 9 para `gates/g_fm.py`. BEH-03 e BEH-04 permanecem
+materializadas em `front_matter.py` com testes RED–GREEN independentes.
 
 **Destinos:** parsing e validação em `front_matter.py`; implementação do gate
 em `gates/g_fm.py`.
@@ -468,7 +469,8 @@ controlada; corpo permanece intacto.
 
 ### Unidade 13 — Main
 
-**Origem atual:** `main()` e o despacho no `__init__.py`.
+**Estado atual:** o dispatcher foi extraído na Fase 9; `main()` e a
+orquestração permanecem no `__init__.py` até a Fase 10.
 
 **Destinos:** `pipeline.py`, `gates/dispatcher.py` e `cli.py`.
 

@@ -122,6 +122,9 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `instances.py`: famílias de instâncias e delegação de relações.
 - `front_matter.py`: parsing e validação estrutural do Front Matter;
 - `links.py`: normalização e validação dos links locais.
+- `gates/g_arch.py`, `g0.py` e `g1.py`: gates globais;
+- `gates/g2.py` e `g_fm.py`: gates com escopo documental;
+- `gates/dispatcher.py`: despacho por identidade e escopo do gate.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
