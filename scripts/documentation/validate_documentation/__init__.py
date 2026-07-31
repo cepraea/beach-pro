@@ -22,6 +22,7 @@ from .gates import g_arch as g_arch_module
 from .gates import g0 as g0_module
 from .gates import g1 as g1_module
 from .gates import g2 as g2_module
+from .gates import g_fm as g_fm_module
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -89,6 +90,7 @@ validate_garch = g_arch_module.validate_garch
 validate_g0 = g0_module.validate_g0
 validate_g1 = g1_module.validate_g1
 validate_g2 = g2_module.validate_g2
+validate_front_matter = g_fm_module.validate_front_matter
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -151,50 +153,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     return not reporter.errors
 
 
-def validate_front_matter(
-    documents: list[JsonObject],
-    reporter: Reporter,
-    document_id: str | None = None,
-    version: str | None = None,
-) -> None:
-    """Gate G-FM: validate front matter for governed docs and feature specs."""
-    governed_docs = [
-        rec
-        for rec in documents
-        if isinstance(rec.get("current_path"), str)
-        and rec["current_path"].endswith(".md")
-        and not front_matter_module.FM_EXCLUSIONS.match(rec["current_path"])
-    ]
-
-    if document_id:
-        selected = registry_module.resolve_document_version(
-            documents,
-            document_id,
-            version,
-            reporter,
-        )
-        if selected is None:
-            return
-        if selected not in governed_docs:
-            reporter.error(
-                f"G-FM found no governed Markdown for {document_id}"
-                + (f" v{version}" if version else "")
-            )
-            return
-        front_matter_module.validate_governed(selected, reporter)
-        return
-
-    for rec in governed_docs:
-        front_matter_module.validate_governed(rec, reporter)
-
-    for spec_path in sorted(
-        config.WORKSPACE_ROOT.glob(
-            front_matter_module.FM_FEATURE_SPEC_GLOB
-        )
-    ):
-        front_matter_module.validate_feature_spec(spec_path, reporter)
-
-
 def dispatch_gate(
     args: ValidatorArgs,
     documents: list[JsonObject],
@@ -215,7 +173,12 @@ def dispatch_gate(
             args.version,
         )
     elif args.gate == "G-FM":
-        validate_front_matter(documents, reporter, args.document_id, args.version)
+        g_fm_module.validate_front_matter(
+            documents,
+            reporter,
+            args.document_id,
+            args.version,
+        )
 
 
 def main() -> int:

@@ -53,6 +53,7 @@ from scripts.documentation.validate_documentation.gates import (
     g0 as g0_module,
     g1 as g1_module,
     g2 as g2_module,
+    g_fm as g_fm_module,
 )
 
 
@@ -182,6 +183,10 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(validator.validate_g0, g0_module.validate_g0)
         self.assertIs(validator.validate_g1, g1_module.validate_g1)
         self.assertIs(validator.validate_g2, g2_module.validate_g2)
+        self.assertIs(
+            validator.validate_front_matter,
+            g_fm_module.validate_front_matter,
+        )
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)
