@@ -22,6 +22,7 @@ from . import provenance as provenance_module
 from . import reporter as reporter_module
 from . import registry as registry_module
 from . import workflow as workflow_module
+from .gates import g_arch as g_arch_module
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -85,6 +86,7 @@ validate_governed = front_matter_module.validate_governed
 validate_feature_spec = front_matter_module.validate_feature_spec
 normalize_link_target = links_module.normalize_link_target
 validate_links = links_module.validate_links
+validate_garch = g_arch_module.validate_garch
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -292,31 +294,6 @@ def validate_g1(documents: list[JsonObject], reporter: Reporter) -> None:
                     )
     except (OSError, tarfile.TarError) as error:
         reporter.error(f"G1 cannot inspect preservation bundle: {error}")
-
-
-def validate_garch(
-    documents: list[JsonObject],
-    reporter: Reporter,
-) -> None:
-    """Enforce architectural conformance globally across registered records.
-
-    G-ARCH is deliberately global: emitting document-scoped metadata would
-    imply that uninspected records had no effect on the result.
-    """
-    for record in documents:
-        document_id = record.get("document_id", "<missing-id>")
-        if record.get("naming_conformance") is not True:
-            reporter.error(
-                f"{document_id}: G-ARCH requires naming_conformance"
-            )
-        if record.get("directory_conformance") is not True:
-            reporter.error(
-                f"{document_id}: G-ARCH requires directory_conformance"
-            )
-        if record.get("migration_required") is not False:
-            reporter.error(
-                f"{document_id}: G-ARCH requires completed migration"
-            )
 
 
 def validate_g2(
@@ -631,7 +608,7 @@ def dispatch_gate(
 ) -> None:
     """Dispatch one gate with its declared global or document scope."""
     if args.gate == "G-ARCH":
-        validate_garch(documents, reporter)
+        g_arch_module.validate_garch(documents, reporter)
     elif args.gate == "G0":
         validate_g0(documents, reporter)
     elif args.gate == "G1":

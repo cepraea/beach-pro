@@ -48,6 +48,9 @@ from scripts.documentation.validate_documentation import (
     reporter as reporter_module,
     workflow as workflow_module,
 )
+from scripts.documentation.validate_documentation.gates import (
+    g_arch as g_arch_module,
+)
 
 
 class PackageLayoutTests(unittest.TestCase):
@@ -172,6 +175,7 @@ class PackageLayoutTests(unittest.TestCase):
             validator.validate_links,
             links_module.validate_links,
         )
+        self.assertIs(validator.validate_garch, g_arch_module.validate_garch)
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)

@@ -12,6 +12,9 @@ from scripts.documentation.validate_documentation import (
     registry as registry_module,
     reporter as reporter_module,
 )
+from scripts.documentation.validate_documentation.gates import (
+    g_arch as g_arch_module,
+)
 
 
 def _args(
@@ -234,7 +237,7 @@ class MainPipelineTests(unittest.TestCase):
     def test_garch_has_explicit_dispatch(self) -> None:
         args = _args("G-ARCH")
         reporter = reporter_module.Reporter()
-        with patch.object(validator, "validate_garch") as garch:
+        with patch.object(g_arch_module, "validate_garch") as garch:
             validator.dispatch_gate(args, [], reporter)
 
         garch.assert_called_once_with([], reporter)
