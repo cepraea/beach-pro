@@ -147,6 +147,34 @@ class LinkBoundaryTests(unittest.TestCase):
 
         self.assertTrue(any("broken local link" in error for error in errors))
 
+    def test_markdown_read_failure_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            docs = root / "docs"
+            docs.mkdir()
+            source = docs / "source.md"
+            source.write_text("# source\n", encoding="utf-8")
+            reporter = reporter_module.Reporter()
+
+            with (
+                patch.object(config, "WORKSPACE_ROOT", root),
+                patch.object(
+                    Path,
+                    "read_text",
+                    side_effect=OSError("permission denied"),
+                ),
+            ):
+                links_module.validate_links(reporter)
+
+            self.assertTrue(
+                any(
+                    "docs/source.md" in error
+                    and "cannot read Markdown" in error
+                    and "permission denied" in error
+                    for error in reporter.errors
+                )
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

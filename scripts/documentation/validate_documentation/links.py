@@ -48,7 +48,17 @@ def validate_links(reporter: reporter_module.Reporter) -> None:
     for markdown_path in sorted(
         (config.WORKSPACE_ROOT / "docs").rglob("*.md")
     ):
-        text = markdown_path.read_text(encoding="utf-8")
+        try:
+            text = markdown_path.read_text(encoding="utf-8")
+        except OSError as error:
+            # A filesystem failure is validation evidence, not an internal
+            # crash: report the affected document and inspect the remaining
+            # collection so one unreadable file cannot hide other defects.
+            relative_source = markdown_path.relative_to(config.WORKSPACE_ROOT)
+            reporter.error(
+                f"{relative_source}: cannot read Markdown: {error}"
+            )
+            continue
         for raw_target in MARKDOWN_LINK_RE.findall(text):
             target = normalize_link_target(markdown_path, raw_target)
             if target is None:
