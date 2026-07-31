@@ -7,7 +7,10 @@ from unittest.mock import patch
 
 import yaml
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import (
+    as_json_array,
+    as_json_object,
+)
 from scripts.documentation.validate_documentation import (
     config,
     contracts as contracts_module,
@@ -68,17 +71,17 @@ class InstanceValidationTests(unittest.TestCase):
         raw_workflow = yaml.safe_load(
             config.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
         )
-        workflow = validator.as_json_object(raw_workflow)
+        workflow = as_json_object(raw_workflow)
         self.assertIsNotNone(workflow)
-        transitions = validator.as_json_array(
+        transitions = as_json_array(
             (workflow or {}).get("transitions")
         )
         self.assertTrue(transitions)
-        transition = validator.as_json_object((transitions or [None])[0])
+        transition = as_json_object((transitions or [None])[0])
         self.assertIsNotNone(transition)
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
 
-        schema = validator.as_json_object(
+        schema = as_json_object(
             contracts_module.load_json(
                 config.WORKFLOW_SCHEMA,
                 reporter_module.Reporter(),

@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import yaml
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import JsonObject
 from scripts.documentation.validate_documentation import (
     config,
     reporter as reporter_module,
@@ -20,7 +20,7 @@ from scripts.documentation.validate_documentation.gates import (
 
 class FrontMatterScopeTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.documents: list[validator.JsonObject] = [
+        self.documents: list[JsonObject] = [
             {
                 "document_id": "DOC-FM",
                 "version": "1.0.0",
@@ -71,15 +71,15 @@ class ProvenanceScopeTests(unittest.TestCase):
     def _run(
         self,
         package_hash: str | None = None,
-        sources: list[validator.JsonObject] | None = None,
-        claims: list[validator.JsonObject] | None = None,
+        sources: list[JsonObject] | None = None,
+        claims: list[JsonObject] | None = None,
         coverage: int = 0,
     ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             provenance_root = root / "docs/evidence/provenance"
             provenance_root.mkdir(parents=True)
-            package: validator.JsonObject = {
+            package: JsonObject = {
                 "provenance_id": "PROV-G2-001",
                 "document_id": self.document_id,
                 "document_version": self.version,
@@ -96,7 +96,7 @@ class ProvenanceScopeTests(unittest.TestCase):
                 yaml.safe_dump({"provenance_package": package}),
                 encoding="utf-8",
             )
-            documents: list[validator.JsonObject] = [
+            documents: list[JsonObject] = [
                 {
                     "document_id": self.document_id,
                     "version": self.version,
@@ -134,7 +134,7 @@ class ProvenanceScopeTests(unittest.TestCase):
 
     def test_g2_archive_escape_fails(self) -> None:
         source_hash = "c" * 64
-        sources: list[validator.JsonObject] = [
+        sources: list[JsonObject] = [
             {
                 "source_id": "SRC-001",
                 "status": "active",
@@ -146,7 +146,7 @@ class ProvenanceScopeTests(unittest.TestCase):
                 "authority": {"scope": ["subject"]},
             }
         ]
-        claims: list[validator.JsonObject] = [
+        claims: list[JsonObject] = [
             {
                 "claim_id": "CLM-001",
                 "criticality": "critical",

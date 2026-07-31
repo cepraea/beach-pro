@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import JsonObject
 from scripts.documentation.validate_documentation import (
     config,
     registry as registry_module,
@@ -19,8 +19,8 @@ class RegistryInvariantTests(unittest.TestCase):
         self,
     ) -> None:
         reporter = reporter_module.Reporter()
-        first_document: validator.JsonObject = {"document_id": "DOC-FIRST"}
-        last_document: validator.JsonObject = {"document_id": "DOC-LAST"}
+        first_document: JsonObject = {"document_id": "DOC-FIRST"}
+        last_document: JsonObject = {"document_id": "DOC-LAST"}
 
         documents = registry_module.validate_top_level(
             {
@@ -77,7 +77,7 @@ class RegistryInvariantTests(unittest.TestCase):
 
     def _validate_record(
         self,
-        overrides: validator.JsonObject,
+        overrides: JsonObject,
     ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -86,7 +86,7 @@ class RegistryInvariantTests(unittest.TestCase):
             path.parent.mkdir(parents=True)
             content = b"# controlled\n"
             path.write_bytes(content)
-            record: validator.JsonObject = {
+            record: JsonObject = {
                 "document_id": "DOC-TEST",
                 "title": "Test document",
                 "document_type": "evidencia",

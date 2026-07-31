@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import yaml
 
-from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation.json_types import JsonObject
 from scripts.documentation.validate_documentation import (
     approvals as approvals_module,
     config,
@@ -24,9 +24,9 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
 
     def _run(
         self,
-        approval_overrides: validator.JsonObject | None = None,
-        gate_overrides: dict[str, validator.JsonObject] | None = None,
-        artifact_relationships: validator.JsonObject | None = None,
+        approval_overrides: JsonObject | None = None,
+        gate_overrides: dict[str, JsonObject] | None = None,
+        artifact_relationships: JsonObject | None = None,
         duplicate_gate_id: bool = False,
     ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
@@ -40,7 +40,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
             for index, gate_id in enumerate(self.required_gates):
                 result_id = f"GATE-RESULT-{gate_id}-TARGET"
                 evidence_ids.append(result_id)
-                gate_result: validator.JsonObject = {
+                gate_result: JsonObject = {
                     "gate_result_id": result_id,
                     "gate_id": gate_id,
                     "document_id": self.document_id,
@@ -55,7 +55,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
                     encoding="utf-8",
                 )
             if duplicate_gate_id:
-                duplicate: validator.JsonObject = {
+                duplicate: JsonObject = {
                     "gate_result_id": evidence_ids[0],
                     "gate_id": "G-ARCH",
                     "document_id": self.document_id,
@@ -68,7 +68,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
                     encoding="utf-8",
                 )
 
-            approval: validator.JsonObject = {
+            approval: JsonObject = {
                 "approval_id": self.approval_id,
                 "document_id": self.document_id,
                 "version": self.version,
@@ -83,14 +83,14 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            target: validator.JsonObject = {
+            target: JsonObject = {
                 "document_id": self.document_id,
                 "version": self.version,
                 "content_hash": self.content_hash,
                 "workflow_status": "CANONICA_VIGENTE",
                 "relationships": {"approval_id": [self.approval_id]},
             }
-            artifact: validator.JsonObject = {
+            artifact: JsonObject = {
                 "document_id": "DOC-APPROVAL",
                 "version": "1.0.0",
                 "content_hash": "b" * 64,
