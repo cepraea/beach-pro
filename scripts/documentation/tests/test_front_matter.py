@@ -154,6 +154,24 @@ class TestParseGoverned(unittest.TestCase):
             msg=f"expected duplicate key error in nested, got: {r.errors}",
         )
 
+    def test_complex_mapping_key_reports_controlled_yaml_error(self) -> None:
+        data, reporter = self._parse(
+            "---\n"
+            "? [document_id, version]\n"
+            ": invalid-complex-key\n"
+            "---\n"
+            "# body\n"
+        )
+
+        self.assertIsNone(data)
+        self.assertTrue(
+            any(
+                "invalid YAML" in error and "mapping key" in error
+                for error in reporter.errors
+            ),
+            msg=f"expected controlled complex-key error, got: {reporter.errors}",
+        )
+
     def test_unknown_field_rejected(self) -> None:
         content = (
             "---\n"

@@ -35,7 +35,26 @@ class _DuplicateKeyLoader(yaml.SafeLoader):
         seen: dict[Any, Any] = {}
         loader = cast(Any, self)
         for key_node, _ in node.value:
+            # YAML permits collection keys, but the controlled front matter
+            # contract requires scalar field names and duplicate tracking
+            # cannot safely index mutable collection values.
+            if not isinstance(key_node, yaml.ScalarNode):
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    "found unsupported complex mapping key",
+                    key_node.start_mark,
+                )
             key = loader.construct_object(key_node, deep=deep)
+            try:
+                hash(key)
+            except TypeError as exc:
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    "found unhashable mapping key",
+                    key_node.start_mark,
+                ) from exc
             if key in seen:
                 raise yaml.constructor.ConstructorError(
                     "while constructing a mapping",
