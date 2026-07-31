@@ -114,7 +114,12 @@ A implementação de domínio ainda está temporariamente concentrada em
 - `filesystem.py`: resolução segura de paths e SHA-256 em streaming;
 - `reporter.py`: coleta determinística e emissão única em texto ou YAML;
 - `contracts.py`: carregamento e validação dos contratos JSON Schema;
-- `registry.py`: envelope, identidade, paths, hashes e integridade do registro.
+- `registry.py`: envelope, identidade, paths, hashes e integridade do registro;
+- `workflow.py`: referências internas do workflow controlado;
+- `approvals.py`: identidade entre aprovações, alvos e gates;
+- `provenance.py`: contratos de pacotes, fontes e alegações;
+- `ingestion.py`: snapshots históricos e sua linhagem;
+- `instances.py`: famílias de instâncias e delegação de relações.
 
 O monólito remanescente é uma etapa transitória protegida pelos testes, não a
 arquitetura final. Nenhuma funcionalidade relevante nova deve ser acrescentada
