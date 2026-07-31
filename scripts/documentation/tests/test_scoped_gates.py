@@ -12,6 +12,10 @@ from scripts.documentation.validate_documentation import (
     config,
     reporter as reporter_module,
 )
+from scripts.documentation.validate_documentation.gates import (
+    g2 as g2_module,
+    g_fm as g_fm_module,
+)
 
 
 class FrontMatterScopeTests(unittest.TestCase):
@@ -34,7 +38,7 @@ class FrontMatterScopeTests(unittest.TestCase):
     def test_scoped_front_matter_unknown_version_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_front_matter(
+        g_fm_module.validate_front_matter(
             self.documents,
             reporter,
             "DOC-FM",
@@ -48,7 +52,7 @@ class FrontMatterScopeTests(unittest.TestCase):
     def test_scoped_front_matter_ambiguous_version_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_front_matter(
+        g_fm_module.validate_front_matter(
             self.documents,
             reporter,
             "DOC-FM",
@@ -106,7 +110,7 @@ class ProvenanceScopeTests(unittest.TestCase):
             ]
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_g2(
+                g2_module.validate_g2(
                     documents,
                     reporter,
                     self.document_id,

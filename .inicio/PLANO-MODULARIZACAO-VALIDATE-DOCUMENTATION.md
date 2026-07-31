@@ -19,6 +19,7 @@
 | Branch de execução da Fase 6 | `agent/modularizacao-validator-fase-6` |
 | Branch de execução da Fase 7 | `agent/modularizacao-validator-fase-7` |
 | Branch de execução da Fase 8 | `agent/modularizacao-validator-fase-8` |
+| Branch de execução da Fase 9 | `agent/modularizacao-validator-fase-9` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
@@ -26,7 +27,7 @@
 | Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
 | Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
 | Data da validação | 2026-07-31 |
-| Estado deste plano | Fase 7 incorporada; Fase 8 implementada na PR #11 com gates locais aprovados, efetivos após merge |
+| Estado deste plano | Fase 8 incorporada; Fase 9 implementada na PR #12 com gate local aprovado, efetivo após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -1250,8 +1251,8 @@ BEH-05 = PASS
 Evidência:
 `.inicio/evidencias/validate-documentation/FRONT-MATTER-LINKS-EXTRACTION-20260731/`.
 O resultado foi produzido na branch
-`agent/modularizacao-validator-fase-8` e entregue pela PR #11. Os gates
-tornam-se efetivos após o merge; até lá, a Fase 9 permanece bloqueada.
+`agent/modularizacao-validator-fase-8` e incorporado pela PR #11. O merge
+materializou os gates e desbloqueou a Fase 9.
 
 ## 19. Fase 9 — gates
 
@@ -1283,6 +1284,18 @@ os parsers permanecem em `front_matter.py`.
 ```text
 GATES-EXTRACTION = PASS
 ```
+
+Estado materializado em 2026-07-31:
+
+```text
+GATES-EXTRACTION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/GATES-EXTRACTION-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-9` e entregue pela PR #12. O gate torna-se
+efetivo após o merge; até lá, a Fase 10 permanece bloqueada.
 
 ## 20. Fase 10 — pipeline e CLI
 

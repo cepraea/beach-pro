@@ -48,6 +48,14 @@ from scripts.documentation.validate_documentation import (
     reporter as reporter_module,
     workflow as workflow_module,
 )
+from scripts.documentation.validate_documentation.gates import (
+    dispatcher as dispatcher_module,
+    g_arch as g_arch_module,
+    g0 as g0_module,
+    g1 as g1_module,
+    g2 as g2_module,
+    g_fm as g_fm_module,
+)
 
 
 class PackageLayoutTests(unittest.TestCase):
@@ -172,6 +180,15 @@ class PackageLayoutTests(unittest.TestCase):
             validator.validate_links,
             links_module.validate_links,
         )
+        self.assertIs(validator.validate_garch, g_arch_module.validate_garch)
+        self.assertIs(validator.validate_g0, g0_module.validate_g0)
+        self.assertIs(validator.validate_g1, g1_module.validate_g1)
+        self.assertIs(validator.validate_g2, g2_module.validate_g2)
+        self.assertIs(
+            validator.validate_front_matter,
+            g_fm_module.validate_front_matter,
+        )
+        self.assertIs(validator.dispatch_gate, dispatcher_module.dispatch_gate)
 
     def test_package_workspace_root_is_repository_root(self) -> None:
         self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)
