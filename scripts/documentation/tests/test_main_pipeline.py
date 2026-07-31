@@ -13,6 +13,7 @@ from scripts.documentation.validate_documentation import (
     reporter as reporter_module,
 )
 from scripts.documentation.validate_documentation.gates import (
+    dispatcher as dispatcher_module,
     g_arch as g_arch_module,
 )
 
@@ -95,7 +96,7 @@ class MainPipelineTests(unittest.TestCase):
                 side_effect=fail_registry,
             ),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
             ) as gate_stage,
             patch.object(reporter_module.Reporter, "emit", return_value=1),
@@ -126,7 +127,7 @@ class MainPipelineTests(unittest.TestCase):
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
                 side_effect=fail_gate,
             ),
@@ -178,7 +179,7 @@ class MainPipelineTests(unittest.TestCase):
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
                 side_effect=capture_gate,
             ),
@@ -218,7 +219,7 @@ class MainPipelineTests(unittest.TestCase):
             patch.object(instances_module, "validate_instances"),
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
-            patch.object(validator, "dispatch_gate"),
+            patch.object(dispatcher_module, "dispatch_gate"),
             patch.object(links_module, "validate_links"),
             patch.object(
                 reporter_module.Reporter,
@@ -238,7 +239,7 @@ class MainPipelineTests(unittest.TestCase):
         args = _args("G-ARCH")
         reporter = reporter_module.Reporter()
         with patch.object(g_arch_module, "validate_garch") as garch:
-            validator.dispatch_gate(args, [], reporter)
+            dispatcher_module.dispatch_gate(args, [], reporter)
 
         garch.assert_called_once_with([], reporter)
 

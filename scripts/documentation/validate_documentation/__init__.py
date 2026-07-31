@@ -23,6 +23,7 @@ from .gates import g0 as g0_module
 from .gates import g1 as g1_module
 from .gates import g2 as g2_module
 from .gates import g_fm as g_fm_module
+from .gates import dispatcher as dispatcher_module
 from .json_types import (
     JsonObject as JsonObject,
     as_json_array as as_json_array,
@@ -91,6 +92,7 @@ validate_g0 = g0_module.validate_g0
 validate_g1 = g1_module.validate_g1
 validate_g2 = g2_module.validate_g2
 validate_front_matter = g_fm_module.validate_front_matter
+dispatch_gate = dispatcher_module.dispatch_gate
 GLOBAL_GATES = {"G-ARCH", "G0", "G1"}
 
 
@@ -153,34 +155,6 @@ def validate_cli_args(args: ValidatorArgs, reporter: Reporter) -> bool:
     return not reporter.errors
 
 
-def dispatch_gate(
-    args: ValidatorArgs,
-    documents: list[JsonObject],
-    reporter: Reporter,
-) -> None:
-    """Dispatch one gate with its declared global or document scope."""
-    if args.gate == "G-ARCH":
-        g_arch_module.validate_garch(documents, reporter)
-    elif args.gate == "G0":
-        g0_module.validate_g0(documents, reporter)
-    elif args.gate == "G1":
-        g1_module.validate_g1(documents, reporter)
-    elif args.gate == "G2":
-        g2_module.validate_g2(
-            documents,
-            reporter,
-            args.document_id,
-            args.version,
-        )
-    elif args.gate == "G-FM":
-        g_fm_module.validate_front_matter(
-            documents,
-            reporter,
-            args.document_id,
-            args.version,
-        )
-
-
 def main() -> int:
     """Run validation stages with fail-fast boundaries and one final emission.
 
@@ -234,7 +208,7 @@ def main() -> int:
     if reporter.errors:
         return finish()
 
-    dispatch_gate(args, documents, reporter)
+    dispatcher_module.dispatch_gate(args, documents, reporter)
     if reporter.errors:
         return finish()
 
