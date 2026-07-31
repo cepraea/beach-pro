@@ -9,6 +9,7 @@ import yaml
 
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
+    approvals as approvals_module,
     config,
     reporter as reporter_module,
 )
@@ -115,7 +116,7 @@ class ApprovalCrossReferenceTests(unittest.TestCase):
 
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_approval_cross_references(
+                approvals_module.validate_approval_cross_references(
                     documents,
                     reporter,
                 )

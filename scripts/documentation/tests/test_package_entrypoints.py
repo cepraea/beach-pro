@@ -36,6 +36,7 @@ MODULE_NAME = "scripts.documentation.validate_documentation"
 
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
+    approvals as approvals_module,
     config,
     contracts as contracts_module,
     registry as registry_module,
@@ -109,6 +110,10 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_workflow_references,
             workflow_module.validate_workflow_references,
+        )
+        self.assertIs(
+            validator.validate_approval_cross_references,
+            approvals_module.validate_approval_cross_references,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:
