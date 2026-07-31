@@ -11,6 +11,7 @@ from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     config,
     contracts as contracts_module,
+    instances as instances_module,
     reporter as reporter_module,
     workflow as workflow_module,
 )
@@ -20,7 +21,7 @@ class InstanceValidationTests(unittest.TestCase):
     def test_invalid_document_instance_fails(self) -> None:
         reporter = reporter_module.Reporter()
 
-        validator.validate_document_instances(
+        instances_module.validate_document_instances(
             [{"document_id": "DOC-INCOMPLETE"}],
             reporter,
         )
@@ -39,7 +40,7 @@ class InstanceValidationTests(unittest.TestCase):
                 "DEFAULT_WORKFLOW",
                 workflow_path,
             ):
-                validator.validate_workflow_instance(reporter)
+                instances_module.validate_workflow_instance(reporter)
 
         self.assertTrue(
             any("workflow contract failure" in error for error in reporter.errors)
@@ -56,7 +57,7 @@ class InstanceValidationTests(unittest.TestCase):
             )
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_gate_result_instances(reporter)
+                instances_module.validate_gate_result_instances(reporter)
 
         self.assertTrue(
             any("gate result contract failure" in error for error in reporter.errors)

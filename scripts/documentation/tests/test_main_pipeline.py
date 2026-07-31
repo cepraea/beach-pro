@@ -7,6 +7,7 @@ from unittest.mock import patch
 from scripts.documentation import validate_documentation as validator
 from scripts.documentation.validate_documentation import (
     contracts as contracts_module,
+    instances as instances_module,
     registry as registry_module,
     reporter as reporter_module,
 )
@@ -53,7 +54,7 @@ class MainPipelineTests(unittest.TestCase):
                 "validate_contract_schemas",
                 side_effect=fail_contract,
             ),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(
                 registry_module,
                 "validate_registry_integrity",
@@ -83,7 +84,7 @@ class MainPipelineTests(unittest.TestCase):
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(
                 registry_module,
                 "validate_registry_integrity",
@@ -117,7 +118,7 @@ class MainPipelineTests(unittest.TestCase):
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
@@ -169,7 +170,7 @@ class MainPipelineTests(unittest.TestCase):
                 return_value=(_registry_data(), documents),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
@@ -210,7 +211,7 @@ class MainPipelineTests(unittest.TestCase):
                 return_value=(_registry_data(), []),
             ),
             patch.object(contracts_module, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(registry_module, "validate_registry_integrity"),
             patch.object(registry_module, "validate_canonical_registry"),
             patch.object(validator, "dispatch_gate"),
