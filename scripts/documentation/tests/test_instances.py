@@ -12,6 +12,7 @@ from scripts.documentation.validate_documentation import (
     config,
     contracts as contracts_module,
     reporter as reporter_module,
+    workflow as workflow_module,
 )
 
 
@@ -88,7 +89,7 @@ class InstanceValidationTests(unittest.TestCase):
             workflow,
         )
         reporter = reporter_module.Reporter()
-        validator.validate_workflow_references(workflow or {}, reporter)
+        workflow_module.validate_workflow_references(workflow or {}, reporter)
 
         self.assertEqual([], schema_errors)
         self.assertTrue(

@@ -40,6 +40,7 @@ from scripts.documentation.validate_documentation import (
     contracts as contracts_module,
     registry as registry_module,
     reporter as reporter_module,
+    workflow as workflow_module,
 )
 
 
@@ -104,6 +105,10 @@ class PackageLayoutTests(unittest.TestCase):
         self.assertIs(
             validator.validate_registry_integrity,
             registry_module.validate_registry_integrity,
+        )
+        self.assertIs(
+            validator.validate_workflow_references,
+            workflow_module.validate_workflow_references,
         )
 
     def test_package_workspace_root_is_repository_root(self) -> None:
