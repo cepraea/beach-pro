@@ -12,6 +12,7 @@ from scripts.documentation.validate_documentation import (
     config,
     reporter as reporter_module,
 )
+from scripts.documentation.validate_documentation.gates import g2 as g2_module
 
 
 class FrontMatterScopeTests(unittest.TestCase):
@@ -106,7 +107,7 @@ class ProvenanceScopeTests(unittest.TestCase):
             ]
             reporter = reporter_module.Reporter()
             with patch.object(config, "WORKSPACE_ROOT", root):
-                validator.validate_g2(
+                g2_module.validate_g2(
                     documents,
                     reporter,
                     self.document_id,
