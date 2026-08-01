@@ -11,7 +11,7 @@ import {
 
 const policy = {
   policy_id: 'MIG-EPISTEMIC-001',
-  version: '1.0.0',
+  version: '1.1.0',
   baseline_commit: 'baseline',
   legacy_term: 'APROVADO',
   scan_extensions: ['.json', '.jsonl', '.yaml', '.yml', '.md', '.mjs'],
@@ -19,9 +19,11 @@ const policy = {
   excluded_output_prefixes: ['governance/artifacts/migrations/act-f00-008/'],
   human_approval_prefixes: ['docs/evidence/approvals/', 'governance/artifacts/approvals/'],
   historical_prefixes: ['docs/archive/', '.inicio/historico/'],
+  technical_validation_prefixes: ['docs/validation/reports/', '.inicio/evidencias/validate-documentation/', '.inicio/evidencias/VALIDACAO-VSCODE.md', 'RELATORIO-VSCODE.md'],
   negative_test_fragments: ['/tests/', 'test/', 'fixture', 'fixtures'],
-  normative_paths: ['governance/schemas/approval-record.schema.json'],
-  active_field_names: ['result', 'resultado', 'status', 'validation_result', 'validator_result', 'checker_result', 'maker_result', 'legacy_declared_status'],
+  normative_paths: ['governance/schemas/approval-record.schema.json', 'docs/contracts/schemas/workflow.schema.json'],
+  explicit_active_fields: ['validation_result', 'validator_result', 'checker_result', 'maker_result', 'legacy_declared_status'],
+  technical_result_fields: ['result', 'resultado', 'status', 'validation_result', 'validator_result', 'checker_result', 'maker_result'],
   normalization_rules: [],
   invariants: {
     preserve_original: true,
@@ -46,6 +48,18 @@ assert.equal(classifyOccurrence({
 }, policy), 'LEGACY_ACTIVE_STATUS');
 
 assert.equal(classifyOccurrence({
+  filePath: 'docs/canonical/context/contexto.md',
+  line: '- **Status:** APROVADO',
+  field: 'status',
+}, policy), 'DOCUMENTATION_REFERENCE');
+
+assert.equal(classifyOccurrence({
+  filePath: 'docs/contracts/schemas/workflow.schema.json',
+  line: '"status": {"enum": ["RASCUNHO", "APROVADO"]}',
+  field: 'status',
+}, policy), 'NORMATIVE_RULE');
+
+assert.equal(classifyOccurrence({
   filePath: 'docs/archive/resultado.md',
   line: 'Resultado histórico: APROVADO',
   field: 'resultado_histórico',
@@ -62,18 +76,21 @@ try {
   await mkdir(path.join(root, 'docs/validation/reports'), { recursive: true });
   await mkdir(path.join(root, 'docs/evidence/approvals'), { recursive: true });
   await mkdir(path.join(root, 'docs/archive'), { recursive: true });
+  await mkdir(path.join(root, 'docs/canonical/context'), { recursive: true });
   await mkdir(path.join(root, 'governance/tests'), { recursive: true });
 
   await writeFile(path.join(root, 'docs/validation/reports/report.json'), '{\n  "result": "APROVADO"\n}\n');
   await writeFile(path.join(root, 'docs/evidence/approvals/approval.yaml'), 'decision: APROVADO\napprover_id: HUM-DAVI-SERMENHO\n');
   await writeFile(path.join(root, 'docs/archive/history.md'), 'Resultado histórico: APROVADO\n');
+  await writeFile(path.join(root, 'docs/canonical/context/context.md'), '- **Status:** APROVADO\n');
   await writeFile(path.join(root, 'governance/tests/negative-fixture.json'), '{"checker_result":"APROVADO"}\n');
 
   const occurrences = await scanRepository(root, policy);
-  assert.equal(occurrences.length, 4);
+  assert.equal(occurrences.length, 5);
   assert.equal(occurrences.filter((item) => item.classification === 'LEGACY_ACTIVE_STATUS').length, 1);
   assert.equal(occurrences.filter((item) => item.classification === 'LEGITIMATE_HUMAN_APPROVAL').length, 1);
   assert.equal(occurrences.filter((item) => item.classification === 'HISTORICAL_CITATION').length, 1);
+  assert.equal(occurrences.filter((item) => item.classification === 'DOCUMENTATION_REFERENCE').length, 1);
   assert.equal(occurrences.filter((item) => item.classification === 'NEGATIVE_TEST_FIXTURE').length, 1);
 
   const artifactsA = buildMigrationArtifacts(occurrences, policy);
@@ -96,5 +113,5 @@ try {
 console.log(JSON.stringify({
   result: 'AUTOTESTE_CONFORME',
   suite: 'ACT-F00-008',
-  assertions: 20
+  assertions: 23
 }, null, 2));
