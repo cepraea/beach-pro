@@ -1,0 +1,14 @@
+exit_code: 0
+gate_result:
+  gate_result_id: GATE-RESULT-G2-RUNTIME
+  gate_id: G2
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1"
+  content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  status: pass
+  evaluated_at: "2026-08-01T06:24:47.430936+00:00"
+  evaluator: scripts.documentation.validate_documentation
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

@@ -32,7 +32,7 @@
 | Commit de incorporação da Fase 10 | `1c921a0ebc670c789a1def54c59a84ee36201ae5` |
 | Commit de incorporação da Fase 11 | `11aee153be06f6ca76085b11e4b4ab112121ebd8` |
 | Data da validação | 2026-08-01 |
-| Estado deste plano | Fase 11 incorporada; Fase 12 em execução na branch específica |
+| Estado deste plano | Fase 11 incorporada; Fase 12 implementada na PR #15 com gates locais aprovados, efetivos após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -1629,6 +1629,20 @@ inventários e testes esperados; não corrigir apenas os totais.
 MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
 NPM-PROJECT-VALIDATION = PASS
 ```
+
+Estado materializado em 2026-08-01:
+
+```text
+MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
+NPM-PROJECT-VALIDATION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FINAL-MODULARIZATION-11aee15-20260801T063838Z/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-12` e entregue pela PR #15. Os gates locais
+tornam-se efetivos após o merge. As quatro limitações da seção 3.3 permanecem
+abertas; este PASS não autoriza uso como gate bloqueante de produção.
 
 ## 23. Inventário completo: função atual → módulo futuro
 

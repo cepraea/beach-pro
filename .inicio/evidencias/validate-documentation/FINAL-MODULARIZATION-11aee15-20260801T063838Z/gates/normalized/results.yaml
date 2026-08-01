@@ -1,0 +1,54 @@
+G-ARCH:
+  exit_code: 0
+  gate_id: G-ARCH
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evidence_ids: []
+  failures: []
+  next_actions: []
+G0:
+  exit_code: 0
+  gate_id: G0
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evidence_ids: []
+  failures: []
+  next_actions: []
+G1:
+  exit_code: 0
+  gate_id: G1
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evidence_ids: []
+  failures: []
+  next_actions: []
+G2_CONTEXT_0_1:
+  exit_code: 0
+  gate_id: G2
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: "0.1"
+  content_hash: 71bd2695280f0cdd5c41b83c7e433d5a84a803b527a7e09d7dfd7eecaaeab847
+  status: pass
+  evidence_ids: []
+  failures: []
+  next_actions: []
+G-FM_CONTEXT_0_1_2:
+  exit_code: 0
+  gate_id: G-FM
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: 0.1.2
+  content_hash: ab6102ac15a4145d75e34cb2e91ca7043fe8128b9d312c890389c554789d2b7f
+  status: pass
+  evidence_ids: []
+  failures: []
+  next_actions: []
+GLOBAL:
+  exit_code: 0
+  errors: 0
+  warnings: 0
