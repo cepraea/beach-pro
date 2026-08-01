@@ -31,9 +31,11 @@
     "governance:route": "node governance/src/cli.mjs route",
     "governance:canonicalize": "node governance/src/cli.mjs canonicalize",
     "governance:hash": "node governance/src/cli.mjs hash",
-    "governance:test": "node governance/tests/run-tests.mjs",
+    "governance:migrate-history": "node governance/src/migrate-history.mjs --write",
+    "governance:migrate-history:check": "node governance/src/migrate-history.mjs --check",
+    "governance:test": "node governance/tests/run-tests.mjs && node governance/tests/migrate-history-tests.mjs",
     "governance:install-hooks": "node governance/src/install-hooks.mjs",
-    "validate": "npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
+    "validate": "npm run governance:migrate-history && npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",
