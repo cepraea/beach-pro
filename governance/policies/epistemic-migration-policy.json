@@ -1,6 +1,6 @@
 {
   "policy_id": "MIG-EPISTEMIC-001",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "action_id": "ACT-F00-008",
   "baseline_commit": "4d7f3f1f5c994cb796a787e42b8a2e7a345496c2",
   "legacy_term": "APROVADO",
@@ -41,11 +41,14 @@
     "docs/archive/",
     ".inicio/historico/"
   ],
-  "technical_validation_prefixes": [
-    "docs/validation/reports/",
-    ".inicio/evidencias/validate-documentation/",
-    ".inicio/evidencias/VALIDACAO-VSCODE.md",
-    "RELATORIO-VSCODE.md"
+  "technical_validation_table_paths": [
+    ".inicio/evidencias/VALIDACAO-VSCODE.md"
+  ],
+  "technical_validation_report_prefixes": [
+    "docs/validation/reports/"
+  ],
+  "technical_execution_evidence_prefixes": [
+    ".inicio/evidencias/validate-documentation/"
   ],
   "negative_test_fragments": [
     "/tests/",
@@ -56,8 +59,11 @@
   "normative_paths": [
     "governance/schemas/approval-record.schema.json",
     "governance/schemas/checker-report.schema.json",
+    "governance/schemas/legacy-migration-record.schema.json",
     "governance/src/runtime.mjs",
+    "governance/src/migrate-history.mjs",
     "governance/README.md",
+    "governance/ACT-F00-008.md",
     "docs/contracts/schemas/workflow.schema.json"
   ],
   "explicit_active_fields": [
@@ -67,34 +73,25 @@
     "maker_result",
     "legacy_declared_status"
   ],
-  "technical_result_fields": [
-    "result",
-    "resultado",
-    "status",
-    "validation_result",
-    "validator_result",
-    "checker_result",
-    "maker_result"
-  ],
   "normalization_rules": [
     {
       "rule_id": "MIG-EPISTEMIC-001-CHECKER",
-      "producer_fragments": ["checker"],
       "normalized_result": "CONFORME"
     },
     {
       "rule_id": "MIG-EPISTEMIC-001-AUTOTEST",
-      "producer_fragments": ["autotest", "vitest", "governance/test"],
       "normalized_result": "AUTOTESTE_CONFORME"
     },
     {
       "rule_id": "MIG-EPISTEMIC-001-VALIDATOR",
-      "producer_fragments": ["validator", "validacao", "validation", "verificacao", "verification", "report", "relatorio", "evidencias"],
       "normalized_result": "VALIDACAO_ESTRUTURAL_CONFORME"
     },
     {
+      "rule_id": "MIG-EPISTEMIC-001-VALIDATOR-RESSALVAS",
+      "normalized_result": "VALIDACAO_ESTRUTURAL_CONFORME_COM_RESSALVAS"
+    },
+    {
       "rule_id": "MIG-EPISTEMIC-001-LEGACY-STATUS",
-      "producer_fragments": ["legacy_declared_status"],
       "normalized_result": "LEGACY_STATUS_PRESERVED"
     }
   ],
