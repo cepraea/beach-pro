@@ -26,7 +26,14 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate": "npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
+    "governance": "node governance/src/cli.mjs",
+    "governance:validate": "node governance/src/cli.mjs validate",
+    "governance:route": "node governance/src/cli.mjs route",
+    "governance:canonicalize": "node governance/src/cli.mjs canonicalize",
+    "governance:hash": "node governance/src/cli.mjs hash",
+    "governance:test": "node governance/tests/run-tests.mjs",
+    "governance:install-hooks": "node governance/src/install-hooks.mjs",
+    "validate": "npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",

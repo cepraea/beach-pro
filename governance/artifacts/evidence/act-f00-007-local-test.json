@@ -1,0 +1,16 @@
+{
+  "evidence_id": "EVD-ACT-F00-007-LOCAL-001",
+  "action_id": "ACT-F00-007",
+  "result": "AUTOTESTE_CONFORME",
+  "scope": "runtime, schemas, routing, canonicalization and hash",
+  "assertions": 18,
+  "execution_environment": {
+    "node": "22.16.0",
+    "runtime_target": "24.14.1",
+    "authoritative_ci_required": true
+  },
+  "limitations": [
+    "Esta evidência comprova execução compatível local, mas não substitui a CI no runtime fixado pelo repositório.",
+    "Não constitui aprovação do GATE-F00-GOV-01."
+  ]
+}
