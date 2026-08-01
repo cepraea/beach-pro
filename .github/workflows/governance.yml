@@ -18,5 +18,13 @@ jobs:
           node-version: 24.14.1
           cache: npm
       - run: npm ci
+      - run: npm run governance:migrate-history
       - run: npm run governance:test
       - run: npm run validate
+      - name: Publicar artefatos ACT-F00-008
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: act-f00-008-migration-artifacts
+          path: governance/artifacts/migrations/act-f00-008
+          if-no-files-found: error
