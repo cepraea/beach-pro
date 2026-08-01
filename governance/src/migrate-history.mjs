@@ -58,11 +58,11 @@ function fieldFromLine(line) {
   return 'text';
 }
 
-function hasPrefix(filePath, prefixes) {
+function hasPrefix(filePath, prefixes = []) {
   return prefixes.some((prefix) => filePath.startsWith(prefix));
 }
 
-function hasFragment(filePath, fragments) {
+function hasFragment(filePath, fragments = []) {
   const lowered = filePath.toLowerCase();
   return fragments.some((fragment) => lowered.includes(fragment.toLowerCase()));
 }
@@ -71,7 +71,7 @@ function isStructured(filePath) {
   return ['.json', '.jsonl', '.yaml', '.yml'].includes(path.extname(filePath).toLowerCase());
 }
 
-export function classifyOccurrence({ filePath, line, field }, policy) {
+export function classifyOccurrence({ filePath, field }, policy) {
   if (hasPrefix(filePath, policy.human_approval_prefixes)) {
     return 'LEGITIMATE_HUMAN_APPROVAL';
   }
@@ -91,19 +91,26 @@ export function classifyOccurrence({ filePath, line, field }, policy) {
     return 'HISTORICAL_CITATION';
   }
 
-  const activeFields = new Set(policy.active_field_names.map((value) => value.toLowerCase()));
-  if (activeFields.has(field)) return 'LEGACY_ACTIVE_STATUS';
+  const explicitActiveFields = new Set(policy.explicit_active_fields.map((value) => value.toLowerCase()));
+  if (explicitActiveFields.has(field)) return 'LEGACY_ACTIVE_STATUS';
 
-  const normalizedLine = normalizeForMatch(line);
-  if (/\b(RESULTADO|STATUS|RESULT|VALIDATION_RESULT|CHECKER_RESULT|MAKER_RESULT)\b/.test(normalizedLine)) {
+  if (hasPrefix(filePath, policy.technical_validation_prefixes)) {
     return 'LEGACY_ACTIVE_STATUS';
   }
+
   if (isStructured(filePath)) return 'STRUCTURED_REFERENCE';
   return 'DOCUMENTATION_REFERENCE';
 }
 
-function normalizationFor(occurrence, policy) {
+function normalizationFor(occurrence) {
   const haystack = normalizeForMatch(`${occurrence.source_path} ${occurrence.source_field} ${occurrence.line_text}`);
+  if (occurrence.source_field === 'legacy_declared_status') {
+    return {
+      migration_rule_id: 'MIG-EPISTEMIC-001-LEGACY-STATUS',
+      normalized_result: 'LEGACY_STATUS_PRESERVED',
+      rationale: 'O valor é um estado legado preservado exclusivamente para rastreabilidade histórica.',
+    };
+  }
   if (haystack.includes('CHECKER')) {
     return {
       migration_rule_id: 'MIG-EPISTEMIC-001-CHECKER',
@@ -111,14 +118,7 @@ function normalizationFor(occurrence, policy) {
       rationale: 'O uso legado pertence ao contexto do Checker e não constitui aprovação humana.',
     };
   }
-  if (haystack.includes('LEGACY_DECLARED_STATUS') || haystack.includes('HISTORICO') || haystack.includes('ARCHIVE') || haystack.includes('SUPERSEDED')) {
-    return {
-      migration_rule_id: 'MIG-EPISTEMIC-001-LEGACY-STATUS',
-      normalized_result: 'LEGACY_STATUS_PRESERVED',
-      rationale: 'O valor é um estado legado preservado exclusivamente para rastreabilidade histórica.',
-    };
-  }
-  if (haystack.includes('AUTOTEST') || haystack.includes('VITEST') || haystack.includes('/TESTS/') || haystack.includes(' TEST ')) {
+  if (haystack.includes('AUTOTEST') || haystack.includes('VITEST') || haystack.includes('GOVERNANCE/TEST')) {
     return {
       migration_rule_id: 'MIG-EPISTEMIC-001-AUTOTEST',
       normalized_result: 'AUTOTESTE_CONFORME',
@@ -128,7 +128,7 @@ function normalizationFor(occurrence, policy) {
   return {
     migration_rule_id: 'MIG-EPISTEMIC-001-VALIDATOR',
     normalized_result: 'VALIDACAO_ESTRUTURAL_CONFORME',
-    rationale: 'A ocorrência registra conformidade técnica ou documental e não uma decisão humana de portão.',
+    rationale: 'A ocorrência pertence a uma evidência ou relatório técnico de validação e não a uma decisão humana de portão.',
   };
 }
 
@@ -201,7 +201,7 @@ export function buildMigrationArtifacts(occurrences, policy) {
   const migrationCandidates = occurrences.filter((item) => item.classification === 'LEGACY_ACTIVE_STATUS');
   const unresolved = occurrences.filter((item) => item.classification === 'UNRESOLVED');
   const migratedRecords = migrationCandidates.map((occurrence) => {
-    const normalization = normalizationFor(occurrence, policy);
+    const normalization = normalizationFor(occurrence);
     const migrationIdentity = `${occurrence.occurrence_id}:${normalization.migration_rule_id}`;
     return {
       migration_id: `MIG-EPISTEMIC-001-${createHash('sha256').update(migrationIdentity).digest('hex').slice(0, 16).toUpperCase()}`,
