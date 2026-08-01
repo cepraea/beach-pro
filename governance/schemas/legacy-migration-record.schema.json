@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/legacy-migration-record.schema.json",
+  "title": "Legacy Epistemic Migration Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "migration_id",
+    "action_id",
+    "source_record_id",
+    "source_path",
+    "source_line",
+    "source_field",
+    "source_line_hash",
+    "legacy_result",
+    "normalized_result",
+    "historical_record",
+    "human_approval_inferred",
+    "migration_rule_id",
+    "classification",
+    "rationale"
+  ],
+  "properties": {
+    "migration_id": {
+      "type": "string",
+      "pattern": "^MIG-EPISTEMIC-001-[A-F0-9]{16}$"
+    },
+    "action_id": {
+      "const": "ACT-F00-008"
+    },
+    "source_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_line": {
+      "type": "integer"
+    },
+    "source_field": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_line_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "legacy_result": {
+      "const": "APROVADO"
+    },
+    "normalized_result": {
+      "enum": [
+        "AUTOTESTE_CONFORME",
+        "VALIDACAO_ESTRUTURAL_CONFORME",
+        "CONFORME",
+        "LEGACY_STATUS_PRESERVED"
+      ]
+    },
+    "historical_record": {
+      "const": true
+    },
+    "human_approval_inferred": {
+      "const": false
+    },
+    "migration_rule_id": {
+      "type": "string",
+      "pattern": "^MIG-EPISTEMIC-001-[A-Z-]+$"
+    },
+    "classification": {
+      "const": "LEGACY_ACTIVE_STATUS"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
