@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from 'node:child_process';
 import {
-  cp,
   mkdtemp,
   mkdir,
   readFile,
@@ -11,19 +10,20 @@ import {
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { executeMigration } from './migrate-history.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPOSITORY_ROOT = path.resolve(__dirname, '../..');
 const POLICY_PATH = 'governance/policies/epistemic-migration-policy.json';
 const OUTPUT_PATH = 'governance/artifacts/migrations/act-f00-008';
-const OUTPUT_FILES = [
-  'legacy-approved-inventory.json',
-  'epistemic-migration-map.json',
-  'migrated-records.jsonl',
-  'unresolved-occurrences.json',
-  'migration-summary.json',
-  'regression-report.json',
+const PERSISTED_FILES = [
+  { generated: 'legacy-approved-inventory.json', persisted: 'legacy-approved-inventory.json.gz', compressed: true },
+  { generated: 'epistemic-migration-map.json', persisted: 'epistemic-migration-map.json', compressed: false },
+  { generated: 'migrated-records.jsonl', persisted: 'migrated-records.jsonl.gz', compressed: true },
+  { generated: 'unresolved-occurrences.json', persisted: 'unresolved-occurrences.json', compressed: false },
+  { generated: 'migration-summary.json', persisted: 'migration-summary.json', compressed: false },
+  { generated: 'regression-report.json', persisted: 'regression-report.json', compressed: false },
 ];
 
 function git(args) {
@@ -45,15 +45,28 @@ async function annotateBaseline(outputRoot, baselineCommit) {
   }
 }
 
+async function persistOutputs(generatedRoot, committedRoot) {
+  await mkdir(committedRoot, { recursive: true });
+  for (const entry of PERSISTED_FILES) {
+    const generated = await readFile(path.join(generatedRoot, entry.generated));
+    const persisted = entry.compressed
+      ? gzipSync(generated, { level: 9, mtime: 0 })
+      : generated;
+    await writeFile(path.join(committedRoot, entry.persisted), persisted);
+  }
+}
+
 async function compareOutputs(generatedRoot, committedRoot) {
   const errors = [];
-  for (const name of OUTPUT_FILES) {
-    const [generated, committed] = await Promise.all([
-      readFile(path.join(generatedRoot, name), 'utf8'),
-      readFile(path.join(committedRoot, name), 'utf8').catch(() => null),
-    ]);
-    if (committed === null) errors.push(`${name}: artefato ausente`);
-    else if (generated !== committed) errors.push(`${name}: artefato desatualizado`);
+  for (const entry of PERSISTED_FILES) {
+    const generated = await readFile(path.join(generatedRoot, entry.generated));
+    const committed = await readFile(path.join(committedRoot, entry.persisted)).catch(() => null);
+    if (committed === null) {
+      errors.push(`${entry.persisted}: artefato ausente`);
+      continue;
+    }
+    const restored = entry.compressed ? gunzipSync(committed) : committed;
+    if (!generated.equals(restored)) errors.push(`${entry.persisted}: artefato desatualizado`);
   }
   if (errors.length > 0) throw new Error(`ARTEFATOS_DE_MIGRACAO_INVALIDOS: ${errors.join('; ')}`);
 }
@@ -83,12 +96,8 @@ async function main() {
     await annotateBaseline(generatedRoot, baselineCommit);
     const committedRoot = path.join(REPOSITORY_ROOT, OUTPUT_PATH);
 
-    if (mode === 'write') {
-      await mkdir(committedRoot, { recursive: true });
-      await cp(generatedRoot, committedRoot, { recursive: true, force: true });
-    } else {
-      await compareOutputs(generatedRoot, committedRoot);
-    }
+    if (mode === 'write') await persistOutputs(generatedRoot, committedRoot);
+    else await compareOutputs(generatedRoot, committedRoot);
 
     console.log(JSON.stringify({
       result: artifacts.summary.result,
@@ -96,6 +105,7 @@ async function main() {
       mode,
       scan_source: 'baseline_commit',
       baseline_commit: baselineCommit,
+      persistence: 'GZIP_DETERMINISTICO_PARA_ARTEFATOS_VOLUMOSOS',
       total_occurrences: artifacts.summary.total_occurrences,
       total_migrated: artifacts.summary.total_migrated,
       total_unresolved: artifacts.summary.total_unresolved,
