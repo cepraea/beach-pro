@@ -161,6 +161,13 @@ def validate_record(
     reporter: reporter_module.Reporter,
     strict_legacy: bool,
 ) -> tuple[str | None, str | None]:
+    """Validate one registry record while retaining sibling diagnostics.
+
+    Missing metadata is accumulated whenever later checks remain safe. Path
+    failures return early because hash, naming, and directory conclusions would
+    otherwise be derived from bytes that were not resolved inside the
+    workspace.
+    """
     missing = REQUIRED_FIELDS - record.keys()
     raw_document_id = record.get("document_id")
     document_id = (

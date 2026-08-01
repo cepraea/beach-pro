@@ -159,10 +159,10 @@ Falha em uma etapa impede as etapas à direita.
 ## 3. Como usar uma unidade
 
 1. Confirme no plano a fase, o gate de entrada e o subciclo autorizado.
-2. Localize as funções da unidade no `__init__.py` ou no módulo já extraído.
+2. Localize as funções da unidade no módulo proprietário indicado.
 3. Leia somente a unidade, seus helpers diretos e testes relacionados.
 4. Crie ou edite apenas o módulo proprietário indicado na tabela abaixo.
-5. No subciclo A, mova sem reescrever lógica e preserve o reexport transitório.
+5. Não crie reexport na fachada; consumidores importam o módulo proprietário.
 6. No subciclo B, execute o RED previsto e confirme a razão da falha.
 7. Aplique o menor patch possível e migre os patches para o namespace de
    consulta.
@@ -204,16 +204,17 @@ npm run validate
 | 13 | `pipeline.py`, `gates/dispatcher.py`, `cli.py` |
 | 14 | `tests/`, `integration_tests/`, README e este mapa |
 
-Esta tabela define propriedade, mas não autoriza criar todos os módulos de uma
-vez. Cada módulo nasce somente na fase e no change set correspondente do plano.
+Esta tabela registra a propriedade final materializada pelas fases do plano.
+Novas responsabilidades exigem decisão própria e não devem ser acumuladas em
+módulos genéricos.
 
 ### Unidade 1 — Imports, tipos e constantes
 
 **Estado atual:** extraída na Fase 4.
 
 **Destinos:** `json_types.py`, `models.py`, `config.py` e `filesystem.py`,
-extraídos separadamente na ordem do plano. O `__init__.py` mantém reexports
-transitórios, mas consumidores e patches devem consultar o módulo proprietário.
+extraídos separadamente na ordem do plano. Consumidores e patches consultam o
+módulo proprietário; a fachada pública exporta somente `main`.
 
 **Responsabilidade:** disponibilizar somente dependências e constantes comuns.
 
@@ -239,8 +240,8 @@ consumidor consulta configuração mutável por `config.WORKSPACE_ROOT`.
 
 ### Unidade 2 — Reporter
 
-**Estado atual:** extraída na Fase 5. O pacote mantém somente o reexport
-transitório necessário até a contração autorizada da fachada.
+**Estado atual:** extraída na Fase 5. A contração autorizada na Fase 11 removeu
+o reexport transitório de `Reporter`.
 
 **Destino:** `reporter.py`.
 
