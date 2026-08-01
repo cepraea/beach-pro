@@ -133,7 +133,7 @@ Consumidores internos devem importar símbolos de seus módulos proprietários;
 novos reexports não devem ser acrescentados à fachada sem nova decisão de
 contrato.
 
-As responsabilidades serão extraídas, uma por change set, na direção:
+A arquitetura final respeita a seguinte direção de dependências:
 
 ```text
 json_types / models
@@ -151,10 +151,10 @@ cli
 __init__ / __main__
 ```
 
-Uma extração estrutural move código sem alterar sua regra e mantém reexports
-transitórios quando necessários. Uma mudança comportamental cita a decisão
-`BEH` autorizadora, registra RED pelo motivo esperado e somente então aplica a
-correção mínima. Os dois subciclos não são misturados no mesmo commit.
+Durante a modularização, cada extração estrutural moveu código sem alterar sua
+regra e preservou reexports somente até a migração dos consumidores. Cada
+mudança comportamental citou a decisão `BEH` autorizadora, registrou RED pelo
+motivo esperado e aplicou a correção mínima em change set separado.
 
 `pipeline.run_validation(args, reporter) -> None` é responsável pelo fail-fast
 e não emite resultados. `cli.main(argv)` valida argumentos, chama o pipeline e

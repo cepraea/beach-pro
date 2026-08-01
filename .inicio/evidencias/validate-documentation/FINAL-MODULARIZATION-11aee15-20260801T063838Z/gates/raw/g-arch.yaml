@@ -1,0 +1,14 @@
+exit_code: 0
+gate_result:
+  gate_result_id: GATE-RESULT-G-ARCH-RUNTIME
+  gate_id: G-ARCH
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evaluated_at: "2026-08-01T06:24:44.873871+00:00"
+  evaluator: scripts.documentation.validate_documentation
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

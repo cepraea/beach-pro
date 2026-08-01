@@ -22,6 +22,7 @@
 | Branch de execução da Fase 9 | `agent/modularizacao-validator-fase-9` |
 | Branch de execução da Fase 10 | `agent/modularizacao-validator-fase-10` |
 | Branch de execução da Fase 11 | `agent/modularizacao-validator-fase-11` |
+| Branch de execução da Fase 12 | `agent/modularizacao-validator-fase-12` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
 | Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
 | Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
@@ -29,8 +30,9 @@
 | Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
 | Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
 | Commit de incorporação da Fase 10 | `1c921a0ebc670c789a1def54c59a84ee36201ae5` |
-| Data da validação | 2026-07-31 |
-| Estado deste plano | Fase 10 incorporada; Fase 11 implementada na PR #14 com gates locais aprovados, efetivos após merge |
+| Commit de incorporação da Fase 11 | `11aee153be06f6ca76085b11e4b4ab112121ebd8` |
+| Data da validação | 2026-08-01 |
+| Estado deste plano | Fase 11 incorporada; Fase 12 implementada na PR #15 com gates locais aprovados, efetivos após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
@@ -1522,8 +1524,9 @@ BEH-07-CONTRACT = PASS
 Evidência:
 `.inicio/evidencias/validate-documentation/PUBLIC-FACADE-20260731/`.
 O resultado foi produzido na branch
-`agent/modularizacao-validator-fase-11` e entregue pela PR #14. Os gates
-tornam-se efetivos após o merge; até lá, a Fase 12 permanece bloqueada.
+`agent/modularizacao-validator-fase-11`, entregue pela PR #14 e incorporado em
+`main` pelo commit `11aee153`. Esse merge tornou os gates efetivos e
+desbloqueou a Fase 12.
 
 ## 22. Fase 12 — validação final
 
@@ -1560,7 +1563,7 @@ Verificações estruturais:
 
 ```bash
 rg 'sys\.path\.(insert|append)' scripts/documentation/tests
-rg 'import validate_documentation|from validate_documentation' \
+rg '^[[:space:]]*(import validate_documentation([[:space:],.]|$)|from validate_documentation([[:space:].]|$))' \
   scripts/documentation
 rg '^def |^class ' \
   scripts/documentation/validate_documentation/__init__.py
@@ -1573,9 +1576,11 @@ Esperado:
 - nenhuma implementação no `__init__.py`;
 - ausência de ciclos;
 - fachada pública corresponde exatamente à decisão `BEH-07`;
-- 45 funções-base rastreadas até módulos proprietários;
+- 45 funções-base rastreadas até módulos proprietários e 2 funções novas
+  autorizadas pelo plano;
 - 3 classes-base rastreadas;
-- 49 patches migrados;
+- 49 patches históricos migrados; patches adicionados pelos testes posteriores
+  permanecem explicados separadamente;
 - nenhuma invocação de Pyright sem a versão `1.1.411`;
 - `npm run validate` aprovado;
 - funções complexas documentam o porquê das decisões não evidentes;
@@ -1600,17 +1605,20 @@ rg 'npx --yes pyright([[:space:]]|$)' \
 O segundo comando deve retornar zero ocorrências. Recontar os inventários por
 AST e busca estrutural, sem confiar apenas nos números escritos no plano.
 
-Aceitação:
+Aceitação histórica e final:
 
-```text
-45 funções de topo
-3 classes de topo
-92 métodos de teste na baseline
-49 ocorrências de patch.object
-13 grupos de alvos de patch
-0 invocações de Pyright sem versão fixa
-0 problemas de Markdownlint
-```
+| Inventário | Baseline | Resultado final esperado |
+| --- | ---: | ---: |
+| Funções de topo | 45 | 47: 45 migradas + 2 autorizadas |
+| Classes de topo | 3 | 3 |
+| Métodos de teste | 92 | 108 |
+| Ocorrências de `patch.object` | 49 | 59: 49 migradas + 10 novas |
+| Grupos de alvos de patch | 13 | 15 |
+
+Além dessas contagens, são obrigatórios zero comandos Pyright sem versão fixa e
+zero problemas de Markdownlint. Os inventários históricos permanecem
+imutáveis; o resultado final explica cada acréscimo em vez de reescrever a
+baseline.
 
 Se o código-base mudar, atualizar conjuntamente commit-base, linhas históricas,
 inventários e testes esperados; não corrigir apenas os totais.
@@ -1621,6 +1629,20 @@ inventários e testes esperados; não corrigir apenas os totais.
 MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
 NPM-PROJECT-VALIDATION = PASS
 ```
+
+Estado materializado em 2026-08-01:
+
+```text
+MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
+NPM-PROJECT-VALIDATION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FINAL-MODULARIZATION-11aee15-20260801T063838Z/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-12` e entregue pela PR #15. Os gates locais
+tornam-se efetivos após o merge. As quatro limitações da seção 3.3 permanecem
+abertas; este PASS não autoriza uso como gate bloqueante de produção.
 
 ## 23. Inventário completo: função atual → módulo futuro
 
@@ -1842,7 +1864,8 @@ A modularização está concluída somente quando:
 - `BEH-01` a `BEH-07` possuem decisão e evidência;
 - os três TARs possuem hashes exatos;
 - baseline inicial e resultado final estão preservados;
-- 92 testes unitários passam ou a alteração de contagem está explicada;
+- 108 testes unitários passam, preservando a baseline histórica de 92 e a
+  explicação dos 16 testes acrescentados;
 - a integração do repositório passa;
 - Pyright estrito possui zero diagnósticos;
 - todas as invocações de Pyright usam `1.1.411`;
@@ -1850,9 +1873,11 @@ A modularização está concluída somente quando:
   resultado final;
 - todos os gates aplicáveis passam;
 - outputs não autorizados não mudaram;
-- as 45 funções possuem módulo proprietário;
+- as 45 funções históricas possuem módulo proprietário e as 2 funções novas
+  autorizadas estão rastreadas;
 - as 3 classes possuem módulo proprietário;
-- os 49 patches foram migrados;
+- os 49 patches históricos foram migrados e os 10 patches posteriores estão
+  explicados;
 - nenhum teste altera `sys.path`;
 - nenhum import curto permanece;
 - não existem ciclos;
@@ -1874,7 +1899,7 @@ A modularização está concluída somente quando:
 
 - [Repositório `cepraea/beach-pro`](https://github.com/cepraea/beach-pro)
 - [Commit-base `defaa043`](https://github.com/cepraea/beach-pro/commit/defaa0439e5163b159dfd18359dd31cc65f469f4)
-- [Implementação monolítica](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/__init__.py)
+- [Implementação modularizada](https://github.com/cepraea/beach-pro/tree/main/scripts/documentation/validate_documentation)
 - [README operacional](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/README.md)
 - [Mapa ativo](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/MAPA-VALIDADOR-DOC.md)
 - [Registro documental](https://github.com/cepraea/beach-pro/blob/main/docs/registry/registro-documentos.yaml)

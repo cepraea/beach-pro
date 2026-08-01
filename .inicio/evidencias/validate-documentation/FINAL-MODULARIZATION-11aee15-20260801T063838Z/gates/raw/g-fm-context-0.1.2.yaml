@@ -1,0 +1,14 @@
+exit_code: 0
+gate_result:
+  gate_result_id: GATE-RESULT-G-FM-RUNTIME
+  gate_id: G-FM
+  document_id: DOC-CEPRAEA-CANDIDATA-CONTEXTO
+  version: 0.1.2
+  content_hash: ab6102ac15a4145d75e34cb2e91ca7043fe8128b9d312c890389c554789d2b7f
+  status: pass
+  evaluated_at: "2026-08-01T06:24:48.080970+00:00"
+  evaluator: scripts.documentation.validate_documentation
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []
