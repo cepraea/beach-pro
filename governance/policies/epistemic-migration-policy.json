@@ -1,0 +1,96 @@
+{
+  "policy_id": "MIG-EPISTEMIC-001",
+  "version": "1.0.0",
+  "action_id": "ACT-F00-008",
+  "baseline_commit": "4d7f3f1f5c994cb796a787e42b8a2e7a345496c2",
+  "legacy_term": "APROVADO",
+  "model": "APPEND_ONLY",
+  "canonical_source_priority": [
+    "JSON",
+    "JSONL",
+    "YAML",
+    "MARKDOWN_DERIVADO"
+  ],
+  "scan_extensions": [
+    ".json",
+    ".jsonl",
+    ".yaml",
+    ".yml",
+    ".md",
+    ".txt",
+    ".mjs",
+    ".js",
+    ".ts",
+    ".tsx"
+  ],
+  "excluded_directories": [
+    ".git",
+    "node_modules",
+    "dist",
+    "coverage",
+    ".vite"
+  ],
+  "excluded_output_prefixes": [
+    "governance/artifacts/migrations/act-f00-008/"
+  ],
+  "human_approval_prefixes": [
+    "docs/evidence/approvals/",
+    "governance/artifacts/approvals/"
+  ],
+  "historical_prefixes": [
+    "docs/archive/",
+    ".inicio/historico/"
+  ],
+  "negative_test_fragments": [
+    "/tests/",
+    "test/",
+    "fixture",
+    "fixtures"
+  ],
+  "normative_paths": [
+    "governance/schemas/approval-record.schema.json",
+    "governance/schemas/checker-report.schema.json",
+    "governance/src/runtime.mjs",
+    "governance/README.md"
+  ],
+  "active_field_names": [
+    "result",
+    "resultado",
+    "status",
+    "validation_result",
+    "validator_result",
+    "checker_result",
+    "maker_result",
+    "legacy_declared_status"
+  ],
+  "normalization_rules": [
+    {
+      "rule_id": "MIG-EPISTEMIC-001-CHECKER",
+      "producer_fragments": ["checker"],
+      "normalized_result": "CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-AUTOTEST",
+      "producer_fragments": ["autotest", "test", "vitest", "validation.md"],
+      "normalized_result": "AUTOTESTE_CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-VALIDATOR",
+      "producer_fragments": ["validator", "validacao", "validation", "verificacao", "verification", "report", "relatorio", "evidencias"],
+      "normalized_result": "VALIDACAO_ESTRUTURAL_CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-LEGACY-STATUS",
+      "producer_fragments": ["legacy_declared_status", "historico", "archive", "superseded"],
+      "normalized_result": "LEGACY_STATUS_PRESERVED"
+    }
+  ],
+  "invariants": {
+    "preserve_original": true,
+    "human_approval_inferred": false,
+    "migration_idempotent": true,
+    "active_prohibited_occurrences_after_migration": 0,
+    "unclassified_occurrences": 0,
+    "historical_records_authorize_gate": false
+  }
+}
