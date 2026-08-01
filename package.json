@@ -36,7 +36,7 @@
     "governance:migrate-history:validate": "node governance/src/validate-migration-records.mjs",
     "governance:test": "node governance/tests/run-tests.mjs && node governance/tests/migrate-history-tests.mjs",
     "governance:install-hooks": "node governance/src/install-hooks.mjs",
-    "validate": "npm run governance:migrate-history && npm run governance:migrate-history:validate && npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
+    "validate": "npm run governance:migrate-history:check && npm run governance:migrate-history:validate && npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",
