@@ -13,6 +13,8 @@
     "source_field",
     "source_line_hash",
     "legacy_result",
+    "legacy_value_excerpt",
+    "legacy_qualifier",
     "normalized_result",
     "historical_record",
     "human_approval_inferred",
@@ -50,10 +52,22 @@
     "legacy_result": {
       "const": "APROVADO"
     },
+    "legacy_value_excerpt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "legacy_qualifier": {
+      "enum": [
+        "SEM_RESSALVAS",
+        "COM_RESSALVAS",
+        "STATUS_COMPOSTO"
+      ]
+    },
     "normalized_result": {
       "enum": [
         "AUTOTESTE_CONFORME",
         "VALIDACAO_ESTRUTURAL_CONFORME",
+        "VALIDACAO_ESTRUTURAL_CONFORME_COM_RESSALVAS",
         "CONFORME",
         "LEGACY_STATUS_PRESERVED"
       ]
