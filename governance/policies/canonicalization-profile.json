@@ -1,0 +1,14 @@
+{
+  "profile_id": "CEPRAEA-CANONICAL-JSON",
+  "version": "1.0.0",
+  "algorithm": "SORTED_OBJECT_KEYS_JSON_UTF8",
+  "hash_algorithm": "SHA-256",
+  "array_order_policy": "PRESERVE",
+  "volatile_keys": [
+    "timestamp",
+    "generated_at",
+    "execution_metadata",
+    "duration_ms",
+    "session_id"
+  ]
+}
