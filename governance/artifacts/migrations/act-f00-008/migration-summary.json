@@ -1,0 +1,29 @@
+{
+  "artifact_id": "SUMMARY-ACT-F00-008",
+  "action_id": "ACT-F00-008",
+  "result": "MIGRACAO_HISTORICA_CONFORME",
+  "baseline_commit": "4d7f3f1f5c994cb796a787e42b8a2e7a345496c2",
+  "policy_version": "1.2.0",
+  "total_occurrences": 420,
+  "total_migrated": 143,
+  "counts_by_normalized_result": {
+    "VALIDACAO_ESTRUTURAL_CONFORME": 114,
+    "AUTOTESTE_CONFORME": 3,
+    "LEGACY_STATUS_PRESERVED": 2,
+    "VALIDACAO_ESTRUTURAL_CONFORME_COM_RESSALVAS": 24
+  },
+  "total_legitimate_human_approvals": 0,
+  "total_historical_citations": 38,
+  "total_documentation_references": 215,
+  "total_normative_rules": 5,
+  "total_negative_test_fixtures": 3,
+  "total_negated_references": 5,
+  "total_structured_references": 11,
+  "total_unresolved": 0,
+  "active_prohibited_occurrences_after_migration": 0,
+  "human_approvals_fabricated": 0,
+  "original_records_deleted_or_rewritten": 0,
+  "duplicate_migrations": 0,
+  "scan_source": "baseline_commit",
+  "baseline_commit_verified": "4d7f3f1f5c994cb796a787e42b8a2e7a345496c2"
+}

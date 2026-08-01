@@ -1,0 +1,36 @@
+{
+  "artifact_id": "MAP-ACT-F00-008-EPISTEMIC",
+  "action_id": "ACT-F00-008",
+  "policy_id": "MIG-EPISTEMIC-001",
+  "policy_version": "1.2.0",
+  "rules": [
+    {
+      "rule_id": "MIG-EPISTEMIC-001-CHECKER",
+      "normalized_result": "CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-AUTOTEST",
+      "normalized_result": "AUTOTESTE_CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-VALIDATOR",
+      "normalized_result": "VALIDACAO_ESTRUTURAL_CONFORME"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-VALIDATOR-RESSALVAS",
+      "normalized_result": "VALIDACAO_ESTRUTURAL_CONFORME_COM_RESSALVAS"
+    },
+    {
+      "rule_id": "MIG-EPISTEMIC-001-LEGACY-STATUS",
+      "normalized_result": "LEGACY_STATUS_PRESERVED"
+    }
+  ],
+  "invariants": {
+    "preserve_original": true,
+    "human_approval_inferred": false,
+    "migration_idempotent": true,
+    "active_prohibited_occurrences_after_migration": 0,
+    "unclassified_occurrences": 0,
+    "historical_records_authorize_gate": false
+  }
+}

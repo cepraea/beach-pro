@@ -1,0 +1,21 @@
+{
+  "artifact_id": "REGRESSION-ACT-F00-008",
+  "action_id": "ACT-F00-008",
+  "result": "AUTOTESTE_CONFORME",
+  "checks": {
+    "inventory_reconciled": true,
+    "all_migration_candidates_have_record": true,
+    "original_records_preserved": true,
+    "human_approval_inferred_count": 0,
+    "duplicate_migration_ids": 0,
+    "duplicate_source_rule_pairs": 0,
+    "active_prohibited_occurrences_after_migration": 0,
+    "unclassified_occurrences": 0,
+    "historical_records_authorize_gate": false
+  },
+  "limitations": [
+    "O relatório prova a cobertura do corpus versionado disponível no checkout.",
+    "Não constitui aprovação do GATE-F00-GOV-01.",
+    "A validação humana do diff e das classificações permanece obrigatória."
+  ]
+}
