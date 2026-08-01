@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { readFile } from 'node:fs/promises';
+import { gunzipSync } from 'node:zlib';
 import { validateDocument } from './runtime.mjs';
 
-const [filePath = 'governance/artifacts/migrations/act-f00-008/migrated-records.jsonl'] = process.argv.slice(2);
+const [filePath = 'governance/artifacts/migrations/act-f00-008/migrated-records.jsonl.gz'] = process.argv.slice(2);
 
 async function main() {
-  const raw = await readFile(filePath, 'utf8');
+  const bytes = await readFile(filePath);
+  const raw = filePath.endsWith('.gz') ? gunzipSync(bytes).toString('utf8') : bytes.toString('utf8');
   const lines = raw.split(/\r?\n/).filter((line) => line.trim().length > 0);
   if (lines.length === 0) throw new Error('MIGRACAO_SEM_REGISTROS');
 
@@ -50,6 +52,7 @@ async function main() {
     action_id: 'ACT-F00-008',
     schema: 'legacy-migration-record.schema.json',
     file: filePath,
+    compression: filePath.endsWith('.gz') ? 'gzip' : 'none',
     records: lines.length,
     duplicate_migration_ids: 0,
     duplicate_source_rule_pairs: 0,
