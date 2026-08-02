@@ -1,0 +1,45 @@
+evidence_id: TAR-MATERIALIZATION-20260730
+gate_id: TAR-MATERIALIZATION
+phase: 1
+status: pass
+generated_at: "2026-07-30T13:33:06Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-1
+pull_request:
+  number: 4
+  url: "https://github.com/cepraea/beach-pro/pull/4"
+  state_at_evaluation: draft
+start_commit: 2bbb23c2e9dbbbe5da77203eb00266f52ac99ccf
+governance:
+  gate: GOVERNANCE-MODULARIZATION
+  status: pass
+  merge_commit: 2bbb23c2e9dbbbe5da77203eb00266f52ac99ccf
+materialization:
+  expected_files: 3
+  materialized_files: 3
+  matching_hashes: 3
+  divergent_hashes: 0
+  overwritten_files: 0
+  git_ignored_files: 3
+validation:
+  sha256_manifest: pass
+  npm_validate: pass
+  unittest:
+    status: pass
+    discovered: 92
+    passed: 92
+    failures: 0
+    errors: 0
+  g_arch: pass
+scope:
+  tar_files_versioned: false
+  evidence_files_versioned: true
+transferability:
+  applies_to_worktree: "/home/davis/projetos/cepraea-beach-pro-validator-phase1"
+  applies_automatically_to_other_clones: false
+  requirement: "reverificar ou rematerializar os TARs antes da baseline"
+next_phase:
+  phase: 2
+  gate: BASELINE-CODE
+  status: blocked_until_phase_1_evidence_merge

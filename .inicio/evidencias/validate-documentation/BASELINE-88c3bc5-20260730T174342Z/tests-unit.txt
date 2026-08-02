@@ -1,0 +1,99 @@
+command: python3 -m unittest discover -s scripts/documentation/tests -v
+
+test_approval_hash_mismatch_fails ... ok
+test_approval_unknown_target_fails ... ok
+test_duplicate_gate_result_id_fails ... ok
+test_missing_evidence_id_fails ... ok
+test_non_passing_gate_fails ... ok
+test_null_scoped_gate_metadata_fails ... ok
+test_resolved_superseded_approval_is_preserved ... ok
+test_unresolved_superseded_by_fails ... ok
+test_valid_approval_with_four_exact_gates_passes ... ok
+test_wrong_gate_set_fails ... ok
+test_global_gate_rejects_document_scope ... ok
+test_version_without_document_id_is_rejected ... ok
+test_resolver_does_not_return_first_version ... ok
+test_resolver_rejects_ambiguous_id ... ok
+test_resolver_rejects_unknown_version ... ok
+test_absolute_external_path_is_rejected ... ok
+test_broken_internal_link_fails ... ok
+test_existing_internal_line_reference_passes ... ok
+test_markdown_link_cannot_escape_workspace ... ok
+test_canonical_decision_limits_broad_functions ... ok
+test_dec_019_declares_all_domain_invariants ... ok
+test_legacy_source_preserves_value_with_supersession_note ... ok
+test_normative_documents_do_not_restore_the_invalid_taxonomy ... ok
+test_body_preserved ... ok
+test_duplicate_key_nested ... ok
+test_duplicate_key_top_level ... ok
+test_front_matter_absent (TestParseGoverned) ... ok
+test_missing_closing_delimiter ... ok
+test_unknown_field_rejected ... ok
+test_valid_document ... ok
+test_yaml_invalid ... ok
+test_authorization_absent_for_incluido ... ok
+test_derived_from_absent_for_incluido ... ok
+test_duplicate_in_unique_items_array ... ok
+test_front_matter_absent (TestValidateFeatureSpec) ... ok
+test_milestones_invalid_for_adiado ... ok
+test_valid_adiado_empty_milestones ... ok
+test_valid_incluido ... ok
+test_excessive_permitted_use ... ok
+test_field_diverges_document_type ... ok
+test_missing_prohibited_use ... ok
+test_registry_exclusive_field_rejected ... ok
+test_responsible_absent_in_registry ... ok
+test_responsible_present_matches ... ok
+test_valid_sync ... ok
+test_workflow_status_diverges ... ok
+test_invalid_document_instance_fails ... ok
+test_invalid_gate_result_instance_fails ... ok
+test_invalid_workflow_instance_fails ... ok
+test_schema_valid_but_unknown_reference_still_fails ... ok
+test_garch_has_explicit_dispatch ... ok
+test_global_gate_emits_null_document_metadata ... ok
+test_main_stops_before_files_when_contract_stage_fails ... ok
+test_main_stops_before_gate_when_registry_stage_fails ... ok
+test_main_stops_before_links_when_gate_fails ... ok
+test_main_uses_exact_scoped_record ... ok
+test_controlled_versions_and_hashes_match ... ok
+test_historical_evaluator_references_are_preserved ... ok
+test_maintenance_map_has_no_active_legacy_location ... ok
+test_no_active_reference_uses_legacy_entrypoint ... ok
+test_operational_docs_use_module_entrypoint ... ok
+test_package_readme_documents_final_test_commands ... ok
+test_pyright_targets_only_package_and_tests ... ok
+test_workflow_uses_module_entrypoint ... ok
+test_module_entrypoint_operates ... ok
+test_new_result_uses_package_evaluator_identity ... ok
+test_legacy_entrypoint_is_removed ... ok
+test_maintenance_map_is_colocated_with_package ... ok
+test_module_entrypoint_exists ... ok
+test_package_exports_main ... ok
+test_package_readme_documents_tests ... ok
+test_package_workspace_root_is_repository_root ... ok
+test_canonical_path_must_equal_current_path ... ok
+test_duplicate_document_version_fails ... ok
+test_duplicate_path_casefold_fails ... ok
+test_self_hash_exemption_outside_registry_fails ... ok
+test_terminal_document_preserves_historical_canonical_path ... ok
+test_two_distinct_versions_are_accepted ... ok
+test_explicit_result_id_replaces_runtime_identity ... ok
+test_failure_returns_nonzero_and_sorted_failures ... ok
+test_yaml_result_matches_gate_result_schema ... ok
+test_scoped_front_matter_ambiguous_version_fails ... ok
+test_scoped_front_matter_unknown_version_fails ... ok
+test_g2_archive_escape_fails ... ok
+test_g2_does_not_overwrite_versions_by_document_id ... ok
+test_g2_package_hash_mismatch_fails ... ok
+test_ingestion_snapshot_changed_same_version_fails ... ok
+test_ingestion_unknown_gate_result_fails ... ok
+test_later_revision_preserves_historical_snapshot ... ok
+test_duplicate_workflow_identifier_fails ... ok
+test_valid_workflow_resolves_all_references ... ok
+test_workflow_unknown_gate_reference_fails ... ok
+
+Ran 92 tests in 1.709s
+
+OK
+exit_code: 0

@@ -1,22 +1,47 @@
 """Tests for registry identity, path, and canonicality invariants."""
 
 import hashlib
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation.validate_documentation.json_types import JsonObject
+from scripts.documentation.validate_documentation import (
+    config,
+    registry as registry_module,
+    reporter as reporter_module,
+)
 
 
 class RegistryInvariantTests(unittest.TestCase):
-    def test_duplicate_document_version_fails(self) -> None:
-        reporter = validator.Reporter()
+    def test_non_mapping_document_reports_index_and_preserves_valid_items(
+        self,
+    ) -> None:
+        reporter = reporter_module.Reporter()
+        first_document: JsonObject = {"document_id": "DOC-FIRST"}
+        last_document: JsonObject = {"document_id": "DOC-LAST"}
 
-        validator.validate_uniqueness(
+        documents = registry_module.validate_top_level(
+            {
+                "schema_version": "1.0",
+                "registry": {},
+                "documents": [
+                    first_document,
+                    "INVALID-SCALAR",
+                    last_document,
+                ],
+            },
+            reporter,
+        )
+
+        self.assertEqual([first_document, last_document], documents)
+        self.assertIn("documents[1] must be a mapping", reporter.errors)
+
+    def test_duplicate_document_version_fails(self) -> None:
+        reporter = reporter_module.Reporter()
+
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "1.0.0")],
             ["docs/one.md", "docs/two.md"],
             reporter,
@@ -27,9 +52,9 @@ class RegistryInvariantTests(unittest.TestCase):
         )
 
     def test_two_distinct_versions_are_accepted(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_uniqueness(
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-1", "2.0.0")],
             ["docs/one.md", "docs/two.md"],
             reporter,
@@ -38,9 +63,9 @@ class RegistryInvariantTests(unittest.TestCase):
         self.assertEqual([], reporter.errors)
 
     def test_duplicate_path_casefold_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_uniqueness(
+        registry_module.validate_uniqueness(
             [("DOC-1", "1.0.0"), ("DOC-2", "1.0.0")],
             ["docs/Test.md", "docs/test.md"],
             reporter,
@@ -52,8 +77,8 @@ class RegistryInvariantTests(unittest.TestCase):
 
     def _validate_record(
         self,
-        overrides: validator.JsonObject,
-    ) -> validator.Reporter:
+        overrides: JsonObject,
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             relative_path = "docs/evidence/test-document.md"
@@ -61,7 +86,7 @@ class RegistryInvariantTests(unittest.TestCase):
             path.parent.mkdir(parents=True)
             content = b"# controlled\n"
             path.write_bytes(content)
-            record: validator.JsonObject = {
+            record: JsonObject = {
                 "document_id": "DOC-TEST",
                 "title": "Test document",
                 "document_type": "evidencia",
@@ -81,9 +106,9 @@ class RegistryInvariantTests(unittest.TestCase):
                 "relationships": {},
             }
             record.update(overrides)
-            reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
-                validator.validate_record(record, reporter, False)
+            reporter = reporter_module.Reporter()
+            with patch.object(config, "WORKSPACE_ROOT", root):
+                registry_module.validate_record(record, reporter, False)
             return reporter
 
     def test_self_hash_exemption_outside_registry_fails(self) -> None:

@@ -1,21 +1,32 @@
 """Tests for fail-fast stage orchestration and gate dispatch."""
 
-import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation.validate_documentation.json_types import JsonObject
+from scripts.documentation.validate_documentation.models import ValidatorArgs
+from scripts.documentation.validate_documentation import (
+    cli as cli_module,
+    contracts as contracts_module,
+    instances as instances_module,
+    links as links_module,
+    pipeline as pipeline_module,
+    registry as registry_module,
+    reporter as reporter_module,
+)
+from scripts.documentation.validate_documentation.gates import (
+    dispatcher as dispatcher_module,
+    g_arch as g_arch_module,
+)
 
 
 def _args(
     gate: str | None = None,
     document_id: str | None = None,
     version: str | None = None,
-) -> validator.ValidatorArgs:
-    args = validator.ValidatorArgs()
+) -> ValidatorArgs:
+    args = ValidatorArgs()
     args.registry = Path("/controlled/registry.yaml")
     args.strict_legacy = False
     args.gate = gate
@@ -26,7 +37,7 @@ def _args(
     return args
 
 
-def _registry_data() -> validator.JsonObject:
+def _registry_data() -> JsonObject:
     return {
         "schema_version": "1.0.0",
         "registry": {"canonical_documents": []},
@@ -35,30 +46,70 @@ def _registry_data() -> validator.JsonObject:
 
 
 class MainPipelineTests(unittest.TestCase):
-    def test_main_stops_before_files_when_contract_stage_fails(self) -> None:
-        def fail_contract(reporter: validator.Reporter) -> None:
-            reporter.error("contract stage failed")
+    def test_pipeline_does_not_import_cli(self) -> None:
+        self.assertFalse(hasattr(pipeline_module, "cli_module"))
+
+    def test_pipeline_never_emits_results(self) -> None:
+        args = _args()
+        reporter = reporter_module.Reporter()
 
         with (
-            patch.object(validator, "parse_args", return_value=_args()),
             patch.object(
-                validator,
+                registry_module,
+                "load_registry",
+                return_value=(None, []),
+            ),
+            patch.object(reporter_module.Reporter, "emit") as emit,
+        ):
+            result = pipeline_module.run_validation(args, reporter)
+
+        self.assertIsNone(result)
+        emit.assert_not_called()
+
+    def test_unknown_scope_stops_before_contracts(self) -> None:
+        args = _args("G2", "DOC-UNKNOWN", "1.0.0")
+        reporter = reporter_module.Reporter()
+
+        with (
+            patch.object(
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
             patch.object(
-                validator,
+                contracts_module,
+                "validate_contract_schemas",
+            ) as contracts,
+        ):
+            pipeline_module.run_validation(args, reporter)
+
+        self.assertTrue(reporter.errors)
+        contracts.assert_not_called()
+
+    def test_main_stops_before_files_when_contract_stage_fails(self) -> None:
+        def fail_contract(reporter: reporter_module.Reporter) -> None:
+            reporter.error("contract stage failed")
+
+        with (
+            patch.object(cli_module, "parse_args", return_value=_args()),
+            patch.object(
+                registry_module,
+                "load_registry",
+                return_value=(_registry_data(), []),
+            ),
+            patch.object(
+                contracts_module,
                 "validate_contract_schemas",
                 side_effect=fail_contract,
             ),
-            patch.object(validator, "validate_instances"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(
-                validator,
+                registry_module,
                 "validate_registry_integrity",
             ) as registry_stage,
-            patch.object(validator.Reporter, "emit", return_value=1) as emit,
+            patch.object(reporter_module.Reporter, "emit", return_value=1) as emit,
         ):
-            status = validator.main()
+            status = cli_module.main()
 
         self.assertEqual(1, status)
         registry_stage.assert_not_called()
@@ -66,73 +117,73 @@ class MainPipelineTests(unittest.TestCase):
 
     def test_main_stops_before_gate_when_registry_stage_fails(self) -> None:
         def fail_registry(
-            documents: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            documents: list[JsonObject],
+            reporter: reporter_module.Reporter,
             strict_legacy: bool,
         ) -> None:
             del documents, strict_legacy
             reporter.error("registry stage failed")
 
         with (
-            patch.object(validator, "parse_args", return_value=_args("G1")),
+            patch.object(cli_module, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
-            patch.object(validator, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
+            patch.object(contracts_module, "validate_contract_schemas"),
+            patch.object(instances_module, "validate_instances"),
             patch.object(
-                validator,
+                registry_module,
                 "validate_registry_integrity",
                 side_effect=fail_registry,
             ),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
             ) as gate_stage,
-            patch.object(validator.Reporter, "emit", return_value=1),
+            patch.object(reporter_module.Reporter, "emit", return_value=1),
         ):
-            status = validator.main()
+            status = cli_module.main()
 
         self.assertEqual(1, status)
         gate_stage.assert_not_called()
 
     def test_main_stops_before_links_when_gate_fails(self) -> None:
         def fail_gate(
-            args: validator.ValidatorArgs,
-            documents: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            args: ValidatorArgs,
+            documents: list[JsonObject],
+            reporter: reporter_module.Reporter,
         ) -> None:
             del args, documents
             reporter.error("gate failed")
 
         with (
-            patch.object(validator, "parse_args", return_value=_args("G1")),
+            patch.object(cli_module, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
-            patch.object(validator, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
+            patch.object(contracts_module, "validate_contract_schemas"),
+            patch.object(instances_module, "validate_instances"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
                 side_effect=fail_gate,
             ),
-            patch.object(validator, "validate_links") as link_stage,
-            patch.object(validator.Reporter, "emit", return_value=1),
+            patch.object(links_module, "validate_links") as link_stage,
+            patch.object(reporter_module.Reporter, "emit", return_value=1),
         ):
-            status = validator.main()
+            status = cli_module.main()
 
         self.assertEqual(1, status)
         link_stage.assert_not_called()
 
     def test_main_uses_exact_scoped_record(self) -> None:
-        documents: list[validator.JsonObject] = [
+        documents: list[JsonObject] = [
             {
                 "document_id": "DOC-1",
                 "version": "1.0.0",
@@ -144,12 +195,12 @@ class MainPipelineTests(unittest.TestCase):
                 "content_hash": "b" * 64,
             },
         ]
-        observed: validator.JsonObject = {}
+        observed: JsonObject = {}
 
         def capture_gate(
-            args: validator.ValidatorArgs,
-            records: list[validator.JsonObject],
-            reporter: validator.Reporter,
+            args: ValidatorArgs,
+            records: list[JsonObject],
+            reporter: reporter_module.Reporter,
         ) -> None:
             del args, records
             observed["version"] = reporter.version
@@ -157,28 +208,28 @@ class MainPipelineTests(unittest.TestCase):
 
         with (
             patch.object(
-                validator,
+                cli_module,
                 "parse_args",
                 return_value=_args("G2", "DOC-1", "2.0.0"),
             ),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), documents),
             ),
-            patch.object(validator, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
+            patch.object(contracts_module, "validate_contract_schemas"),
+            patch.object(instances_module, "validate_instances"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
             patch.object(
-                validator,
+                dispatcher_module,
                 "dispatch_gate",
                 side_effect=capture_gate,
             ),
-            patch.object(validator, "validate_links"),
-            patch.object(validator.Reporter, "emit", return_value=0) as emit,
+            patch.object(links_module, "validate_links"),
+            patch.object(reporter_module.Reporter, "emit", return_value=0) as emit,
         ):
-            status = validator.main()
+            status = cli_module.main()
 
         self.assertEqual(0, status)
         self.assertEqual("2.0.0", observed.get("version"))
@@ -186,10 +237,10 @@ class MainPipelineTests(unittest.TestCase):
         emit.assert_called_once()
 
     def test_global_gate_emits_null_document_metadata(self) -> None:
-        observed: validator.JsonObject = {}
+        observed: JsonObject = {}
 
         def capture_emit(
-            reporter: validator.Reporter,
+            reporter: reporter_module.Reporter,
             output_format: str,
             gate_id: str | None,
             result_id: str | None,
@@ -201,26 +252,26 @@ class MainPipelineTests(unittest.TestCase):
             return 0
 
         with (
-            patch.object(validator, "parse_args", return_value=_args("G1")),
+            patch.object(cli_module, "parse_args", return_value=_args("G1")),
             patch.object(
-                validator,
+                registry_module,
                 "load_registry",
                 return_value=(_registry_data(), []),
             ),
-            patch.object(validator, "validate_contract_schemas"),
-            patch.object(validator, "validate_instances"),
-            patch.object(validator, "validate_registry_integrity"),
-            patch.object(validator, "validate_canonical_registry"),
-            patch.object(validator, "dispatch_gate"),
-            patch.object(validator, "validate_links"),
+            patch.object(contracts_module, "validate_contract_schemas"),
+            patch.object(instances_module, "validate_instances"),
+            patch.object(registry_module, "validate_registry_integrity"),
+            patch.object(registry_module, "validate_canonical_registry"),
+            patch.object(dispatcher_module, "dispatch_gate"),
+            patch.object(links_module, "validate_links"),
             patch.object(
-                validator.Reporter,
+                reporter_module.Reporter,
                 "emit",
                 autospec=True,
                 side_effect=capture_emit,
             ),
         ):
-            status = validator.main()
+            status = cli_module.main()
 
         self.assertEqual(0, status)
         self.assertIsNone(observed.get("document_id"))
@@ -229,9 +280,9 @@ class MainPipelineTests(unittest.TestCase):
 
     def test_garch_has_explicit_dispatch(self) -> None:
         args = _args("G-ARCH")
-        reporter = validator.Reporter()
-        with patch.object(validator, "validate_garch") as garch:
-            validator.dispatch_gate(args, [], reporter)
+        reporter = reporter_module.Reporter()
+        with patch.object(g_arch_module, "validate_garch") as garch:
+            dispatcher_module.dispatch_gate(args, [], reporter)
 
         garch.assert_called_once_with([], reporter)
 

@@ -5,10 +5,12 @@ Guia operacional de
 O script valida o registro documental, arquivos gerenciados, contratos JSON
 Schema, evidências, workflow, links, hashes e gates do CEPRAEA BEACH PRO.
 
-O roteiro de correção incremental está em
-[`.inicio/Plano-validator.md`](../../../.inicio/Plano-validator.md). O mapa
-destinado a agentes está em
+O plano ativo de modularização está em
+[`PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`](../../../.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md).
+O mapa destinado a agentes está em
 [`MAPA-VALIDADOR-DOC.md`](MAPA-VALIDADOR-DOC.md).
+`Plano-validator.md` e `Plano-migracao-validator.md` são registros históricos,
+preservados sem governar novas extrações.
 
 ## Requisitos
 
@@ -69,7 +71,7 @@ diagnóstico; ela não deve ser persistida como evidência.
 python3 -m scripts.documentation.validate_documentation \
   --gate G-FM \
   --document-id DOC-CEPRAEA-CANDIDATA-CONTEXTO \
-  --version 0.1.1 \
+  --version 0.1.2 \
   --format yaml
 ```
 
@@ -82,12 +84,13 @@ um ID possuir várias versões, a versão é obrigatória.
 
 ## Estado e limites operacionais
 
-O plano incremental está implementado. A validação global e os gates G-ARCH,
-G0 e G1 passam no estado atual do repositório. G-FM passa para o canônico de
-contexto `0.1.1`.
+A migração do script para pacote executável está implementada. A modularização
+interna está autorizada, mas será incremental e governada pelo plano ativo. A
+validação global e os gates G-ARCH, G0 e G1 passam no estado atual do
+repositório. G-FM passa para o canônico de contexto `0.1.2`.
 
 G2 exige um pacote ligado à versão e ao hash exatos. O pacote existente cobre
-o contexto `0.1`; portanto:
+o contexto histórico `0.1`; portanto:
 
 ```bash
 python3 -m scripts.documentation.validate_documentation \
@@ -96,34 +99,71 @@ python3 -m scripts.documentation.validate_documentation \
   --version 0.1
 ```
 
-passa, enquanto solicitar `0.1.1` falha com ausência de pacote. Isso é uma
-lacuna de evidência da versão, não uma razão para relaxar o validador.
+passa, enquanto solicitar o canônico `0.1.2` falha com ausência de pacote. Isso
+é uma lacuna de evidência da versão, não uma razão para relaxar o validador.
 
 ## Arquitetura para manutenção
 
-A implementação única está em `validate_documentation/__init__.py`, mas deve
-ser editada por unidades:
+A implementação está modularizada por responsabilidade. O `__init__.py` é a
+fachada pública mínima aprovada por `BEH-07` e exporta somente `main`. Os
+módulos proprietários são:
 
-1. imports, constantes e tipos;
-2. `Reporter`;
-3. CLI e resolução documental;
-4. caminhos, nomes, links e hashes;
-5. registro e unicidade;
-6. schemas e instâncias;
-7. aprovações e evidências;
-8. workflow e ingestão;
-9. gates G-ARCH, G0, G1 e G2;
-10. Front Matter e G-FM;
-11. `main()` como orquestrador.
+- `json_types.py`: fronteiras tipadas de JSON e YAML;
+- `models.py`: `ValidatorArgs`;
+- `config.py`: paths e descoberta do workspace pelos quatro marcadores
+  canônicos;
+- `filesystem.py`: resolução segura de paths e SHA-256 em streaming;
+- `reporter.py`: coleta determinística e emissão única em texto ou YAML;
+- `contracts.py`: carregamento e validação dos contratos JSON Schema;
+- `registry.py`: envelope, identidade, paths, hashes e integridade do registro;
+- `workflow.py`: referências internas do workflow controlado;
+- `approvals.py`: identidade entre aprovações, alvos e gates;
+- `provenance.py`: contratos de pacotes, fontes e alegações;
+- `ingestion.py`: snapshots históricos e sua linhagem;
+- `instances.py`: famílias de instâncias e delegação de relações.
+- `front_matter.py`: parsing e validação estrutural do Front Matter;
+- `links.py`: normalização e validação dos links locais.
+- `gates/g_arch.py`, `g0.py` e `g1.py`: gates globais;
+- `gates/g2.py` e `g_fm.py`: gates com escopo documental;
+- `gates/dispatcher.py`: despacho por identidade e escopo do gate.
+- `pipeline.py`: sequência fail-fast sem criação ou emissão de Reporter;
+- `cli.py`: argumentos, validação da CLI e emissão única do resultado.
 
-Ao corrigir uma unidade:
+Consumidores internos devem importar símbolos de seus módulos proprietários;
+novos reexports não devem ser acrescentados à fachada sem nova decisão de
+contrato.
 
-- crie primeiro um teste vermelho;
-- aplique o menor patch possível;
-- execute o teste verde;
-- execute toda a suíte;
-- não adicione imports fora da ação central de tipagem;
-- não altere documentos ou schemas para esconder uma falha do script.
+A arquitetura final respeita a seguinte direção de dependências:
+
+```text
+json_types / models
+        ↓
+config / filesystem / reporter
+        ↓
+contratos e domínios
+        ↓
+gates
+        ↓
+pipeline
+        ↓
+cli
+        ↓
+__init__ / __main__
+```
+
+Durante a modularização, cada extração estrutural moveu código sem alterar sua
+regra e preservou reexports somente até a migração dos consumidores. Cada
+mudança comportamental citou a decisão `BEH` autorizadora, registrou RED pelo
+motivo esperado e aplicou a correção mínima em change set separado.
+
+`pipeline.run_validation(args, reporter) -> None` é responsável pelo fail-fast
+e não emite resultados. `cli.main(argv)` valida argumentos, chama o pipeline e
+controla a emissão única. O `__init__.py` permanece como fachada pública
+restrita a `main`, conforme `test_public_api_matches_beh_07`.
+
+O mapa operacional identifica, para cada unidade, o arquivo que deve ser criado
+ou editado. Não se deve criar todos os módulos de uma vez nem alterar documentos
+ou schemas para esconder uma falha do código.
 
 ## Regra de qualidade
 
@@ -137,9 +177,14 @@ repetir literalmente a operação da linha seguinte.
 
 ## Testes
 
-Os testes ficam em
-[`scripts/documentation/tests/`](../tests/) e usam `unittest`. A suíte atual é
-dividida por responsabilidade:
+Os testes usam `unittest` e estão separados por responsabilidade:
+
+- testes unitários em `scripts/documentation/tests/`, independentes dos TARs;
+- integração do repositório em
+  `scripts/documentation/integration_tests/`, executada somente depois de
+  `TAR-MATERIALIZATION = PASS`.
+
+A suíte unitária é dividida por responsabilidade:
 
 | Módulo | Escopo principal |
 | --- | --- |
@@ -152,16 +197,41 @@ dividida por responsabilidade:
 | `test_reporter.py` | Coleta e emissão de achados |
 | `test_cli_and_resolution.py` | CLI, versões e links |
 | `test_front_matter.py` | Front Matter e G-FM |
+| `test_workspace_discovery.py` | Marcadores canônicos e descoberta da raiz |
 
-`test_package_entrypoints.py` protege a execução por `-m`, a raiz do workspace,
-a existência de uma única implementação, a localização do mapa, os consumidores
-operacionais, as versões e os hashes controlados e a documentação dos testes
-neste README.
+`test_package_entrypoints.py` protege a execução de `--help` por `-m`, a
+identidade canônica do pacote, a raiz do workspace, a existência de uma única
+implementação, a localização do mapa, os consumidores operacionais, as versões
+e os hashes controlados e a documentação dos testes neste README.
 
-### Suíte completa
+`integration_tests/test_repository_entrypoint.py` executa G-ARCH contra o
+acervo real. A ausência dos TARs é falha de precondição e não causa `skip`.
+
+A baseline anterior à Fase 4 possuía 92 testes unitários. BEH-01 acrescentou
+seis cenários RED–GREEN. BEH-02 acrescentou um cenário que exige o índice do
+item não mapeamento e preserva os registros válidos adjacentes. A Fase 8
+acrescentou três regressões: BEH-03 rejeita chaves YAML complexas de forma
+controlada, BEH-04 rejeita Front Matter fora de UTF-8 e BEH-05 converte falhas
+de leitura de Markdown em erros do Reporter. A Fase 10 acrescentou seis
+caracterizações de `argv`, emissão única e fronteiras do pipeline. A suíte
+totaliza 108 testes unitários, além do teste de integração.
+
+### Suíte unitária
 
 ```bash
-python3 -m unittest discover scripts/documentation/tests
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
+```
+
+### Integração com os TARs materializados
+
+```bash
+python3 -m unittest discover \
+  -s scripts/documentation/integration_tests \
+  -t . \
+  -v
 ```
 
 ### Testes da migração para pacote
@@ -213,7 +283,7 @@ python3 -m compileall -q scripts/documentation/validate_documentation
 O repositório usa `pyrightconfig.json` com Pylance/Pyright em modo `strict`:
 
 ```bash
-npx --yes pyright
+npx --yes pyright@1.1.411 --project pyrightconfig.json
 ```
 
 - [Pylance: type checking mode](https://github.com/microsoft/pylance-release/blob/main/docs/settings/python_analysis_typeCheckingMode.md)
@@ -221,6 +291,12 @@ npx --yes pyright
 - [Python: type hints](https://docs.python.org/3/library/typing.html)
 
 A verificação deve permanecer com zero diagnósticos e sem supressões genéricas.
+
+Depois de qualquer change set de código ou configuração, executar também:
+
+```bash
+npm run validate
+```
 
 ## Segurança
 

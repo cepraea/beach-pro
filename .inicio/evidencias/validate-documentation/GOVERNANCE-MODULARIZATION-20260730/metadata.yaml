@@ -1,0 +1,58 @@
+evidence_id: GOVERNANCE-MODULARIZATION-20260730
+gate_id: GOVERNANCE-MODULARIZATION
+phase: 0
+status: pass
+effective_when: "PR #3 incorporada à branch main"
+generated_at: "2026-07-30T13:25:54Z"
+executor: "Codex, sob a autorização operacional registrada por Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-0
+pull_request:
+  number: 3
+  url: "https://github.com/cepraea/beach-pro/pull/3"
+  state_at_evaluation: draft
+baseline:
+  start_commit: fcbc84dc19ca42c57ece96132def71c1a7420b19
+  historical_inventory_commit: defaa0439e5163b159dfd18359dd31cc65f469f4
+  relevant_diff_from_historical_inventory: empty
+authorization:
+  git_workflow_ready: pass
+  decisions:
+    BEH-01: approved
+    BEH-02: approved
+    BEH-03: approved
+    BEH-04: approved
+    BEH-05: approved
+    BEH-06: approved
+    BEH-07: approved
+  record: "../AUTH-MODULARIZATION-VALIDATOR-20260730/authorization.yaml"
+change_sets:
+  - commit: e665daa
+    purpose: "corrigir a baseline e os comandos operacionais do plano"
+  - commit: c79fc79
+    purpose: "autorizar extrações incrementais no mapa"
+  - commit: 87ece12
+    purpose: "documentar arquitetura transitória, testes e operação"
+validation:
+  markdownlint: pass
+  git_diff_check: pass
+  python_compileall: pass
+  pyright_1_1_411:
+    status: pass
+    errors: 0
+    warnings: 0
+    information: 0
+  npm_validate: pass
+  python_tests:
+    status: blocked_by_phase_1_precondition
+    discovered: 92
+    passed: 91
+    failed: 1
+    failure: "test_module_entrypoint_operates exige G-ARCH com três TARs"
+  tar_materialization:
+    status: pending
+    missing_files: 3
+next_phase:
+  phase: 1
+  gate: TAR-MATERIALIZATION
+  status: blocked_until_pull_request_merge

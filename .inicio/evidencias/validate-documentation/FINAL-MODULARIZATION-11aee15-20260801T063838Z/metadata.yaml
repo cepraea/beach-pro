@@ -1,0 +1,55 @@
+evidence_id: FINAL-MODULARIZATION-11aee15-20260801T063838Z
+phase: 12
+status: pass
+evaluated_at: "2026-08-01T06:38:38Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-12
+pull_request:
+  number: 15
+  url: "https://github.com/cepraea/beach-pro/pull/15"
+  state_at_evaluation: draft
+base_commit: 11aee153be06f6ca76085b11e4b4ab112121ebd8
+implementation_commit: 4aaaffbbd127876602dae0a680ba771535f5de1f
+worktree:
+  initial_status: clean
+  preexisting_changes: []
+  ignored_tar_files: 3
+environment:
+  operating_system: Linux WSL2
+  python: 3.12.3
+  pyyaml: 6.0.1
+  jsonschema: 4.10.3
+  node: 24.14.1
+  npm: 11.11.0
+  pyright: 1.1.411
+tar_materialization:
+  status: pass
+  matching_hashes: 3
+validation:
+  compileall: pass
+  unit_tests: {status: pass, tests: 108}
+  integration_tests: {status: pass, tests: 1}
+  pyright: {status: pass, errors: 0, warnings: 0, information: 0}
+  npm_validate: pass
+  help_entrypoint: pass
+  baseline_comparison: pass
+inventory:
+  historical_functions_mapped: 45
+  authorized_new_functions_mapped: 2
+  current_top_level_functions: 47
+  current_top_level_classes: 3
+  current_test_methods: 108
+  historical_patches_migrated: 49
+  current_patch_object_occurrences: 59
+  current_patch_target_groups: 15
+  import_cycles: 0
+gates:
+  MODULARIZATION-VALIDATE-DOCUMENTATION: pass
+  NPM-PROJECT-VALIDATION: pass
+effective_status: pending_pull_request_merge
+residual_limitations:
+  - identidade dos gates globais em aprovações
+  - comprovação dos bytes de fontes locais em G2
+  - obrigatoriedade e cobertura de G2
+  - quantidade fixa de registros de ingestão

@@ -1,0 +1,17 @@
+acquisition_id: BASELINE-TAR-REVERIFICATION-20260730
+verified_at: "2026-07-30T17:43:55Z"
+source:
+  type: verified_local_worktree
+  evidence: "../TAR-MATERIALIZATION-20260730/tar-acquisition.yaml"
+  path_redacted: true
+policy:
+  overwrite_allowed: false
+  source_hash_verified_before_copy: true
+  destination_hash_verified_after_copy: true
+  files_versioned: false
+result:
+  expected: 3
+  copied: 3
+  matching_hashes: 3
+  divergent_hashes: 0
+  git_ignored: 3

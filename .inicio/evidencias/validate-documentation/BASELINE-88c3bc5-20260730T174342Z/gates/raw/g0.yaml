@@ -1,0 +1,14 @@
+exit_code: 0
+gate_result:
+  gate_result_id: GATE-RESULT-G0-RUNTIME
+  gate_id: G0
+  document_id: null
+  version: null
+  content_hash: null
+  status: pass
+  evaluated_at: "2026-07-30T17:45:32.144051+00:00"
+  evaluator: scripts.documentation.validate_documentation
+  evaluator_role: AUTOMACAO
+  evidence_ids: []
+  failures: []
+  next_actions: []

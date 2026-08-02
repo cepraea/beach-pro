@@ -1,0 +1,80 @@
+evidence_id: BASELINE-88c3bc5-20260730T174342Z
+phase: 2
+status: pass
+started_at: "2026-07-30T17:43:42Z"
+completed_at: "2026-07-30T17:45:33Z"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-2
+pull_request:
+  number: 5
+  url: "https://github.com/cepraea/beach-pro/pull/5"
+  state_at_evaluation: draft
+commit_base: 88c3bc530fd0cc2496d9b2812b31d47ef7306d5e
+worktree:
+  path: "/home/davis/projetos/cepraea-beach-pro-validator-phase2"
+  initial_status: clean
+  preexisting_changes: []
+  untracked_files: []
+  ignored_tar_files: 3
+environment:
+  operating_system: "Linux WSL2 6.6.87.2"
+  python: 3.12.3
+  pyyaml: 6.0.1
+  jsonschema: 4.10.3
+  node: 24.14.1
+  npm: 11.11.0
+  pyright: 1.1.411
+  python_lockfile: absent
+inventory:
+  top_level_functions: 45
+  top_level_classes: 3
+  reporter_methods: 4
+  tests_discovered: 92
+  patch_object_occurrences: 49
+  patch_target_groups: 13
+tar_materialization:
+  status: pass
+  matching_hashes: 3
+  source: "worktree local verificado na Fase 1"
+validation:
+  compileall: pass
+  unittest:
+    status: pass
+    tests: 92
+    failures: 0
+    errors: 0
+  pyright:
+    status: pass
+    errors: 0
+    warnings: 0
+    information: 0
+  npm_validate: pass
+  gates:
+    G-ARCH: pass
+    G0: pass
+    G1: pass
+    G2_CONTEXT_0_1: pass
+    G-FM_CONTEXT_0_1_2: pass
+    GLOBAL: pass
+baseline_gates:
+  BASELINE-CODE: pass
+  BASELINE-INTEGRATION: pass
+  BASELINE-VALIDATE-DOCUMENTATION: pass
+  BASELINE-NPM-VALIDATE: pass
+authorization:
+  git_workflow_ready: pass
+  governance_modularization: pass
+  tar_materialization: pass
+  decisions:
+    BEH-01: approved
+    BEH-02: approved
+    BEH-03: approved
+    BEH-04: approved
+    BEH-05: approved
+    BEH-06: approved
+    BEH-07: approved
+next_phase:
+  phase: 3
+  gate: CANONICAL-IMPORT-IDENTITY
+  status: blocked_until_baseline_evidence_merge

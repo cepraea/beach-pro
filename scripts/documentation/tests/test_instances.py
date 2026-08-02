@@ -1,6 +1,5 @@
 """Tests for the instance-validation units extracted from the orchestrator."""
 
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,16 +7,24 @@ from unittest.mock import patch
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation.validate_documentation.json_types import (
+    as_json_array,
+    as_json_object,
+)
+from scripts.documentation.validate_documentation import (
+    config,
+    contracts as contracts_module,
+    instances as instances_module,
+    reporter as reporter_module,
+    workflow as workflow_module,
+)
 
 
 class InstanceValidationTests(unittest.TestCase):
     def test_invalid_document_instance_fails(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_document_instances(
+        instances_module.validate_document_instances(
             [{"document_id": "DOC-INCOMPLETE"}],
             reporter,
         )
@@ -30,13 +37,13 @@ class InstanceValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workflow_path = Path(directory) / "workflow.yaml"
             workflow_path.write_text("{}\n", encoding="utf-8")
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with patch.object(
-                validator,
+                config,
                 "DEFAULT_WORKFLOW",
                 workflow_path,
             ):
-                validator.validate_workflow_instance(reporter)
+                instances_module.validate_workflow_instance(reporter)
 
         self.assertTrue(
             any("workflow contract failure" in error for error in reporter.errors)
@@ -51,9 +58,9 @@ class InstanceValidationTests(unittest.TestCase):
                 "gate_result:\n  gate_id: G1\n",
                 encoding="utf-8",
             )
-            reporter = validator.Reporter()
-            with patch.object(validator, "WORKSPACE_ROOT", root):
-                validator.validate_gate_result_instances(reporter)
+            reporter = reporter_module.Reporter()
+            with patch.object(config, "WORKSPACE_ROOT", root):
+                instances_module.validate_gate_result_instances(reporter)
 
         self.assertTrue(
             any("gate result contract failure" in error for error in reporter.errors)
@@ -62,31 +69,31 @@ class InstanceValidationTests(unittest.TestCase):
 
     def test_schema_valid_but_unknown_reference_still_fails(self) -> None:
         raw_workflow = yaml.safe_load(
-            validator.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
+            config.DEFAULT_WORKFLOW.read_text(encoding="utf-8")
         )
-        workflow = validator.as_json_object(raw_workflow)
+        workflow = as_json_object(raw_workflow)
         self.assertIsNotNone(workflow)
-        transitions = validator.as_json_array(
+        transitions = as_json_array(
             (workflow or {}).get("transitions")
         )
         self.assertTrue(transitions)
-        transition = validator.as_json_object((transitions or [None])[0])
+        transition = as_json_object((transitions or [None])[0])
         self.assertIsNotNone(transition)
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
 
-        schema = validator.as_json_object(
-            validator.load_json(
-                validator.WORKFLOW_SCHEMA,
-                validator.Reporter(),
+        schema = as_json_object(
+            contracts_module.load_json(
+                config.WORKFLOW_SCHEMA,
+                reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
-        schema_errors = validator.schema_validation_errors(
+        schema_errors = contracts_module.schema_validation_errors(
             schema or {},
             workflow,
         )
-        reporter = validator.Reporter()
-        validator.validate_workflow_references(workflow or {}, reporter)
+        reporter = reporter_module.Reporter()
+        workflow_module.validate_workflow_references(workflow or {}, reporter)
 
         self.assertEqual([], schema_errors)
         self.assertTrue(

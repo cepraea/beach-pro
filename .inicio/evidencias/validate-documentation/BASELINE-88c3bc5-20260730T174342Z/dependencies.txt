@@ -1,0 +1,15 @@
+Name: PyYAML
+Version: 6.0.1
+Location: /usr/lib/python3/dist-packages
+
+Name: jsonschema
+Version: 4.10.3
+Location: /usr/lib/python3/dist-packages
+
+Python dependency lockfile: absent
+
+npm ci:
+added 621 packages
+audited 622 packages
+10 high severity vulnerabilities reported from the existing lockfile
+No dependency was changed by this baseline.

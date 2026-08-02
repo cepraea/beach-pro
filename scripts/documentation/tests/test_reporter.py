@@ -1,34 +1,38 @@
 """Tests for the validator's single output boundary."""
 
 import io
-import sys
 import unittest
 from contextlib import redirect_stdout
-from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation.validate_documentation.json_types import (
+    JsonObject,
+    as_json_object,
+)
+from scripts.documentation.validate_documentation import (
+    config,
+    contracts as contracts_module,
+    reporter as reporter_module,
+)
 
 
 class ReporterTests(unittest.TestCase):
     def _emit_yaml(
         self,
-        reporter: validator.Reporter,
+        reporter: reporter_module.Reporter,
         result_id: str | None = None,
-    ) -> validator.JsonObject:
+    ) -> JsonObject:
         output = io.StringIO()
         with redirect_stdout(output):
             status = reporter.emit("yaml", "G1", result_id)
         self.assertEqual(1 if reporter.errors else 0, status)
-        payload = validator.as_json_object(yaml.safe_load(output.getvalue()))
+        payload = as_json_object(yaml.safe_load(output.getvalue()))
         self.assertIsNotNone(payload)
         return payload or {}
 
     def test_yaml_result_matches_gate_result_schema(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         reporter.document_id = "DOC-TESTE"
         reporter.version = "0.1.0"
         reporter.content_hash = "a" * 64
@@ -37,15 +41,15 @@ class ReporterTests(unittest.TestCase):
             reporter,
             "GATE-RESULT-G1-TESTE-001",
         )
-        schema = validator.as_json_object(
-            validator.load_json(
-                validator.GATE_RESULT_SCHEMA,
-                validator.Reporter(),
+        schema = as_json_object(
+            contracts_module.load_json(
+                config.GATE_RESULT_SCHEMA,
+                reporter_module.Reporter(),
             )
         )
         self.assertIsNotNone(schema)
         gate_result = payload.get("gate_result")
-        errors = validator.schema_validation_errors(
+        errors = contracts_module.schema_validation_errors(
             schema or {},
             gate_result,
         )
@@ -54,10 +58,10 @@ class ReporterTests(unittest.TestCase):
 
     def test_explicit_result_id_replaces_runtime_identity(self) -> None:
         payload = self._emit_yaml(
-            validator.Reporter(),
+            reporter_module.Reporter(),
             "GATE-RESULT-G1-AUDITORIA-001",
         )
-        gate_result = validator.as_json_object(payload.get("gate_result"))
+        gate_result = as_json_object(payload.get("gate_result"))
 
         self.assertIsNotNone(gate_result)
         self.assertEqual(
@@ -66,12 +70,12 @@ class ReporterTests(unittest.TestCase):
         )
 
     def test_failure_returns_nonzero_and_sorted_failures(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
         reporter.error("zeta")
         reporter.error("alfa")
 
         payload = self._emit_yaml(reporter)
-        gate_result = validator.as_json_object(payload.get("gate_result"))
+        gate_result = as_json_object(payload.get("gate_result"))
 
         self.assertEqual(
             ["alfa", "zeta"],

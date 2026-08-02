@@ -1,0 +1,6 @@
+The repository entrypoint integration still belongs to the current unit suite.
+
+test_package_entrypoints.EntrypointBehaviorTests.test_module_entrypoint_operates ... ok
+
+The dedicated integration_tests directory does not exist before Phase 3.
+The integrated entrypoint test and G-ARCH both passed with the TARs materialized.

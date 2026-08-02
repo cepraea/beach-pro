@@ -2,13 +2,18 @@
 
 ## 1. Finalidade
 
-Este mapa ensina agentes de IA a corrigir
-`scripts/documentation/validate_documentation/__init__.py` por unidades
-pequenas. Ele não é uma cópia da implementação e não substitui o código
-executável.
+Este mapa ensina agentes de IA a corrigir o pacote
+`scripts.documentation.validate_documentation` por unidades pequenas. A
+implementação está modularizada; cada unidade abaixo identifica o módulo
+proprietário que deve ser editado. O `__init__.py` é a fachada mínima aprovada
+por `BEH-07` e exporta somente `main`. O mapa não é uma cópia da implementação
+e não substitui o código executável.
 
 Plano de execução e critérios completos:
-[`Plano-validator.md`](../../../.inicio/Plano-validator.md).
+[`PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`](../../../.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md).
+
+Os planos `Plano-validator.md` e `Plano-migracao-validator.md` permanecem
+registros históricos e não governam novas extrações.
 
 README operacional:
 [`README.md`](README.md).
@@ -39,15 +44,53 @@ Comentários não devem repetir operações óbvias.
 ### 2.2 Limites
 
 - Editar somente a unidade indicada.
-- Criar o teste vermelho antes do patch funcional.
-- Não mover funções para outros módulos.
+- Em extração estrutural, mover somente a responsabilidade indicada para o
+  módulo proprietário previsto neste mapa e preservar o comportamento.
+- Em mudança comportamental autorizada, criar o teste vermelho antes do patch
+  funcional.
 - Não reescrever o script inteiro.
 - Não introduzir Pydantic.
 - Não alterar schemas, registro ou documentos para esconder defeitos do código.
 - Não usar supressões genéricas de tipo.
-- Não adicionar imports fora da Unidade 1.
+- Adicionar somente os imports exigidos pelo módulo em extração, respeitando a
+  direção de dependências.
+- Não acrescentar funcionalidade relevante nem novos reexports a `__init__.py`
+  sem nova decisão de contrato.
 
-### 2.3 Tipagem
+### 2.3 Subciclos e dependências
+
+Cada change set deve declarar um único subciclo:
+
+- **A — extração estrutural:** mover sem mudar regra, migrar testes e patches,
+  comparar a saída com a baseline e manter tudo verde;
+- **B — mudança comportamental:** citar `BEH-01…BEH-07`, demonstrar RED pelo
+  motivo correto, aplicar a menor correção e demonstrar GREEN.
+
+Não misturar os subciclos no mesmo commit. A ordem permitida de dependências é:
+
+```text
+json_types / models
+        ↓
+config / filesystem / reporter
+        ↓
+contracts / registry / workflow / approvals / provenance / ingestion
+        ↓
+instances / front_matter / links
+        ↓
+gates
+        ↓
+pipeline
+        ↓
+cli
+        ↓
+__init__ / __main__
+```
+
+Módulos consumidores consultam símbolos patcháveis pelo módulo proprietário,
+por exemplo `links.validate_links()` e `config.WORKSPACE_ROOT`. Evitar importar
+diretamente esses símbolos para o namespace consumidor.
+
+### 2.4 Tipagem
 
 O padrão é Pylance/Pyright `strict`.
 
@@ -73,27 +116,37 @@ Diagnósticos prioritários:
 - [`reportUnnecessaryIsInstance`](https://github.com/microsoft/pylance-release/blob/main/docs/diagnostics/reportUnnecessaryIsInstance.md)
 - [`reportUnusedImport`](https://github.com/microsoft/pylance-release/blob/main/docs/diagnostics/reportUnusedImport.md)
 
-### 2.4 Testes
+### 2.5 Testes
 
 Usar `unittest`, já adotado no repositório.
 
 ```bash
-python3 -m unittest discover scripts/documentation/tests
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
 ```
 
 - Vermelho válido: falha pela regra que será corrigida.
 - Verde válido: o mesmo cenário passa depois do patch.
 - Falha por sintaxe, import ou fixture incorreta não é teste vermelho válido.
 - Depois do teste localizado, executar a suíte completa.
+- A integração do repositório fica em `integration_tests/` e exige
+  `TAR-MATERIALIZATION = PASS`; TAR ausente não autoriza `skip`.
 
-### 2.5 Fail-fast
+### 2.6 Fail-fast
 
-O `Reporter` coleta todos os achados de uma etapa. O `main()` interrompe o
-pipeline antes da etapa seguinte quando a etapa atual registra erro.
+O `Reporter` coleta todos os achados de uma etapa.
+`pipeline.run_validation(args, reporter)` interrompe o pipeline antes da etapa
+seguinte quando a etapa atual registra erro. `cli.main()` valida argumentos,
+chama o pipeline e controla a emissão única.
 
 ```text
-carregar
-→ contratos/instâncias
+validar argumentos
+→ carregar registro
+→ resolver escopo documental
+→ contratos
+→ instâncias
 → registro/arquivos
 → canonicalidade
 → gate solicitado
@@ -105,49 +158,92 @@ Falha em uma etapa impede as etapas à direita.
 
 ## 3. Como usar uma unidade
 
-1. Localize as funções da unidade.
-2. Leia apenas a unidade, seus helpers diretos e testes relacionados.
-3. Confirme as invariantes e alterações proibidas.
-4. Crie o teste vermelho descrito no plano.
-5. Execute somente o teste e confirme a razão da falha.
-6. Aplique o menor patch possível.
-7. Execute o teste verde.
-8. Execute a suíte completa, compilação e strict-mode.
-9. Atualize docstring/comentário quando a decisão técnica mudar.
+1. Confirme no plano a fase, o gate de entrada e o subciclo autorizado.
+2. Localize as funções da unidade no módulo proprietário indicado.
+3. Leia somente a unidade, seus helpers diretos e testes relacionados.
+4. Crie ou edite apenas o módulo proprietário indicado na tabela abaixo.
+5. Não crie reexport na fachada; consumidores importam o módulo proprietário.
+6. No subciclo B, execute o RED previsto e confirme a razão da falha.
+7. Aplique o menor patch possível e migre os patches para o namespace de
+   consulta.
+8. Execute o teste localizado e depois as suítes aplicáveis.
+9. Execute compilação, Pyright fixado, gates afetados e `npm run validate`.
+10. Atualize docstring ou comentário quando a decisão técnica mudar.
 
 Comandos finais de cada unidade:
 
 ```bash
 python3 -m compileall -q scripts/documentation/validate_documentation
-python3 -m unittest discover scripts/documentation/tests
-npx --yes pyright
+python3 -m unittest discover \
+  -s scripts/documentation/tests \
+  -t . \
+  -v
+python3 -m unittest discover \
+  -s scripts/documentation/integration_tests \
+  -t . \
+  -v
+npx --yes pyright@1.1.411 --project pyrightconfig.json
+npm run validate
 ```
 
 ## 4. Unidades de intervenção
 
+| Unidade | Módulo proprietário |
+| --- | --- |
+| 1 | `json_types.py`, `models.py`, `config.py`, `filesystem.py` |
+| 2 | `reporter.py` |
+| 3 | `cli.py` |
+| 4 e 6 | `registry.py` |
+| 5 | `filesystem.py`, `links.py` |
+| 7 | `contracts.py`, `instances.py` |
+| 8 | `approvals.py`, `provenance.py` |
+| 9 | `workflow.py`, `ingestion.py` |
+| 10 | `gates/g_arch.py`, `gates/g0.py`, `gates/g1.py` |
+| 11 | `gates/g2.py` |
+| 12 | `front_matter.py`, `gates/g_fm.py` |
+| 13 | `pipeline.py`, `gates/dispatcher.py`, `cli.py` |
+| 14 | `tests/`, `integration_tests/`, README e este mapa |
+
+Esta tabela registra a propriedade final materializada pelas fases do plano.
+Novas responsabilidades exigem decisão própria e não devem ser acumuladas em
+módulos genéricos.
+
 ### Unidade 1 — Imports, tipos e constantes
 
-**Localização:** início do arquivo até `class Reporter`.
+**Estado atual:** extraída na Fase 4.
+
+**Destinos:** `json_types.py`, `models.py`, `config.py` e `filesystem.py`,
+extraídos separadamente na ordem do plano. Consumidores e patches consultam o
+módulo proprietário; a fachada pública exporta somente `main`.
 
 **Responsabilidade:** disponibilizar somente dependências e constantes comuns.
 
-**Editar:**
-
-- remover `import sys`;
-- adicionar `from typing import Any`;
-- tipar constantes compostas quando o strict-mode exigir.
+**Editar:** mover tipos, modelo, configuração e helpers de filesystem sem
+reformular suas regras; cada módulo recebe apenas os próprios imports.
 
 **Não editar:** Reporter, funções ou gates.
 
 **Porquê:** YAML e JSON são dinâmicos na entrada, mas o restante do script não
 deve propagar tipos desconhecidos.
 
-**Aceitação:** nenhum import não utilizado e nenhum import novo nas unidades
-seguintes.
+**Descoberta do workspace:** `config.find_workspace_root()` exige,
+simultaneamente, o registro, o workflow, o schema documental e o diretório do
+pacote. Não substituir essa composição por nomes genéricos como `docs` e
+`scripts`, nem usar os TARs como marcadores.
+
+**Aceitação materializada:** início na raiz, em arquivo, em subdiretório e em
+symlink retorna a raiz completa; marcadores parciais ou ausentes geram
+`RuntimeError` determinístico.
+
+**Aceitação:** nenhum import não utilizado; nenhum ciclo entre módulos; cada
+consumidor consulta configuração mutável por `config.WORKSPACE_ROOT`.
 
 ### Unidade 2 — Reporter
 
-**Localização:** `class Reporter`.
+**Estado atual:** extraída na Fase 5. A contração autorizada na Fase 11 removeu
+o reexport transitório de `Reporter`.
+
+**Destino:** `reporter.py`.
 
 **Contrato:**
 
@@ -164,11 +260,15 @@ seguintes.
 compatíveis.
 
 **Aceitação:** schema do resultado passa; sucesso retorna `0`; falha retorna
-`1`; IDs persistidos não colidem.
+`1`; IDs persistidos não colidem; consumidores e patches consultam
+`reporter.Reporter`.
 
 ### Unidade 3 — CLI
 
-**Localização:** `parse_args()` e helper de validação de argumentos.
+**Estado atual:** extraída na Fase 10 para `cli.py`. BEH-06 permite argumentos
+explícitos em `parse_args(argv)` e `main(argv)` sem alterar `argv=None`.
+
+**Destino:** `cli.py`.
 
 **Contrato:** aceitar somente combinações coerentes de gate, documento, versão e
 formato.
@@ -185,9 +285,9 @@ documenta todos os gates.
 
 ### Unidade 4 — Resolução documental
 
-**Localização:** após `validate_top_level()` e antes de `validate_record()`.
+**Estado atual:** extraída na Fase 6.
 
-**Criar:** helper `resolve_document_version`.
+**Destino:** `registry.py`, incluindo `resolve_document_version`.
 
 **Contrato:**
 
@@ -204,24 +304,34 @@ falham; Reporter recebe metadados do par exato.
 
 ### Unidade 5 — Caminhos, nomes, links e hash
 
-**Localização:** `workspace_path()` até `validate_links()`.
+**Estado atual:** extraída na Fase 8. `workspace_path()` e `sha256()` estão em
+`filesystem.py`; `normalize_link_target()` e `validate_links()` estão em
+`links.py`. BEH-05 foi materializada no módulo proprietário com teste
+RED–GREEN.
+
+**Destinos:** `workspace_path()` e `sha256()` em `filesystem.py`;
+`validate_links()` e seus helpers em `links.py`.
 
 **Contrato:** nenhum caminho local pode escapar de `WORKSPACE_ROOT`.
 
 **Editar:** validação de links locais, narrowing e tipos.
 
-**Não editar:** regexes e convenções sem teste específico.
+**Não editar:** regexes, perfil Markdown e convenções sem decisão normativa e
+teste específico.
 
 **Porquê:** `Path.resolve()` normaliza o caminho, mas não concede autorização
 para acessar fora da raiz.
 
 **Aceitação:** link interno válido passa; quebrado falha; absoluto externo e
-`..` externo falham; URL e âncora não são arquivos locais.
+`..` externo falham; URL e âncora não são arquivos locais; `OSError` de leitura
+identifica o arquivo no Reporter e não produz traceback inesperado.
 
 ### Unidade 6 — Registro e unicidade
 
-**Localização:** `validate_top_level()`, `validate_record()`,
-`validate_uniqueness()`, `managed_files()` e `validate_canonical_registry()`.
+**Estado atual:** extraída na Fase 6. BEH-02 foi materializada no módulo
+proprietário com teste RED–GREEN.
+
+**Destino:** `registry.py`.
 
 **Contrato:** cada versão registrada aponta para arquivo e hash exatos.
 
@@ -233,19 +343,25 @@ para acessar fora da raiz.
 registro mestre.
 
 **Aceitação:** par ID/versão e caminho são únicos; hash divergir falha; canônico
-ativo usa o próprio caminho canônico; terminal pode preservar caminho histórico.
+ativo usa o próprio caminho canônico; terminal pode preservar caminho histórico;
+um item não mapeamento em `documents` informa o índice exato sem impedir a
+verificação dos demais itens.
 
 ### Unidade 7 — Schemas e instâncias
 
-**Localização:** `load_json()` até antes de
-`validate_approval_cross_references()`.
+**Estado atual:** contratos extraídos na Fase 6 e instâncias extraídas na
+Fase 7. `instances.py` delega relações aos módulos proprietários, sem
+reimplementar suas regras.
+
+**Destinos:** validação de schemas em `contracts.py` e validação de instâncias
+em `instances.py`.
 
 **Contrato:** validar forma antes de relações entre artefatos.
 
-**Editar:** extrair helpers no mesmo arquivo e reduzir `validate_instances()` a
-orquestração.
+**Editar:** mover os helpers para seu módulo proprietário e manter cada função
+de alto nível como orquestração.
 
-**Não editar:** schemas e imports.
+**Não editar:** schemas ou regras documentais.
 
 **Porquê:** schema válido não prova que um ID referenciado existe.
 
@@ -255,7 +371,11 @@ executadas.
 
 ### Unidade 8 — Aprovações e evidências
 
-**Localização:** `validate_approval_cross_references()`.
+**Estado atual:** aprovações e validação estrutural de proveniência extraídas
+na Fase 7. A implementação de G2 permanece no `__init__.py` até a Fase 9.
+
+**Destino:** `approvals.py`. Validação de pacotes de proveniência pertence a
+`provenance.py`; a implementação do gate pertence a `gates/g2.py`.
 
 **Contrato:** aprovação ativa vincula alvo e gates exatos por ID, versão e hash.
 
@@ -272,7 +392,10 @@ supersessão sem sucessora falham; cadeia exata passa.
 
 ### Unidade 9 — Workflow e ingestão
 
-**Localização:** `validate_workflow_references()` até antes de `validate_g0()`.
+**Estado atual:** workflow e ingestão extraídos na Fase 7. G0 e G1 consultam
+`ingestion.ingestion_records()` diretamente.
+
+**Destinos:** `workflow.py` e `ingestion.py`.
 
 **Contrato:** todas as referências processáveis existem e snapshots históricos
 permanecem verificáveis.
@@ -289,7 +412,11 @@ invalida snapshot; mesma versão divergente falha.
 
 ### Unidade 10 — G-ARCH, G0 e G1
 
-**Localização:** `validate_g0()`, `validate_g1()` e despacho relacionado.
+**Estado atual:** gates extraídos na Fase 9 para `gates/g_arch.py`,
+`gates/g0.py` e `gates/g1.py`. O despacho está em `gates/dispatcher.py`.
+
+**Destinos:** `gates/g_arch.py`, `gates/g0.py` e `gates/g1.py`. O despacho
+pertence exclusivamente a `gates/dispatcher.py`.
 
 **Contrato:** cada gate declara explicitamente se é global ou documental.
 
@@ -304,7 +431,10 @@ semântica corresponde ao workflow.
 
 ### Unidade 11 — G2
 
-**Localização:** `validate_g2()` e helpers diretos.
+**Estado atual:** extraída na Fase 9 para `gates/g2.py`, preservando as
+limitações residuais de proveniência registradas no plano.
+
+**Destino:** `gates/g2.py`, consumindo `provenance.py`.
 
 **Contrato:** proveniência referencia bytes exatos de uma versão.
 
@@ -319,7 +449,12 @@ externo falham; claims críticos mantêm cobertura.
 
 ### Unidade 12 — Front Matter e G-FM
 
-**Localização:** `_DuplicateKeyLoader` até `validate_front_matter()`.
+**Estado atual:** parsing e validação estrutural extraídos na Fase 8; G-FM foi
+extraído na Fase 9 para `gates/g_fm.py`. BEH-03 e BEH-04 permanecem
+materializadas em `front_matter.py` com testes RED–GREEN independentes.
+
+**Destinos:** parsing e validação em `front_matter.py`; implementação do gate
+em `gates/g_fm.py`.
 
 **Contrato:** parser seguro, schema correto e sincronização com o registro exato.
 
@@ -330,16 +465,22 @@ externo falham; claims críticos mantêm cobertura.
 **Porquê:** arquivos arquivados são snapshots históricos e ficam fora do perfil
 ativo; feature specs têm contrato independente do registro.
 
-**Aceitação:** alvo vazio falha; versão exata passa; chaves duplicadas, YAML
-inválido e divergências continuam falhando; corpo permanece intacto.
+**Aceitação:** alvo vazio falha; versão exata passa; chaves duplicadas, chave
+complexa, YAML inválido, UTF-8 inválido e divergências falham de forma
+controlada; corpo permanece intacto.
 
 ### Unidade 13 — Main
 
-**Localização:** `main()`.
+**Estado atual:** dispatcher extraído na Fase 9; pipeline e CLI extraídos na
+Fase 10; fachada pública contraída para somente `main` na Fase 11.
+
+**Destinos:** `pipeline.py`, `gates/dispatcher.py` e `cli.py`.
 
 **Pré-condição:** Unidades 1–12 verdes.
 
-**Responsabilidade:** somente orquestrar.
+**Responsabilidade:** `pipeline.run_validation(args, reporter) -> None`
+orquestra e não importa CLI nem emite resultados. `cli.main(argv)` valida os
+argumentos, chama o pipeline e emite exatamente uma vez.
 
 **Editar:** ordem, fail-fast entre etapas e chamadas de helpers corrigidos.
 
@@ -348,12 +489,14 @@ inválido e divergências continuam falhando; corpo permanece intacto.
 **Porquê:** corrigir o orquestrador cedo demais espalha soluções temporárias e
 obriga reescrita posterior.
 
-**Aceitação:** cada etapa executa uma vez; erro impede etapas posteriores;
-Reporter emite uma vez; alvo exato é reutilizado.
+**Aceitação:** escopo é resolvido antes dos contratos; cada etapa executa uma
+vez; erro impede etapas posteriores; Reporter emite uma vez; alvo exato é
+reutilizado.
 
 ### Unidade 14 — Testes e documentação
 
-**Localização:** `scripts/documentation/tests/`, este mapa e README operacional.
+**Localização:** `scripts/documentation/tests/`,
+`scripts/documentation/integration_tests/`, este mapa e README operacional.
 
 **Editar:** testes `unittest`, comandos e limitações documentadas.
 
@@ -363,7 +506,8 @@ Reporter emite uma vez; alvo exato é reutilizado.
 válida.
 
 **Aceitação:** vermelho/verde por unidade, suíte completa verde, strict-mode sem
-supressões e README coerente com `--help`.
+supressões, README coerente com `--help` e
+`test_public_api_matches_beh_07` comprovando `__all__ == ["main"]`.
 
 ## 5. Referências das bibliotecas
 

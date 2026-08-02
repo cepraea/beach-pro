@@ -16,7 +16,9 @@ import yaml
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
+SCRIPTS_INIT = REPOSITORY_ROOT / "scripts/__init__.py"
 DOCUMENTATION_ROOT = REPOSITORY_ROOT / "scripts/documentation"
+DOCUMENTATION_INIT = DOCUMENTATION_ROOT / "__init__.py"
 LEGACY_ENTRYPOINT = DOCUMENTATION_ROOT / "validate_documentation.py"
 PACKAGE_ROOT = DOCUMENTATION_ROOT / "validate_documentation"
 PACKAGE_INIT = PACKAGE_ROOT / "__init__.py"
@@ -32,9 +34,12 @@ HISTORICAL_GATE_ROOT = REPOSITORY_ROOT / "docs/evidence/gates"
 LEGACY_REFERENCE = "scripts/documentation/validate_documentation.py"
 MODULE_NAME = "scripts.documentation.validate_documentation"
 
-sys.path.insert(0, str(DOCUMENTATION_ROOT))
-
-import validate_documentation as validator  # noqa: E402
+from scripts.documentation import validate_documentation as validator
+from scripts.documentation.validate_documentation import (
+    cli as cli_module,
+    config,
+    reporter as reporter_module,
+)
 
 
 class PackageLayoutTests(unittest.TestCase):
@@ -47,14 +52,20 @@ class PackageLayoutTests(unittest.TestCase):
 
         if spec is None:
             self.fail("validator module cannot be resolved")
+        self.assertTrue(SCRIPTS_INIT.is_file())
+        self.assertTrue(DOCUMENTATION_INIT.is_file())
         self.assertEqual(PACKAGE_INIT, Path(spec.origin or ""))
         self.assertTrue(PACKAGE_MAIN.is_file())
+        self.assertEqual(MODULE_NAME, validator.__name__)
+        self.assertIs(validator, sys.modules[MODULE_NAME])
+        self.assertNotIn("validate_documentation", sys.modules)
 
-    def test_package_exports_main(self) -> None:
-        self.assertTrue(callable(validator.main))
+    def test_public_api_matches_beh_07(self) -> None:
+        self.assertEqual(["main"], validator.__all__)
+        self.assertIs(validator.main, cli_module.main)
 
     def test_package_workspace_root_is_repository_root(self) -> None:
-        self.assertEqual(REPOSITORY_ROOT, validator.WORKSPACE_ROOT)
+        self.assertEqual(REPOSITORY_ROOT, config.WORKSPACE_ROOT)
 
     def test_legacy_entrypoint_is_removed(self) -> None:
         self.assertTrue(PACKAGE_INIT.is_file())
@@ -91,20 +102,18 @@ class EntrypointBehaviorTests(unittest.TestCase):
         package = self._run(
             "-m",
             MODULE_NAME,
-            "--gate",
-            "G-ARCH",
-            "--format",
-            "text",
+            "--help",
         )
 
         self.assertEqual(0, package.returncode)
-        self.assertEqual("SUMMARY: errors=0 warnings=0\n", package.stdout)
+        self.assertIn("usage:", package.stdout)
+        self.assertIn("G-ARCH", package.stdout)
         self.assertEqual("", package.stderr)
 
     def test_new_result_uses_package_evaluator_identity(self) -> None:
         output = io.StringIO()
         with redirect_stdout(output):
-            status = validator.Reporter().emit("yaml", "G1")
+            status = reporter_module.Reporter().emit("yaml", "G1")
 
         payload = yaml.safe_load(output.getvalue())
         gate_result = payload["gate_result"]
@@ -181,6 +190,7 @@ class ConsumerMigrationTests(unittest.TestCase):
             "scripts.documentation.tests.test_package_entrypoints",
             readme,
         )
+        self.assertIn("scripts/documentation/integration_tests", readme)
         self.assertNotIn(LEGACY_REFERENCE, readme)
         self.assertNotIn("Compatibilidade da Etapa 1", readme)
 
@@ -210,6 +220,7 @@ class ConsumerMigrationTests(unittest.TestCase):
             [
                 "scripts/documentation/validate_documentation",
                 "scripts/documentation/tests",
+                "scripts/documentation/integration_tests",
             ],
             config["include"],
         )

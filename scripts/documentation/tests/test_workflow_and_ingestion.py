@@ -1,6 +1,5 @@
 """Tests for workflow references and immutable ingestion snapshots."""
 
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,13 +7,21 @@ from unittest.mock import patch
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.documentation.validate_documentation.json_types import (
+    JsonObject,
+    as_json_array,
+    as_json_object,
+)
+from scripts.documentation.validate_documentation import (
+    config,
+    ingestion as ingestion_module,
+    reporter as reporter_module,
+    workflow as workflow_module,
+)
 
-import validate_documentation as validator  # noqa: E402
 
-
-def _workflow() -> validator.JsonObject:
-    gates: list[validator.JsonObject] = [
+def _workflow() -> JsonObject:
+    gates: list[JsonObject] = [
         {
             "gate_id": gate_id,
             "implementation_status": "IMPLEMENTED",
@@ -55,21 +62,21 @@ def _workflow() -> validator.JsonObject:
 
 class WorkflowReferenceTests(unittest.TestCase):
     def test_valid_workflow_resolves_all_references(self) -> None:
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(_workflow(), reporter)
+        workflow_module.validate_workflow_references(_workflow(), reporter)
 
         self.assertEqual([], reporter.errors)
 
     def test_workflow_unknown_gate_reference_fails(self) -> None:
         workflow = _workflow()
-        transitions = validator.as_json_array(workflow.get("transitions"))
-        transition = validator.as_json_object((transitions or [None])[0])
+        transitions = as_json_array(workflow.get("transitions"))
+        transition = as_json_object((transitions or [None])[0])
         self.assertIsNotNone(transition)
         (transition or {})["required_gates"] = ["G-UNKNOWN"]
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(workflow, reporter)
+        workflow_module.validate_workflow_references(workflow, reporter)
 
         self.assertTrue(
             any("unknown required gate" in error for error in reporter.errors)
@@ -77,12 +84,12 @@ class WorkflowReferenceTests(unittest.TestCase):
 
     def test_duplicate_workflow_identifier_fails(self) -> None:
         workflow = _workflow()
-        states = validator.as_json_array(workflow.get("states"))
+        states = as_json_array(workflow.get("states"))
         self.assertIsNotNone(states)
         (states or []).append({"state_id": "S0"})
-        reporter = validator.Reporter()
+        reporter = reporter_module.Reporter()
 
-        validator.validate_workflow_references(workflow, reporter)
+        workflow_module.validate_workflow_references(workflow, reporter)
 
         self.assertIn("duplicate workflow state: S0", reporter.errors)
 
@@ -98,7 +105,7 @@ class IngestionConsistencyTests(unittest.TestCase):
         record_version: str = snapshot_version,
         record_hash: str = snapshot_hash,
         event_gate_ids: list[str] | None = None,
-    ) -> validator.Reporter:
+    ) -> reporter_module.Reporter:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             ingestion_root = root / "docs/evidence/ingestion"
@@ -109,7 +116,7 @@ class IngestionConsistencyTests(unittest.TestCase):
             integrity_root.mkdir(parents=True)
 
             manifest_path = integrity_root / "manifest.yaml"
-            manifest: validator.JsonObject = {
+            manifest: JsonObject = {
                 "manifest_id": "MANIFEST-001",
                 "documents": [
                     {
@@ -128,7 +135,7 @@ class IngestionConsistencyTests(unittest.TestCase):
             for gate_id in ("G-ARCH", "G0", "G1"):
                 result_id = f"GATE-RESULT-{gate_id}-INGESTION"
                 persisted_ids.append(result_id)
-                result: validator.JsonObject = {
+                result: JsonObject = {
                     "gate_result_id": result_id,
                     "gate_id": gate_id,
                     "status": "pass",
@@ -138,7 +145,7 @@ class IngestionConsistencyTests(unittest.TestCase):
                     encoding="utf-8",
                 )
 
-            event: validator.JsonObject = {
+            event: JsonObject = {
                 "event_id": self.event_id,
                 "manifest_id": "MANIFEST-001",
                 "documents": [
@@ -159,7 +166,7 @@ class IngestionConsistencyTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            documents: list[validator.JsonObject] = [
+            documents: list[JsonObject] = [
                 {
                     "document_id": self.document_id,
                     "version": record_version,
@@ -169,16 +176,19 @@ class IngestionConsistencyTests(unittest.TestCase):
                     },
                 }
             ]
-            reporter = validator.Reporter()
+            reporter = reporter_module.Reporter()
             with (
-                patch.object(validator, "WORKSPACE_ROOT", root),
+                patch.object(config, "WORKSPACE_ROOT", root),
                 patch.object(
-                    validator,
+                    config,
                     "INTEGRITY_MANIFEST",
                     manifest_path,
                 ),
             ):
-                validator.validate_ingestion_consistency(documents, reporter)
+                ingestion_module.validate_ingestion_consistency(
+                    documents,
+                    reporter,
+                )
             return reporter
 
     def test_ingestion_unknown_gate_result_fails(self) -> None:

@@ -1,0 +1,41 @@
+acquisition_id: TAR-ACQUISITION-LOCAL-20260730
+acquired_at: "2026-07-30T13:31:55Z"
+responsible: "Davi Sermenho"
+executor: "Codex"
+authorization_basis:
+  request: "iniciar a fase 1"
+  plan: ".inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md"
+source:
+  type: preexisting_local_worktree
+  identifier: WORKTREE-ORIGEM-CEPRAEA-BEACH-PRO
+  path_redacted: true
+copy_policy:
+  overwrite_allowed: false
+  command_semantics: no_clobber
+  source_hash_verified_before_copy: true
+  destination_hash_verified_after_copy: true
+artifacts:
+  - document_id: DOC-EVID-PACOTE-INTEGRIDADE-LEGADO
+    version: 0.1.0
+    source_relative_path: docs/evidence/integrity/pacote-integridade-legado.tar
+    destination: docs/evidence/integrity/pacote-integridade-legado.tar
+    source_sha256: 7b0d9effe3da654af63638f8850841332605f9c535a8a7181ac021b5be284cf6
+    destination_sha256: 7b0d9effe3da654af63638f8850841332605f9c535a8a7181ac021b5be284cf6
+    size_bytes: 686080
+    git_ignored: true
+  - document_id: DOC-EVID-PACOTE-FONTES-CONTEXTO
+    version: 0.1.0
+    source_relative_path: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar
+    destination: docs/evidence/provenance/pacote-fontes-contexto-cepraea.tar
+    source_sha256: 3f49cde024244a630cf0e4e335348d26252cf7550ec586e0e78d4ff609ecfc21
+    destination_sha256: 3f49cde024244a630cf0e4e335348d26252cf7550ec586e0e78d4ff609ecfc21
+    size_bytes: 6205440
+    git_ignored: true
+  - document_id: DOC-EVID-PACOTE-DIVERGENCIA-RELATORIO-V01
+    version: 0.1.0
+    source_relative_path: docs/evidence/integrity/pacote-divergencia-relatorio-validacao-v01.tar
+    destination: docs/evidence/integrity/pacote-divergencia-relatorio-validacao-v01.tar
+    source_sha256: 6dcfdc0f295e40e77fdd82be3b4dce4b47f6c04d43ef9fe553b140b375da97ec
+    destination_sha256: 6dcfdc0f295e40e77fdd82be3b4dce4b47f6c04d43ef9fe553b140b375da97ec
+    size_bytes: 81920
+    git_ignored: true

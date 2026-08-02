@@ -9,28 +9,47 @@
 | Repositório | `cepraea/beach-pro` |
 | Branch de baseline inspecionada | `main` |
 | Branch de ajuste do plano | `codex/ajustar-plano-modularizacao-validator` |
+| Branch de autorização operacional | `agent/autorizar-modularizacao-validator` |
+| Branch de execução da Fase 0 | `agent/modularizacao-validator-fase-0` |
+| Branch de execução da Fase 1 | `agent/modularizacao-validator-fase-1` |
+| Branch de execução da Fase 2 | `agent/modularizacao-validator-fase-2` |
+| Branch de execução da Fase 3 | `agent/modularizacao-validator-fase-3` |
+| Branch de execução da Fase 4 | `agent/modularizacao-validator-fase-4` |
+| Branch de execução da Fase 5 | `agent/modularizacao-validator-fase-5` |
+| Branch de execução da Fase 6 | `agent/modularizacao-validator-fase-6` |
+| Branch de execução da Fase 7 | `agent/modularizacao-validator-fase-7` |
+| Branch de execução da Fase 8 | `agent/modularizacao-validator-fase-8` |
+| Branch de execução da Fase 9 | `agent/modularizacao-validator-fase-9` |
+| Branch de execução da Fase 10 | `agent/modularizacao-validator-fase-10` |
+| Branch de execução da Fase 11 | `agent/modularizacao-validator-fase-11` |
+| Branch de execução da Fase 12 | `agent/modularizacao-validator-fase-12` |
 | Commit-base validado | `defaa0439e5163b159dfd18359dd31cc65f469f4` |
-| Data da validação | 2026-07-30 |
-| Estado deste plano | Apto para aprovação; implementação bloqueada até `GIT-WORKFLOW-READY` e `BEH-01…BEH-07` |
+| Commit de incorporação do plano | `6fbfdad55240b5b9f6d377f8b436e314d7feeb8a` |
+| Commit de incorporação da autorização | `fcbc84dc19ca42c57ece96132def71c1a7420b19` |
+| Commit de incorporação da governança | `2bbb23c2e9dbbbe5da77203eb00266f52ac99ccf` |
+| Commit de incorporação da materialização | `88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` |
+| Commit de incorporação da baseline | `e8292e6368557f6dd5384a2c380c1301bfb5279d` |
+| Commit de incorporação da Fase 10 | `1c921a0ebc670c789a1def54c59a84ee36201ae5` |
+| Commit de incorporação da Fase 11 | `11aee153be06f6ca76085b11e4b4ab112121ebd8` |
+| Data da validação | 2026-08-01 |
+| Estado deste plano | Fase 11 incorporada; Fase 12 implementada na PR #15 com gates locais aprovados, efetivos após merge |
 | Framework de testes | `unittest` |
 | Verificador estático | Pyright/Pylance em modo `strict` |
 | Política Git | Alterações somente em branch específica, com isolamento do worktree e entrega por pull request |
 
 Este documento substitui, para a futura modularização, as recomendações
 fragmentadas produzidas durante a migração do script para pacote. Ele não
-reescreve os planos históricos e não autoriza por si só alterações no
-repositório.
+reescreve os planos históricos. A autorização operacional é um registro
+separado, vinculado ao conteúdo incorporado no commit `6fbfdad`.
 
-Destino recomendado após aprovação:
-
-```text
-.inicio/Plano-modularizacao-validate-documentation.md
-```
+Este arquivo, em
+`.inicio/PLANO-MODULARIZACAO-VALIDATE-DOCUMENTATION.md`, é o plano ativo da
+modularização.
 
 ## 2. Objetivo
 
-Dividir a implementação de 2.181 linhas atualmente concentrada em
-`validate_documentation/__init__.py` em módulos coesos, preservando:
+Concluir a divisão da implementação, originalmente concentrada em 2.181 linhas
+de `validate_documentation/__init__.py`, em módulos coesos, preservando:
 
 - a execução por
   `python3 -m scripts.documentation.validate_documentation`;
@@ -401,6 +420,25 @@ Aceitação:
 
 Qualquer falha bloqueia a Fase 0.
 
+Estado materializado em 2026-07-30:
+
+```text
+GIT-WORKFLOW-READY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/metadata.yaml`.
+Estado Git detalhado:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/git-state.md`.
+O worktree de execução foi criado limpo a partir de
+`main@6fbfdad55240b5b9f6d377f8b436e314d7feeb8a`; as mudanças preexistentes do
+worktree de origem foram classificadas como não relacionadas e intocáveis.
+
+Após a incorporação da autorização, a Fase 0 foi iniciada em novo worktree,
+na branch `agent/modularizacao-validator-fase-0`, a partir de
+`main@fcbc84dc19ca42c57ece96132def71c1a7420b19`. O worktree original permanece
+fora do escopo e não foi alterado.
+
 ## 10. Fase 0 — autorização e governança
 
 ### 10.1 Entrada
@@ -444,18 +482,51 @@ Qualquer falha bloqueia a Fase 0.
 8. Registrar que branch e pull request são obrigatórios; commit e push somente
    integram a execução quando necessários para entregar o pull request.
 
+Estado das decisões em 2026-07-30:
+
+```text
+BEH-01 = APPROVED
+BEH-02 = APPROVED
+BEH-03 = APPROVED
+BEH-04 = APPROVED
+BEH-05 = APPROVED
+BEH-06 = APPROVED
+BEH-07 = APPROVED
+```
+
+Autorização:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/authorization.yaml`.
+Análise de impacto:
+`.inicio/evidencias/validate-documentation/AUTH-MODULARIZATION-VALIDATOR-20260730/impact-analysis.md`.
+
+Esses registros desbloqueiam a execução da Fase 0. O gate
+`GOVERNANCE-MODULARIZATION` permanece pendente até concluir as demais ações
+desta fase; fases posteriores continuam condicionadas aos respectivos gates.
+
 ### 10.3 Gate de saída da Fase 0
 
 ```text
 GOVERNANCE-MODULARIZATION = PASS
 ```
 
+Estado materializado em 2026-07-30:
+
+```text
+GOVERNANCE-MODULARIZATION = PASS
+```
+
+O resultado está registrado em
+`.inicio/evidencias/validate-documentation/GOVERNANCE-MODULARIZATION-20260730/`
+e é efetivo quando a PR #3 for incorporada à `main`. Até o merge, a Fase 1
+permanece bloqueada para impedir que código seja extraído a partir de
+governança ainda não canônica.
+
 Bloqueios:
 
 - plano não aprovado;
 - mapa ainda proíbe movimentação;
 - README ainda descreve somente o monólito;
-- tentativa de reescrever fatos históricos.
+- tentativa de reescrever fatos históricos;
 - qualquer decisão entre `BEH-01` e `BEH-07` ausente, ambígua ou sem aprovador.
 
 ## 11. Fase 1 — materialização dos TARs
@@ -514,6 +585,20 @@ reconstrua arquivos ignorados.
 TAR-MATERIALIZATION = PASS
 ```
 
+Estado materializado em 2026-07-30:
+
+```text
+TAR-MATERIALIZATION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/TAR-MATERIALIZATION-20260730/`.
+A execução ocorreu na branch `agent/modularizacao-validator-fase-1` e foi
+entregue pela PR #4. Os três TARs permanecem ignorados pelo Git; por isso, o
+resultado comprova o worktree registrado e não transfere os bytes para outro
+clone. A Fase 2 exige o merge da evidência e nova verificação dos hashes no
+worktree de baseline.
+
 Se qualquer fonte estiver indisponível:
 
 ```text
@@ -536,9 +621,28 @@ git ls-files --others --exclude-standard
 
 Condições:
 
-- se `git rev-parse HEAD` não retornar exatamente
-  `defaa0439e5163b159dfd18359dd31cc65f469f4`, parar e regenerar os dois
-  inventários antes de executar qualquer fase;
+- `defaa0439e5163b159dfd18359dd31cc65f469f4` permanece como fonte histórica
+  dos inventários registrados na seção 4;
+- registrar o `HEAD` real no início da baseline, sem exigir que ele seja igual
+  ao commit histórico;
+- comparar, entre o commit histórico e o `HEAD`, somente os caminhos capazes
+  de invalidar os inventários:
+
+  ```bash
+  git diff --name-status \
+    defaa0439e5163b159dfd18359dd31cc65f469f4..HEAD -- \
+    scripts/documentation/validate_documentation \
+    scripts/documentation/tests \
+    pyrightconfig.json
+  ```
+
+- se essa comparação apontar mudança, regenerar os inventários de funções,
+  classes, testes e patches antes da primeira extração;
+- commits exclusivamente documentais ou de governança não invalidam os
+  inventários, mas seu `HEAD` continua obrigatório na evidência;
+- no início da primeira extração de código, fixar no `metadata.yaml` o novo
+  commit de baseline executável. As comparações seguintes usam essa identidade
+  registrada, e não uma igualdade impossível com um commit anterior;
 - se o worktree estiver limpo, HEAD e hashes permitem reconstrução;
 - se estiver sujo, preservar `git diff --binary HEAD`;
 - arquivos não rastreados precisam ter conteúdo preservado, não apenas hash;
@@ -647,9 +751,14 @@ python3 -m scripts.documentation.validate_documentation \
 python3 -m scripts.documentation.validate_documentation \
   --gate G-FM \
   --document-id DOC-CEPRAEA-CANDIDATA-CONTEXTO \
-  --version 0.1.1 \
+  --version 0.1.2 \
   --format yaml
 ```
+
+O comando G2 conserva a versão histórica `0.1` porque o pacote de proveniência
+materializado corresponde a essa versão. A versão canônica `0.1.2` não possui
+pacote G2 registrado; essa limitação não deve ser ocultada nem corrigida dentro
+deste plano.
 
 Executar também a validação global:
 
@@ -701,6 +810,22 @@ BASELINE-INTEGRATION = PASS
 BASELINE-VALIDATE-DOCUMENTATION = PASS
 BASELINE-NPM-VALIDATE = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+BASELINE-CODE = PASS
+BASELINE-INTEGRATION = PASS
+BASELINE-VALIDATE-DOCUMENTATION = PASS
+BASELINE-NPM-VALIDATE = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/BASELINE-88c3bc5-20260730T174342Z/`.
+A execução foi ancorada em
+`main@88c3bc530fd0cc2496d9b2812b31d47ef7306d5e` e entregue pela PR #5. O hash
+deste plano em `hashes.sha256` corresponde aos bytes anteriores a esta
+atualização de estado e deve ser verificado contra o commit-base.
 
 Qualquer resultado diferente bloqueia a Fase 3.
 
@@ -802,6 +927,18 @@ Esperado:
 CANONICAL-IMPORT-IDENTITY = PASS
 ```
 
+Estado materializado em 2026-07-30:
+
+```text
+CANONICAL-IMPORT-IDENTITY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/CANONICAL-IMPORT-IDENTITY-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-3` e incorporado pela PR #6. O merge
+materializou o gate e desbloqueou a Fase 4.
+
 Aceitação adicional:
 
 ```bash
@@ -896,6 +1033,19 @@ FOUNDATIONS = PASS
 WORKSPACE-DISCOVERY = PASS
 ```
 
+Estado materializado em 2026-07-30:
+
+```text
+FOUNDATIONS = PASS
+WORKSPACE-DISCOVERY = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FOUNDATIONS-WORKSPACE-DISCOVERY-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-4` e incorporado pela PR #7. O merge
+materializou os gates e desbloqueou a Fase 5.
+
 ## 15. Fase 5 — Reporter
 
 ### Subciclo 5A
@@ -923,6 +1073,18 @@ Não realizar alterações comportamentais em 5A.
 ```text
 REPORTER-EXTRACTION = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+REPORTER-EXTRACTION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/REPORTER-EXTRACTION-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-5` e incorporado pela PR #8. O merge
+materializou o gate e desbloqueou a Fase 6.
 
 ## 16. Fase 6 — contratos e registro
 
@@ -968,6 +1130,20 @@ Não executar 6B enquanto o contrato do registro não estiver confirmado ou
 CONTRACTS-EXTRACTION = PASS
 REGISTRY-EXTRACTION = PASS
 ```
+
+Estado materializado em 2026-07-30:
+
+```text
+CONTRACTS-EXTRACTION = PASS
+REGISTRY-EXTRACTION = PASS
+BEH-02 = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/CONTRACTS-REGISTRY-EXTRACTION-20260730/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-6` e incorporado pela PR #9. O merge
+materializou os gates e desbloqueou a Fase 7.
 
 ## 17. Fase 7 — workflow, evidências e instâncias
 
@@ -1015,6 +1191,18 @@ Criar `instances.py` e mover:
 DOMAIN-INSTANCES-EXTRACTION = PASS
 ```
 
+Estado materializado em 2026-07-31:
+
+```text
+DOMAIN-INSTANCES-EXTRACTION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/DOMAIN-INSTANCES-EXTRACTION-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-7` e incorporado pela PR #10. O merge
+materializou o gate e desbloqueou a Fase 8.
+
 ## 18. Fase 8 — Front Matter e links
 
 ### 18.1 Front Matter estrutural
@@ -1055,6 +1243,22 @@ FRONT-MATTER-EXTRACTION = PASS
 LINKS-EXTRACTION = PASS
 ```
 
+Estado materializado em 2026-07-31:
+
+```text
+FRONT-MATTER-EXTRACTION = PASS
+LINKS-EXTRACTION = PASS
+BEH-03 = PASS
+BEH-04 = PASS
+BEH-05 = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FRONT-MATTER-LINKS-EXTRACTION-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-8` e incorporado pela PR #11. O merge
+materializou os gates e desbloqueou a Fase 9.
+
 ## 19. Fase 9 — gates
 
 ### 19.1 Módulos
@@ -1085,6 +1289,18 @@ os parsers permanecem em `front_matter.py`.
 ```text
 GATES-EXTRACTION = PASS
 ```
+
+Estado materializado em 2026-07-31:
+
+```text
+GATES-EXTRACTION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/GATES-EXTRACTION-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-9` e incorporado pela PR #12. O merge
+materializou o gate e desbloqueou a Fase 10.
 
 ## 20. Fase 10 — pipeline e CLI
 
@@ -1201,6 +1417,21 @@ PIPELINE-EXTRACTION = PASS
 CLI-EXTRACTION = PASS
 ```
 
+Estado materializado em 2026-07-31:
+
+```text
+PIPELINE-EXTRACTION = PASS
+CLI-EXTRACTION = PASS
+BEH-06 = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/PIPELINE-CLI-EXTRACTION-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-10`, entregue pela PR #13 e incorporado em
+`main` pelo commit `1c921a0`. Esse merge tornou os gates efetivos e desbloqueou
+a Fase 11.
+
 ## 21. Fase 11 — fachada pública
 
 ### 21.1 Política
@@ -1283,6 +1514,20 @@ PUBLIC-FACADE = PASS
 BEH-07-CONTRACT = PASS
 ```
 
+Estado materializado em 2026-07-31:
+
+```text
+PUBLIC-FACADE = PASS
+BEH-07-CONTRACT = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/PUBLIC-FACADE-20260731/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-11`, entregue pela PR #14 e incorporado em
+`main` pelo commit `11aee153`. Esse merge tornou os gates efetivos e
+desbloqueou a Fase 12.
+
 ## 22. Fase 12 — validação final
 
 Executar:
@@ -1318,7 +1563,7 @@ Verificações estruturais:
 
 ```bash
 rg 'sys\.path\.(insert|append)' scripts/documentation/tests
-rg 'import validate_documentation|from validate_documentation' \
+rg '^[[:space:]]*(import validate_documentation([[:space:],.]|$)|from validate_documentation([[:space:].]|$))' \
   scripts/documentation
 rg '^def |^class ' \
   scripts/documentation/validate_documentation/__init__.py
@@ -1331,9 +1576,11 @@ Esperado:
 - nenhuma implementação no `__init__.py`;
 - ausência de ciclos;
 - fachada pública corresponde exatamente à decisão `BEH-07`;
-- 45 funções-base rastreadas até módulos proprietários;
+- 45 funções-base rastreadas até módulos proprietários e 2 funções novas
+  autorizadas pelo plano;
 - 3 classes-base rastreadas;
-- 49 patches migrados;
+- 49 patches históricos migrados; patches adicionados pelos testes posteriores
+  permanecem explicados separadamente;
 - nenhuma invocação de Pyright sem a versão `1.1.411`;
 - `npm run validate` aprovado;
 - funções complexas documentam o porquê das decisões não evidentes;
@@ -1358,17 +1605,20 @@ rg 'npx --yes pyright([[:space:]]|$)' \
 O segundo comando deve retornar zero ocorrências. Recontar os inventários por
 AST e busca estrutural, sem confiar apenas nos números escritos no plano.
 
-Aceitação:
+Aceitação histórica e final:
 
-```text
-45 funções de topo
-3 classes de topo
-92 métodos de teste na baseline
-49 ocorrências de patch.object
-13 grupos de alvos de patch
-0 invocações de Pyright sem versão fixa
-0 problemas de Markdownlint
-```
+| Inventário | Baseline | Resultado final esperado |
+| --- | ---: | ---: |
+| Funções de topo | 45 | 47: 45 migradas + 2 autorizadas |
+| Classes de topo | 3 | 3 |
+| Métodos de teste | 92 | 108 |
+| Ocorrências de `patch.object` | 49 | 59: 49 migradas + 10 novas |
+| Grupos de alvos de patch | 13 | 15 |
+
+Além dessas contagens, são obrigatórios zero comandos Pyright sem versão fixa e
+zero problemas de Markdownlint. Os inventários históricos permanecem
+imutáveis; o resultado final explica cada acréscimo em vez de reescrever a
+baseline.
 
 Se o código-base mudar, atualizar conjuntamente commit-base, linhas históricas,
 inventários e testes esperados; não corrigir apenas os totais.
@@ -1379,6 +1629,20 @@ inventários e testes esperados; não corrigir apenas os totais.
 MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
 NPM-PROJECT-VALIDATION = PASS
 ```
+
+Estado materializado em 2026-08-01:
+
+```text
+MODULARIZATION-VALIDATE-DOCUMENTATION = PASS
+NPM-PROJECT-VALIDATION = PASS
+```
+
+Evidência:
+`.inicio/evidencias/validate-documentation/FINAL-MODULARIZATION-11aee15-20260801T063838Z/`.
+O resultado foi produzido na branch
+`agent/modularizacao-validator-fase-12` e entregue pela PR #15. Os gates locais
+tornam-se efetivos após o merge. As quatro limitações da seção 3.3 permanecem
+abertas; este PASS não autoriza uso como gate bloqueante de produção.
 
 ## 23. Inventário completo: função atual → módulo futuro
 
@@ -1600,7 +1864,8 @@ A modularização está concluída somente quando:
 - `BEH-01` a `BEH-07` possuem decisão e evidência;
 - os três TARs possuem hashes exatos;
 - baseline inicial e resultado final estão preservados;
-- 92 testes unitários passam ou a alteração de contagem está explicada;
+- 108 testes unitários passam, preservando a baseline histórica de 92 e a
+  explicação dos 16 testes acrescentados;
 - a integração do repositório passa;
 - Pyright estrito possui zero diagnósticos;
 - todas as invocações de Pyright usam `1.1.411`;
@@ -1608,9 +1873,11 @@ A modularização está concluída somente quando:
   resultado final;
 - todos os gates aplicáveis passam;
 - outputs não autorizados não mudaram;
-- as 45 funções possuem módulo proprietário;
+- as 45 funções históricas possuem módulo proprietário e as 2 funções novas
+  autorizadas estão rastreadas;
 - as 3 classes possuem módulo proprietário;
-- os 49 patches foram migrados;
+- os 49 patches históricos foram migrados e os 10 patches posteriores estão
+  explicados;
 - nenhum teste altera `sys.path`;
 - nenhum import curto permanece;
 - não existem ciclos;
@@ -1632,7 +1899,7 @@ A modularização está concluída somente quando:
 
 - [Repositório `cepraea/beach-pro`](https://github.com/cepraea/beach-pro)
 - [Commit-base `defaa043`](https://github.com/cepraea/beach-pro/commit/defaa0439e5163b159dfd18359dd31cc65f469f4)
-- [Implementação monolítica](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/__init__.py)
+- [Implementação modularizada](https://github.com/cepraea/beach-pro/tree/main/scripts/documentation/validate_documentation)
 - [README operacional](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/README.md)
 - [Mapa ativo](https://github.com/cepraea/beach-pro/blob/main/scripts/documentation/validate_documentation/MAPA-VALIDADOR-DOC.md)
 - [Registro documental](https://github.com/cepraea/beach-pro/blob/main/docs/registry/registro-documentos.yaml)

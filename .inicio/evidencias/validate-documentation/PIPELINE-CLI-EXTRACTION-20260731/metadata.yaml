@@ -1,0 +1,52 @@
+evidence_id: PIPELINE-CLI-EXTRACTION-20260731
+phase: 10
+status: pass
+evaluated_at: "2026-07-31T13:46:47-03:00"
+executor: "Codex, sob solicitação de Davi Sermenho"
+repository: cepraea/beach-pro
+branch: agent/modularizacao-validator-fase-10
+pull_request:
+  number: 13
+  url: "https://github.com/cepraea/beach-pro/pull/13"
+  state_at_evaluation: draft
+base_commit: 4db068c
+implementation_commits:
+  pipeline: 890db39
+  cli: 4644da7
+  BEH-06: f44a98d
+  boundary_tests: 8abe8a2
+authorization:
+  authority: Davi Sermenho
+  role: AUTORIDADE_APROVADORA
+  decision: BEH-06
+tar_materialization:
+  status: pass
+  matching_hashes: 3
+validation:
+  unit_tests:
+    status: pass
+    tests: 108
+  integration_tests:
+    status: pass
+    tests: 1
+  pyright:
+    version: 1.1.411
+    status: pass
+    errors: 0
+    warnings: 0
+  npm_validate:
+    status: pass
+    executions_after_code_change_sets: 3
+  baseline_comparison: pass
+gates:
+  PIPELINE-EXTRACTION: pass
+  CLI-EXTRACTION: pass
+  BEH-06: pass
+next_phase:
+  phase: 11
+  status: blocked_until_pull_request_merge
+residual_limitations:
+  - identidade dos gates globais em aprovações
+  - comprovação dos bytes de fontes locais em G2
+  - obrigatoriedade e cobertura de G2
+  - quantidade fixa de registros de ingestão

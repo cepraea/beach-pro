@@ -1,19 +1,14 @@
 """Tests for G-FM front matter parsing and validation."""
 
-import sys
 import unittest
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from validate_documentation import (  # noqa: E402
-    JsonObject,
-    Reporter,
-    parse_front_matter,
-    validate_feature_spec,
-    validate_governed,
+from scripts.documentation.validate_documentation import (
+    front_matter as front_matter_module,
+    reporter as reporter_module,
 )
+from scripts.documentation.validate_documentation.json_types import JsonObject
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -102,10 +97,13 @@ class TestParseGoverned(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _parse(self, content: str) -> tuple[JsonObject | None, Reporter]:
-        r = Reporter()
+    def _parse(
+        self,
+        content: str,
+    ) -> tuple[JsonObject | None, reporter_module.Reporter]:
+        r = reporter_module.Reporter()
         path = _tmp(self.tmp, content)
-        result = parse_front_matter(path, "governed", r)
+        result = front_matter_module.parse_front_matter(path, "governed", r)
         return result, r
 
     def test_valid_document(self) -> None:
@@ -120,6 +118,26 @@ class TestParseGoverned(unittest.TestCase):
     def test_yaml_invalid(self) -> None:
         _, r = self._parse("---\nkey: [unclosed\n---\n# body\n")
         self.assertTrue(any("invalid YAML" in e for e in r.errors))
+
+    def test_invalid_utf8_reports_file_and_stops_validation(self) -> None:
+        path = self.tmp / "invalid-utf8.md"
+        path.write_bytes(b"---\ntitle: \xff\n---\n# body\n")
+        reporter = reporter_module.Reporter()
+
+        data = front_matter_module.parse_front_matter(
+            path,
+            "governed",
+            reporter,
+        )
+
+        self.assertIsNone(data)
+        self.assertTrue(
+            any(
+                str(path) in error and "invalid UTF-8" in error
+                for error in reporter.errors
+            ),
+            msg=f"expected controlled UTF-8 error, got: {reporter.errors}",
+        )
 
     def test_missing_closing_delimiter(self) -> None:
         _, r = self._parse(
@@ -156,6 +174,24 @@ class TestParseGoverned(unittest.TestCase):
             msg=f"expected duplicate key error in nested, got: {r.errors}",
         )
 
+    def test_complex_mapping_key_reports_controlled_yaml_error(self) -> None:
+        data, reporter = self._parse(
+            "---\n"
+            "? [document_id, version]\n"
+            ": invalid-complex-key\n"
+            "---\n"
+            "# body\n"
+        )
+
+        self.assertIsNone(data)
+        self.assertTrue(
+            any(
+                "invalid YAML" in error and "mapping key" in error
+                for error in reporter.errors
+            ),
+            msg=f"expected controlled complex-key error, got: {reporter.errors}",
+        )
+
     def test_unknown_field_rejected(self) -> None:
         content = (
             "---\n"
@@ -190,12 +226,16 @@ class TestValidateGoverned(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _run(self, content: str, record: JsonObject) -> Reporter:
+    def _run(
+        self,
+        content: str,
+        record: JsonObject,
+    ) -> reporter_module.Reporter:
         path = _tmp(self.tmp, content)
         record = dict(record)
         record["current_path"] = str(path)
-        r = Reporter()
-        validate_governed(record, r)
+        r = reporter_module.Reporter()
+        front_matter_module.validate_governed(record, r)
         return r
 
     def test_valid_sync(self) -> None:
@@ -221,8 +261,8 @@ class TestValidateGoverned(unittest.TestCase):
         record.pop("responsible")
         path = _tmp(self.tmp, VALID_GOVERNED, "resp_test.md")
         record["current_path"] = str(path)
-        r = Reporter()
-        validate_governed(record, r)
+        r = reporter_module.Reporter()
+        front_matter_module.validate_governed(record, r)
         self.assertTrue(
             any("responsible" in e for e in r.errors),
             msg="FM has responsible but registry does not — should error",
@@ -266,10 +306,10 @@ class TestValidateFeatureSpec(unittest.TestCase):
     def tearDown(self) -> None:
         self._tmp_dir.cleanup()
 
-    def _run(self, content: str) -> Reporter:
+    def _run(self, content: str) -> reporter_module.Reporter:
         path = _tmp(self.tmp, content)
-        r = Reporter()
-        validate_feature_spec(path, r)
+        r = reporter_module.Reporter()
+        front_matter_module.validate_feature_spec(path, r)
         return r
 
     def test_valid_incluido(self) -> None:
