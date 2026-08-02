@@ -1,4 +1,25 @@
 # Plano: Sistema Front Matter YAML — CEPRAEA Beach Pro
+<!-- markdownlint-disable MD007 -->
+- [Plano: Sistema Front Matter YAML — CEPRAEA Beach Pro](#plano-sistema-front-matter-yaml--cepraea-beach-pro)
+  - [Contexto](#contexto)
+  - [Schema de front matter (campos definidos)](#schema-de-front-matter-campos-definidos)
+    - [Documentos `docs/` — campos obrigatórios](#documentos-docs--campos-obrigatórios)
+  - [Fases de implementação](#fases-de-implementação)
+    - [Fase 0 — Fundação de schema e tooling](#fase-0--fundação-de-schema-e-tooling)
+    - [Fase 1 — Feature specs (sem impacto no registro existente)](#fase-1--feature-specs-sem-impacto-no-registro-existente)
+    - [Fase 2 — Gate G-FM no script Python](#fase-2--gate-g-fm-no-script-python)
+    - [Fase 3 — Front matter nos docs `RASCUNHO` (bulk)](#fase-3--front-matter-nos-docs-rascunho-bulk)
+    - [Fase 4 — Front matter nos docs CANONICA\_VIGENTE (operação controlada)](#fase-4--front-matter-nos-docs-canonica_vigente-operação-controlada)
+    - [Fase 5 — Documentos de contexto para agentes](#fase-5--documentos-de-contexto-para-agentes)
+    - [Fase 6 — Encerramento](#fase-6--encerramento)
+  - [Arquivos críticos](#arquivos-críticos)
+  - [Riscos](#riscos)
+  - [Verificação end-to-end](#verificação-end-to-end)
+
+<!-- markdownlint-enable MD007 -->
+
+>**Status normativo:** NORMA OBRIGATÓRIA.  
+>**Contexto deste documento:** este documento governa toda formatação da documentação  de artefatos normativos do repositório. Seus termos `DEVE`, `NÃO DEVE`, `PODE` e `FALHA` têm sentido normativo. Uma tradução somente pode substituir sua origem quando cumprir todos os gates definidos nesta norma.
 
 ## Contexto
 
@@ -54,54 +75,57 @@ authorized_by: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
 
 ### Fase 1 — Feature specs (sem impacto no registro existente)
 
-4. Criar `src/features/<feature>/README.md` para as 6 features: atletas, treinadores, treinos (M0/M1), presencas (M2), jogos (M3/M4 — mvp_status: ADIADO), avaliacoes (M4 — mvp_status: ADIADO)
-5. Não são registrados em `registro-documentos.yaml` — o validator não varre `src/`
+1. Criar `src/features/<feature>/README.md` para as 6 features: atletas, treinadores, treinos (M0/M1), presencas (M2), jogos (M3/M4 — mvp_status: ADIADO), avaliacoes (M4 — mvp_status: ADIADO)
+2. Não são registrados em `registro-documentos.yaml` — o validator não varre `src/`
 
 ### Fase 2 — Gate G-FM no script Python
 
-6. Adicionar `validate_front_matter()` em `scripts/documentation/validate_documentation.py`
-   - Verifica presença do bloco ---
-   - Valida YAML contra `front-matter.schema.json`
-   - Confere `document_id`, `version` e `workflow_status` contra o registro
-   - Confere que `permitted_uses` no front matter é subconjunto do registro
-7. Adicionar `G-FM` ao `--gate` choices do script
-8. Adicionar `G-FM` a `docs/registry/workflow-documentacao.yaml`
-9. Atualizar hash do workflow-documentacao.yaml no registro
-10. Rodar `--gate` `G-FM` como baseline — esperar falha em tudo (sem front matter ainda)
+1. Adicionar `validate_front_matter()` em `scripts/documentation/validate_documentation.py`
+    - Verifica presença do bloco ---
+    - Valida YAML contra `front-matter.schema.json`
+    - Confere `document_id`, `version` e `workflow_status` contra o registro
+    - Confere que `permitted_uses` no front matter é subconjunto do registro
+  
+2. Adicionar `G-FM` ao `--gate` choices do script
+3. Adicionar `G-FM` a `docs/registry/workflow-documentacao.yaml`
+4. Atualizar hash do workflow-documentacao.yaml no registro
+5. Rodar `--gate` `G-FM` como baseline — esperar falha em tudo (sem front matter ainda)
 
 ### Fase 3 — Front matter nos docs `RASCUNHO` (bulk)
-11. Por arquivo: adicionar front matter → calcular SHA-256 novo → atualizar content_hash no registro → `rodar o validator`
-12. Ordem: `governance` → `sources` → `validation reports` → `derived` → `controlled bases`
-13. Nunca em lote — cada arquivo deve passar o validator antes do próximo
+
+1. Por arquivo: adicionar front matter → calcular SHA-256 novo → atualizar content_hash no registro → `rodar o validator`
+2. Ordem: `governance` → `sources` → `validation reports` → `derived` → `controlled bases`
+3. Nunca em lote — cada arquivo deve passar o validator antes do próximo
 
 ### Fase 4 — Front matter nos docs CANONICA_VIGENTE (operação controlada)
 
-14. Os dois documentos canônicos (contexto-`cepraea-beach-pro.md` e `decisao-019-mvp-sintetico.md`) devem ser atualizados em um único commit atômico com os hashes correspondentes no registro
-15. Rodar o validator completo incluindo G-FM antes do commit
+1. Os dois documentos canônicos (contexto-`cepraea-beach-pro.md` e `decisao-019-mvp-sintetico.md`) devem ser atualizados em um único commit atômico com os hashes correspondentes no registro
+2. Rodar o validator completo incluindo G-FM antes do commit
 
 ### Fase 5 — Documentos de contexto para agentes
 
-16. Registrar primeiro em `registro-documentos.yaml`, depois criar os arquivos:
+1. Registrar primeiro em `registro-documentos.yaml`, depois criar os arquivos:
    - `docs/canonical/context/guia-triagem-agente.md` — mapa de documentos canônicos, regras de triagem, tabela - `permitted_uses/prohibited_uses`
    - `docs/canonical/context/mapa-decisoes-mvp.md` — `tabela RFs` × `milestone` × `feature` (condensado do `DEC-019` para consulta rápida)
    - `docs/canonical/context/vocabulario-dominio.md` — vocabulário controlado de entidades, extraído do contexto operacional
 
 ### Fase 6 — Encerramento
 
-17. Atualizar `docs/README.md` com seção "Triagem por agentes de IA" explicando os campos de front matter
-18. Atualizar `docs/inventario-documentos.md`
-19. Rodar `validate_documentation.py` completo (todos os gates incluindo G-FM)
+1. Atualizar `docs/README.md` com seção "Triagem por agentes de IA" explicando os campos de front matter
+2. Atualizar `docs/inventario-documentos.md`
+3. Rodar `validate_documentation.py` completo (todos os gates incluindo G-FM)
 
 ## Arquivos críticos
 
 | Arquivo | Ação |
-| ------- | ------ |
-| `docs/contracts/schemas/front-matter.schema.json` | Criar (novo)| |`docs/contracts/schemas/documento.schema.js`|on Referência para sincronizar enums|
-|`docs/registry/registro-documentos.yaml`|	Atualizar a cada front matter adicionado|
-|`docs/registry/workflow-documentacao.yaml`|Adicionar gate `G-FM`
-|`scripts/documentation/validate_documentation.py`|Adicionar `validate_front_matter()` e gate `G-FM`
-|`src/features/*/README.md`|Criar (6 novos arquivos)
-|`docs/canonical/context/*.md`|Criar (3 novos arquivos, após registro)|
+| :---: | :---: |
+| `docs/contracts/schemas/front-matter.schema.json` | Criar (novo) |
+| `docs/contracts/schemas/documento.schema.js` | on Referência para sincronizar enums |
+| `docs/registry/registro-documentos.yaml` | Atualizar a cada front matter adicionado |
+| `docs/registry/workflow-documentacao.yaml` | Adicionar gate `G-FM` |
+| `scripts/documentation/validate_documentation.py` | Adicionar `validate_front_matter()` e gate `G-FM` |
+| `src/features/*/README.md` | Criar (6 novos arquivos) |
+| `docs/canonical/context/*.md` | Criar (3 novos arquivos, após registro) |
 
 ## Riscos
 
@@ -110,7 +134,9 @@ authorized_by: DOC-CEPRAEA-DEC-019-MVP-SINTETICO
 - `CANONICA_VIGENTE`: documentos mais sensíveis. `build_provenance_catalog.py` falha se o hash divergir. Tratar na Fase 4, por último, de forma atômica.
 
 - `documento.schema.json` não precisa mudar: o front matter tem schema próprio (`front-matter.schema.json`). São superfícies de validação distintas.
+
 ## Verificação end-to-end
+
 ```bash
 python3 scripts/documentation/validate_documentation.py  # gates G-ARCH, G0, G1
 python3 scripts/documentation/validate_documentation.py --gate G-FM  # novo gate

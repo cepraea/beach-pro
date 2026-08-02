@@ -1,0 +1,29 @@
+decision_id: DEC-MD007-SUMARIOS-AUTOMATICOS
+version: 1
+status: approved
+normative_text: >-
+  Todos os sumários gerados automaticamente em todos os arquivos Markdown
+  atuais e futuros deste repositório DEVEM estar cercados por exatamente
+  <!-- markdownlint-disable MD007 --> imediatamente antes da lista gerada e
+  <!-- markdownlint-enable MD007 --> imediatamente depois dela. A obrigação é
+  universal para sumários automáticos e independe da ferramenta utilizada, da
+  indentação produzida ou da existência prévia de erro MD007. Os dois
+  delimitadores DEVEM permanecer fora da faixa substituída pelo gerador. É
+  proibido reindentar ou editar manualmente o sumário, desabilitar MD007 para o
+  arquivo inteiro ou relaxar MD007 para listas comuns. A regeneração DEVE
+  preservar os delimitadores, ser idempotente e não produzir erro de lint; fora
+  do bloco delimitado, MD007 DEVE permanecer ativa.
+authority:
+  actor_id: Davi Sermenho
+  role: AUTORIDADE_APROVADORA
+scope:
+  - todos_os_sumarios_automaticos_de_markdowns_atuais_e_futuros_do_repositorio
+  - excecao_local_md007
+  - preservacao_da_formatacao_nativa_do_gerador
+  - .inicio/tradutor.md
+  - .inicio/Sistema Front Matter YAML CEPRAEA Beach Pro.md
+effective_from: "2026-08-02T14:07:56-03:00"
+supersedes: []
+amends: []
+evidence_ids:
+  - EVID-MD007-SUMARIOS-AUTOMATICOS-001

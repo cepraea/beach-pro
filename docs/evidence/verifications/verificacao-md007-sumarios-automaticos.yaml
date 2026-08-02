@@ -1,0 +1,28 @@
+evidence_id: EVID-MD007-SUMARIOS-AUTOMATICOS-001
+recorded_at: "2026-08-02T14:07:56-03:00"
+subject: DEC-MD007-SUMARIOS-AUTOMATICOS
+reported_by:
+  actor_id: Davi Sermenho
+  role: AUTORIDADE_APROVADORA
+reported_observation:
+  operation: regeneracao_automatica_consecutiva_do_sumario
+  result: pass
+  findings:
+    - os_delimitadores_md007_foram_preservados
+    - a_segunda_regeneracao_nao_produziu_diferenca
+verified_artifacts:
+  - path: .inicio/tradutor.md
+    sha256: 74d586f0e98db7e9502f8509f282a9c023f49b4d2dc95cf411cde9c5715902b6
+    markdownlint_status: pass
+    delimiters_preserved: true
+  - path: .inicio/Sistema Front Matter YAML CEPRAEA Beach Pro.md
+    sha256: bcaca3fda76befc86bccd04da60e0ffd70ecd84d07a992cd8567ad12e00de4e1
+    markdownlint_status: pass
+    delimiters_preserved: true
+    heading_count: 15
+    toc_entry_count: 15
+controls:
+  md007_active_outside_delimited_block: true
+  ordinary_lists_exempted: false
+  global_md007_configuration_changed: false
+conclusion: pass

@@ -1,6 +1,8 @@
 node_modules/
+.inicio/
 dist/
 coverage/
+/BEACH HANDBALL/
 .env
 .env.local
 *.log

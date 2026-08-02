@@ -271,7 +271,7 @@
   // Efeito: qualquer tag HTML fora desta lista em documentos novos gera erro.
   // ---------------------------------------------------------------------------
   "MD033": {
-    "allowed_elements": ["br", "details", "kbd", "context", "rules", "sub", "summary", "sup"]
+    "allowed_elements": ["br", "b", "i", "center", "details", "kbd", "context", "rules", "sub", "summary", "sup"]
   },
 
   // ---------------------------------------------------------------------------

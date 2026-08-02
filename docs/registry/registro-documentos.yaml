@@ -2698,3 +2698,71 @@ documents:
       prohibited_uses: [canonizacao, autorizacao_implementacao]
     relationships:
       approves: [DOC-CEPRAEA-DEC-ENFORCEMENT-G-FM]
+
+  # ── Exceção MD007 para sumários automáticos (2026-08-02) ───────────────────
+
+  - document_id: DOC-CEPRAEA-DEC-MD007-SUMARIOS-AUTOMATICOS
+    title: "Uso localizado de MD007 em sumários automáticos"
+    responsible: Davi Sermenho
+    registered_at: "2026-08-02T14:07:56-03:00"
+    last_verified_at: "2026-08-02T14:07:56-03:00"
+    document_type: decisao
+    version: "1.0.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/controlled/candidates/decisao-md007-sumarios-automaticos.yaml
+    target_path: docs/controlled/candidates/decisao-md007-sumarios-automaticos.yaml
+    canonical_path: null
+    content_hash: 9d4226dc37d8b1c943982e9f93f62d03b6f8f35a728362f22724161c61efa044
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - todos_os_sumarios_automaticos_de_markdowns_do_repositorio
+        - excecao_local_md007
+      permitted_uses:
+        - suprimir_md007_somente_no_sumario_automatico
+        - preservar_formatacao_nativa_do_gerador
+      prohibited_uses:
+        - desabilitar_md007_globalmente
+        - isentar_listas_comuns
+        - editar_sumario_automatico_manualmente
+        - canonizacao_automatica
+    relationships:
+      contract_id: [decisao]
+      evidenced_by: [DOC-EVID-VERIFICACAO-MD007-SUMARIOS-AUTOMATICOS]
+      references: [DOC-CONTRATO-DECISAO]
+
+  - document_id: DOC-EVID-VERIFICACAO-MD007-SUMARIOS-AUTOMATICOS
+    title: "Verificação da exceção MD007 em sumários automáticos"
+    responsible: AUTOMACAO
+    registered_at: "2026-08-02T14:07:56-03:00"
+    last_verified_at: "2026-08-02T14:07:56-03:00"
+    document_type: evidencia
+    version: "0.1.0"
+    registration_status: ATIVO_CONTROLADO
+    workflow_status: RASCUNHO
+    legacy_declared_status: null
+    current_path: docs/evidence/verifications/verificacao-md007-sumarios-automaticos.yaml
+    target_path: docs/evidence/verifications/verificacao-md007-sumarios-automaticos.yaml
+    canonical_path: null
+    content_hash: 010c3471ea8aa145d37d4c96c3b3d746de588a14525233998c553276f61cb978
+    self_hash_exempt: false
+    naming_conformance: true
+    directory_conformance: true
+    migration_required: false
+    authority_scope:
+      subjects:
+        - verificacao_md007
+        - idempotencia_sumario_automatico
+      permitted_uses:
+        - evidencia_de_decisao
+        - auditoria
+      prohibited_uses:
+        - aprovacao_por_inferencia
+        - canonizacao
+    relationships:
+      validates: [DOC-CEPRAEA-DEC-MD007-SUMARIOS-AUTOMATICOS]
