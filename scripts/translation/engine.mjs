@@ -71,7 +71,7 @@ function classifyLine(line, state, profile) {
   const trimmed = line.trim();
   if (state.frontMatter) {
     if (trimmed === '---') return { classification: CLASSIFICATION.MARKDOWN_SYNTAX, rule: 'CR-002A' };
-    const yaml = /^([A-Za-z_][A-Za-z0-9_-]*):(.*)$/.exec(line);
+    const yaml = /^([A-Za-z_][A-Za-z0-9_-]*):(.*)$/.exec(line.replace(/\r?\n$/u, ''));
     if (yaml) {
       if (yaml[1] === 'description') return { classification: CLASSIFICATION.TRANSLATABLE_CONTROLLED, rule: 'CR-002B' };
       return { classification: CLASSIFICATION.PROTECTED_EXACT, rule: 'CR-002C' };
