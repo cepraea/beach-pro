@@ -1,0 +1,35 @@
+schema_version: "1.0.0"
+registry:
+  registry_id: REG-TRADUCAO-CONTROLADA
+  title: Registro de tradução controlada
+  status: ATIVO_CONTROLADO
+  parent_registry: docs/registry/registro-documentos.yaml
+  authority_locator: docs/governance/policies/tradutor.md
+  policy: docs/governance/policies/politica-traducao-controlada.md
+  decisions:
+    - docs/governance/decisions/dec-trad-001-politica-pt-br.md
+    - docs/governance/decisions/dec-trad-002-hierarquia-ownership.md
+  authority_scope:
+    subjects: [traducao_controlada, idioma_canonico, equivalencia_contratual, proveniencia]
+    permitted_uses: [registro_operacional, validacao, roteamento]
+    prohibited_uses: [aprovacao_humana_automatica, correcao_silenciosa, portabilidade_oculta]
+
+documents:
+  - document_id: DOC-GOV-POL-TRADUTOR
+    current_path: docs/governance/policies/tradutor.md
+    workflow_status: CANDIDATA_EM_VALIDACAO
+    content_sha256: 3dc7adb4fe2da4d2f2c68603667b79ffe2fb3b14501cf3bcbfec9e22e785ff18
+    authority_scope:
+      subjects: [norma_de_traducao, gates, schema, classificacao]
+      permitted_uses: [execucao_controlada, testes]
+      prohibited_uses: [promocao_sem_aprovacao]
+  - document_id: DOC-GOV-POL-TRADUCAO
+    current_path: docs/governance/policies/politica-traducao-controlada.md
+    version: "1.0.0-rc.1"
+    workflow_status: CANDIDATA_EM_VALIDACAO
+  - document_id: DOC-GOV-DEC-TRAD-001
+    current_path: docs/governance/decisions/dec-trad-001-politica-pt-br.md
+    workflow_status: APROVADA_PARA_IMPLEMENTACAO_CONTROLADA
+  - document_id: DOC-GOV-DEC-TRAD-002
+    current_path: docs/governance/decisions/dec-trad-002-hierarquia-ownership.md
+    workflow_status: APROVADA_PARA_IMPLEMENTACAO_CONTROLADA
