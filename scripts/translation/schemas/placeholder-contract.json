@@ -1,0 +1,11 @@
+{
+  "contract_id": "PLACEHOLDER-TRADUCAO-1.0.0",
+  "format": "@@TR:{translation_run_id}:{segment_id}:{source_sha256_prefix16}@@",
+  "encoding": "UTF-8",
+  "scope": "working_copy_only",
+  "uniqueness": "one placeholder per protected segment occurrence",
+  "collision_policy": "BLOCKED:E_PLACEHOLDER_COLLISION",
+  "missing_policy": "BLOCKED:E_PLACEHOLDER_MISSING",
+  "duplicate_policy": "BLOCKED:E_PLACEHOLDER_DUPLICATED",
+  "restoration": "replace exactly once with decoded source_value_base64 and verify source_value_sha256"
+}
