@@ -1,0 +1,18 @@
+{
+  "machine_id": "TRADUCAO-CONTROLADA-1.0.0",
+  "initial_state": "DISCOVERED",
+  "terminal_states": ["PROMOTED", "BLOCKED"],
+  "transitions": [
+    { "from": "DISCOVERED", "to": "SOURCE_FIXED", "guard": "source_sha256_verified" },
+    { "from": "SOURCE_FIXED", "to": "SEGMENTED", "guard": "byte_coverage_100_percent" },
+    { "from": "SEGMENTED", "to": "CLASSIFIED", "guard": "exactly_one_class_per_segment" },
+    { "from": "CLASSIFIED", "to": "FROZEN", "guard": "protected_segments_replaced_in_working_copy" },
+    { "from": "FROZEN", "to": "TRANSLATED", "guard": "all_translatable_segments_have_values" },
+    { "from": "TRANSLATED", "to": "RESTORED", "guard": "all_placeholders_restored_exactly_once" },
+    { "from": "RESTORED", "to": "VALIDATED", "guard": "individual_and_collective_checks_pass" },
+    { "from": "VALIDATED", "to": "REVIEWED", "guard": "independent_bilingual_review_pass" },
+    { "from": "REVIEWED", "to": "APPROVED", "guard": "human_approval_record_exists" },
+    { "from": "APPROVED", "to": "PROMOTED", "guard": "atomic_cutover_completed" }
+  ],
+  "global_failure_transition": { "from": "*", "to": "BLOCKED", "guard": "any_blocking_error_or_ambiguity" }
+}
