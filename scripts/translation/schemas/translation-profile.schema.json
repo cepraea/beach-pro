@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/translation-profile.schema.json",
+  "title": "Translation Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile_id", "version", "source_artifact", "target_artifact", "source_language", "target_language", "document_role", "protected_literals", "allowed_japanese_residual", "structural_invariants", "collective_invariants", "provenance"],
+  "properties": {
+    "profile_id": { "type": "string", "pattern": "^TPROF-[A-Z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "source_artifact": { "type": "string", "minLength": 1 },
+    "target_artifact": { "type": "string", "minLength": 1 },
+    "source_language": { "enum": ["ja", "en", "pt-BR"] },
+    "target_language": { "const": "pt-BR" },
+    "document_role": { "enum": ["POLICY", "PROCESS_RULE", "TEMPLATE", "TAXONOMY", "AGENT_PROMPT", "REGISTRY", "PORTING_GUIDE", "GLOSSARY"] },
+    "protected_literals": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "allowed_japanese_residual": { "type": "boolean" },
+    "structural_invariants": { "type": "object" },
+    "collective_invariants": { "type": "array", "items": { "type": "string" } },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "sha256_status"],
+      "properties": {
+        "origin": { "type": "string" },
+        "sha256_status": { "enum": ["FIXED", "PENDING", "UNAVAILABLE"] }
+      }
+    }
+  }
+}
