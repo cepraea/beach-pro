@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "translation_run_id": "TRUN-20260803-001",
   "source_artifact": "docs/governance/translation/corpus-map.json",
-  "source_artifact_sha256": "405cd4ce5cdbf114d9c8be29bec286bc2eac823ad728491fac2ff4a9fd0e5118",
+  "source_artifact_sha256": "32addaa785f1c822e3b1356f46b40c6f637e705b22a125edc34dd1473b451760",
   "source_encoding": "UTF-8",
   "working_copy": "staging/TRUN-20260803-001",
   "target_artifact": "docs/translated",
@@ -16,5 +16,5 @@
   },
   "state": "BLOCKED",
   "validation_status": "BLOCKED",
-  "error_codes": ["E_UPSTREAM_SHA256_PENDING", "E_TRANSLATION_VALUES_MISSING", "E_BILINGUAL_REVIEW_MISSING", "E_HUMAN_APPROVAL_MISSING"]
+  "error_codes": ["E_TRANSLATION_VALUES_MISSING", "E_BILINGUAL_REVIEW_MISSING", "E_HUMAN_APPROVAL_MISSING"]
 }
