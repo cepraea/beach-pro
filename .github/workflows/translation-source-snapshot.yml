@@ -1,0 +1,50 @@
+name: Translation source snapshot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/translation-source-snapshot.yml"
+      - "docs/governance/translation/corpus-map.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download pinned upstream sources
+        shell: bash
+        env:
+          UPSTREAM_COMMIT: 9cf3865dd3069f83500d7b3706267c9f208dcf49
+        run: |
+          set -euo pipefail
+          mkdir -p snapshot/process-rules snapshot/.claude/agents
+          files=(
+            "process-rules/glossary-ja.md"
+            ".claude/agents/srs-writer.md"
+            ".claude/agents/security-reviewer.md"
+            ".claude/agents/implementer.md"
+            ".claude/agents/review-agent.md"
+            ".claude/agents/progress-monitor.md"
+            ".claude/agents/change-manager.md"
+            ".claude/agents/risk-manager.md"
+            ".claude/agents/license-checker.md"
+            ".claude/agents/kotodama-kun.md"
+          )
+          for file in "${files[@]}"; do
+            curl --fail --silent --show-error --location \
+              "https://raw.githubusercontent.com/GoodRelax/claude-code-full-auto-dev/${UPSTREAM_COMMIT}/${file}" \
+              --output "snapshot/${file}"
+          done
+          (cd snapshot && find . -type f -name '*.md' -print0 | sort -z | xargs -0 sha256sum) | tee snapshot/SHA256SUMS
+      - name: Upload immutable snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: translation-upstream-9cf3865
+          path: snapshot/
+          if-no-files-found: error
+          retention-days: 30
