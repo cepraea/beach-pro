@@ -21,3 +21,10 @@
 - Corrija a causa raiz, evitando desabilitar verificações.
 - Não reduza cobertura nem remova testes para fazer a suíte passar.
 - Mantenha compatibilidade, salvo instrução contrária.
+
+## Tradução controlada
+
+- Toda tradução normativa deve seguir `docs/governance/policies/tradutor.md`, `docs/governance/policies/politica-traducao-controlada.md` e `docs/registry/registro-traducao.yaml`.
+- Tradução, correção, portabilidade e atualização factual são operações separadas.
+- Ambiguidade, divergência contratual, fonte sem SHA-256, revisão bilíngue ausente ou aprovação humana ausente resultam em `BLOCKED`.
+- Nenhuma versão traduzida pode ser promovida ou substituir a origem fora do corte atômico aprovado.
