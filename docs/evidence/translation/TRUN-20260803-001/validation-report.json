@@ -1,0 +1,23 @@
+{
+  "translation_run_id": "TRUN-20260803-001",
+  "validation_status": "BLOCKED",
+  "error_codes": ["E_UPSTREAM_SHA256_PENDING", "E_TRANSLATION_VALUES_MISSING", "E_BILINGUAL_REVIEW_MISSING", "E_HUMAN_APPROVAL_MISSING"],
+  "completed_phases": [
+    "Fase 0: norma corrigida no Drive; autoridade, política, decisões, schemas, state machine, placeholder contract, fixtures and tests implemented",
+    "Fase 1: Drive corpus inventoried; upstream sources located and pinned; local Drive sources hashed; source-target map created",
+    "Fase 2: deterministic engine and CLI implemented"
+  ],
+  "blocked_phases": [
+    "Fase 1: SHA-256 dos dez blobs upstream ainda não materializados",
+    "Fase 3: traduções bilíngues não materializadas",
+    "Fase 4: artefatos-alvo indisponíveis para equivalência",
+    "Fase 5: revisão independente, aprovação humana e corte atômico indisponíveis"
+  ],
+  "local_checks": {
+    "node_syntax": "PASS",
+    "json_yaml_parse": "PASS",
+    "runtime_execution": "NOT_RUN_DEPENDENCY_UNAVAILABLE_LOCALLY",
+    "npm_validate": "PENDING_CI"
+  },
+  "limitations": ["Nenhuma equivalência semântica ou aprovação final é declarada."]
+}
