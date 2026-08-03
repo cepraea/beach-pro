@@ -1,0 +1,2 @@
+```text
+bloco sem fechamento
