@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/translation-manifest.schema.json",
+  "title": "Translation Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "translation_run_id", "source_artifact", "source_artifact_sha256", "source_encoding", "working_copy", "target_artifact", "source_language", "target_language", "parser", "state", "validation_status", "error_codes"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "translation_run_id": { "type": "string", "pattern": "^TRUN-[A-Z0-9-]+$" },
+    "source_artifact": { "type": "string", "minLength": 1 },
+    "source_artifact_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "source_encoding": { "const": "UTF-8" },
+    "working_copy": { "type": "string", "minLength": 1 },
+    "target_artifact": { "type": "string", "minLength": 1 },
+    "source_language": { "type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$" },
+    "target_language": { "const": "pt-BR" },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "preset", "options"],
+      "properties": {
+        "package": { "const": "markdown-it" },
+        "version": { "const": "14.3.0" },
+        "preset": { "const": "default" },
+        "options": { "const": { "html": true, "breaks": false, "linkify": false, "typographer": false } }
+      }
+    },
+    "state": { "enum": ["DISCOVERED", "SOURCE_FIXED", "SEGMENTED", "CLASSIFIED", "FROZEN", "TRANSLATED", "RESTORED", "VALIDATED", "REVIEWED", "APPROVED", "PROMOTED", "BLOCKED"] },
+    "validation_status": { "enum": ["NOT_RUN", "PASS", "FAIL", "BLOCKED"] },
+    "error_codes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^E_[A-Z0-9_]+$" } }
+  }
+}
