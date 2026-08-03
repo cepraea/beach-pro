@@ -6,6 +6,17 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   { ignores: ['dist'] },
+  js.configs.recommended,
+  {
+    files: ['scripts/**/*.mjs', 'governance/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: globals.node,
+    },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
