@@ -33,7 +33,10 @@
     "governance:hash": "node governance/src/cli.mjs hash",
     "governance:test": "node governance/tests/run-tests.mjs",
     "governance:install-hooks": "node governance/src/install-hooks.mjs",
-    "validate": "npm run governance:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
+    "translation:prepare": "node scripts/translation/cli.mjs prepare",
+    "translation:apply": "node scripts/translation/cli.mjs apply",
+    "translation:test": "node scripts/translation/tests/run-tests.mjs",
+    "validate": "npm run governance:test && npm run translation:test && npm run lint && npm run lint:md:vscode && npm run quality:workspace && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.0",
@@ -50,7 +53,7 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.22.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-hooks": "^0.4.19",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "jsdom": "^26.0.0",
