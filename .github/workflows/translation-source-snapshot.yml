@@ -47,4 +47,5 @@ jobs:
           name: translation-upstream-9cf3865
           path: snapshot/
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 30
