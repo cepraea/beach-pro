@@ -1,23 +1,33 @@
 {
   "translation_run_id": "TRUN-20260803-001",
   "validation_status": "BLOCKED",
-  "error_codes": ["E_UPSTREAM_SHA256_PENDING", "E_TRANSLATION_VALUES_MISSING", "E_BILINGUAL_REVIEW_MISSING", "E_HUMAN_APPROVAL_MISSING"],
+  "error_codes": ["E_TRANSLATION_VALUES_MISSING", "E_BILINGUAL_REVIEW_MISSING", "E_HUMAN_APPROVAL_MISSING"],
   "completed_phases": [
-    "Fase 0: norma corrigida no Drive; autoridade, política, decisões, schemas, state machine, placeholder contract, fixtures and tests implemented",
-    "Fase 1: Drive corpus inventoried; upstream sources located and pinned; local Drive sources hashed; source-target map created",
-    "Fase 2: deterministic engine and CLI implemented"
+    "Fase 0: norma corrigida no Drive; autoridade externa, política, decisões, schemas, máquina de estados, contrato de placeholders, fixtures e testes implementados",
+    "Fase 1: corpus completo com 22 perfis; glossário e nove prompts recuperados do upstream fixado; todos os blobs com SHA-256 e proveniência registrados; mapa origem-destino atualizado",
+    "Fase 2: engine e CLI determinísticos implementados; seis artefatos auditáveis materializados; runtime integrado ao npm run validate"
   ],
   "blocked_phases": [
-    "Fase 1: SHA-256 dos dez blobs upstream ainda não materializados",
-    "Fase 3: traduções bilíngues não materializadas",
-    "Fase 4: artefatos-alvo indisponíveis para equivalência",
-    "Fase 5: revisão independente, aprovação humana e corte atômico indisponíveis"
+    "Fase 3: valores de tradução para os segmentos controlados ainda não foram produzidos",
+    "Fase 4: destinos completos ainda não existem para validação individual e coletiva",
+    "Fase 5: revisão bilíngue independente, aprovação humana vinculada aos hashes e corte atômico permanecem indisponíveis"
   ],
-  "local_checks": {
-    "node_syntax": "PASS",
-    "json_yaml_parse": "PASS",
-    "runtime_execution": "NOT_RUN_DEPENDENCY_UNAVAILABLE_LOCALLY",
-    "npm_validate": "PENDING_CI"
+  "checks": {
+    "snapshot_upstream": "PASS",
+    "sha256_verification": "PASS_22_PROFILES_FIXED",
+    "governance_tests": "PASS_18_ASSERTIONS",
+    "translation_tests": "PASS_20_ASSERTIONS",
+    "npm_ci": "PASS",
+    "lint": "PASS",
+    "markdown_validation": "PASS",
+    "workspace_validation": "PASS",
+    "typecheck": "PASS",
+    "application_tests": "PASS",
+    "build": "PASS",
+    "npm_validate": "PASS_CI_RUN_30"
   },
-  "limitations": ["Nenhuma equivalência semântica ou aprovação final é declarada."]
+  "limitations": [
+    "Nenhuma equivalência semântica dos destinos é declarada porque as traduções ainda não foram materializadas.",
+    "Nenhuma aprovação final ou promoção canônica foi executada."
+  ]
 }
