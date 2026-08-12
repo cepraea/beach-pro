@@ -1,0 +1,18 @@
+allowed_approval_policies = ["untrusted", "on-request"]
+allowed_approvals_reviewers = ["user"]
+allowed_sandbox_modes = ["read-only", "workspace-write"]
+allow_managed_hooks_only = true
+allow_remote_control = false
+allow_login_shell = false
+allowed_web_search_modes = ["cached", "indexed"]
+default_permissions = ":workspace"
+
+[allowed_permission_profiles]
+":read-only" = true
+":workspace" = true
+# :danger-full-access omitido = negado.
+
+[features]
+computer_use = false
+browser_use_external = false
+browser_use_full_cdp_access = false

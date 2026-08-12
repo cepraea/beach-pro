@@ -1,0 +1,82 @@
+{
+  "name": "CEPRAEA Agent",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/cepraea-beach-pro,type=bind",
+  "workspaceFolder": "/workspaces/cepraea-beach-pro",
+  "remoteUser": "agent",
+  "containerUser": "agent",
+  "updateRemoteUserUID": false,
+  "runArgs": [
+    "--security-opt=no-new-privileges:true",
+    "--cap-drop=ALL",
+    "--add-host=host.docker.internal:host-gateway"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder}/.git,target=/workspaces/cepraea-beach-pro/.git,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.devcontainer,target=/workspaces/cepraea-beach-pro/.devcontainer,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.github/workflows,target=/workspaces/cepraea-beach-pro/.github/workflows,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.claude,target=/workspaces/cepraea-beach-pro/.claude,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.codex,target=/workspaces/cepraea-beach-pro/.codex,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.mcp.json,target=/workspaces/cepraea-beach-pro/.mcp.json,type=bind,readonly",
+    "source=${localWorkspaceFolder}/CLAUDE.md,target=/workspaces/cepraea-beach-pro/CLAUDE.md,type=bind,readonly",
+    "source=${localWorkspaceFolder}/AGENTS.md,target=/workspaces/cepraea-beach-pro/AGENTS.md,type=bind,readonly",
+    "source=cepraea-agent-claude,target=/home/agent/.claude,type=volume",
+    "source=cepraea-agent-codex,target=/home/agent/.codex,type=volume",
+    "source=cepraea-agent-npm,target=/home/agent/.npm,type=volume",
+    "source=${localWorkspaceFolder}/.devcontainer/control-plane/gitconfig-agent,target=/etc/gitconfig,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.devcontainer/control-plane/gitconfig-agent,target=/home/agent/.gitconfig,type=bind,readonly",
+    "source=${localWorkspaceFolder}/.devcontainer/control-plane/gitconfig-agent,target=/home/agent/.config/git/config,type=bind,readonly",
+    "source=${localWorkspaceFolder}/scripts/ci,target=/workspaces/cepraea-beach-pro/scripts/ci,type=bind,readonly",
+    "source=${localWorkspaceFolder}/AGENT_POLICY.md,target=/workspaces/cepraea-beach-pro/AGENT_POLICY.md,type=bind,readonly"
+  ],
+  "containerEnv": {
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_TERMINAL_PROMPT": "0",
+    "GH_CONFIG_DIR": "/home/agent/.config/gh-empty",
+    "SSH_AUTH_SOCK": "",
+    "GITHUB_TOKEN": "",
+    "GH_TOKEN": "",
+    "DOCKER_HOST": "",
+    "GIT_CONFIG_NOSYSTEM": "1"
+  },
+  "remoteEnv": {
+    "GIT_CONFIG_GLOBAL": "/dev/null",
+    "GIT_TERMINAL_PROMPT": "0",
+    "GH_CONFIG_DIR": "/home/agent/.config/gh-empty",
+    "SSH_AUTH_SOCK": "",
+    "GITHUB_TOKEN": "",
+    "GH_TOKEN": "",
+    "DOCKER_HOST": "",
+    "GIT_CONFIG_NOSYSTEM": "1"
+  },
+  "forwardPorts": [
+    5173
+  ],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "git.autofetch": false,
+        "git.confirmSync": true,
+        "git.terminalAuthentication": false,
+        "git.useIntegratedAskPass": false,
+        "github.gitAuthentication": false,
+        "claudeCode.initialPermissionMode": "default"
+      },
+      "extensions": [
+        "anthropic.claude-code",
+        "openai.chatgpt"
+      ]
+    }
+  },
+  "postStartCommand": "install -d -m 0700 /home/agent/.claude/plans && test -w /home/agent/.claude/plans"
+}

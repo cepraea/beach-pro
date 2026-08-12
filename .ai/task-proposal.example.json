@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "tarefa_id": "<identificador>",
+  "instrucao_original": "<texto recebido>",
+  "objetivo": "<resultado>",
+  "arquivos": [
+    {
+      "caminho": "<path>",
+      "papel": "referencia | alvo | somente_leitura | proibido",
+      "operacao": "<leitura ou mudança>"
+    }
+  ],
+  "fora_de_escopo": [
+    "<exclusao>"
+  ],
+  "criterios_de_aceite": [
+    {
+      "condicao": "<fato observavel>",
+      "metodo": "<comando ou inspeção>",
+      "esperado": "passou"
+    }
+  ],
+  "risco": {
+    "nivel": "verde | amarelo | vermelho | vermelho_critico",
+    "naturezas": [
+      "<ui | dependencia | rls | mfa | ci | dados>"
+    ],
+    "blast_radius": "baixo | medio | alto",
+    "reversibilidade": "reversivel | parcial | irreversivel",
+    "justificativa": "<motivo>"
+  },
+  "aprovacao": {
+    "status": "NAO_REGISTRADA_AQUI",
+    "observacao": "A aprovação pertence a Davi/GitHub."
+  }
+}
