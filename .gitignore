@@ -1,0 +1,25 @@
+# PASTA COM ARQUIVOS DE IDEIAS E RASCUNHOS
+#
+
+.drive
+
+# Scratch/temporário — nunca versionar
+tmp/
+
+# Metadado de zona do Windows/WSL (mark-of-the-web) — nunca versionar
+*:Zone.Identifier
+
+# Node.js
+node_modules/
+npm-debug.log*
+.npm
+
+# Ambiente/segredos locais
+.env
+.env.*.local
+
+# Artefatos de SO/editor
+.DS_Store
+Thumbs.db
+*.swp
+*~

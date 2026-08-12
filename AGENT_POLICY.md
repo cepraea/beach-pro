@@ -31,7 +31,7 @@ obter checkpoint de Davi.
 ## Autoria de documentação
 
 Antes de criar ou alterar arquivos Markdown, leia e siga
-`docs/standards/DOCUMENTATION_STYLE_GUIDE.md`.
+`docs/standards/guia_estilo_documentação.md`.
 
 Esse arquivo é a fonte canônica das regras de autoria de documentação Markdown. O guia não altera
 os limites de autoridade, os papéis de arquivo ou os requisitos de aprovação desta política.
