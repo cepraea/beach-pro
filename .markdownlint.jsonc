@@ -18,14 +18,14 @@
   // Definição: define qual marcador (*, +, -) deve ser usado em listas não ordenadas.
   // Objetivo: manter consistência visual entre listas, exigindo sempre "-".
   "ul-style": {
-    "style": "dash",
+    "style": "dash"
   },
 
   // MD007 — ul-indent: "Indentação de lista não ordenada".
   // Definição: define quantos espaços de indentação são exigidos para itens aninhados.
   // Objetivo: manter indentação previsível (2 espaços) em todas as listas.
   "ul-indent": {
-    "indent": 2,
+    "indent": 2
   },
 
   // MD010 — no-hard-tabs: "Tabulação (hard tab)".
@@ -34,7 +34,7 @@
   // larguras diferentes; spaces_per_tab define quantos espaços equivalem a uma tabulação
   // para o cálculo de coluna/correção automática.
   "no-hard-tabs": {
-    "spaces_per_tab": 2,
+    "spaces_per_tab": 2
   },
 
   // MD024 — no-duplicate-heading: "Múltiplos títulos com o mesmo conteúdo".
@@ -42,7 +42,7 @@
   // Objetivo: siblings_only restringe a checagem a títulos irmãos (mesmo nível, sob o
   // mesmo título pai), permitindo texto repetido em seções diferentes sem falso positivo.
   "no-duplicate-heading": {
-    "siblings_only": true,
+    "siblings_only": true
   },
 
   // MD025 — single-title: "Múltiplos títulos de nível superior no mesmo documento".
@@ -271,9 +271,9 @@
 
   // MD049 — emphasis-style: "Estilo de ênfase".
   // Definição: define qual marcador deve ser usado para ênfase/itálico (* ou _).
-  // Objetivo: exigir "_texto_" para evitar ambiguidade com o marcador de negrito.
+  // Objetivo: exigir "*texto*" para evitar ambiguidade com o marcador de negrito.
   "emphasis-style": {
-    "style": "underscore"
+    "style": "asterisk"
   },
 
   // MD050 — strong-style: "Estilo de negrito".
@@ -317,8 +317,8 @@
       "see here",
       "see this page",
       "see this site",
-      "see this article",
-    ],
+      "see this article"
+    ]
   },
 
   // Regra customizada "search-replace" (plugin markdownlint-rule-search-replace —
