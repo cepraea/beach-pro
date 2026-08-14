@@ -173,7 +173,7 @@
       "tr",
       "ul",
       "var"
-    ],
+    ]
   },
 
   // MD034 — no-bare-urls: "URL sem formatação (bare URL)".
@@ -247,7 +247,10 @@
       "webidl",
       "xml",
       "yaml",
-    ],
+      "text",
+      "txt",
+      "markdown"
+    ]
   },
 
   // MD042 — no-empty-links: "Links vazios".
@@ -263,14 +266,14 @@
   // Objetivo: exigir sempre blocos cercados ("fenced"), proibindo blocos indentados, para
   // manter um único estilo em todo o repositório.
   "code-block-style": {
-    "style": "fenced",
+    "style": "fenced"
   },
 
   // MD049 — emphasis-style: "Estilo de ênfase".
   // Definição: define qual marcador deve ser usado para ênfase/itálico (* ou _).
   // Objetivo: exigir "_texto_" para evitar ambiguidade com o marcador de negrito.
   "emphasis-style": {
-    "style": "underscore",
+    "style": "underscore"
   },
 
   // MD050 — strong-style: "Estilo de negrito".
@@ -278,7 +281,7 @@
   // Objetivo: exigir "**texto**"; combinado com emphasis-style "underscore", evita que
   // "*" e "_" sejam usados de forma intercambiável e ambígua.
   "strong-style": {
-    "style": "asterisk",
+    "style": "asterisk"
   },
 
   // MD051 — link-fragments: "Fragmentos de link devem ser válidos".

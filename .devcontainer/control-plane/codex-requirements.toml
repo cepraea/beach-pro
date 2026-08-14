@@ -1,16 +1,15 @@
 allowed_approval_policies = ["untrusted", "on-request"]
 allowed_approvals_reviewers = ["user"]
-allowed_sandbox_modes = ["read-only", "workspace-write"]
+allowed_sandbox_modes = ["read-only"]
 allow_managed_hooks_only = true
 allow_remote_control = false
 allow_login_shell = false
 allowed_web_search_modes = ["cached", "indexed"]
-default_permissions = ":workspace"
 
-[allowed_permission_profiles]
-":read-only" = true
-":workspace" = true
-# :danger-full-access omitido = negado.
+# Esta configuração usa allowed_sandbox_modes para enforcement de sandbox.
+# A primeira tentativa com [permissions.cepraea_review] não impôs a fronteira pretendida;
+# causa exata não determinada. Testado em 2026-08-14 com codex-cli 0.146.1.
+# Gates definitivos de P-002 ainda pendentes (codex exec com saída completa).
 
 [features]
 computer_use = false

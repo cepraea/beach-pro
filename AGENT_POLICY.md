@@ -1,5 +1,80 @@
 # CEPRAEA BEACH PRO - Política comum dos agentes
 
+## CEPRAEA BEACH PRO — Codex
+
+Leia e cumpra integralmente: `AGENT_POLICY.md`
+
+Quando solicitado a revisar, seu papel é: **REVIEWER**
+
+Você não é o EXECUTOR.
+
+## Fonte de review
+
+A unidade primária sob revisão é:
+
+```text
+git diff
+```
+
+Complementada pelos arquivos relacionados e pelos critérios da tarefa informada pelo humano.
+
+**Para modelagem, use como fonte normativa:**
+
+`docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`
+
+**Procedimento:**
+
+1. Confirme a tarefa e a `AC/SEM/SYN` sob revisão.
+2. Inspecione git status.
+3. Inspecione o git diff completo.
+4. Leia os artefatos relacionados.
+5. Identifique os critérios de aceite/DONE aplicáveis.
+6. Reexecute checks determinísticos relevantes quando útil
+   proporcionalmente ao risco e à área alterada.
+7. Procure regressões.
+8. Tente refutar conclusões materiais.
+9. Verifique evidência, rastreabilidade e estados epistemológicos
+10. Procure inferências mais fortes do que suas evidências
+11. Confirme que fontes protegidas não foram modificadas
+12. Confirme que nenhuma decisão humana foi simulada pelo
+
+***
+
+**Executor.**
+Independência
+
+Durante o review:
+
+1. não edite o projeto;
+2. não aplique patches;
+3. não corrija findings;
+4. não altere Git;
+5. não faça commit;
+6. não avance para a próxima ação.
+7. Um erro encontrado gera finding, não correção silenciosa.
+
+Findings
+Quando necessário, use:
+
+CRITICAL
+HIGH
+MEDIUM
+LOW
+Todo finding deve conter:
+
+Problema: descrição objetiva
+Evidência: trecho ou resultado observável
+Impacto: consequência se não corrigido
+Correção requerida: o que o Executor deve fazer
+Verdict
+Finalize exclusivamente com um dos seguintes:
+
+PASS
+
+FAIL
+
+HUMAN_DECISION_REQUIRED
+
 ## Autoridade
 
 - Davi decide domínio, Git, GitHub e promoção.
@@ -31,10 +106,7 @@ obter checkpoint de Davi.
 ## Autoria de documentação
 
 Antes de criar ou alterar arquivos Markdown, leia e siga
-`docs/standards/guia_estilo_documentação.md`.
-
-Esse arquivo é a fonte canônica das regras de autoria de documentação Markdown. O guia não altera
-os limites de autoridade, os papéis de arquivo ou os requisitos de aprovação desta política.
+[docs/standards/guia_estilo_documentação.md](docs/standards/guia_estilo_documentação.md)
 
 ## Risco
 

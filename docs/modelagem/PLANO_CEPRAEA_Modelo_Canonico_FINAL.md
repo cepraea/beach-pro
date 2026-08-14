@@ -32,7 +32,10 @@
 
 **ID do plano:** `PLANO-CEPRAEA-MODELO-CANONICO-002`
 
-**Versão:** final ajustada após patch de arquitetura, rastreabilidade, worktree, maturidade e executabilidade.
+**Versão:** final ajustada após patch de arquitetura, rastreabilidade, worktree, maturidade e
+executabilidade; revisada por `DEC-008` (`decisoes/registro_decisoes.md`) — a worktree irmã da
+seção 4.7 original foi removida e substituída por execução direta na branch dedicada
+`feat/cepraea-domain-modeling`, com isolamento por `WRITE_SCOPE` explícito.
 
 **Objetivo:** descobrir e formalizar o **Modelo Canônico do Domínio CEPRAEA-BEACH-PRO** —
 `dominio/modelo_canonico_dominio.md` — a partir das evidências do acervo em
@@ -913,54 +916,42 @@ o Modelo Canônico propriamente dito, não um sétimo arquivo solto. `AC-029` (s
 escreve essa síntese, depois de avaliar a maturidade de cada `CTX-NNN`. A localização exata de
 cada um dos seis (dois arquivos por tipo — candidato e promovido) está na seção 4.7.
 
-### 4.7 Estrutura da worktree e bootstrap obrigatório da modelagem
+### 4.7 Estrutura da branch dedicada e bootstrap obrigatório da modelagem
 
-Antes do processamento da primeira fonte, a fase cria uma worktree dedicada exclusivamente à
-descoberta e modelagem do domínio CEPRAEA-BEACH-PRO, e a hierarquia de diretórios abaixo — não
-uma pasta plana. Objetivo: nenhum artefato salta direto de fonte para modelo lógico:
+> **Nota — `DEC-008` (`decisoes/registro_decisoes.md`):** a versão original desta seção exigia uma
+> worktree Git irmã do repositório (`<repo-parent>/cepraea-modelagem-canonica`) como mecanismo de
+> isolamento. Essa exigência foi removida por decisão de Davi Sermenho durante `AC-000`: o
+> `EXECUTOR` não tem permissão de escrita em `.git/` do repositório principal (não consegue criar
+> a branch/worktree) e, mesmo quando a worktree foi criada manualmente por Davi no host, ela não
+> era visível dentro do devcontainer do agente (só o diretório do próprio repositório é montado).
+> O isolamento agora é feito por **branch dedicada + `WRITE_SCOPE` explícito**, não por diretório
+> físico separado. O texto abaixo já reflete essa decisão.
+
+Antes do processamento da primeira fonte, a fase cria, dentro do próprio repositório
+`cepraea-beach-pro`, a hierarquia de diretórios abaixo em `docs/modelagem/` — não uma pasta plana
+— na branch dedicada `feat/cepraea-domain-modeling`. Objetivo: nenhum artefato salta direto de
+fonte para modelo lógico:
 
 ```text
 fontes → evidências → conhecimento → candidatos → modelo canônico → modelo lógico
 ```
 
-**Worktree principal:**
+**Branch dedicada:**
 
 ```text
-worktree: <repo-parent>/cepraea-modelagem-canonica    (irmã do repo, não dentro dele)
-branch:   feat/cepraea-domain-modeling
+repositório: cepraea-beach-pro   (mesmo checkout, sem worktree separada)
+branch:      feat/cepraea-domain-modeling
 ```
 
-Criação determinística:
-
-```bash
-git worktree add -b feat/cepraea-domain-modeling <repo-parent>/cepraea-modelagem-canonica "$BASE_SHA"
-```
-
-
-Ou seja:
-
-```text
-<repo-parent>/
-├── cepraea-beach-pro/              (repo principal, main intocada)
-└── cepraea-modelagem-canonica/     (worktree desta fase)
-```
-
-Irmã do repositório principal, não `<repo>/worktrees/...` — dentro da árvore de trabalho do repo
-principal, `git status`/ferramentas do próprio repo poderiam enxergar a worktree como conteúdo
-operacional do projeto (mesmo sem estar rastreada), o que é exatamente a ambiguidade que este
-plano tenta evitar em outros pontos (ex.: melhoria e, D-01). Como diretório irmão, a separação
-física fica inequívoca.
-
-`main`/`master` não recebe nenhuma escrita desta fase (já era regra do AGENT_POLICY.md, seção 12
-— aqui fica explícito que a worktree dedicada é o mecanismo). Só esta worktree consolida o Modelo
-Canônico — se worktrees auxiliares forem criadas no futuro, elas só podem escrever em `fontes/`,
-`evidencias/` e `candidatos/`; só `feat/cepraea-domain-modeling` escreve em `dominio/` e `logico/`.
-Isso impede duas branches estabelecerem modelos canônicos incompatíveis ao mesmo tempo — o mesmo
-problema que gerou os dois schemas físicos conflitantes de D-02.
+`main`/`master` não recebe nenhuma escrita desta fase (regra do `AGENT_POLICY.md`, seção 12).
+Toda escrita de modelagem acontece exclusivamente dentro de `docs/modelagem/**` (`WRITE_SCOPE`,
+abaixo) na branch `feat/cepraea-domain-modeling` — nunca em `main`/`master`, nunca fora desse
+escopo. Isso impede duas branches estabelecerem modelos canônicos incompatíveis ao mesmo tempo — o
+mesmo problema que gerou os dois schemas físicos conflitantes de D-02.
 
 **Base imutável, origem das fontes e escopos de acesso:**
 
-Antes de `git worktree add`, `AC-000` registra explicitamente:
+`AC-000` registra explicitamente:
 
 ```text
 BASE_REF=<ref aprovada no início do AC-000>
@@ -969,34 +960,46 @@ MAIN_SHA_BEFORE=$(git rev-parse main)
 CEPRAEA_SOURCE_ROOT=<realpath do diretório real .drive/CEPRAEA BEACH PRO>
 ```
 
-A worktree nasce exatamente de `BASE_SHA`, nunca implicitamente da branch que estiver aberta. O `README.md` da worktree registra `base_ref`, `base_sha`, `main_sha_before`, `branch_modelagem`, `worktree_path` e `cepraea_source_root`.
+A branch `feat/cepraea-domain-modeling` nasce exatamente de `BASE_SHA`, nunca implicitamente de
+qualquer branch aberta no momento — operação de criação de branch/ref reservada a Davi
+(`AGENT_POLICY.md` §Autoridade; o `EXECUTOR` não tem permissão de escrita em `.git/refs/heads`). O
+`README.md` de `docs/modelagem/` registra `base_ref`, `base_sha`, `main_sha_before`,
+`branch_modelagem` e `cepraea_source_root`.
 
-Escopos formais:
+Escopos formais (`DEC-008`):
 
 ```text
-WRITE_SCOPE
-  <repo-parent>/cepraea-modelagem-canonica/**
+WRITE_SCOPE_EXECUTOR
+  docs/modelagem/**
+  # .agent-flow/executions/** — REMOVIDO (DEC-GOV-001, 2026-08-14)
+
+WRITE_SCOPE_REVIEWER
+  # .agent-flow/reviews/** — REMOVIDO (DEC-GOV-001, 2026-08-14)
+  # Reviewer não produz artefatos de escrita; emite verdict ao humano.
 
 READ_SCOPE
-  <repo-parent>/cepraea-modelagem-canonica/**
+  repositório cepraea-beach-pro, quando necessário à ação
   $CEPRAEA_SOURCE_ROOT/**
   documentos de referência explicitamente listados na seção 12
+
+CEPRAEA_SOURCE_ROOT — modo READ_ONLY
 ```
 
-Escrita fora de `WRITE_SCOPE` é proibida. Leitura fora de `READ_SCOPE` é proibida. A separação é necessária porque a worktree irmã pode não conter mounts, symlinks ou arquivos ignorados existentes no repositório original.
+Escrita fora de `WRITE_SCOPE_EXECUTOR` (ou `WRITE_SCOPE_REVIEWER`, para o `REVIEWER`) é proibida.
+Leitura fora de `READ_SCOPE` é proibida.
 
-**Guardas antes da criação da worktree:**
+**Guardas antes da criação da branch:**
 
-1. o destino não existe, ou já é uma worktree Git registrada e explicitamente reconhecida como compatível;
-2. `feat/cepraea-domain-modeling` não existe, ou seu estado é explicitamente reconhecido antes de reutilização;
-3. `BASE_SHA` existe;
-4. `CEPRAEA_SOURCE_ROOT` existe e as 27 fontes presentes são legíveis;
-5. nenhuma limpeza destrutiva (`rm -rf`, remoção silenciosa de worktree/branch) é permitida.
+1. `feat/cepraea-domain-modeling` não existe, ou seu estado é explicitamente reconhecido antes de reutilização;
+2. `BASE_SHA` existe;
+3. `CEPRAEA_SOURCE_ROOT` existe e as 27 fontes presentes são legíveis;
+4. nenhuma limpeza destrutiva (`rm -rf`, remoção silenciosa de branch) é permitida.
 
-Falha em qualquer guarda deixa `AC-000=BLOQUEADO`; nunca autoriza apagar ou reutilizar silenciosamente uma worktree antiga.
+Falha em qualquer guarda deixa `AC-000=BLOQUEADO`; nunca autoriza apagar ou reutilizar silenciosamente uma branch antiga.
 
 
-**Estrutura obrigatória**, criada por `AC-000` dentro da worktree:
+**Estrutura obrigatória**, criada por `AC-000` dentro de `docs/modelagem/` (branch
+`feat/cepraea-domain-modeling`):
 
 ```text
 docs/modelagem/
@@ -2272,8 +2275,9 @@ revisão: `VALIDADO` agora exige aprovação humana registrada **e** commit, nã
 ## 6. Estrutura de arquivos (escolhas fixadas, não perguntas)
 
 A árvore completa e autoritativa é a da seção 4.7 (hierarquia `processo/`/`fontes/`/`evidencias/`/
-`conhecimento/`/`candidatos/`/`dominio/`/`logico/`/`decisoes/`/`schemas/`, dentro da worktree
-dedicada). Esta seção só resume o mapeamento arquivo → schema, para não duplicar a árvore em dois
+`conhecimento/`/`candidatos/`/`dominio/`/`logico/`/`decisoes/`/`schemas/`, dentro de
+`docs/modelagem/` na branch dedicada `feat/cepraea-domain-modeling` — worktree irmã removida por
+`DEC-008`). Esta seção só resume o mapeamento arquivo → schema, para não duplicar a árvore em dois
 lugares e arriscar divergência:
 
 | Arquivo | Diretório (seção 4.7) | Formato | Schema |
@@ -2483,8 +2487,8 @@ nascem `SUBSTITUIDA`.
 1. `BASE_REF` registrado.
 2. `BASE_SHA` registrado e existente.
 3. `MAIN_SHA_BEFORE` registrado.
-4. A worktree `<repo-parent>/cepraea-modelagem-canonica` existe como irmã do repo e passou pelas guardas da seção 4.7.
-5. A branch `feat/cepraea-domain-modeling` está ativa dentro dela e nasceu exatamente de `BASE_SHA`.
+4. A branch `feat/cepraea-domain-modeling` existe no repositório `cepraea-beach-pro` e passou pelas guardas da seção 4.7 (worktree irmã removida por `DEC-008`).
+5. A branch `feat/cepraea-domain-modeling` nasceu exatamente de `BASE_SHA`, não implicitamente de outra branch.
 6. `CEPRAEA_SOURCE_ROOT` foi resolvido por caminho real, existe e as 27 fontes presentes são legíveis.
 7. `READ_SCOPE` e `WRITE_SCOPE` estão registrados no `README.md`.
 8. Toda a estrutura de diretórios da seção 4.7 existe.
@@ -2505,7 +2509,7 @@ nascem `SUBSTITUIDA`.
 
 | ID | Ordem | Arquivo | Tipo·Autoridade·Proveniência (hipótese) | Particularidade | Checkpoint |
 |---|---|---|---|---|---|
-| AC-000 | 0 | *(nenhum — bootstrap)* | — | Cria a worktree dedicada, a branch, e toda a hierarquia da seção 4.7 — critério completo de DONE na seção 10.1 (12 itens, não é só "criar uns arquivos") | **Sim, antes do AC-001** |
+| AC-000 | 0 | *(nenhum — bootstrap)* | — | Cria a branch dedicada e toda a hierarquia da seção 4.7 (worktree irmã removida por `DEC-008`) — critério completo de DONE na seção 10.1 (não é só "criar uns arquivos") | **Sim, antes do AC-001** |
 | AC-001 | 1 | `CEPRAEA AGOSTO 2026.xlsx` | OPERACIONAL·PRIMÁRIA·ORIGINAL | Início pedido por você; planilha mensal vigente (a mais recente por nome). Roda AD-03 aqui | Não |
 | AC-002 | 2 | `BancoCEPRAEA.docx` | TÉCNICA·AUXILIAR·ORIGINAL | `estado_fonte=SUBSTITUIDA` (fixo por D-02). Roda AD-01 aqui | Sim — reporto resultado de AD-01 |
 | AC-003 | 3 | `CEPRAEA-DB.docx` | TÉCNICA·AUXILIAR·ORIGINAL | `estado_fonte=SUBSTITUIDA` (D-02). Contém o inventário de 65 fontes de `BEACH HANDBALL` — só referenciar, não reprocessar (fora de escopo) | Não |
@@ -2575,13 +2579,13 @@ A fase só é `DONE` quando os cinco gates abaixo forem verdadeiros simultaneame
 - Contextos não maduros aparecem em `logico/areas_pendentes.md` com `blocking_ids`, motivo e resolução necessária.
 - AD-01..AD-06 foram executados com resultado real; AD-06 prova que cobertura documental não libera o modelo lógico.
 
-### GATE E — Repositório e worktree
+### GATE E — Repositório e branch dedicada
 
 - `verificar_repositorio.mjs` resolve todo `action_ref` para exatamente um commit real (`AC-NNN`, `SEM-NNN`, `SYN-NNN`).
 - O SHA real é obtido externamente pelo Git; nenhum artefato contém SHA autorreferencial do commit que o contém.
 - `git rev-parse main` ao final é igual a `MAIN_SHA_BEFORE`.
 - Todos os commits da fase estão em `feat/cepraea-domain-modeling` depois de `BASE_SHA`.
-- Nenhuma escrita ocorreu fora de `WRITE_SCOPE`; nenhum dado sensível foi reproduzido literalmente.
+- Nenhuma escrita ocorreu fora de `WRITE_SCOPE_EXECUTOR`/`WRITE_SCOPE_REVIEWER` (`DEC-008`); nenhum dado sensível foi reproduzido literalmente.
 - Todas as fixtures declaradas no manifest continuam passando como regressão final.
 
 Explicitamente fora deste critério: migrations executadas, RLS testada e testes SQL.
@@ -2589,7 +2593,9 @@ Explicitamente fora deste critério: migrations executadas, RLS testada e testes
 ## 12. Classificação de risco e papéis de arquivo (AGENT_POLICY.md)
 
 Esta seção, aprovada, serve como a proposta formal exigida pelo `AGENT_POLICY.md`
-(schema de `.ai/task-proposal.example.json`).
+(schema de `.ai/task-proposal.example.json`). Os escopos de caminho abaixo foram revisados por
+`DEC-008` (`decisoes/registro_decisoes.md`): a worktree irmã da seção 4.7 original foi removida;
+isolamento agora é por branch dedicada + `WRITE_SCOPE` explícito.
 
 - **Risco: amarelo** em toda a fase (múltiplos arquivos-alvo + semântica canônica), com
   **carve-out vermelho por privacidade** em AC-008, AC-018, AC-019 — exigem seu checkpoint
@@ -2598,20 +2604,22 @@ Esta seção, aprovada, serve como a proposta formal exigida pelo `AGENT_POLICY.
 
 | Caminho | Papel |
 |---|---|
-| `<repo-parent>/cepraea-modelagem-canonica/docs/modelagem/**` (a criar, seção 4.7) | alvo |
+| `docs/modelagem/**` (a criar/completar, seção 4.7, branch `feat/cepraea-domain-modeling`) | alvo (`WRITE_SCOPE_EXECUTOR`) |
+| ~~`.agent-flow/executions/**`~~ | removido — DEC-GOV-001 (2026-08-14) |
+| ~~`.agent-flow/reviews/**`~~ | removido — DEC-GOV-001 (2026-08-14) |
 | `docs/standards/guia_estilo_documentação.md`, `AGENT_POLICY.md`, `.ai/task-proposal.example.json` | referência |
 | `.drive/BEACH HANDBALL/Fluxo de Modelagem.gdoc.docx`, `.drive/modelagem_dados_agente.md`, `.drive/modelagem_dominio_dados.md` | referência (canônicos, seção 4/4.1) |
 | `.drive/CEPRAEA BEACH PRO/*` (27 fontes presentes) | somente leitura |
-| Escrita fora de `WRITE_SCOPE`, incluindo `main`/`master` e `$CEPRAEA_SOURCE_ROOT` | proibida |
+| Escrita fora de `WRITE_SCOPE_EXECUTOR`, incluindo `main`/`master` e `$CEPRAEA_SOURCE_ROOT` | proibida |
 | Leitura fora de `READ_SCOPE` | proibida |
 | Valor literal de qualquer segredo/PII encontrado | proibido (regra de conteúdo) |
 
-Execução: worktree e branch dedicadas (seção 4.7), um agente escritor nelas — nunca `main`. Um
-commit por `AC-NNN` (aquisição); `SEM-NNN`/`SYN-NNN` para reconciliação e síntese (seção 4.9). A
-criação da worktree/branch em si (`git worktree add`) é ação local e reversível — não é push,
-force-push nem PR — mas ainda assim reporto antes de executar, dado que é a primeira escrita de
-infraestrutura desta fase. Se surgir um 29º arquivo na pasta ou necessidade de tocar RLS/auth,
-paro e levanto proposta nova.
+Execução: branch dedicada `feat/cepraea-domain-modeling` (seção 4.7), um agente escritor nela —
+nunca `main`. Um commit por `AC-NNN` (aquisição); `SEM-NNN`/`SYN-NNN` para reconciliação e síntese
+(seção 4.9). Criação de branch/ref é operação Git de promoção — reservada a Davi
+(`AGENT_POLICY.md` §Autoridade), inclusive por restrição de permissão de filesystem observada
+durante `AC-000` (`.git/refs/heads` somente leitura para o `EXECUTOR`). Se surgir um 29º arquivo
+na pasta ou necessidade de tocar RLS/auth, paro e levanto proposta nova.
 
 ## 13. Verificação
 

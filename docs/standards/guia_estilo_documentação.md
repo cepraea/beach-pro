@@ -148,6 +148,54 @@ A estrutura DEVE:
 
 Estruturas obrigatórias específicas para um tipo documental PODEM ser definidas somente quando esse tipo for efetivamente utilizado e uma estrutura própria produzir benefício observável.
 
+## Escrita de Restrições Negativas
+
+- Você DEVE substituir qualquer restrição negativa por uma **Diretiva Positiva Restritiva**.A ausência de permissão define a proibição.
+
+**Regras de escrita:**
+
+1. Identifique a ação ou estado logicamente proibido.
+2. Determine qual é a única ação, estado ou caminho aceitável que substitui a proibição na totalidade.
+3. Redija a instrução ordenando a execução do caminho aceitável.
+4. O texto deve conter um dos seguintes modificadores:
+    - `exclusivamente`
+    - `obrigatoriamente`
+    - `apenas`
+    - `somente`
+    - `estritamente`
+
+**Exemplos de escrita:**
+
+- `INVÁLIDO` deve ser refatorado imediatamente se encontrado.
+
+**Escopo de Atuação e Arquivos:**
+
+| Padrão | Regra |
+| --- | --- |
+| **INVÁLIDO** | "Não edite arquivos fora da pasta src/." |
+| **VÁLIDO** | "Restrinja todas as edições e criações de arquivos **exclusivamente** ao diretório `src/`." |
+
+**Segurança e Tratamento de Dados (PII):**
+
+| Padrão | Regra |
+| --- | --- |
+| **INVÁLIDO** | "Nunca inclua nomes reais de atletas, CPFs ou dados sensíveis nos prompts." |
+| **VÁLIDO** | "Preencha qualquer campo de dados, log ou comentário de código **obrigatoriamente** utilizando dados simulados (Mock Data)." |
+
+**Operações de SDLC e Git:**
+
+| Padrão | Regra |
+| --- | --- |
+| **INVÁLIDO** | "Não faça git commit, push, merge ou rebase." |
+| **VÁLIDO** | "Encerre o fluxo de execução **estritamente** com a geração da *working tree* alterada e notifique o status `READY_FOR_REVIEW`." |
+
+**Estilo de Comunicação dos Agentes**:
+
+| Padrão | Regra |
+| --- | --- |
+| **INVÁLIDO** | "Não responda com introduções longas, explicações ou saudações." |
+| **VÁLIDO** | "Inicie a resposta **diretamente** com o bloco de código modificado ou com o artefato técnico solicitado." |
+
 ## Títulos
 
 Cada documento DEVERIA possuir somente um título H1.

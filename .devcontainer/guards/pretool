@@ -51,9 +51,24 @@ fi
 
 if [[ "$tool" == "Bash" ]]; then
   cmd="$(jq -r '.tool_input.command // empty' <<<"$payload")"
+  # Fail-fast para formas diretas de comandos privilegiados.
+  # Não garante cobertura de sintaxe shell arbitrária ou wrappers indiretos
+  # — a proteção estrutural é o mount .git readonly no container.
   case "$cmd" in
-    *"sudo "*|sudo*|*"docker "*|docker*|*"git commit"*|*"git push"*|*"git merge"*|*"git rebase"*)
-      block "Bloqueado: Git de promoção, sudo e Docker pertencem a Davi." ;;
+    *"sudo "*|sudo*)
+      block "Bloqueado: sudo pertence a Davi." ;;
+    *"docker "*|docker*)
+      block "Bloqueado: Docker pertence a Davi." ;;
+    *"claude --dangerously-"*)
+      block "Bloqueado: flag --dangerously-* do Claude pertence a Davi." ;;
+    *"codex --dangerously-"*)
+      block "Bloqueado: flag --dangerously-* do Codex pertence a Davi." ;;
+    *"git add"*|*"git commit"*|*"git push"*|*"git pull"*|\
+    *"git merge"*|*"git rebase"*|*"git cherry-pick"*|\
+    *"git reset"*|*"git restore"*|*"git checkout"*|\
+    *"git switch"*|*"git worktree"*|*"git clean"*|\
+    *"git rm"*|*"git stash"*|*"git update-ref"*)
+      block "Bloqueado: Git privilegiado pertence a Davi." ;;
   esac
 fi
 
