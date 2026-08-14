@@ -334,124 +334,124 @@
         "message": "Não use aspas duplas curvas",
         "searchPattern": "/“|”/g",
         "replace": "\"",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "curly-single-quotes",
         "message": "Não use aspas simples curvas",
         "searchPattern": "/‘|’/g",
         "replace": "'",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "nbsp",
         "message": "Não use espaços incondicionais (non-breaking space)",
         "searchPattern": "/ /g",
         "replace": " ",
-        "searchScope": "all",
+        "searchScope": "all"
       },
       {
         "name": "m-dash",
         "message": "Não use '--'. Use travessão (—) em vez disso",
         "search": " -- ",
         "replace": " — ",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "relative-link",
         "message": "Links internos devem começar com '/'",
         "searchPattern": "/([\\(\"])en-US\\/docs/g",
         "replace": "$1/en-US/docs",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "relative-link-path",
         "message": "Não use caminhos relativos",
         "search": "](..",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "trailing-spaces",
         "message": "Evite espaços no final da linha",
         "searchPattern": "/  +$/gm",
         "replace": "",
-        "searchScope": "all",
+        "searchScope": "all"
       },
       {
         "name": "double-spaces",
         "message": "Evite espaços duplos",
         "searchPattern": "/([^\\s>])  ([^\\s|])/g",
         "replace": "$1 $2",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "stuck-definition",
         "message": "Caractere colado ao marcador de descrição de definição",
         "searchPattern": "/- :(\\w)/g",
         "replace": "- : $1",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "fqdn-moz-links",
         "message": "Não use developer.mozilla.org para links, exceto em posts de blog",
         "searchPattern": "/\\]\\(https:\\/\\/developer.mozilla.org\\/(?!en-US\\/blog\\/)/g",
         "replace": "](/",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "incorrect-spelling",
         "message": "Ortografia incorreta",
         "searchPattern": ["/e-mail/ig", "/(w)eb site/ig"],
         "replace": ["email", "$1ebsite"],
-        "searchScope": "all",
+        "searchScope": "all"
       },
       {
         "name": "localhost-links",
         "message": "Não use localhost em links",
         "searchPattern": "/\\]\\(https?:\\/\\/localhost:\\d+\\//g",
         "replace": "](/",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "un-closed-md-link",
         "message": "Falta o parêntese de fechamento ')'",
         "searchPattern": "/\\[.*?\\]\\([^ )\\n\"]+(?:[\\n\"]| [^\"']| [\"'].+?[\"'][^)])/gm",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "gfm-alert",
         "message": "Use a sintaxe GFM: https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Markdown_in_MDN#notes_warnings_and_callouts",
         "searchPattern": "/^ *> \\*\\*(Note|Warning|Callout):\\*\\*/gm",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "bad-gfm-alert",
         "message": "Use a sintaxe GFM correta: `> [!NOTE]`",
         // TODO: isso deveria usar a sintaxe de modificador; aguardando melhor suporte no Node
         "searchPattern": "/^ *> !?\\[!?((?!NOTE)[Nn][Oo][Tt][Ee]|(?!WARNING)[Ww][Aa][Rr][Nn][Ii][Nn][Gg]|(?!CALLOUT)[Cc][Aa][Ll][Ll][Oo][Uu][Tt])\\]\\n|^ *> (?!\\[!)!?\\[!?(NOTE|WARNING|CALLOUT)\\]\\n|^ *> \\[!(NOTE|WARNING|CALLOUT)\\](?!\\n)/gm",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "comma-after-ie",
         "message": "Adicione vírgula depois de 'i.e.'",
         "searchPattern": "/\\bi\\.e\\. /g",
         "replace": "i.e., ",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "comma-after-eg",
         "message": "Adicione vírgula depois de 'e.g.'",
         "searchPattern": "/\\be\\.g\\. /g",
         "replace": "e.g., ",
-        "searchScope": "text",
+        "searchScope": "text"
       },
       {
         "name": "short-link",
         "message": "Use links curtos para links de bug",
         "searchPattern": "/https:\\/\\/bugzilla\\.mozilla\\.org\\/show_bug\\.cgi\\?id=/g",
         "replace": "https://bugzil.la/",
-        "searchScope": "all",
-      },
-    ],
-  },
+        "searchScope": "all"
+      }
+    ]
+  }
 }
