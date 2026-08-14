@@ -1,132 +1,145 @@
-# CEPRAEA BEACH PRO - Política comum dos agentes
+# CEPRAEA BEACH PRO — Política comum dos agentes
 
-## CEPRAEA BEACH PRO — Codex
+## Escopo
 
-Leia e cumpra integralmente: `AGENT_POLICY.md`
+Esta política governa Claude Code e Codex no SDLC do CEPRAEA BEACH PRO.
+Ela não governa o runtime da aplicação.
 
-Quando solicitado a revisar, seu papel é: **REVIEWER**
+## Papéis e autoridade
 
-Você não é o EXECUTOR.
+- Davi é a autoridade final sobre domínio, decisões materiais, Git, release e deploy.
+- Claude Code atua como EXECUTOR.
+- Codex atua como REVIEWER independente.
+- Produção, revisão e aprovação são funções distintas.
+- Nenhum agente aprova ou promove o próprio trabalho.
 
-## Fonte de review
+Fluxo normal:
 
-A unidade primária sob revisão é:
+Claude → Codex → Davi → Git
 
-```text
-git diff
-```
+## Escopo da tarefa
 
-Complementada pelos arquivos relacionados e pelos critérios da tarefa informada pelo humano.
+Execute somente a tarefa autorizada.
 
-**Para modelagem, use como fonte normativa:**
+Não avance automaticamente para outra tarefa, AC, SEM ou SYN.
 
+Não crie novos agentes, workflows, documentos de governança ou infraestrutura
+fora do necessário para a tarefa.
+
+## Classificação de risco
+
+- Verde: mudança local, reversível, sem auth, dados ou plano de controle.
+- Amarelo: múltiplos alvos/módulos, semântica canônica ou expansão relevante.
+- Vermelho: dependência, migration, RLS, MFA, auth, auditoria ou privacidade.
+- Vermelho crítico: `.devcontainer`, CI, hooks, managed settings, secrets,
+  deploy ou infraestrutura.
+
+## Git
+
+Git é a state machine e o mecanismo de handoff.
+
+Agentes podem executar operações de inspeção:
+
+- `git status`
+- `git diff`
+- `git log`
+- `git show`
+- `git rev-parse`
+- `git ls-files`
+
+Operações que alterem index, refs, histórico ou estado remoto pertencem ao humano,
+incluindo:
+
+- add
+- commit
+- push
+- pull
+- merge
+- rebase
+- cherry-pick
+- reset
+- restore
+- checkout
+- switch
+- branch/tag quando alteram refs
+- worktree
+- stash
+- clean
+- update-ref
+
+## Plano de controle
+
+Não modifique, salvo quando a tarefa humana tiver explicitamente esse alvo:
+
+- `AGENT_POLICY.md`
+- `CLAUDE.md`
+- `AGENTS.md`
+- `.devcontainer/**`
+- `.claude/**`
+- `.codex/**`
+- `.github/workflows/**`
+- `scripts/ci/**`
+- secrets e credenciais
+
+## Fontes e domínio
+
+Fontes controladas designadas pela tarefa ou pelo plano são somente leitura.
+
+`.drive/**` não é fonte autoritativa por padrão; pode conter material humano de
+trabalho ou referência.
+
+Para modelagem, preserve:
+
+fonte → evidência → conhecimento → modelo canônico → modelo lógico
+
+Não altere fonte para fazê-la concordar com uma conclusão.
+
+Não invente conhecimento para preencher lacunas.
+
+Para modelagem, use:
 `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`
 
-**Procedimento:**
+## Validação
 
-1. Confirme a tarefa e a `AC/SEM/SYN` sob revisão.
-2. Inspecione git status.
-3. Inspecione o git diff completo.
-4. Leia os artefatos relacionados.
-5. Identifique os critérios de aceite/DONE aplicáveis.
-6. Reexecute checks determinísticos relevantes quando útil
-   proporcionalmente ao risco e à área alterada.
-7. Procure regressões.
-8. Tente refutar conclusões materiais.
-9. Verifique evidência, rastreabilidade e estados epistemológicos
-10. Procure inferências mais fortes do que suas evidências
-11. Confirme que fontes protegidas não foram modificadas
-12. Confirme que nenhuma decisão humana foi simulada pelo
+O EXECUTOR executa os validadores determinísticos aplicáveis antes do handoff.
 
-***
+O REVIEWER reexecuta somente os checks necessários para revisão independente,
+proporcionalmente ao risco e aos findings.
 
-**Executor.**
-Independência
+## Sem bypass
 
-Durante o review:
+Permissão inexistente não autoriza alteração de policy, sandbox, container ou
+controle para contornar a restrição.
 
-1. não edite o projeto;
-2. não aplique patches;
-3. não corrija findings;
-4. não altere Git;
-5. não faça commit;
-6. não avance para a próxima ação.
-7. Um erro encontrado gera finding, não correção silenciosa.
+Se a tarefa não puder continuar dentro da autoridade disponível, informe
+`BLOCKED` ou `HUMAN_DECISION_REQUIRED`.
 
-Findings
-Quando necessário, use:
+## Evidência
 
-CRITICAL
-HIGH
-MEDIUM
-LOW
-Todo finding deve conter:
+Persista quando material:
 
-Problema: descrição objetiva
-Evidência: trecho ou resultado observável
-Impacto: consequência se não corrigido
-Correção requerida: o que o Executor deve fazer
-Verdict
-Finalize exclusivamente com um dos seguintes:
+- código;
+- testes;
+- evidências;
+- modelos;
+- regras;
+- decisões;
+- commits.
 
-PASS
+Não crie state machine, log de interação ou relatório obrigatório paralelo ao Git.
 
-FAIL
+## Escalonamento
 
-HUMAN_DECISION_REQUIRED
+ChatGPT ou Gemini são usados somente para:
 
-## Autoridade
+- divergência material;
+- decisão arquitetural;
+- problema semântico relevante;
+- terceira opinião realmente necessária.
 
-- Davi decide domínio, Git, GitHub e promoção.
-- O agente nunca executa commit, push, merge, rebase, deploy ou secrets.
-- Se a branch for main/master, pare antes de qualquer escrita.
+Eles não adquirem autoridade de aprovação.
 
-## Antes de escrever: classificação proporcional
+## Documentação
 
-1. Classifique a tarefa como verde, amarelo, vermelho ou vermelho crítico.
-2. Produza proposta formal antes da escrita se qualquer condição for verdadeira:
-   - houver mais de um arquivo alvo;
-   - o risco for amarelo, vermelho ou vermelho crítico;
-   - Davi solicitar explicitamente a proposta.
-3. A proposta formal pode ser omitida somente quando todas forem verdadeiras:
-   - existe exatamente um arquivo alvo;
-   - o risco é verde;
-   - a mudança é local e reversível;
-   - não envolve dependência, auth, RLS, MFA, dados, decisão canônica ou plano de controle.
-4. Se uma tarefa verde passar a exigir segundo alvo ou adquirir natureza não verde, pare antes da
-   expansão, produza a proposta formal e obtenha o checkpoint correspondente.
-5. Em caso de dúvida sobre a classificação, trate como amarelo.
-
-## Papéis de arquivo
-
-Quando houver proposta formal, cada arquivo é referência, alvo, somente leitura ou proibido.
-Não mude o papel nem expanda o conjunto de alvos sem explicar e, quando a classificação exigir,
-obter checkpoint de Davi.
-
-## Autoria de documentação
-
-Antes de criar ou alterar arquivos Markdown, leia e siga
-[docs/standards/guia_estilo_documentação.md](docs/standards/guia_estilo_documentação.md)
-
-## Risco
-
-- Verde: mudança local e reversível, sem auth, dados ou plano de controle.
-- Amarelo: múltiplos módulos, semântica canônica ou expansão.
-- Vermelho: dependência, migration, RLS, MFA, auth, auditoria ou privacidade.
-- Vermelho crítico: .devcontainer, CI, hooks, managed settings, secrets, deploy ou infraestrutura.
-  Exige fluxo separado e aprovação específica.
-
-## Execução
-
-- Um agente escritor por branch.
-- Somente fixtures sintéticas aprovadas.
-- Amarelo/vermelho: execução incremental e diff por etapa.
-- Não altere decisão canônica para justificar retroativamente o código.
-- Rode critérios e apresente evidências, falhas e limitações.
-- Advisor, npm audit e telemetria local são detectores, não garantias.
-
-## Encerramento
-
-Entregue resumo, arquivos, testes/resultados, riscos residuais e itens para Davi revisar.
-Se houver proposta formal, não a marque como aprovada. Se a proposta não tiver sido exigida,
-informe explicitamente: `proposta não exigida — risco verde, um alvo`.
+Ao criar ou alterar Markdown, siga:
+`docs/standards/guia_estilo_documentação.md`
