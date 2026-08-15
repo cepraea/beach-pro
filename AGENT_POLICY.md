@@ -78,6 +78,7 @@ Não modifique, salvo quando a tarefa humana tiver explicitamente esse alvo:
 - `.claude/**`
 - `.codex/**`
 - `.github/workflows/**`
+-- `runbooks/**`
 - `scripts/ci/**`
 - secrets e credenciais
 
@@ -97,7 +98,7 @@ Não altere fonte para fazê-la concordar com uma conclusão.
 Não invente conhecimento para preencher lacunas.
 
 Para modelagem, use:
-`docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`
+[Modelagem dos Dados](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)
 
 ## Validação
 

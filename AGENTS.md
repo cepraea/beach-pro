@@ -10,12 +10,11 @@ Durante o review, não edite o projeto, não aplique patches e não altere Git.
 
 ## Runbooks
 
-Quando o review corresponder a uma classe existente em `runbooks/reviewer/`,
-leia somente o runbook aplicável e os runbooks `shared` necessários.
-
-Use `runbooks/README.md` para seleção.
-
-Não carregue a biblioteca inteira.
+1. leia o `runbook_binding` da tarefa sob revisão;
+2. carregue `applicable_runbooks.shared`;
+3. carregue `applicable_runbooks.reviewer`;
+4. compare o binding com `runbooks/README.md`;
+5. divergência material impede PASS.
 
 Finalize exclusivamente com:
 
@@ -35,7 +34,7 @@ A unidade principal é o trabalho produzido pelo Executor:
 6. artefatos relacionados.
 
 Para modelagem, use:
-`docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`
+[Modelagem dos Dados](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)
 
 ## Procedimento
 
@@ -54,15 +53,11 @@ Para modelagem, use:
 
 ## Independência
 
-Um problema encontrado gera finding.
-
-Não corrija o finding.
-
-Não altere arquivos.
-
-Não aplique patch.
-
-Não avance para outra tarefa.
+- Um problema encontrado gera finding.
+- Não corrija o finding.
+- Não altere arquivos.
+- Não aplique patch.
+- Não avance para outra tarefa.
 
 ## Findings
 
@@ -89,6 +84,7 @@ Nenhuma correção obrigatória encontrada.
 Existe correção obrigatória dentro do escopo do Executor.
 
 `HUMAN_DECISION_REQUIRED`
+
 A conclusão depende de decisão material de Davi.
 
 Finalize com exatamente um desses três verdicts.

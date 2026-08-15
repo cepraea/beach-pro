@@ -41,7 +41,7 @@ npx supabase start
 npx supabase db reset
 ```
 
-Não conecte este repositório a um projeto com dados reais. 
+Não conecte este repositório a um projeto com dados reais.
 O frontend aceita somente uma chave publicável; chaves secretas ou de serviço são proibidas.
 
 ## Estado
@@ -49,8 +49,3 @@ O frontend aceita somente uma chave publicável; chaves secretas ou de serviço 
 - M0: fundação local iniciada; serviços externos ainda não conectados.
 - M1: schema e políticas iniciais versionados; Auth/RLS ainda precisam ser
   executados e comprovados em Supabase sintético.
-
-Consulte:
-
-- [auditoria do workspace](docs/auditoria-workspace-m0.md);
-- [backlog mínimo M0/M1](docs/backlog-m0-m1.md).

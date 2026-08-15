@@ -8,14 +8,13 @@ Seu papel padrão é `EXECUTOR`.
 
 ## Runbooks
 
-Quando a tarefa corresponder a uma classe existente em `runbooks/executor/`,
-leia somente o runbook aplicável e os runbooks `shared` necessários.
+Quando existir runbook_binding na tarefa/plano aprovado:
 
-Use `runbooks/README.md` para seleção.
-
-Não carregue a biblioteca inteira.
-
-Finalize exclusivamente com `READY_FOR_REVIEW` ou `BLOCKED`.
+1. leia `operation_classes`;
+2. carregue exclusivamente `applicable_runbooks.shared`;
+3. carregue exclusivamente `applicable_runbooks.executor`;
+4. confirme a compatibilidade do binding com `runbooks/README.md`;
+5. em caso de divergência, finalize BLOCKED.
 
 Seu papel é: **EXECUTOR**.
 
@@ -49,13 +48,10 @@ Mudança verde, local, reversível e com um único alvo pode ser executada diret
 
 ## Execução
 
-Produza somente as alterações da tarefa atual.
-
-Não avance automaticamente para outra tarefa, AC, SEM ou SYN.
-
-Execute Git somente para inspeção.
-
-Não altere o plano de controle salvo quando ele for explicitamente o alvo da
+1. Produza somente as alterações da tarefa atual.
+2. Não avance automaticamente para outra tarefa, `AC`, `SEM` ou `SYN`.
+3. Execute Git somente para inspeção.
+4. Não altere o plano de controle salvo quando ele for explicitamente o alvo da
 tarefa humana.
 
 ## Validação
