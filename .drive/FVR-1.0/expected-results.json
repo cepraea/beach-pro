@@ -1,0 +1,160 @@
+{
+  "schema_version": "FVR-CONFORMANCE-1.0",
+  "schema_vectors": [
+    {
+      "file": "schema-positive/plan-valid-minimal.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "VALID"
+    },
+    {
+      "file": "schema-positive/plan-valid-network-authorized.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "VALID"
+    },
+    {
+      "file": "schema-positive/assertion-valid-set-subset.json",
+      "schema": "assertion.schema.json",
+      "expected": "VALID"
+    },
+    {
+      "file": "schema-positive/manifest-valid-completed.json",
+      "schema": "manifest.schema.json",
+      "expected": "VALID"
+    },
+    {
+      "file": "schema-negative/plan-invalid-unknown-field.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "unknown field"
+    },
+    {
+      "file": "schema-negative/plan-invalid-arbitrary-command-field.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "arbitrary command string"
+    },
+    {
+      "file": "schema-negative/plan-invalid-predicate-string.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "textual predicate"
+    },
+    {
+      "file": "schema-negative/plan-invalid-network-escalation.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "network escalation"
+    },
+    {
+      "file": "schema-negative/plan-invalid-host-execution.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "host execution"
+    },
+    {
+      "file": "schema-negative/plan-invalid-env-inheritance.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "environment inheritance"
+    },
+    {
+      "file": "schema-negative/plan-invalid-container-not-authorized.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "container lifecycle not authorized"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-unknown-operator.json",
+      "schema": "assertion.schema.json",
+      "expected": "INVALID",
+      "reason": "unknown operator"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-numeric-type.json",
+      "schema": "assertion.schema.json",
+      "expected": "INVALID",
+      "reason": "numeric operator with string expected"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-empty-composite.json",
+      "schema": "assertion.schema.json",
+      "expected": "INVALID",
+      "reason": "empty composite"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-unknown-field.json",
+      "schema": "manifest.schema.json",
+      "expected": "INVALID",
+      "reason": "unknown manifest field"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-digest.json",
+      "schema": "manifest.schema.json",
+      "expected": "INVALID",
+      "reason": "invalid digest"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-timeout-with-exit-code.json",
+      "schema": "manifest.schema.json",
+      "expected": "INVALID",
+      "reason": "timeout with application exit code"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-artifact-path-traversal.json",
+      "schema": "manifest.schema.json",
+      "expected": "INVALID",
+      "reason": "artifact path traversal"
+    },
+    {
+      "file": "schema-negative/plan-invalid-path-traversal.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "relative path traversal"
+    },
+    {
+      "file": "schema-negative/plan-invalid-unregistered-tool.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "tool outside closed registry"
+    },
+    {
+      "file": "schema-negative/plan-invalid-unknown-operation.json",
+      "schema": "verification-plan.schema.json",
+      "expected": "INVALID",
+      "reason": "unknown operation"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-missing-required-control-field.json",
+      "schema": "manifest.schema.json",
+      "expected": "INVALID",
+      "reason": "required control field missing"
+    }
+  ],
+  "semantic_vectors": [
+    {
+      "file": "semantic/semantic-invalid-max-steps.json",
+      "rule_id": "SEM-PLAN-001",
+      "expected": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-step-timeout.json",
+      "rule_id": "SEM-PLAN-002",
+      "expected": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-duplicate-artifact-path.json",
+      "rule_id": "SEM-PLAN-003",
+      "expected": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-runner-hash-end.json",
+      "rule_id": "SEM-MAN-001",
+      "expected": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "file": "semantic/semantic-valid-plan-core.json",
+      "rule_id": "SEM-PLAN-001",
+      "expected": "VALID"
+    }
+  ]
+}

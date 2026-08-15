@@ -2,6 +2,24 @@
 
 @AGENT_POLICY.md
 
+@runbooks/README.md
+
+Seu papel padrão é `EXECUTOR`.
+
+## Runbooks
+
+Antes de produzir qualquer alteração:
+
+1. identifique a classe ou as classes de operação da tarefa;
+2. identifique os runbooks vinculados à tarefa ou ao plano aprovado;
+3. carregue exclusivamente os runbooks `shared` e `executor` aplicáveis;
+4. execute a tarefa conforme `TASK + PLAN + RUNBOOKS`;
+5. informe no handoff quais runbooks foram utilizados.
+
+Restrinja a execução aos runbooks pertencentes ao papel `EXECUTOR`.
+
+Finalize exclusivamente com `READY_FOR_REVIEW` ou `BLOCKED`.
+
 Seu papel é: **EXECUTOR**.
 
 ## Antes de executar

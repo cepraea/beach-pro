@@ -1,0 +1,167 @@
+{
+  "schemas_meta_valid": true,
+  "schema_vectors_all_matched": true,
+  "semantic_vectors_all_matched": true,
+  "schema_results": [
+    {
+      "file": "schema-positive/plan-valid-minimal.json",
+      "expected": "VALID",
+      "actual": "VALID",
+      "first_error": null
+    },
+    {
+      "file": "schema-positive/plan-valid-network-authorized.json",
+      "expected": "VALID",
+      "actual": "VALID",
+      "first_error": null
+    },
+    {
+      "file": "schema-positive/assertion-valid-set-subset.json",
+      "expected": "VALID",
+      "actual": "VALID",
+      "first_error": null
+    },
+    {
+      "file": "schema-positive/manifest-valid-completed.json",
+      "expected": "VALID",
+      "actual": "VALID",
+      "first_error": null
+    },
+    {
+      "file": "schema-negative/plan-invalid-unknown-field.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "Additional properties are not allowed ('unexpected_field' was unexpected)"
+    },
+    {
+      "file": "schema-negative/plan-invalid-arbitrary-command-field.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operation': 'process.run', 'execution_target': 'sandbox', 'tool': 'pytest', 'argv': ['-q'], 'cwd': '.', 'timeout_seconds': 120, 'network': 'deny', 'stdout_artifact': 'raw/step-1.stdout', 'stderr_artifact': 'raw/step-1.stderr', 'result_parser': {'type': 'none'}, 'label': 'Run tests', 'command': 'pytest -q && true'} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/plan-invalid-predicate-string.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "Additional properties are not allowed ('predicate' was unexpected)"
+    },
+    {
+      "file": "schema-negative/plan-invalid-network-escalation.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "True was expected"
+    },
+    {
+      "file": "schema-negative/plan-invalid-host-execution.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operation': 'process.run', 'execution_target': 'host', 'tool': 'pytest', 'argv': ['-q'], 'cwd': '.', 'timeout_seconds': 120, 'network': 'deny', 'stdout_artifact': 'raw/step-1.stdout', 'stderr_artifact': 'raw/step-1.stderr', 'result_parser': {'type': 'none'}, 'label': 'Run tests'} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/plan-invalid-env-inheritance.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "['PATH'] is expected to be empty"
+    },
+    {
+      "file": "schema-negative/plan-invalid-container-not-authorized.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "True was expected"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-unknown-operator.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operator': 'approximately_equal', 'actual': {'literal': 1}, 'expected': {'literal': 1}} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-numeric-type.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operator': 'lt', 'actual': {'literal': 1}, 'expected': {'literal': '2'}} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/assertion-invalid-empty-composite.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operator': 'all', 'expressions': []} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-unknown-field.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "Additional properties are not allowed ('unexpected' was unexpected)"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-digest.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "'BAD' does not match '^[0-9a-f]{64}$'"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-timeout-with-exit-code.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "124 is not of type 'null'"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-artifact-path-traversal.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "'../escape.log' does not match '^(?:raw|observations)/(?!.*/\\\\.\\\\.(?:/|$))[A-Za-z0-9._/@+\\\\-][A-Za-z0-9._/@+\\\\-/ ]*$'"
+    },
+    {
+      "file": "schema-negative/plan-invalid-path-traversal.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operation': 'process.run', 'execution_target': 'sandbox', 'tool': 'pytest', 'argv': ['-q'], 'cwd': '../outside', 'timeout_seconds': 120, 'network': 'deny', 'stdout_artifact': 'raw/step-1.stdout', 'stderr_artifact': 'raw/step-1.stderr', 'result_parser': {'type': 'none'}, 'label': 'Run tests'} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/plan-invalid-unregistered-tool.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operation': 'process.run', 'execution_target': 'sandbox', 'tool': 'bash', 'argv': ['-q'], 'cwd': '.', 'timeout_seconds': 120, 'network': 'deny', 'stdout_artifact': 'raw/step-1.stdout', 'stderr_artifact': 'raw/step-1.stderr', 'result_parser': {'type': 'none'}, 'label': 'Run tests'} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/plan-invalid-unknown-operation.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "{'operation': 'shell.exec', 'label': 'Capture baseline HEAD'} is not valid under any of the given schemas"
+    },
+    {
+      "file": "schema-negative/manifest-invalid-missing-required-control-field.json",
+      "expected": "INVALID",
+      "actual": "INVALID",
+      "first_error": "'verification_plan_sha256' is a required property"
+    }
+  ],
+  "semantic_results": [
+    {
+      "file": "semantic/semantic-invalid-max-steps.json",
+      "expected": "PLAN_INVALID",
+      "actual": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-step-timeout.json",
+      "expected": "PLAN_INVALID",
+      "actual": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-duplicate-artifact-path.json",
+      "expected": "PLAN_INVALID",
+      "actual": "PLAN_INVALID"
+    },
+    {
+      "file": "semantic/semantic-invalid-runner-hash-end.json",
+      "expected": "CONTROL_INTEGRITY_FAILURE",
+      "actual": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "file": "semantic/semantic-valid-plan-core.json",
+      "expected": "VALID",
+      "actual": "VALID"
+    }
+  ],
+  "coverage_map": "conformance-vectors/coverage-map.json"
+}

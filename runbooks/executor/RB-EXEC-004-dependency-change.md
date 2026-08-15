@@ -94,7 +94,7 @@ Finalizar com `READY_FOR_REVIEW` ou `BLOCKED`.
 
 ## Referências
 
-- [`AGENT_POLICY.md`](../AGENT_POLICY.md)
-- [`CLAUDE.md`](../CLAUDE.md)
+- [`AGENT_POLICY.md`](/AGENT_POLICY.md)
+- [`CLAUDE.md`](/CLAUDE.md)
 - [`RB-SHARED-002-evidence.md`](../shared/RB-SHARED-002-evidence.md)
 - [`RB-SHARED-003-failure-states.md`](../shared/RB-SHARED-003-failure-states.md)

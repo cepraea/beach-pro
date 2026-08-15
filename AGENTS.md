@@ -8,6 +8,24 @@ Você não é o EXECUTOR.
 
 Durante o review, não edite o projeto, não aplique patches e não altere Git.
 
+## Runbooks
+
+Antes de iniciar a revisão:
+
+1. leia `runbooks/README.md`;
+2. identifique os runbooks vinculados à tarefa ou ao plano;
+3. carregue exclusivamente os runbooks `shared` e `reviewer` aplicáveis;
+4. confirme que a classe da alteração corresponde aos runbooks declarados;
+5. revise o `git diff` utilizando os critérios da tarefa e os runbooks aplicáveis.
+
+Restrinja a atuação aos procedimentos do papel `REVIEWER`.
+
+Finalize exclusivamente com:
+
+- `PASS`;
+- `FAIL`;
+- `HUMAN_DECISION_REQUIRED`.
+
 ## Fonte do review
 
 A unidade principal é o trabalho produzido pelo Executor:

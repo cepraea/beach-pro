@@ -1,9 +1,12 @@
 {
+  "object_type": "task_proposal",
   "schema_version": "1.0",
-  "approval_id": "<identificador>",
+  "proposal_id": "<identificador>",
+  "revision": 1,
   "tarefa_id": "<identificador>",
   "instrucao_original": "<texto recebido>",
   "objetivo": "<resultado>",
+
   "arquivos": [
     {
       "caminho": "<path>",
@@ -11,16 +14,11 @@
       "operacao": "<leitura ou mudança>"
     }
   ],
+
   "fora_de_escopo": [
     "<exclusao>"
   ],
-  "criterios_de_aceite": [
-    {
-      "condicao": "<fato observavel>",
-      "metodo": "<comando ou inspeção>",
-      "esperado": "passou"
-    }
-  ],
+
   "risco": {
     "nivel": "verde | amarelo | vermelho | vermelho_critico",
     "naturezas": [
@@ -30,118 +28,30 @@
     "reversibilidade": "reversivel | parcial | irreversivel",
     "justificativa": "<motivo>"
   },
-  "aprovacao": {
-    "status": "NAO_REGISTRADA_AQUI",
-    "observacao": "A aprovação pertence a Davi/GitHub."
-  }
-}
 
-{
-  "object_type": "task_approval",
-  "schema_version": "2.0",
-
-  "proposal_binding": {
-    "revision": 1,
-    "proposal_digest": "sha256:...",
-    "canonicalization": "JCS-RFC8785"
-  },
-
-  "decision": "approved",
-
-  "issued_by": {
-    "actor_id": "user-456",
-    "display_name": "Responsável pelo projeto",
-    "actor_type": "human",
-    "authentication_method": "trusted_ui_session"
-  },
-
-  "issued_via": {
-    "component_id": "task-approval-service",
-    "component_version": "1.2.0"
-  },
-
-  "issued_at": "2026-08-04T14:35:00Z",
-  "valid_until": "2026-08-04T18:35:00Z",
-
-  "validated_context": {
-    "project_id": "sha256:...",
-    "canonical_project_root": "/workspace/project",
-    "repository_remote": "git@example.com:org/project.git",
-    "worktree_id": "worktree-main",
-    "base_revision": "git-commit-sha",
-    "session_binding": "session-123"
-  },
-
-  "authorized_scope": {
-    "operation_ids": [
-      "OP-01"
+  "runbook_binding": {
+    "operation_classes": [
+      "database_change"
     ],
-
-    "resolved_resources": [
-      {
-        "resource_id": "REF-01",
-        "canonical_path": "/workspace/project/docs/auth-spec.md",
-        "capabilities": [
-          "read"
-        ],
-        "validated_hash": "sha256:..."
-      },
-      {
-        "resource_id": "TARGET-01",
-        "canonical_path": "/workspace/project/src/auth/config.ts",
-        "capabilities": [
-          "read",
-          "edit"
-        ],
-        "validated_hash": "sha256:..."
-      }
-    ],
-
-    "limits": {
-      "maximum_changed_files": 1,
-      "maximum_created_files": 0,
-      "maximum_deleted_files": 0,
-      "maximum_changed_bytes": 20000,
-      "allow_external_side_effects": false,
-      "allow_network_access": false,
-      "allow_parallel_operations": false
-    }
-  },
-
-  "validated_risk": {
-    "blast_radius": "medium",
-    "reversibility": "reversible",
-    "critical_resource": false,
-    "human_confirmation_required": true,
-    "risk_reasons": [
-      "Mudança de comportamento em autenticação"
-    ]
-  },
-
-  "execution_conditions": {
-    "one_operation_at_a_time": true,
-    "require_precondition_hash_match": true,
-    "require_checkpoint_after_each_operation": true,
-    "require_final_acceptance_verification": true,
-    "deny_unlisted_operations": true,
-    "deny_on_unknown_effect": true
-  },
-
-  "required_checkpoints": [
-    {
-      "checkpoint_id": "CP-OP-01",
-      "after_operation_id": "OP-01",
-      "required_before_next_operation": true,
-      "review_material": [
-        "diff",
-        "verification_results"
+    "applicable_runbooks": {
+      "shared": [
+        "runbooks/shared/RB-SHARED-002-evidence.md",
+        "runbooks/shared/RB-SHARED-003-failure-states.md"
+      ],
+      "executor": [
+        "runbooks/executor/RB-EXEC-002-database-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-002-database-review.md"
       ]
     }
-  ],
+  },
 
-  "attestation": {
-    "algorithm": "Ed25519",
-    "key_id": "approval-service-key-01",
-    "signature": "base64:..."
-  }
+  "criterios_de_aceite": [
+    {
+      "condicao": "<fato observavel>",
+      "metodo": "<comando ou inspeção>",
+      "esperado": "passou"
+    }
+  ]
 }

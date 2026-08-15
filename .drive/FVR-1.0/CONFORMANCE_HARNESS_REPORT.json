@@ -1,0 +1,1 @@
+{"ac_results":{},"preconditions":{"bash":"/usr/bin/bash","git":"/usr/bin/git"},"reason":"required executable unavailable: shellcheck","results":[],"schema_version":"FVR-RUNNER-CONFORMANCE-REPORT-1.0","verdict":"HARNESS_INVALID"}
