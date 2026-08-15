@@ -31,9 +31,7 @@
     "source=${localWorkspaceFolder}/.devcontainer/control-plane/gitconfig-agent,target=/home/agent/.config/git/config,type=bind,readonly",
     "source=${localWorkspaceFolder}/scripts/ci,target=/workspaces/cepraea-beach-pro/scripts/ci,type=bind,readonly",
     "source=${localWorkspaceFolder}/AGENT_POLICY.md,target=/workspaces/cepraea-beach-pro/AGENT_POLICY.md,type=bind,readonly",
-    "source=${localWorkspaceFolder}/runbooks,target=/workspaces/cepraea-beach-pro/runbooks,type=bind,readonly",
-    "source=${localWorkspaceFolder}/runbooks,target=/workspaces/cepraea-beach-pro/.drive,type=bind,readonly",
-    "source=${localWorkspaceFolder}/runbooks,target=/workspaces/cepraea-beach-pro/docs,type=bind,readonly"
+    "source=${localWorkspaceFolder}/runbooks,target=/workspaces/cepraea-beach-pro/runbooks,type=bind,readonly"
   ],
   "containerEnv": {
     "GIT_CONFIG_GLOBAL": "/dev/null",

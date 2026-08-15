@@ -44,8 +44,10 @@ if [[ -n "$path" ]] && is_allowed_claude_plan_path "$path"; then
   : # exceção estrita para o runtime nativo de Plan Mode
 else
   case "$path" in
-    */.git/*|*/.devcontainer/*|*/.github/workflows/*|*/scripts/ci/*|*/.claude/*|*/.codex/*|*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|*/AGENTS.md)
-      block "Bloqueado: caminho do plano de controle." ;;
+*/.git/*|*/.devcontainer/*|*/.github/workflows/*|*/scripts/ci/*|\
+*/.claude/*|*/.codex/*|*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|\
+*/AGENTS.md|*/runbooks/*)
+    block "Bloqueado: caminho do plano de controle." ;;
   esac
 fi
 
@@ -71,9 +73,5 @@ if [[ "$tool" == "Bash" ]]; then
       block "Bloqueado: Git privilegiado pertence a Davi." ;;
   esac
 fi
-
-*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|*/AGENTS.md|*/runbooks/*)
-    block "Bloqueado: caminho do plano de controle."
-    ;;
 
 exit 0
