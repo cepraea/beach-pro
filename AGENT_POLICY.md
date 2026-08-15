@@ -112,6 +112,7 @@ Permissão inexistente não autoriza alteração de policy, sandbox, container o
 controle para contornar a restrição.
 
 Se a tarefa não puder continuar dentro da autoridade disponível, informe
+
 `BLOCKED` ou `HUMAN_DECISION_REQUIRED`.
 
 ## Evidência
@@ -142,4 +143,6 @@ Eles não adquirem autoridade de aprovação.
 ## Documentação
 
 Ao criar ou alterar Markdown, siga:
+
 `docs/standards/guia_estilo_documentação.md`
+

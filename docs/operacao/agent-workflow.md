@@ -76,7 +76,7 @@ Eles não adquirem autoridade de aprovação.
 ## Referências
 
 - [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
-- [`CLAUDE.md`](../../CLAUDE.md)
-- [`AGENTS.md`](../../AGENTS.md)
+- [`CLAUDE.md`](../..../../CLAUDE.md)
+- [`AGENTS.md`](../../../AGENTS.md)
 - [`runbooks/README.md`](../../runbooks/README.md)
 - [`docs/modelagem/decisoes/registro_decisoes.md`](../modelagem/decisoes/registro_decisoes.md)

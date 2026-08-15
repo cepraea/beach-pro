@@ -25,7 +25,7 @@ O pretool hook não bloqueia escritas em `.drive`:
 # pretool — paths bloqueados (linha 47):
 case "$path" in
    */.git/*|*/.devcontainer/*|*/.github/workflows/*|*/scripts/ci/* \
-    */.claude/*|*/.codex/*|*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|*/AGENTS.md)
+    */.claude/*|*/.codex/*|*/.mcp.json|*/AGENT_POLICY.md|*../../CLAUDE.md|*/AGENTS.md)
 ```
 
 `.drive` está ausente desta lista. A `managed-settings.json` atual também não tem deny para `Edit(//workspaces/.../.drive/**)`.

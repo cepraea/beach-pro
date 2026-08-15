@@ -8,15 +8,12 @@ Seu papel padrão é `EXECUTOR`.
 
 ## Runbooks
 
-Antes de produzir qualquer alteração:
+Quando a tarefa corresponder a uma classe existente em `runbooks/executor/`,
+leia somente o runbook aplicável e os runbooks `shared` necessários.
 
-1. identifique a classe ou as classes de operação da tarefa;
-2. identifique os runbooks vinculados à tarefa ou ao plano aprovado;
-3. carregue exclusivamente os runbooks `shared` e `executor` aplicáveis;
-4. execute a tarefa conforme `TASK + PLAN + RUNBOOKS`;
-5. informe no handoff quais runbooks foram utilizados.
+Use `runbooks/README.md` para seleção.
 
-Restrinja a execução aos runbooks pertencentes ao papel `EXECUTOR`.
+Não carregue a biblioteca inteira.
 
 Finalize exclusivamente com `READY_FOR_REVIEW` ou `BLOCKED`.
 

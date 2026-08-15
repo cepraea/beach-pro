@@ -78,6 +78,6 @@ humana antes da revisão.
 
 ## Referências
 
-- [`AGENT_POLICY.md`](../AGENT_POLICY.md)
-- [`CLAUDE.md`](../CLAUDE.md)
-- [`AGENTS.md`](../AGENTS.md)
+- [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
+- [`CLAUDE.md`](..../../CLAUDE.md)
+- [`AGENTS.md`](../../AGENTS.md)

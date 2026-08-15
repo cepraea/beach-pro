@@ -110,7 +110,7 @@ O Executor carrega:
 - os runbooks `shared` declarados no `runbook_binding`;
 - os runbooks `executor` declarados no `runbook_binding`;
 - a normativa pertinente de `docs/modelagem/`;
-- as fontes necessárias de `.drive/CEPRAEA BEACH PRO/`.
+- fontes controladas designadas pela tarefa ou pela normativa aplicável.
 
 O Reviewer carrega:
 

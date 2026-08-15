@@ -84,5 +84,5 @@ Evidências selecionadas → disponíveis para o próximo papel.
 
 ## Referências
 
-- [`AGENT_POLICY.md`](../AGENT_POLICY.md) — seção Persistent Evidence
+- [`AGENT_POLICY.md`](../../AGENT_POLICY.md) — seção Persistent Evidence
 - [`RB-SHARED-003-failure-states.md`](RB-SHARED-003-failure-states.md)

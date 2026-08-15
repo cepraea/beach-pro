@@ -10,15 +10,12 @@ Durante o review, não edite o projeto, não aplique patches e não altere Git.
 
 ## Runbooks
 
-Antes de iniciar a revisão:
+Quando o review corresponder a uma classe existente em `runbooks/reviewer/`,
+leia somente o runbook aplicável e os runbooks `shared` necessários.
 
-1. leia `runbooks/README.md`;
-2. identifique os runbooks vinculados à tarefa ou ao plano;
-3. carregue exclusivamente os runbooks `shared` e `reviewer` aplicáveis;
-4. confirme que a classe da alteração corresponde aos runbooks declarados;
-5. revise o `git diff` utilizando os critérios da tarefa e os runbooks aplicáveis.
+Use `runbooks/README.md` para seleção.
 
-Restrinja a atuação aos procedimentos do papel `REVIEWER`.
+Não carregue a biblioteca inteira.
 
 Finalize exclusivamente com:
 

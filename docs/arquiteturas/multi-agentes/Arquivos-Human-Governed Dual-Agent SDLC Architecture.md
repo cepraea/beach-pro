@@ -522,7 +522,7 @@ As regras `Edit(path)` são as corretas para proteger ferramentas internas de es
       "Read(//workspaces/cepraea-beach-pro/secrets/**)",
 
       "Edit(//workspaces/cepraea-beach-pro/AGENT_POLICY.md)",
-      "Edit(//workspaces/cepraea-beach-pro/CLAUDE.md)",
+      "Edit(//workspaces/cepraea-beach-pro../../CLAUDE.md)",
       "Edit(//workspaces/cepraea-beach-pro/AGENTS.md)",
 
       "Edit(//workspaces/cepraea-beach-pro/.devcontainer/**)",
@@ -590,7 +590,7 @@ Claude Code é consciente de operadores compostos como `&&`, `||`, `;` e pipes a
         "/workspaces/cepraea-beach-pro/.codex",
         "/workspaces/cepraea-beach-pro/.drive/CEPRAEA BEACH PRO",
         "/workspaces/cepraea-beach-pro/AGENT_POLICY.md",
-        "/workspaces/cepraea-beach-pro/CLAUDE.md",
+        "/workspaces/cepraea-beach-pro../../CLAUDE.md",
         "/workspaces/cepraea-beach-pro/AGENTS.md"
       ]
     },

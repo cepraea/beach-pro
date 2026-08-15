@@ -101,6 +101,6 @@ Cada runbook especializado DEVE usar exclusivamente os estados correspondentes a
 
 ## Referências
 
-- [`CLAUDE.md`](../CLAUDE.md)
-- [`AGENTS.md`](../AGENTS.md)
-- [`AGENT_POLICY.md`](../AGENT_POLICY.md)
+- [`CLAUDE.md`](..../../CLAUDE.md)
+- [`AGENTS.md`](../../AGENTS.md)
+- [`AGENT_POLICY.md`](../../AGENT_POLICY.md)

@@ -41,8 +41,8 @@ npx supabase start
 npx supabase db reset
 ```
 
-Não conecte este repositório a um projeto com dados reais. O frontend aceita
-somente uma chave publicável; chaves secretas ou de serviço são proibidas.
+Não conecte este repositório a um projeto com dados reais. 
+O frontend aceita somente uma chave publicável; chaves secretas ou de serviço são proibidas.
 
 ## Estado
 

@@ -97,7 +97,7 @@ aceitação.
 
 ## Referências
 
-- [`AGENT_POLICY.md`](../AGENT_POLICY.md)
-- [`AGENTS.md`](../AGENTS.md)
+- [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
+- [`AGENTS.md`](../../AGENTS.md)
 - [`RB-SHARED-002-evidence.md`](../shared/RB-SHARED-002-evidence.md)
 - [`RB-SHARED-003-failure-states.md`](../shared/RB-SHARED-003-failure-states.md)

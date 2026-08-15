@@ -72,4 +72,8 @@ if [[ "$tool" == "Bash" ]]; then
   esac
 fi
 
+*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|*/AGENTS.md|*/runbooks/*)
+    block "Bloqueado: caminho do plano de controle."
+    ;;
+
 exit 0

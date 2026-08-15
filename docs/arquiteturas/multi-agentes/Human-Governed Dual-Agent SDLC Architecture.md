@@ -724,7 +724,7 @@ Exemplo arquitetural do perfil BASE:
       "Edit(//workspaces/cepraea-beach-pro/.claude/**)",
       "Edit(//workspaces/cepraea-beach-pro/.codex/**)",
       "Edit(//workspaces/cepraea-beach-pro/AGENT_POLICY.md)",
-      "Edit(//workspaces/cepraea-beach-pro/CLAUDE.md)",
+      "Edit(//workspaces/cepraea-beach-pro../../CLAUDE.md)",
       "Edit(//workspaces/cepraea-beach-pro/AGENTS.md)",
       "Edit(//workspaces/cepraea-beach-pro/.drive/CEPRAEA BEACH PRO/**)",
 
@@ -790,7 +790,7 @@ Somente após acceptance test bem-sucedido, o perfil HARDENED acrescenta ao perf
         "/workspaces/cepraea-beach-pro/.claude",
         "/workspaces/cepraea-beach-pro/.codex",
         "/workspaces/cepraea-beach-pro/AGENT_POLICY.md",
-        "/workspaces/cepraea-beach-pro/CLAUDE.md",
+        "/workspaces/cepraea-beach-pro../../CLAUDE.md",
         "/workspaces/cepraea-beach-pro/AGENTS.md",
         "/workspaces/cepraea-beach-pro/.drive/CEPRAEA BEACH PRO"
       ]

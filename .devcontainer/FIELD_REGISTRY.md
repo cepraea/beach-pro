@@ -1,15 +1,20 @@
-# FIELD_REGISTRY — `devcontainer.json`
+# FIELD_REGISTRY — `.devcontainer/devcontainer.json`
 
 **Objeto analisado:** configuração `CEPRAEA Agent` fornecida na conversa.  
 **Data da revisão:** 2026-08-14.  
+**Fonte:** `.devcontainer/devcontainer.json`
+**Path:**
 **Papel da revisão:** Arquitetura de Metadados + validação semântica contra fontes primárias/especializadas.  
 **Escopo:** todos os campos JSON efetivamente presentes, chaves de configuração aninhadas e os parâmetros estruturados embutidos nas strings de `mounts`/`runArgs`.
 
-> **Regra de leitura:** “válido no schema” não significa “necessário”, “seguro” ou “suficiente”. Este registro separa contrato de metadados, efeito operacional e garantia de segurança.
+> **Regra de leitura:** “válido no schema” não significa “necessário”, “seguro” ou “suficiente”. 
+
+*Este registro separa contrato de metadados, efeito operacional e garantia de segurança.*
 
 ## 1. Sumário executivo
 
-- Foram registrados **45 metacampos/controles lógicos**: 23 campos/chaves estruturais Dev Container, 8 variáveis de ambiente (cada uma ocorre em `containerEnv` e `remoteEnv`), 7 settings VS Code/extensões, 4 parâmetros de mount e 3 argumentos Docker em `runArgs`.
+- Foram registrados **45 metacampos/controles lógicos**: 
+- 23 campos/chaves estruturais Dev Container, 8 variáveis de ambiente (cada uma ocorre em `containerEnv` e `remoteEnv`), 7 settings VS Code/extensões, 4 parâmetros de mount e 3 argumentos Docker em `runArgs`.
 - O desenho é coerente com um **workspace RW + control-plane RO + agente não-root + hardening Docker**.
 - Há um **conflito semântico P0**: os três mounts de `gitconfig-agent` são neutralizados pelas próprias variáveis Git. `GIT_CONFIG_NOSYSTEM=1` ignora `/etc/gitconfig`; `GIT_CONFIG_GLOBAL=/dev/null` substitui tanto `~/.gitconfig` quanto o global XDG. Portanto, hoje esses três mounts não exercem a policy esperada sobre o Git.
 - `updateRemoteUserUID:false` é válido, porém requer uma decisão explícita de plataforma/ownership. Em Linux nativo, bind mounts preservam UID/GID do host e um UID fixo do usuário `agent` pode causar `Permission denied` ou `dubious ownership`.
