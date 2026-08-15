@@ -1,0 +1,806 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fvr.local/schema/1.0/verification-plan.schema.json",
+  "title": "FVR-1.0 Verification Plan Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_metadata",
+    "control",
+    "workspace",
+    "policy",
+    "environment",
+    "steps",
+    "assertions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "FVR-1.0"
+    },
+    "plan_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "contract_id",
+        "contract_version"
+      ],
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "pattern": "^VP-[A-Z0-9][A-Z0-9._-]{2,63}$"
+        },
+        "contract_id": {
+          "type": "string",
+          "pattern": "^CTR-[A-Z0-9][A-Z0-9._-]{2,63}$"
+        },
+        "contract_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runner_policy_version",
+        "expected_contract_sha256",
+        "expected_runner_sha256"
+      ],
+      "properties": {
+        "runner_policy_version": {
+          "const": "FVR-1.0"
+        },
+        "expected_contract_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "expected_runner_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root"
+      ],
+      "properties": {
+        "root": {
+          "const": "."
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fail_closed",
+        "network_default",
+        "allow_network",
+        "allow_container_lifecycle",
+        "allow_host_process_execution",
+        "max_step_timeout_seconds",
+        "max_log_bytes",
+        "max_steps"
+      ],
+      "properties": {
+        "fail_closed": {
+          "const": true
+        },
+        "network_default": {
+          "const": "deny"
+        },
+        "allow_network": {
+          "type": "boolean"
+        },
+        "allow_container_lifecycle": {
+          "type": "boolean"
+        },
+        "allow_host_process_execution": {
+          "const": false
+        },
+        "max_step_timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600
+        },
+        "max_log_bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 104857600
+        },
+        "max_steps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inherit",
+        "set"
+      ],
+      "properties": {
+        "inherit": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "set": {
+          "$ref": "#/$defs/envMap"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "path"
+            ],
+            "properties": {
+              "operation": {
+                "const": "file.exists"
+              },
+              "path": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "path"
+            ],
+            "properties": {
+              "operation": {
+                "const": "file.stat"
+              },
+              "path": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "path"
+            ],
+            "properties": {
+              "operation": {
+                "const": "file.sha256"
+              },
+              "path": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "path",
+              "recursive"
+            ],
+            "properties": {
+              "operation": {
+                "const": "directory.list"
+              },
+              "path": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "recursive": {
+                "type": "boolean"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation"
+            ],
+            "properties": {
+              "operation": {
+                "const": "git.head"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation"
+            ],
+            "properties": {
+              "operation": {
+                "const": "git.status"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation"
+            ],
+            "properties": {
+              "operation": {
+                "const": "git.tracked_files"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "baseline"
+            ],
+            "properties": {
+              "operation": {
+                "const": "git.diff"
+              },
+              "baseline": {
+                "enum": [
+                  "HEAD",
+                  "WORKTREE_BEFORE"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "baseline"
+            ],
+            "properties": {
+              "operation": {
+                "const": "git.diff_names"
+              },
+              "baseline": {
+                "enum": [
+                  "HEAD",
+                  "WORKTREE_BEFORE"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "execution_target",
+              "tool",
+              "argv",
+              "cwd",
+              "timeout_seconds",
+              "network",
+              "stdout_artifact",
+              "stderr_artifact",
+              "result_parser"
+            ],
+            "properties": {
+              "operation": {
+                "const": "process.run"
+              },
+              "execution_target": {
+                "const": "sandbox"
+              },
+              "tool": {
+                "enum": [
+                  "npm",
+                  "npx",
+                  "node",
+                  "python",
+                  "python3",
+                  "pytest",
+                  "git",
+                  "devcontainer"
+                ]
+              },
+              "argv": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 64
+              },
+              "cwd": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "network": {
+                "enum": [
+                  "deny",
+                  "allow"
+                ]
+              },
+              "stdout_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "stderr_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "result_parser": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "const": "none"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "const": "junit_xml"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "const": "json"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "const": "jsonl"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "const": "tap"
+                      }
+                    }
+                  }
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "cwd",
+              "timeout_seconds",
+              "stdout_artifact",
+              "stderr_artifact"
+            ],
+            "properties": {
+              "operation": {
+                "const": "devcontainer.build"
+              },
+              "cwd": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "stdout_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "stderr_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "cwd",
+              "timeout_seconds",
+              "stdout_artifact",
+              "stderr_artifact"
+            ],
+            "properties": {
+              "operation": {
+                "const": "devcontainer.up"
+              },
+              "cwd": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "stdout_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "stderr_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "operation",
+              "cwd",
+              "timeout_seconds",
+              "tool",
+              "argv",
+              "stdout_artifact",
+              "stderr_artifact"
+            ],
+            "properties": {
+              "operation": {
+                "const": "devcontainer.exec"
+              },
+              "cwd": {
+                "$ref": "#/$defs/relativePath"
+              },
+              "timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "tool": {
+                "enum": [
+                  "npm",
+                  "npx",
+                  "node",
+                  "python",
+                  "python3",
+                  "pytest",
+                  "git",
+                  "devcontainer",
+                  "claude"
+                ]
+              },
+              "argv": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 64
+              },
+              "stdout_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "stderr_artifact": {
+                "$ref": "#/$defs/artifactPath"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              }
+            }
+          }
+        ]
+      }
+    },
+    "assertions": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 256,
+      "propertyNames": {
+        "pattern": "^(?:AC|INV)-[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "$ref": "https://fvr.local/schema/1.0/assertion.schema.json"
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relativePath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\x00)[A-Za-z0-9._/@+\\-][A-Za-z0-9._/@+\\-/ ]*$",
+      "minLength": 1
+    },
+    "artifactPath": {
+      "type": "string",
+      "pattern": "^(?:raw|observations)/(?!.*/\\.\\.(?:/|$))[A-Za-z0-9._/@+\\-][A-Za-z0-9._/@+\\-/ ]*$",
+      "minLength": 5
+    },
+    "envMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "allOf": [
+          {
+            "pattern": "^[A-Z_][A-Z0-9_]*$"
+          },
+          {
+            "not": {
+              "enum": [
+                "PATH",
+                "HOME",
+                "SHELL",
+                "BASH_ENV",
+                "ENV",
+                "LD_PRELOAD",
+                "LD_LIBRARY_PATH",
+                "PYTHONPATH",
+                "NODE_OPTIONS",
+                "SSH_AUTH_SOCK",
+                "GITHUB_TOKEN",
+                "GH_TOKEN",
+                "OPENAI_API_KEY",
+                "ANTHROPIC_API_KEY",
+                "GOOGLE_API_KEY",
+                "AWS_ACCESS_KEY_ID",
+                "AWS_SECRET_ACCESS_KEY",
+                "AWS_SESSION_TOKEN"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "steps": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "network": {
+                  "const": "allow"
+                }
+              },
+              "required": [
+                "network"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "allow_network": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "steps": {
+            "contains": {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "enum": [
+                    "devcontainer.build",
+                    "devcontainer.up",
+                    "devcontainer.exec"
+                  ]
+                }
+              },
+              "required": [
+                "operation"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "policy": {
+            "properties": {
+              "allow_container_lifecycle": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "x-fvr-semantic-rules": [
+    {
+      "id": "SEM-PLAN-001",
+      "operator": "lte",
+      "actual": "len(/steps)",
+      "expected_ref": "/policy/max_steps",
+      "on_false": "PLAN_INVALID"
+    },
+    {
+      "id": "SEM-PLAN-002",
+      "operator": "lte_each",
+      "actual": "/steps/*/timeout_seconds",
+      "expected_ref": "/policy/max_step_timeout_seconds",
+      "ignore_missing": true,
+      "on_false": "PLAN_INVALID"
+    },
+    {
+      "id": "SEM-PLAN-003",
+      "operator": "all_unique",
+      "actual": [
+        "/steps/*/stdout_artifact",
+        "/steps/*/stderr_artifact"
+      ],
+      "ignore_missing": true,
+      "on_false": "PLAN_INVALID"
+    },
+    {
+      "id": "SEM-PLAN-004",
+      "operator": "set_equal",
+      "actual": "object_keys(/assertions)",
+      "expected": "union(contract./invariants[*].id,contract./acceptance_criteria[*].id)",
+      "on_false": "PLAN_INVALID"
+    },
+    {
+      "id": "SEM-PLAN-005",
+      "operator": "eq_pair",
+      "actual": [
+        "/plan_metadata/contract_id",
+        "/plan_metadata/contract_version"
+      ],
+      "expected": [
+        "contract./contract_metadata/id",
+        "contract./contract_metadata/version"
+      ],
+      "on_false": "PLAN_INVALID"
+    },
+    {
+      "id": "SEM-PLAN-006",
+      "operator": "digest_eq",
+      "actual": "sha256(contract_bytes)",
+      "expected_ref": "/control/expected_contract_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "id": "SEM-PLAN-007",
+      "operator": "digest_eq_both",
+      "actual": [
+        "sha256(runner_bytes_start)",
+        "sha256(runner_bytes_end)"
+      ],
+      "expected_ref": "/control/expected_runner_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "id": "SEM-PLAN-008",
+      "operator": "external_digest_eq",
+      "actual": "sha256(plan_bytes)",
+      "expected_source": "external_trust_anchor.verification_plan_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    }
+  ],
+  "x-fvr-serialization-profile": {
+    "canonical_input_media_type": "application/json",
+    "encoding": "UTF-8",
+    "duplicate_object_member_names": "reject",
+    "comments": "reject",
+    "trailing_commas": "reject",
+    "non_finite_numbers": "reject",
+    "hash_exact_stored_bytes": true,
+    "yaml_is_normative": false
+  }
+}

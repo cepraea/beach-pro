@@ -1,0 +1,14 @@
+{
+  "id_decisao": "DEC-103",
+  "data": "2026-08-15",
+  "decisao": "Fixture de teste — decisão resolvida sem fonte",
+  "alternativas": [],
+  "escolha": "escolha de teste",
+  "justificativa": "justificativa de teste",
+  "fonte": [],
+  "impacto": null,
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": { "repository_evidence": { "action_ref": "AC-001" } }
+}

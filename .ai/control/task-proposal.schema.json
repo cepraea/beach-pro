@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schema/1.0/task-proposal.schema.json",
+  "title": "CEPRAEA BEACH PRO Task Proposal",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "object_type",
+    "schema_version",
+    "proposal_id",
+    "revision",
+    "tarefa_id",
+    "instrucao_original",
+    "objetivo",
+    "arquivos",
+    "fora_de_escopo",
+    "risco",
+    "runbook_binding",
+    "criterios_de_aceite"
+  ],
+
+  "properties": {
+    "object_type": {
+      "const": "task_proposal"
+    },
+
+    "schema_version": {
+      "const": "1.0"
+    },
+
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+
+    "tarefa_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+
+    "instrucao_original": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "objetivo": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "arquivos": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fileScope"
+      }
+    },
+
+    "fora_de_escopo": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+
+    "risco": {
+      "$ref": "#/$defs/risk"
+    },
+
+    "runbook_binding": {
+      "$ref": "#/$defs/runbookBinding"
+    },
+
+    "criterios_de_aceite": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/acceptanceCriterion"
+      }
+    }
+  },
+
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+
+    "fileScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "caminho",
+        "papel",
+        "operacao"
+      ],
+      "properties": {
+        "caminho": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "papel": {
+          "enum": [
+            "referencia",
+            "alvo",
+            "somente_leitura",
+            "proibido"
+          ]
+        },
+        "operacao": {
+          "enum": [
+            "leitura",
+            "mudanca",
+            "nenhuma"
+          ]
+        }
+      },
+
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "papel": {
+                "const": "alvo"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operacao": {
+                "const": "mudanca"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "papel": {
+                "enum": [
+                  "referencia",
+                  "somente_leitura"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operacao": {
+                "const": "leitura"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "papel": {
+                "const": "proibido"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operacao": {
+                "const": "nenhuma"
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nivel",
+        "naturezas",
+        "blast_radius",
+        "reversibilidade",
+        "justificativa"
+      ],
+      "properties": {
+        "nivel": {
+          "enum": [
+            "verde",
+            "amarelo",
+            "vermelho",
+            "vermelho_critico"
+          ]
+        },
+        "naturezas": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "ui",
+              "dependencia",
+              "rls",
+              "mfa",
+              "ci",
+              "dados"
+            ]
+          }
+        },
+        "blast_radius": {
+          "enum": [
+            "baixo",
+            "medio",
+            "alto"
+          ]
+        },
+        "reversibilidade": {
+          "enum": [
+            "reversivel",
+            "parcial",
+            "irreversivel"
+          ]
+        },
+        "justificativa": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+
+    "acceptanceCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condicao",
+        "metodo",
+        "esperado"
+      ],
+      "properties": {
+        "condicao": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metodo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "esperado": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+
+    "runbookBinding": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "required": [
+        "operation_classes",
+        "applicable_runbooks"
+      ],
+
+      "properties": {
+        "operation_classes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "code_change",
+              "database_change",
+              "documentation_change",
+              "dependency_change"
+            ]
+          }
+        },
+
+        "applicable_runbooks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "shared",
+            "executor",
+            "reviewer"
+          ],
+          "properties": {
+            "shared": {
+              "type": "array",
+              "maxItems": 3,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "runbooks/shared/RB-SHARED-001-repository-baseline.md",
+                  "runbooks/shared/RB-SHARED-002-evidence.md",
+                  "runbooks/shared/RB-SHARED-003-failure-states.md"
+                ]
+              }
+            },
+
+            "executor": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "runbooks/executor/RB-EXEC-001-code-change.md",
+                  "runbooks/executor/RB-EXEC-002-database-change.md",
+                  "runbooks/executor/RB-EXEC-003-documentation-change.md",
+                  "runbooks/executor/RB-EXEC-004-dependency-change.md"
+                ]
+              }
+            },
+
+            "reviewer": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 5,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "runbooks/reviewer/RB-REV-001-code-review.md",
+                  "runbooks/reviewer/RB-REV-002-database-review.md",
+                  "runbooks/reviewer/RB-REV-003-documentation-review.md",
+                  "runbooks/reviewer/RB-REV-004-evidence-review.md",
+                  "runbooks/reviewer/RB-REV-005-dependency-review.md"
+                ]
+              }
+            }
+          }
+        }
+      },
+
+      "allOf": [
+        {
+          "$ref": "#/$defs/codeChangeBinding"
+        },
+        {
+          "$ref": "#/$defs/databaseChangeBinding"
+        },
+        {
+          "$ref": "#/$defs/documentationChangeBinding"
+        },
+        {
+          "$ref": "#/$defs/dependencyChangeBinding"
+        }
+      ]
+    },
+
+    "codeChangeBinding": {
+      "if": {
+        "properties": {
+          "operation_classes": {
+            "contains": {
+              "const": "code_change"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "contains": {
+                  "const": "runbooks/executor/RB-EXEC-001-code-change.md"
+                }
+              },
+              "reviewer": {
+                "contains": {
+                  "const": "runbooks/reviewer/RB-REV-001-code-review.md"
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/executor/RB-EXEC-001-code-change.md"
+                  }
+                }
+              },
+              "reviewer": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/reviewer/RB-REV-001-code-review.md"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "databaseChangeBinding": {
+      "if": {
+        "properties": {
+          "operation_classes": {
+            "contains": {
+              "const": "database_change"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "contains": {
+                  "const": "runbooks/executor/RB-EXEC-002-database-change.md"
+                }
+              },
+              "reviewer": {
+                "contains": {
+                  "const": "runbooks/reviewer/RB-REV-002-database-review.md"
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/executor/RB-EXEC-002-database-change.md"
+                  }
+                }
+              },
+              "reviewer": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/reviewer/RB-REV-002-database-review.md"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "documentationChangeBinding": {
+      "if": {
+        "properties": {
+          "operation_classes": {
+            "contains": {
+              "const": "documentation_change"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "contains": {
+                  "const": "runbooks/executor/RB-EXEC-003-documentation-change.md"
+                }
+              },
+              "reviewer": {
+                "contains": {
+                  "const": "runbooks/reviewer/RB-REV-003-documentation-review.md"
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/executor/RB-EXEC-003-documentation-change.md"
+                  }
+                }
+              },
+              "reviewer": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/reviewer/RB-REV-003-documentation-review.md"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "dependencyChangeBinding": {
+      "if": {
+        "properties": {
+          "operation_classes": {
+            "contains": {
+              "const": "dependency_change"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "contains": {
+                  "const": "runbooks/executor/RB-EXEC-004-dependency-change.md"
+                }
+              },
+              "reviewer": {
+                "contains": {
+                  "const": "runbooks/reviewer/RB-REV-005-dependency-review.md"
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "applicable_runbooks": {
+            "properties": {
+              "executor": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/executor/RB-EXEC-004-dependency-change.md"
+                  }
+                }
+              },
+              "reviewer": {
+                "not": {
+                  "contains": {
+                    "const": "runbooks/reviewer/RB-REV-005-dependency-review.md"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

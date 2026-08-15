@@ -1,0 +1,9 @@
+{
+  "id_evidencia": "EVD-0001",
+  "id_fonte": "SRC-001",
+  "id_acao": "AC-001",
+  "localizacao": "aba 'Elenco', coluna B, linhas 2-20",
+  "trecho_literal": "Nome completo; Posição; Data de nascimento",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}

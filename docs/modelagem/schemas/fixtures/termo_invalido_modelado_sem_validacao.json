@@ -1,0 +1,16 @@
+{
+  "id_termo": "TERMO-002",
+  "termo_preferencial": "vínculo",
+  "nome_canonico": "Vínculo",
+  "classificacao": "ASSOCIACAO",
+  "definicao": "Relação entre atleta e equipe.",
+  "fonte": ["EVD-0001"],
+  "estado_epistemologico": "INFERIDO",
+  "estado_tecnico": "MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "inferido a partir de coluna 'Equipe'"
+    }
+  }
+}

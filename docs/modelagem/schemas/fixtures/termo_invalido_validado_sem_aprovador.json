@@ -1,0 +1,19 @@
+{
+  "id_termo": "TERMO-004",
+  "termo_preferencial": "presença",
+  "nome_canonico": "Presença",
+  "classificacao": "FATO_HISTORICO",
+  "definicao": "Registro factual de comparecimento a uma sessão de treinamento.",
+  "fonte": ["EVD-0001"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "aba 'Presenças' encontrada"
+    },
+    "semantic_evidence": "presença é distinta de disponibilidade, conforme modelagem_dados_agente.md",
+    "approval_evidence": { "aprovador": "PENDENTE", "data": null },
+    "repository_evidence": { "action_ref": "AC-001" }
+  }
+}

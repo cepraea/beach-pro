@@ -1,0 +1,15 @@
+{
+  "id_elemento": "CTX-102",
+  "tipo": "BOUNDED_CONTEXT",
+  "nome": "Fixture — Contexto sem maturidade",
+  "estagio": "CANDIDATO",
+  "fonte": ["EVD-0003"],
+  "estado_epistemologico": "INFERIDO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "hipótese estrutural de teste"
+    }
+  }
+}

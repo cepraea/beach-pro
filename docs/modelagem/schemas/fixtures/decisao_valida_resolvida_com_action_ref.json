@@ -1,0 +1,14 @@
+{
+  "id_decisao": "DEC-104",
+  "data": "2026-08-15",
+  "decisao": "Fixture de teste — decisão resolvida válida",
+  "alternativas": ["opção A", "opção B"],
+  "escolha": "opção A",
+  "justificativa": "justificativa de teste completa",
+  "fonte": ["REF:teste"],
+  "impacto": "nenhum impacto material",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": { "repository_evidence": { "action_ref": "AC-001" } }
+}

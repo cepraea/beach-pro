@@ -1,0 +1,9 @@
+{
+  "id_evidencia": "EVD-0002",
+  "id_fonte": "SRC-008",
+  "id_acao": "AC-008",
+  "localizacao": "aba 'Atletas', coluna 'Senha', linhas 2-19",
+  "trecho_literal": "coluna de credencial em texto plano",
+  "tipo_evidencia": "CELULA",
+  "dado_sensivel_encontrado": true
+}

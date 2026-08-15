@@ -1,0 +1,24 @@
+{
+  "id_fonte": "SRC-021",
+  "id_acao": "AC-021",
+  "nome_arquivo_original": "Cópia de CEPRAEA — Wellness — Apps Script Mobile.txt",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/Cópia de CEPRAEA — Wellness — Apps Script Mobile.txt",
+  "hash_sha256": null,
+  "id_drive": null,
+  "tipo_arquivo": "txt",
+  "idioma": "pt-BR",
+  "tipo_fonte": "TECNICA",
+  "autoridade_fonte": "INDETERMINADA",
+  "proveniencia_fonte": "DERIVADA",
+  "estado_fonte": "INDETERMINADA",
+  "estado_processamento": "BLOQUEADO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": ["Arquivo ausente do disco (D-01); o original CEPRAEA — Wellness — Apps Script Mobile.txt já supre a fonte"],
+  "evidencia": {
+    "comando_ou_metodo": "verificação de existência em CEPRAEA_SOURCE_ROOT",
+    "resultado": "arquivo não encontrado"
+  },
+  "proxima_acao": null
+}

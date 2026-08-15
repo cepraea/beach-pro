@@ -1,0 +1,19 @@
+{
+  "id_elemento": "CTX-101",
+  "tipo": "BOUNDED_CONTEXT",
+  "nome": "Fixture — Contexto de teste",
+  "estagio": "CANDIDATO",
+  "bounded_context_id": null,
+  "detalhes": {},
+  "maturidade": "IMATURA",
+  "fonte": ["EVD-0003"],
+  "estado_epistemologico": "INFERIDO",
+  "estado_tecnico": "NAO_MODELADO",
+  "ambiguidades": [],
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "hipótese estrutural de teste"
+    }
+  }
+}

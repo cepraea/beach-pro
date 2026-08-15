@@ -1,0 +1,13 @@
+{
+  "id_decisao": "DEC-101",
+  "data": "2026-08-15",
+  "decisao": "Fixture de teste — decisão bloqueada aguardando fonte",
+  "alternativas": [],
+  "escolha": "aguardar mais evidência antes de decidir",
+  "justificativa": "evidência insuficiente para decisão material no momento",
+  "fonte": [],
+  "impacto": null,
+  "riscos": [],
+  "aprovador": "PENDENTE",
+  "estado": "BLOQUEADO"
+}

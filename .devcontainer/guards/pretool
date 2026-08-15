@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+payload="$(cat)"
+tool="$(jq -r '.tool_name // empty' <<<"$payload")"
+branch="$(git branch --show-current 2>/dev/null || true)"
+
+block() {
+  printf '%s\n' "$1" >&2
+  exit 2
+}
+
+is_allowed_claude_plan_path() {
+  local path="$1" rel parent_real
+
+  case "$path" in
+    /home/agent/.claude/plans/*.md) ;;
+    *) return 1 ;;
+  esac
+
+  rel="${path#/home/agent/.claude/plans/}"
+  [[ -n "$rel" && "$rel" != */* ]] || return 1
+
+  case "$path" in
+    *"/../"*|*"/./"*) return 1 ;;
+  esac
+
+  [[ ! -L "$path" ]] || return 1
+
+  parent_real="$(realpath -e -- "$(dirname -- "$path")" 2>/dev/null)" || return 1
+  [[ "$parent_real" == "/home/agent/.claude/plans" ]]
+}
+
+if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+  case "$tool" in
+    Bash|Edit|Write|MultiEdit|NotebookEdit)
+      block "Bloqueado: ferramenta mutável na branch principal." ;;
+  esac
+fi
+
+path="$(jq -r '.tool_input.file_path // .tool_input.path // .tool_input.planFilePath // empty' <<<"$payload")"
+
+if [[ -n "$path" ]] && is_allowed_claude_plan_path "$path"; then
+  : # exceção estrita para o runtime nativo de Plan Mode
+else
+  case "$path" in
+*/.git/*|*/.devcontainer/*|*/.github/workflows/*|*/scripts/ci/*|\
+*/.claude/*|*/.codex/*|*/.mcp.json|*/AGENT_POLICY.md|*/CLAUDE.md|\
+*/AGENTS.md|*/runbooks/*)
+    block "Bloqueado: caminho do plano de controle." ;;
+  esac
+fi
+
+if [[ "$tool" == "Bash" ]]; then
+  cmd="$(jq -r '.tool_input.command // empty' <<<"$payload")"
+  # Fail-fast para formas diretas de comandos privilegiados.
+  # Não garante cobertura de sintaxe shell arbitrária ou wrappers indiretos
+  # — a proteção estrutural é o mount .git readonly no container.
+  case "$cmd" in
+    *"sudo "*|sudo*)
+      block "Bloqueado: sudo pertence a Davi." ;;
+    *"docker "*|docker*)
+      block "Bloqueado: Docker pertence a Davi." ;;
+    *"claude --dangerously-"*)
+      block "Bloqueado: flag --dangerously-* do Claude pertence a Davi." ;;
+    *"codex --dangerously-"*)
+      block "Bloqueado: flag --dangerously-* do Codex pertence a Davi." ;;
+    *"git add"*|*"git commit"*|*"git push"*|*"git pull"*|\
+    *"git merge"*|*"git rebase"*|*"git cherry-pick"*|\
+    *"git reset"*|*"git restore"*|*"git checkout"*|\
+    *"git switch"*|*"git worktree"*|*"git clean"*|\
+    *"git rm"*|*"git stash"*|*"git update-ref"*)
+      block "Bloqueado: Git privilegiado pertence a Davi." ;;
+  esac
+fi
+
+exit 0

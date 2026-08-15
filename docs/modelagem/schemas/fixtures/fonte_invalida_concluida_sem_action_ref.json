@@ -1,0 +1,24 @@
+{
+  "id_fonte": "SRC-006",
+  "id_acao": "AC-006",
+  "nome_arquivo_original": "Glossário de Dados — CEPRAEA v0.1.xlsx",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/Glossário de Dados — CEPRAEA v0.1.xlsx",
+  "hash_sha256": "7c8e40d01bd95093fc32e2f9b529fc774541ac45d65d476c783a20d90d38a901",
+  "id_drive": null,
+  "tipo_arquivo": "xlsx",
+  "idioma": "pt-BR",
+  "tipo_fonte": "TECNICA",
+  "autoridade_fonte": "AUXILIAR",
+  "proveniencia_fonte": "ORIGINAL",
+  "estado_fonte": "SUBSTITUIDA",
+  "estado_processamento": "CONCLUIDO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": [],
+  "evidencia": {
+    "comando_ou_metodo": "Read direto do arquivo",
+    "resultado": "planilha processada, 13 tabelas listadas"
+  },
+  "proxima_acao": null
+}

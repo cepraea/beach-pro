@@ -1,0 +1,26 @@
+{
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.formatOnSave": false,
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 100,
+    "editor.rulers": [100],
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.markdownlint": "explicit"
+  },
+  "markdown.validate.enabled": true,
+  "markdown.updateLinksOnFileMove.enabled": "prompt",
+  "markdown.copyFiles.destination": {
+    "/docs/**/*": "images/${documentBaseName}/"
+  },
+
+  "markdownlint.run": "onType",
+  "markdown.extension.tableFormatter.enabled": true,
+  "markdown.extension.toc.updateOnSave": false,
+  "markdown.extension.orderedList.autoRenumber": false
+
+  }
+  

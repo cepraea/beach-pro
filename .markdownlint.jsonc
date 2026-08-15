@@ -1,0 +1,457 @@
+// Este arquivo define a configuração do Markdownlint usada neste repositório. Veja
+// https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+// para mais detalhes sobre cada regra.
+
+{
+  // Chave especial "default": não é uma regra individual — é o valor base aplicado a
+  // toda regra nativa do markdownlint que não for explicitamente sobrescrita abaixo.
+  // Objetivo: partir da cobertura máxima de regras e só desativar/ajustar o que for
+  // necessário, em vez de precisar habilitar cada regra manualmente.
+  "default": true,
+
+  // MD001 — heading-increment: "Os níveis de título devem incrementar apenas um nível por vez".
+  // Definição: proíbe pular níveis de título (ex.: ir de "#" direto para "###").
+  // Objetivo: preservar uma hierarquia de títulos contínua e legível.
+  "heading-increment": true,
+
+  // MD004 — ul-style: "Estilo de lista não ordenada".
+  // Definição: define qual marcador (*, +, -) deve ser usado em listas não ordenadas.
+  // Objetivo: manter consistência visual entre listas, exigindo sempre "-".
+  "ul-style": {
+    "style": "dash"
+  },
+
+  // MD007 — ul-indent: "Indentação de lista não ordenada".
+  // Definição: define quantos espaços de indentação são exigidos para itens aninhados.
+  // Objetivo: manter indentação previsível (2 espaços) em todas as listas.
+  "ul-indent": {
+    "indent": 2
+  },
+
+  // MD010 — no-hard-tabs: "Tabulação (hard tab)".
+  // Definição: proíbe caracteres de tabulação (\t); espera espaços no lugar.
+  // Objetivo: evitar inconsistência visual entre editores que renderizam tabs com
+  // larguras diferentes; spaces_per_tab define quantos espaços equivalem a uma tabulação
+  // para o cálculo de coluna/correção automática.
+  "no-hard-tabs": {
+    "spaces_per_tab": 2
+  },
+
+  // MD024 — no-duplicate-heading: "Múltiplos títulos com o mesmo conteúdo".
+  // Definição: proíbe títulos duplicados no documento.
+  // Objetivo: siblings_only restringe a checagem a títulos irmãos (mesmo nível, sob o
+  // mesmo título pai), permitindo texto repetido em seções diferentes sem falso positivo.
+  "no-duplicate-heading": {
+    "siblings_only": true
+  },
+
+  // MD025 — single-title: "Múltiplos títulos de nível superior no mesmo documento".
+  // Definição: garante que exista apenas um título de nível 1 (H1) por documento.
+  // Objetivo: front_matter_title reconhece um título já declarado no front matter
+  // (ex.: "title: Minha Página"), evitando que ele conte como um segundo H1 quando o
+  // corpo também tiver um cabeçalho.
+  "single-title": {
+    "front_matter_title": "^\\s*title\\s*[:=]",
+  },
+
+  // MD026 — no-trailing-punctuation: "Pontuação no final de título".
+  // Definição: proíbe caracteres de pontuação ao final de um título.
+  // Objetivo: punctuation restringe a checagem a ".,;:" — o padrão da regra também
+  // bloquearia "!" e "?", que aqui ficam permitidos (ex.: títulos em forma de pergunta
+  // ou alerta) para não gerar falso positivo.
+  "no-trailing-punctuation": {
+    "punctuation": ".,;:",
+  },
+
+  // MD028 — no-blanks-blockquote: "Linha em branco dentro de blockquote".
+  // Definição: por padrão, proíbe linha em branco dentro de um blockquote (o
+  // markdownlint interpretaria isso como dois blockquotes separados).
+  // Objetivo: desativada porque Notes/Callouts consecutivos usados atualmente no
+  // conteúdo não estão em conformidade com esta regra.
+  "no-blanks-blockquote": false,
+
+  // MD029 — ol-prefix: "Prefixo de item de lista ordenada".
+  // Definição: define se listas ordenadas devem usar numeração sequencial (1,2,3...),
+  // repetir "1." em todos os itens, ou aceitar qualquer uma das duas formas.
+  // Objetivo: forçar numeração sequencial ("ordered") para flagrar o encerramento
+  // acidental de uma lista causado por indentação incorreta.
+  "ol-prefix": {
+    "style": "ordered",
+  },
+
+  // MD013 — line-length: "Comprimento de linha".
+  // Definição: limita o número de caracteres por linha no documento.
+  // Objetivo: desativada porque duplica a formatação já garantida pelo Prettier neste
+  // repositório.
+  "line-length": false,
+
+  // MD031 — blanks-around-fences: "Blocos de código cercados devem ser cercados por
+  // linhas em branco".
+  // Definição: exige uma linha em branco antes e depois de um bloco cercado (```).
+  // Objetivo: desativada porque duplica a formatação já garantida pelo Prettier.
+  "blanks-around-fences": false,
+
+  // MD060 — table-column-style: "Estilo de coluna de tabela".
+  // Definição: garante consistência no alinhamento/formatação das colunas de tabelas.
+  // Objetivo: desativada porque duplica a formatação já garantida pelo Prettier.
+  "table-column-style": false,
+
+  // MD033 — no-inline-html: "HTML embutido".
+  // Definição: proíbe o uso de tags HTML diretamente no Markdown.
+  // Objetivo: allowed_elements lista as tags liberadas como exceção (links, tabelas,
+  // MathML como <mfrac>/<msub>, etc.), permitindo HTML apenas onde o Markdown puro não
+  // é suficiente e mantendo a regra ativa para o restante.
+  // Observação: os nomes de tag abaixo NÃO foram traduzidos — são valores funcionais
+  // comparados contra o HTML real do documento.
+  "no-inline-html": {
+    "allowed_elements": [
+      "a",
+      "abbr",
+      "annotation",
+      "br",
+      "caption",
+      "code",
+      "col",
+      "colgroup",
+      "dd",
+      "details",
+      "div",
+      "dl",
+      "dt",
+      "em",
+      "h4",
+      "h5",
+      "img",
+      "kbd",
+      "li",
+      "math",
+      "mdn-scrim-inline",
+      "menclose",
+      "mfenced",
+      "mfrac",
+      "mfrac",
+      "mi",
+      "mmultiscripts",
+      "mn",
+      "mo",
+      "mover",
+      "mphantom",
+      "mprescripts",
+      "mroot",
+      "mrow",
+      "ms",
+      "mspace",
+      "mspace",
+      "msqrt",
+      "mstyle",
+      "msub",
+      "msubsup",
+      "msup",
+      "mtable",
+      "mtd",
+      "mtext",
+      "mtr",
+      "munder",
+      "munderover",
+      "none",
+      "ol",
+      "p",
+      "pre",
+      "q",
+      "section",
+      "semantics",
+      "strong",
+      "sub",
+      "summary",
+      "sup",
+      "table",
+      "tbody",
+      "td",
+      "tfoot",
+      "th",
+      "thead",
+      "tr",
+      "ul",
+      "var"
+    ]
+  },
+
+  // MD034 — no-bare-urls: "URL sem formatação (bare URL)".
+  // Definição: exige que uma URL apareça como link Markdown ou entre "<>", em vez de
+  // solta no texto.
+  // Objetivo: desativada; não há justificativa registrada no arquivo original para essa
+  // desativação — vale confirmar com Davi se ela deve permanecer assim.
+  "no-bare-urls": false,
+
+  // MD037 — no-space-in-emphasis: "Espaços dentro dos marcadores de ênfase".
+  // Definição: proíbe espaço logo após/antes dos marcadores de ênfase (ex.: "* texto *").
+  // Objetivo: desativada porque produz falsos positivos em excesso neste conteúdo.
+  "no-space-in-emphasis": false,
+
+  // MD040 — fenced-code-language: "Blocos de código cercados devem declarar uma
+  // linguagem".
+  // Definição: exige que todo bloco de código cercado (```) declare um identificador de
+  // linguagem.
+  // Sua linguagem não está nesta lista? Veja
+  // https://github.com/orgs/mdn/discussions/170#discussioncomment-3404366 antes de
+  // adicionar um novo identificador.
+  // Objetivo: allowed_languages evita identificadores inconsistentes ou inventados,
+  // mantendo o realce de sintaxe previsível.
+  "fenced-code-language": {
+    "allowed_languages": [
+      "apacheconf",
+      "bash",
+      "batch",
+      "c",
+      "cpp",
+      "cs",
+      "css",
+      "css-nolint",
+      "diff",
+      "django",
+      "glsl",
+      "hbs",
+      "hbs-nolint",
+      "html",
+      "html-nolint",
+      "http",
+      "ini",
+      "java",
+      "js",
+      "js-nolint",
+      "json",
+      "json-nolint",
+      "jsx",
+      "jsx-nolint",
+      "latex",
+      "md",
+      "md-nolint",
+      "nginx",
+      "php",
+      "plain",
+      "powershell",
+      "pug",
+      "python",
+      "regex",
+      "rust",
+      "scss",
+      "sh",
+      "sql",
+      "svelte",
+      "svg",
+      "toml",
+      "ts",
+      "url",
+      "vue",
+      "wat",
+      "webidl",
+      "xml",
+      "yaml",
+      "text",
+      "txt",
+      "markdown"
+    ]
+  },
+
+  // MD042 — no-empty-links: "Links vazios".
+  // Definição: proíbe links sem texto ou sem destino (ex.: "[]()").
+  // Objetivo: desativada porque macros usadas no conteúdo atualmente geram falso
+  // positivo nesta regra — veja https://github.com/mdn/content/pull/20026 para o
+  // contexto original da decisão.
+  "no-empty-links": false,
+
+  // MD046 — code-block-style: "Estilo de bloco de código".
+  // Definição: define se blocos de código devem usar cerca de crases (```), indentação,
+  // ou aceitar as duas formas.
+  // Objetivo: exigir sempre blocos cercados ("fenced"), proibindo blocos indentados, para
+  // manter um único estilo em todo o repositório.
+  "code-block-style": {
+    "style": "fenced"
+  },
+
+  // MD049 — emphasis-style: "Estilo de ênfase".
+  // Definição: define qual marcador deve ser usado para ênfase/itálico (* ou _).
+  // Objetivo: exigir "*texto*" para evitar ambiguidade com o marcador de negrito.
+  "emphasis-style": {
+    "style": "asterisk"
+  },
+
+  // MD050 — strong-style: "Estilo de negrito".
+  // Definição: define qual marcador deve ser usado para negrito (** ou __).
+  // Objetivo: exigir "**texto**"; combinado com emphasis-style "underscore", evita que
+  // "*" e "_" sejam usados de forma intercambiável e ambígua.
+  "strong-style": {
+    "style": "asterisk"
+  },
+
+  // MD051 — link-fragments: "Fragmentos de link devem ser válidos".
+  // Definição: verifica se uma âncora interna (#fragmento) corresponde a um título
+  // existente no documento.
+  // Objetivo: desativada porque o gerador "yari" (herdado da configuração original do
+  // projeto MDN Content) cria fragmentos trocando espaço por underscore, não por hífen —
+  // divergindo do algoritmo padrão do markdownlint e gerando falso positivo.
+  // Observação: se este repositório não usa "yari" como gerador de site, vale confirmar
+  // com Davi se esta regra deveria ser reativada.
+  "link-fragments": false,
+
+  // MD059 — descriptive-link-text: "O texto do link deve ser descritivo".
+  // Definição: proíbe texto de link genérico que não descreve o destino (ex.: "aqui",
+  // "clique aqui", "veja mais").
+  // Objetivo: garantir que links sejam compreensíveis fora de contexto (leitores de
+  // tela, listas de links extraídas) — alinhado com a seção "Links" de
+  // docs/standards/guia_estilo_documentação.md.
+  // Observação: as expressões abaixo NÃO foram traduzidas — são os valores funcionais
+  // comparados contra o texto real do link; traduzi-las mudaria o comportamento da regra.
+  "descriptive-link-text": {
+    "prohibited_texts": [
+      "here",
+      "link",
+      "more",
+      "this",
+      "this link",
+      "this page",
+      "this site",
+      "this article",
+      "click here",
+      "click this link",
+      "see here",
+      "see this page",
+      "see this site",
+      "see this article"
+    ]
+  },
+
+  // Regra customizada "search-replace" (plugin markdownlint-rule-search-replace —
+  // https://github.com/OnkarRuikar/markdownlint-rule-search-replace).
+  // Definição: localiza padrões de texto (literais ou regex) e reporta erro, com
+  // substituição automática opcional.
+  // Objetivo: aplicar convenções de escrita específicas deste repositório (aspas retas,
+  // travessão, links, ortografia etc.) que as regras nativas do markdownlint não cobrem.
+  "search-replace": {
+    "rules": [
+      {
+        "name": "curly-double-quotes",
+        "message": "Não use aspas duplas curvas",
+        "searchPattern": "/“|”/g",
+        "replace": "\"",
+        "searchScope": "text"
+      },
+      {
+        "name": "curly-single-quotes",
+        "message": "Não use aspas simples curvas",
+        "searchPattern": "/‘|’/g",
+        "replace": "'",
+        "searchScope": "text"
+      },
+      {
+        "name": "nbsp",
+        "message": "Não use espaços incondicionais (non-breaking space)",
+        "searchPattern": "/ /g",
+        "replace": " ",
+        "searchScope": "all"
+      },
+      {
+        "name": "m-dash",
+        "message": "Não use '--'. Use travessão (—) em vez disso",
+        "search": " -- ",
+        "replace": " — ",
+        "searchScope": "text"
+      },
+      {
+        "name": "relative-link",
+        "message": "Links internos devem começar com '/'",
+        "searchPattern": "/([\\(\"])en-US\\/docs/g",
+        "replace": "$1/en-US/docs",
+        "searchScope": "text"
+      },
+      {
+        "name": "relative-link-path",
+        "message": "Não use caminhos relativos",
+        "search": "](..",
+        "searchScope": "text"
+      },
+      {
+        "name": "trailing-spaces",
+        "message": "Evite espaços no final da linha",
+        "searchPattern": "/  +$/gm",
+        "replace": "",
+        "searchScope": "all"
+      },
+      {
+        "name": "double-spaces",
+        "message": "Evite espaços duplos",
+        "searchPattern": "/([^\\s>])  ([^\\s|])/g",
+        "replace": "$1 $2",
+        "searchScope": "text"
+      },
+      {
+        "name": "stuck-definition",
+        "message": "Caractere colado ao marcador de descrição de definição",
+        "searchPattern": "/- :(\\w)/g",
+        "replace": "- : $1",
+        "searchScope": "text"
+      },
+      {
+        "name": "fqdn-moz-links",
+        "message": "Não use developer.mozilla.org para links, exceto em posts de blog",
+        "searchPattern": "/\\]\\(https:\\/\\/developer.mozilla.org\\/(?!en-US\\/blog\\/)/g",
+        "replace": "](/",
+        "searchScope": "text"
+      },
+      {
+        "name": "incorrect-spelling",
+        "message": "Ortografia incorreta",
+        "searchPattern": ["/e-mail/ig", "/(w)eb site/ig"],
+        "replace": ["email", "$1ebsite"],
+        "searchScope": "all"
+      },
+      {
+        "name": "localhost-links",
+        "message": "Não use localhost em links",
+        "searchPattern": "/\\]\\(https?:\\/\\/localhost:\\d+\\//g",
+        "replace": "](/",
+        "searchScope": "text"
+      },
+      {
+        "name": "un-closed-md-link",
+        "message": "Falta o parêntese de fechamento ')'",
+        "searchPattern": "/\\[.*?\\]\\([^ )\\n\"]+(?:[\\n\"]| [^\"']| [\"'].+?[\"'][^)])/gm",
+        "searchScope": "text"
+      },
+      {
+        "name": "gfm-alert",
+        "message": "Use a sintaxe GFM: https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Howto/Markdown_in_MDN#notes_warnings_and_callouts",
+        "searchPattern": "/^ *> \\*\\*(Note|Warning|Callout):\\*\\*/gm",
+        "searchScope": "text"
+      },
+      {
+        "name": "bad-gfm-alert",
+        "message": "Use a sintaxe GFM correta: `> [!NOTE]`",
+        // TODO: isso deveria usar a sintaxe de modificador; aguardando melhor suporte no Node
+        "searchPattern": "/^ *> !?\\[!?((?!NOTE)[Nn][Oo][Tt][Ee]|(?!WARNING)[Ww][Aa][Rr][Nn][Ii][Nn][Gg]|(?!CALLOUT)[Cc][Aa][Ll][Ll][Oo][Uu][Tt])\\]\\n|^ *> (?!\\[!)!?\\[!?(NOTE|WARNING|CALLOUT)\\]\\n|^ *> \\[!(NOTE|WARNING|CALLOUT)\\](?!\\n)/gm",
+        "searchScope": "text"
+      },
+      {
+        "name": "comma-after-ie",
+        "message": "Adicione vírgula depois de 'i.e.'",
+        "searchPattern": "/\\bi\\.e\\. /g",
+        "replace": "i.e., ",
+        "searchScope": "text"
+      },
+      {
+        "name": "comma-after-eg",
+        "message": "Adicione vírgula depois de 'e.g.'",
+        "searchPattern": "/\\be\\.g\\. /g",
+        "replace": "e.g., ",
+        "searchScope": "text"
+      },
+      {
+        "name": "short-link",
+        "message": "Use links curtos para links de bug",
+        "searchPattern": "/https:\\/\\/bugzilla\\.mozilla\\.org\\/show_bug\\.cgi\\?id=/g",
+        "replace": "https://bugzil.la/",
+        "searchScope": "all"
+      }
+    ]
+  }
+}

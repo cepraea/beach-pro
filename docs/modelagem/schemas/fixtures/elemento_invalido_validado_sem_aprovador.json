@@ -1,0 +1,17 @@
+{
+  "id_elemento": "INV-101",
+  "tipo": "INVARIANTE",
+  "nome": "Fixture — invariante sem aprovador",
+  "estagio": "CANDIDATO",
+  "maturidade": null,
+  "fonte": ["EVD-0003"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "teste"
+    },
+    "semantic_evidence": "justificativa de teste"
+  }
+}

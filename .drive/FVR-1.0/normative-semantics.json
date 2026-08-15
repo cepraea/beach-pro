@@ -1,0 +1,50 @@
+{
+  "schema_version": "FVR-SEMANTICS-1.0",
+  "assertion_evaluation": {
+    "reference_document": "manifest.json",
+    "reference_syntax": "RFC6901",
+    "implicit_type_coercion": false,
+    "missing_reference": "NOT_VERIFIED",
+    "type_mismatch": "NOT_VERIFIED",
+    "unknown_operator": "PLAN_INVALID",
+    "unknown_field": "PLAN_INVALID"
+  },
+  "operator_semantics": {
+    "eq": "strict JSON value equality; numeric 1 and 1.0 compare numerically equal; booleans are not numbers",
+    "neq": "logical negation of eq",
+    "lt": "numeric less-than only",
+    "lte": "numeric less-than-or-equal only",
+    "gt": "numeric greater-than only",
+    "gte": "numeric greater-than-or-equal only",
+    "exists": "JSON Pointer resolves to a value",
+    "not_exists": "JSON Pointer does not resolve",
+    "contains": "string substring test only",
+    "not_contains": "negation of contains",
+    "starts_with": "string prefix test only",
+    "ends_with": "string suffix test only",
+    "length_eq": "length(actual) == expected integer",
+    "length_lt": "length(actual) < expected integer",
+    "length_lte": "length(actual) <= expected integer",
+    "length_gt": "length(actual) > expected integer",
+    "length_gte": "length(actual) >= expected integer",
+    "contains_all": "all expected elements occur in actual collection under strict equality",
+    "contains_none": "no expected element occurs in actual collection under strict equality",
+    "set_equal": "set(actual) == set(expected)",
+    "set_subset": "set(actual) is subset of set(expected)",
+    "set_superset": "set(actual) is superset of set(expected)",
+    "set_disjoint": "intersection is empty",
+    "digest_eq": "actual and expected are lowercase 64-hex SHA-256 strings and are byte-for-byte equal",
+    "all": "PASS iff every child PASS; FAIL iff any child FAIL; otherwise NOT_VERIFIED",
+    "any": "PASS iff any child PASS; FAIL iff every child FAIL; otherwise NOT_VERIFIED",
+    "not": "PASS<->FAIL; NOT_VERIFIED remains NOT_VERIFIED"
+  },
+  "authority": {
+    "manifest_assertion_status_is_authoritative": false,
+    "web_evaluator_recomputes_assertions": true,
+    "narrative_evidence_authority": "NONE"
+  },
+  "final_status": {
+    "emitted_by_runner": false,
+    "emitted_by_evaluator": true
+  }
+}

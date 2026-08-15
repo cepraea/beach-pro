@@ -1,0 +1,57 @@
+{
+  "object_type": "task_proposal",
+  "schema_version": "1.0",
+  "proposal_id": "<identificador>",
+  "revision": 1,
+  "tarefa_id": "<identificador>",
+  "instrucao_original": "<texto recebido>",
+  "objetivo": "<resultado>",
+
+  "arquivos": [
+    {
+      "caminho": "<path>",
+      "papel": "referencia | alvo | somente_leitura | proibido",
+      "operacao": "<leitura ou mudança>"
+    }
+  ],
+
+  "fora_de_escopo": [
+    "<exclusao>"
+  ],
+
+  "risco": {
+    "nivel": "verde | amarelo | vermelho | vermelho_critico",
+    "naturezas": [
+      "<ui | dependencia | rls | mfa | ci | dados>"
+    ],
+    "blast_radius": "baixo | medio | alto",
+    "reversibilidade": "reversivel | parcial | irreversivel",
+    "justificativa": "<motivo>"
+  },
+
+  "runbook_binding": {
+    "operation_classes": [
+      "database_change"
+    ],
+    "applicable_runbooks": {
+      "shared": [
+        "runbooks/shared/RB-SHARED-002-evidence.md",
+        "runbooks/shared/RB-SHARED-003-failure-states.md"
+      ],
+      "executor": [
+        "runbooks/executor/RB-EXEC-002-database-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-002-database-review.md"
+      ]
+    }
+  },
+
+  "criterios_de_aceite": [
+    {
+      "condicao": "<fato observavel>",
+      "metodo": "<comando ou inspeção>",
+      "esperado": "passou"
+    }
+  ]
+}

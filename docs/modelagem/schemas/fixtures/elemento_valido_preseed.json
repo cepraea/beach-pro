@@ -1,0 +1,22 @@
+{
+  "id_elemento": "INV-001",
+  "tipo": "INVARIANTE",
+  "nome": "Fixture — PRE-SEED válido",
+  "estagio": "DOMINIO",
+  "promoted_from": "REF:modelagem_dados_agente.md — Identidade humana, autenticação e papel",
+  "promoted_by": "PRE-SEED",
+  "bounded_context_id": null,
+  "maturidade": null,
+  "fonte": ["REF:modelagem_dados_agente.md — Identidade humana, autenticação e papel"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "decisão humana direta",
+      "resultado": "regra confirmada por Davi Sermenho"
+    },
+    "semantic_evidence": "confirmado diretamente por Davi Sermenho, especialista do domínio",
+    "approval_evidence": { "aprovador": "Davi Sermenho", "data": "2026-08-15" },
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}

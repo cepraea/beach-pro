@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/schema_fonte.json",
+  "title": "Registro de fonte (dossiê)",
+  "type": "object",
+  "required": [
+    "id_fonte",
+    "id_acao",
+    "nome_arquivo_original",
+    "hash_sha256",
+    "caminho_local",
+    "tipo_arquivo",
+    "tipo_fonte",
+    "autoridade_fonte",
+    "proveniencia_fonte",
+    "estado_fonte",
+    "estado_processamento",
+    "dado_sensivel_encontrado",
+    "evidencia"
+  ],
+  "properties": {
+    "id_fonte": {
+      "type": "string",
+      "pattern": "^SRC-[0-9]{3}$",
+      "description": "Identidade canônica interna e estável da fonte (seção 4.8) — o que EvidenceFragment/elementos citam. Nesta fase, SRC-NNN compartilha o número de id_acao (1:1), mas são conceitos diferentes: SRC-NNN é a fonte em si; id_acao é a ação de processá-la (poderia, em tese, haver mais de uma ação sobre a mesma fonte no futuro)."
+    },
+    "id_acao": {
+      "type": "string",
+      "pattern": "^AC-[0-9]{3}$",
+      "description": "Identificador da ação de aquisição (commit tipo AC-NNN, seção 4.8) que processou esta fonte. id_drive/hash/caminho/nome são identificadores/locators que apontam para o arquivo; nem id_acao nem id_fonte dependem deles."
+    },
+    "nome_arquivo_original": {
+      "type": "string",
+      "minLength": 1
+    },
+    "caminho_local": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Caminho do arquivo dentro de .drive/CEPRAEA BEACH PRO/ — locator, sempre obtível."
+    },
+    "hash_sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Locator de conteúdo. Null apenas para fonte ausente/bloqueada; CONCLUIDO exige hash válido."
+    },
+    "id_drive": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Locator preferencial quando obtível (nem sempre está — sem acesso à API do Drive neste ambiente, alguns arquivos não têm ID recuperável). Ausência de id_drive NÃO bloqueia sozinha — só bloqueia se, mesmo com hash_sha256+caminho_local+nome_arquivo_original, a identidade da fonte permanecer ambígua (ex.: colisão de nome real, seção 9)."
+    },
+    "tipo_arquivo": {
+      "enum": [
+        "docx",
+        "xlsx",
+        "pdf",
+        "txt"
+      ]
+    },
+    "idioma": {
+      "enum": [
+        "pt-BR",
+        "en",
+        "outro"
+      ]
+    },
+    "tipo_fonte": {
+      "enum": [
+        "NORMATIVA",
+        "OPERACIONAL",
+        "CIENTIFICA",
+        "ADMINISTRATIVA",
+        "TECNICA",
+        "INDETERMINADO"
+      ],
+      "description": "Gênero da fonte — modelagem_dominio_dados.md §16.1, com HISTORICA removido: temporalidade pertence só a estado_fonte (§16.4), não a este campo — evita reintroduzir a mistura gênero/temporalidade que o item 1 já corrigiu. INDETERMINADO é extensão própria (o canônico não previu esse caso), para não forçar uma classificação prematura quando o gênero ainda não está claro."
+    },
+    "autoridade_fonte": {
+      "enum": [
+        "OFICIAL",
+        "PRIMARIA",
+        "AUXILIAR",
+        "INDETERMINADA"
+      ],
+      "description": "modelagem_dominio_dados.md §16.2."
+    },
+    "proveniencia_fonte": {
+      "enum": [
+        "ORIGINAL",
+        "DERIVADA",
+        "INDETERMINADA"
+      ],
+      "description": "ORIGINAL/DERIVADA vêm de modelagem_dominio_dados.md §16.3; INDETERMINADA é extensão própria, mesma justificativa de tipo_fonte."
+    },
+    "estado_fonte": {
+      "enum": [
+        "VIGENTE",
+        "SUBSTITUIDA",
+        "OBSOLETA",
+        "INDETERMINADA"
+      ],
+      "description": "Ciclo de vida da fonte — modelagem_dominio_dados.md §16.4. Substitui o enum anterior (VIGENTE/COMPLEMENTAR/SUBSTITUIDA/HISTORICA/EM_VERIFICACAO): COMPLEMENTAR virou autoridade_fonte=AUXILIAR; EM_VERIFICACAO já é coberto por estado_processamento (workflow, não propriedade da fonte)."
+    },
+    "estado_processamento": {
+      "enum": [
+        "NAO_INICIADO",
+        "EM_EXECUCAO",
+        "BLOQUEADO",
+        "CONCLUIDO",
+        "NAO_APLICAVEL"
+      ]
+    },
+    "dado_sensivel_encontrado": {
+      "type": "boolean"
+    },
+    "tratamento_dado_sensivel": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conceitos_encontrados": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "regras_encontradas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflitos_ou_duvidas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidencia": {
+      "type": "object",
+      "description": "Prova verificável de que a ação foi de fato executada, não apenas descrita.",
+      "required": [
+        "comando_ou_metodo",
+        "resultado"
+      ],
+      "properties": {
+        "comando_ou_metodo": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Comando ou passo literal executado, ex.: 'perl -MIO::Uncompress::Unzip=unzip ...' ou 'Read direto do arquivo'."
+        },
+        "resultado": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Trecho literal do resultado, contagem de linhas/abas, ou hash — nunca um resumo vago como 'ok'."
+        },
+        "repository_evidence": {
+          "type": "object",
+          "properties": {
+            "action_ref": {
+              "type": "string",
+              "pattern": "^AC-[0-9]{3}$"
+            }
+          }
+        },
+        "limitacoes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "O que não pôde ser verificado, se houver."
+        }
+      }
+    },
+    "proxima_acao": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "dado_sensivel_encontrado": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "tratamento_dado_sensivel"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estado_processamento": {
+            "const": "CONCLUIDO"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "hash_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "evidencia": {
+            "properties": {
+              "repository_evidence": {
+                "type": "object",
+                "properties": {
+                  "action_ref": {
+                    "type": "string",
+                    "pattern": "^AC-[0-9]{3}$"
+                  }
+                },
+                "required": [
+                  "action_ref"
+                ]
+              }
+            },
+            "required": [
+              "repository_evidence"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
