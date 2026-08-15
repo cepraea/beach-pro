@@ -1,6 +1,11 @@
 # Scratch/temporário — nunca versionar
 tmp/
 
+#DADOS PESSOAIS DAS ATLETAS
+
+.drive/CEPRAEA BEACH PRO
+.drive/BEACH HANDBALL
+
 # Metadado de zona do Windows/WSL (mark-of-the-web) — nunca versionar
 *:Zone.Identifier
 

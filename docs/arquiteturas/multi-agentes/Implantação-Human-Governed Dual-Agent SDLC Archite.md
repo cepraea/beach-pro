@@ -37,18 +37,18 @@ O script `verify-agent-environment.sh` cobre parte importante, mas não consegue
 
 
 - [x] **CT-01** Container roda como non-root. Resultado: PASS — coberto por `verify-agent-environment.sh` ("container session is non-root")
-- [x] **CT-02**  Docker socket ausente. Resultado: PASS — coberto por `verify-agent-environment.sh` ("Docker socket is not mounted")
-- [x] **CT-03**  Produ**CTion secrets ausentesResultado: PASS neste ambiente — coberto por `verify-agent-environment.sh`; caminho PASS confirmado (nenhuma das 4 variáveis definida) e caminho FAIL comprovado expondo as 4 variáveis com valores fictícios simultaneamente, gerando `FAIL` individual para cada uma
-- [x] **CT-04**  .drive/CEPRAEA BEACH PRO realmente `RO`. Resultado: FAIL — coberto por `verify-agent-environment.sh` ("SOURCE_ROOT is not confirmed read-only via findmnt"); `findmnt` não reporta a opção `ro` isolada para SOURCE_ROOT neste ambiente
-- [x] **CT-05**  Davi consegue editar workspace pelo VS Code. Resultado: não coberto pelo script — exige teste interativo humano
-- [x] **CT-06**  Davi consegue `git add/commit` no VS Code. Resultado: não coberto pelo script — exige teste interativo humano
-- [x] **CT-07**  Claude consegue editar arquivo autorizado. Resultado: PASS — comprovado ao vivo nesta sessão (edição bem-sucedida deste próprio arquivo, dentro do escopo autorizado)
-- [x] **CT-08**  Claude não consegue editar `AGENT_POLICY.md`. Resultado: PASS (bloqueado) — comprovado ao vivo: tentativa real de `Edit` em `AGENT_POLICY.md` foi barrada pelo hook `pretool` com `Bloqueado: caminho do plano de controle`; arquivo confirmado inalterado após a tentativa
-- [x] **CT-09**  Claude não consegue alterar .drive/**. Resultado: testado ao vivo — o hook `pretool` NÃO bloqueia `Write`/`Edit` dentro de `.drive/**` (inclusive SOURCE_ROOT); comprovado criando e removendo um arquivo de teste, e editando/revertendo uma linha de um arquivo real, ambos sem qualquer bloqueio. Davi esclareceu que isso é intencional: `.drive` contém arquivos de rascunho de uso humano, não é tratado como falha a corrigir
-- [x] **CT-10**  Claude tenta git commit. Resultado: validado por leitura estática do script `pretool` (execução ao vivo não autorizada pelo usuário nesta sessão) — o script casa `git commit`/`add`/`push`/`merge`/etc. no comando Bash e chama `block()` → `exit 2`, o mesmo mecanismo que bloqueou CT-08 ao vivo
-- [x] **CT-11**  Claude consegue `git status/diff/log`. Resultado: PASS — comprovado repetidamente ao longo desta sessão (`git status`, `git diff --check`, `git diff`, `git branch --show-current` executados sem bloqueio)
-- [ ] **CT-12**  Codex consegue ler todo o diff. Resultado: não coberto pelo script — exige execução real do agente
-- [ ] **CT-13** Codex não consegue alterar source/modelagem.Resultado: não coberto pelo script — o script só verifica presença de `.codex/config.toml`/`requirements.toml`, não o comportamento real
+- [x] **CT-02** Docker socket ausente. Resultado: PASS — coberto por `verify-agent-environment.sh` ("Docker socket is not mounted")
+- [x] **CT-03** Production secrets ausentes. Resultado: PASS neste ambiente — coberto por `verify-agent-environment.sh`; caminho PASS confirmado (nenhuma das 4 variáveis definida) e caminho FAIL comprovado expondo as 4 variáveis com valores fictícios simultaneamente, gerando `FAIL` individual para cada uma
+- [ ] **CT-04** .drive/CEPRAEA BEACH PRO realmente `RO`. Resultado: FALHOU — coberto por `verify-agent-environment.sh` ("SOURCE_ROOT is not confirmed read-only via findmnt"); `findmnt` não reporta a opção `ro` isolada para SOURCE_ROOT neste ambiente. Não marcar como concluído: o teste rodou e o resultado foi negativo
+- [ ] **CT-05** Davi consegue editar workspace pelo VS Code. Resultado: pendente — não coberto pelo script, exige teste interativo humano
+- [ ] **CT-06** Davi consegue `git add/commit` no VS Code. Resultado: pendente — não coberto pelo script, exige teste interativo humano
+- [x] **CT-07** Claude consegue editar arquivo autorizado. Resultado: PASS — comprovado ao vivo nesta sessão (edição bem-sucedida deste próprio arquivo, dentro do escopo autorizado)
+- [x] **CT-08** Claude não consegue editar `AGENT_POLICY.md`. Resultado: PASS (bloqueado) — comprovado ao vivo: tentativa real de `Edit` em `AGENT_POLICY.md` foi barrada pelo hook `pretool` com `Bloqueado: caminho do plano de controle`; arquivo confirmado inalterado após a tentativa
+- [ ] **CT-09** Claude não consegue alterar .drive/**. Resultado: FALHOU — o hook `pretool` NÃO bloqueia `Write`/`Edit` dentro de `.drive/**` (inclusive SOURCE_ROOT). Uma escrita real ocorreu em `.drive/CEPRAEA BEACH PRO/CEPRAEA — Wellness — Apps Script Mobile.txt` (criação e remoção de um arquivo de teste; edição e reversão de uma linha do arquivo real). O conteúdo foi revertido manualmente (confirmado por releitura da linha alterada, idêntica ao original antes do teste; hash atual do arquivo: `6fc398c840964d4e5828f9fbd1991068` — não há hash de referência anterior ao teste, então isto comprova apenas que a linha tocada voltou ao texto original, não uma verificação criptográfica do arquivo inteiro). Reverter o conteúdo não torna verdadeiro que "nenhuma escrita ocorreu": a escrita ocorreu e violou a regra de imutabilidade de `.drive/**` do plano canônico. A autorização para este teste foi dada verbalmente nesta conversa, não é uma decisão humana formal registrada nem atualiza a fonte normativa — não deve ser tratada como exceção válida à regra. HUMAN_DECISION_REQUIRED se esta regra precisar ser revisitada
+- [x] **CT-10** Claude tenta git commit. Resultado: validado por leitura estática do script `pretool` (execução ao vivo não autorizada pelo usuário nesta sessão) — o script casa `git commit`/`add`/`push`/`merge`/etc. no comando Bash e chama `block()` → `exit 2`, o mesmo mecanismo que bloqueou CT-08 ao vivo
+- [x] **CT-11** Claude consegue `git status/diff/log`. Resultado: PASS — comprovado repetidamente ao longo desta sessão (`git status`, `git diff --check`, `git diff`, `git branch --show-current` executados sem bloqueio)
+- [ ] **CT-12** Codex consegue ler todo o diff. Resultado: não coberto pelo script — exige execução real do agente
+- [ ] **CT-13** Codex não consegue alterar source/modelagem. Resultado: não coberto pelo script — o script só verifica presença de `.codex/config.toml`/`requirements.toml`, não o comportamento real
 - [ ] **CT-14** Codex consegue escrever em `/tmp`. Resultado: não coberto pelo script — exige execução real do agente
 - [ ] **CT-15** Codex consegue rodar check que usa `temp`. Resultado: não coberto pelo script — exige execução real do agente
 - [ ] **CT-16** Codex não consegue escalar permissões. Resultado: não coberto pelo script — exige execução real do agente
@@ -57,9 +57,17 @@ O script `verify-agent-environment.sh` cobre parte importante, mas não consegue
 
 *O mais importante é o **CT-17**. Sem ele, temos configuração; com ele, temos arquitetura implantada.*
 
-## 2. Também falta decidir o destino do workflow antigo
+## 2. Destino do workflow antigo (histórico — já decidido)
 
-*Hoje já existem artefatos como:*
+> **Nota (atualização):** esta preocupação já foi resolvida. `.agent-flow/` não existe na working
+> tree atual, e a decisão de remover `executions/**` e `reviews/**` como mecanismo obrigatório já
+> está registrada como `DEC-GOV-001` (2026-08-14) em
+> `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md` (linhas 974, 977, 2608–2609). A proposta
+> de `DEC-009` abaixo está superada por `DEC-GOV-001` — restrinja qualquer decisão futura sobre
+> este escopo exclusivamente a uma atualização de `DEC-GOV-001`, nunca a uma decisão nova e
+> paralela. O texto a seguir preserva a análise original que levou a essa decisão.
+
+*Na época desta análise (antes de `DEC-GOV-001`), existiam artefatos como:*
 
 ```text
 .agent-flow/
@@ -80,14 +88,15 @@ Faria:
 → não usado pelo fluxo novo
 ```
 
-e registraria formalmente uma decisão semelhante a:
+e registraria formalmente uma decisão — hoje já coberta por `DEC-GOV-001`, em vez da `DEC-009`
+originalmente cogitada aqui:
 
 ```text
-DEC-009 — Substituição do workflow .agent-flow
-          por Git como state machine operacional
+DEC-GOV-001 — Substituição do workflow .agent-flow
+              por Git como state machine operacional
 ```
 
-Ela deveria dizer:
+Ela dizia:
 
 ```text
 STATE.md              → não mais autoridade operacional
@@ -98,13 +107,23 @@ reviews/**            → não obrigatório
 Git                   → state machine/handoff
 ```
 
-Isso evita que daqui a algumas semanas um agente leia documentos antigos e conclua que ainda precisa atualizar `STATE.md`.
+Essa decisão evitou que, mais tarde, um agente lesse documentos antigos e concluísse que ainda precisava atualizar `STATE.md`.
 
-## 3. O plano de modelagem também precisa ser reconciliado
+## 3. Reconciliação do plano de modelagem (histórico — já concluída)
 
-Esse é outro ponto importante.
+> **Nota (atualização):** a reconciliação abaixo já aconteceu. `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`
+> §4.7 já define a branch dedicada `feat/cepraea-domain-modeling` com `WRITE_SCOPE` explícito e
+> guardas de criação, `DEC-008` (`decisoes/registro_decisoes.md`) já registrou a substituição do
+> isolamento por worktree pelo isolamento por branch, e `docs/operacao/agent-workflow.md` já existe
+> como o runbook humano proposto nas subseções "Política de branch (histórico — já implementada)" e
+> "Runbook humano (histórico — já implementado)" adiante. Essas subseções preservam a análise
+> original, mas a lacuna que descrevem já foi fechada — consulte as fontes citadas para o estado
+> vigente. Não verifiquei em outra fonte os marcos `BASE_READY`/`HARDENED_READY` descritos mais
+> abaixo; trate-os como proposta ainda não confirmada como materializada.
 
-O plano atual foi construído quando `.agent-flow` ainda era parte da infraestrutura operacional. Se ele ainda disser coisas como:
+Esse era outro ponto importante à época desta análise.
+
+O plano em vigor naquele momento havia sido construído quando `.agent-flow` ainda era parte da infraestrutura operacional. Ele continha referências como:
 
 ```text
 escrever executions/AC-NNN.md
@@ -113,9 +132,11 @@ produzir reviews/AC-NNN.md
 alterar status READY_FOR_REVIEW
 ```
 
-ele estará em conflito com a arquitetura nova.
+o que estaria em conflito com a arquitetura nova.
 
-Portanto há uma tarefa de migração:
+Verifiquei `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md` nesta revisão: essas referências não
+estão mais presentes; o plano já usa branch dedicada + `WRITE_SCOPE` (seção 4.7) em vez de
+`executions/**`/`reviews/**`/`STATE.md`. A tarefa de migração descrita abaixo já foi concluída.
 
 ```text
 ARQUITETURA NOVA
@@ -139,11 +160,11 @@ PLANO diz STATE.md
 
 porque voltaríamos a ter duas autoridades.
 
-### Falta também uma política explícita de branch
+### Política de branch (histórico — já implementada)
 
-Como Git virou a state machine, a disciplina de branch fica mais importante.
+À época desta análise, como Git havia se tornado a state machine, a disciplina de branch ficava mais importante e ainda não havia uma política explícita registrada. Essa lacuna já foi fechada: `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md` §4.7 define a branch dedicada com `WRITE_SCOPE` explícito e guardas de criação (ver nota no início da seção 3).
 
-Para a modelagem atual:
+Para a modelagem daquele momento:
 
 ```text
 feat/cepraea-domain-modeling
@@ -227,9 +248,9 @@ funcionam corretamente.
 
 Não seguraria AC-000 esperando HARDENED.
 
-### Por fim, falta um pequeno runbook humano
+### Runbook humano (histórico — já implementado)
 
-Não criaria um sistema de workflow, mas um arquivo curto pode economizar erros operacionais:
+À época desta análise, faltava um pequeno runbook humano. Essa lacuna já foi fechada: `docs/operacao/agent-workflow.md` já existe e cobre exatamente o procedimento proposto abaixo (ver nota no início da seção 3). A proposta original: não criar um sistema de workflow, mas um arquivo curto que pudesse economizar erros operacionais:
 
 ```text
 `docs/operacao/agent-workflow.md`
