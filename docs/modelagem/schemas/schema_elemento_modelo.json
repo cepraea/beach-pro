@@ -1,0 +1,415 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/schema_elemento_modelo.json",
+  "title": "Elemento do Modelo Canônico (Bounded Context / Identidade / Agregado / Invariante / Ciclo de vida / Fronteira transacional)",
+  "type": "object",
+  "required": [
+    "id_elemento",
+    "tipo",
+    "nome",
+    "estagio",
+    "fonte",
+    "estado_epistemologico",
+    "estado_tecnico",
+    "evidencia"
+  ],
+  "properties": {
+    "id_elemento": {
+      "type": "string",
+      "pattern": "^(CTX|IDN|AGG|INV|LFC|TRX)-[0-9]{3}$",
+      "description": "Namespace por tipo (seção 4.8): CTX=Bounded Context, IDN=Identidade, AGG=Agregado, INV=Invariante, LFC=Ciclo de vida, TRX=Fronteira transacional."
+    },
+    "tipo": {
+      "enum": [
+        "BOUNDED_CONTEXT",
+        "IDENTIDADE",
+        "AGREGADO",
+        "INVARIANTE",
+        "CICLO_DE_VIDA",
+        "FRONTEIRA_TRANSACIONAL"
+      ]
+    },
+    "nome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estagio": {
+      "enum": [
+        "CANDIDATO",
+        "PROMOVIDO",
+        "DOMINIO"
+      ],
+      "description": "Em qual diretório este elemento vive fisicamente (seção 4.7) e seu papel ali. CANDIDATO: hipótese em candidatos/, ainda não promovida — pode ser editada. PROMOVIDO: o registro ORIGINAL em candidatos/ depois que sua contraparte foi criada em dominio/ — vira histórico congelado da hipótese, nunca mais editado, nunca apagado. DOMINIO: a representação canônica em dominio/, sempre VALIDADO. Nunca existem duas versões concorrentes 'igualmente válidas' do mesmo elemento — candidatos/ com PROMOVIDO é explicitamente passado, dominio/ é a única versão ativa."
+    },
+    "promoted_from": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Obrigatório quando estagio=DOMINIO. Promoção normal: candidatos/<arquivo>#<ID>. PRE-SEED: REF:<documento>..."
+    },
+    "promoted_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(SEM-[0-9]{3}|PRE-SEED)$",
+      "description": "Identificador da ação semântica SEM-NNN que promoveu o elemento. PRE-SEED é a única exceção para decisão humana direta já validada em AC-000."
+    },
+    "promoted_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Obrigatório quando estagio=PROMOVIDO: caminho e id de destino, ex.: 'dominio/invariantes.md#INV-003' — o inverso de promoted_from, fecha a rastreabilidade nos dois sentidos."
+    },
+    "bounded_context_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^CTX-[0-9]{3}$",
+      "description": "A qual Bounded Context este elemento pertence. Null quando tipo=BOUNDED_CONTEXT (é o próprio) ou ainda não determinado."
+    },
+    "detalhes": {
+      "type": "object",
+      "description": "Campos específicos do tipo, conforme a tabela da seção 4.1 (ex.: Aggregate Root para AGREGADO; estados possíveis/transições para CICLO_DE_VIDA; critérios de identidade/aliases para IDENTIDADE)."
+    },
+    "maturidade": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "IMATURA",
+        "PARCIALMENTE_MADURA",
+        "MADURA_PARA_MODELO_LOGICO",
+        null
+      ],
+      "description": "Obrigatório quando tipo=BOUNDED_CONTEXT (seção 4.4); null para os outros tipos."
+    },
+    "fonte": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(EVD-[0-9]{4}|REF:.+)$"
+      },
+      "minItems": 1,
+      "description": "Fragmentos de evidência (EVD-NNNN) do corpus de dossiês, seção 4.5 — não SRC-NNN/AC-NNN bruto. Exceção: elementos pré-semeados a partir de documento referência (não dossiê), citam 'REF:<documento> §<seção>' (ex.: 'REF:modelagem_dominio_dados.md §7'), caso de INV-001/CTX-001..008 (seção 4.2), que não têm fonte no corpus de dossiês."
+    },
+    "estado_epistemologico": {
+      "enum": [
+        "OBSERVADO",
+        "INFERIDO",
+        "AMBIGUO",
+        "CONFLITANTE",
+        "VALIDADO",
+        "REJEITADO"
+      ]
+    },
+    "estado_tecnico": {
+      "enum": [
+        "NAO_MODELADO",
+        "MODELADO",
+        "IMPLEMENTADO",
+        "TESTADO",
+        "ATIVO",
+        "SUBSTITUIDO"
+      ]
+    },
+    "ambiguidades": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidencia": {
+      "type": "object",
+      "required": [
+        "source_evidence"
+      ],
+      "properties": {
+        "source_evidence": {
+          "type": "object",
+          "required": [
+            "comando_ou_metodo",
+            "resultado"
+          ],
+          "properties": {
+            "comando_ou_metodo": {
+              "type": "string",
+              "minLength": 1
+            },
+            "resultado": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitacoes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "semantic_evidence": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Por que esta interpretação é a correta — o raciocínio, não só o método de extração."
+        },
+        "approval_evidence": {
+          "type": "object",
+          "properties": {
+            "aprovador": {
+              "type": "string",
+              "enum": [
+                "Davi Sermenho",
+                "PENDENTE"
+              ]
+            },
+            "data": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "repository_evidence": {
+          "type": "object",
+          "properties": {
+            "action_ref": {
+              "type": "string",
+              "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "tipo": {
+            "const": "BOUNDED_CONTEXT"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "maturidade"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estado_tecnico": {
+            "enum": [
+              "MODELADO",
+              "IMPLEMENTADO",
+              "TESTADO",
+              "ATIVO",
+              "SUBSTITUIDO"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "estado_epistemologico": {
+            "const": "VALIDADO"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estado_epistemologico": {
+            "const": "VALIDADO"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evidencia": {
+            "properties": {
+              "semantic_evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "approval_evidence": {
+                "type": "object",
+                "properties": {
+                  "aprovador": {
+                    "const": "Davi Sermenho"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "aprovador",
+                  "data"
+                ]
+              },
+              "repository_evidence": {
+                "type": "object",
+                "properties": {
+                  "action_ref": {
+                    "type": "string",
+                    "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+                  }
+                },
+                "required": [
+                  "action_ref"
+                ]
+              }
+            },
+            "required": [
+              "semantic_evidence",
+              "approval_evidence",
+              "repository_evidence"
+            ]
+          }
+        },
+        "required": [
+          "evidencia"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estagio": {
+            "const": "DOMINIO"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "estado_epistemologico": {
+            "const": "VALIDADO"
+          }
+        },
+        "required": [
+          "promoted_from",
+          "promoted_by"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estagio": {
+            "const": "PROMOVIDO"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "promoted_by": {
+            "type": "string",
+            "pattern": "^SEM-[0-9]{3}$"
+          },
+          "promoted_to": {
+            "type": "string",
+            "pattern": "^dominio/.+#(CTX|IDN|AGG|INV|LFC|TRX)-[0-9]{3}$"
+          }
+        },
+        "required": [
+          "promoted_to",
+          "promoted_by"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "promoted_by": {
+            "const": "PRE-SEED"
+          }
+        },
+        "required": [
+          "promoted_by"
+        ]
+      },
+      "then": {
+        "properties": {
+          "promoted_from": {
+            "type": "string",
+            "pattern": "^REF:.+"
+          },
+          "evidencia": {
+            "properties": {
+              "approval_evidence": {
+                "type": "object",
+                "properties": {
+                  "aprovador": {
+                    "const": "Davi Sermenho"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "aprovador",
+                  "data"
+                ]
+              },
+              "repository_evidence": {
+                "type": "object",
+                "properties": {
+                  "action_ref": {
+                    "const": "AC-000"
+                  }
+                },
+                "required": [
+                  "action_ref"
+                ]
+              }
+            },
+            "required": [
+              "approval_evidence",
+              "repository_evidence"
+            ]
+          }
+        },
+        "required": [
+          "promoted_from",
+          "evidencia"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "promoted_by": {
+            "pattern": "^SEM-[0-9]{3}$"
+          }
+        },
+        "required": [
+          "promoted_by"
+        ]
+      },
+      "then": {
+        "properties": {
+          "promoted_from": {
+            "type": "string",
+            "pattern": "^candidatos/.+#(CTX|IDN|AGG|INV|LFC|TRX)-[0-9]{3}$"
+          }
+        },
+        "required": [
+          "promoted_from"
+        ]
+      }
+    }
+  ]
+}

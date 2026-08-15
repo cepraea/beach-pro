@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/schema_decisao.json",
+  "title": "Registro de decisão material",
+  "type": "object",
+  "required": [
+    "id_decisao",
+    "data",
+    "decisao",
+    "escolha",
+    "justificativa",
+    "fonte",
+    "aprovador",
+    "estado"
+  ],
+  "properties": {
+    "id_decisao": {
+      "type": "string",
+      "pattern": "^DEC-[0-9]{3}$"
+    },
+    "data": {
+      "type": "string",
+      "format": "date"
+    },
+    "decisao": {
+      "type": "string",
+      "minLength": 1
+    },
+    "alternativas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "escolha": {
+      "type": "string",
+      "minLength": 1
+    },
+    "justificativa": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fonte": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "impacto": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "riscos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aprovador": {
+      "type": "string",
+      "enum": [
+        "Davi Sermenho",
+        "PENDENTE"
+      ]
+    },
+    "estado": {
+      "enum": [
+        "BLOQUEADO",
+        "RESOLVIDA",
+        "REGISTRADA_SEM_ACAO"
+      ]
+    },
+    "evidencia": {
+      "type": "object",
+      "description": "Prova verificável de registro/aplicação da decisão, sem SHA autorreferencial.",
+      "properties": {
+        "repository_evidence": {
+          "type": "object",
+          "properties": {
+            "action_ref": {
+              "type": "string",
+              "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "estado": {
+        "const": "RESOLVIDA"
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "aprovador": {
+        "const": "Davi Sermenho"
+      },
+      "fonte": {
+        "minItems": 1
+      },
+      "evidencia": {
+        "properties": {
+          "repository_evidence": {
+            "type": "object",
+            "properties": {
+              "action_ref": {
+                "type": "string",
+                "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+              }
+            },
+            "required": [
+              "action_ref"
+            ]
+          }
+        },
+        "required": [
+          "repository_evidence"
+        ]
+      }
+    },
+    "required": [
+      "evidencia"
+    ]
+  }
+}

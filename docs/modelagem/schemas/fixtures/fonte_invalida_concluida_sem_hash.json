@@ -1,0 +1,25 @@
+{
+  "id_fonte": "SRC-004",
+  "id_acao": "AC-004",
+  "nome_arquivo_original": "CEPRAEA DATABASE.xlsx",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/CEPRAEA DATABASE.xlsx",
+  "hash_sha256": null,
+  "id_drive": null,
+  "tipo_arquivo": "xlsx",
+  "idioma": "pt-BR",
+  "tipo_fonte": "OPERACIONAL",
+  "autoridade_fonte": "INDETERMINADA",
+  "proveniencia_fonte": "INDETERMINADA",
+  "estado_fonte": "INDETERMINADA",
+  "estado_processamento": "CONCLUIDO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": [],
+  "evidencia": {
+    "comando_ou_metodo": "Read direto do arquivo",
+    "resultado": "planilha processada",
+    "repository_evidence": { "action_ref": "AC-004" }
+  },
+  "proxima_acao": null
+}

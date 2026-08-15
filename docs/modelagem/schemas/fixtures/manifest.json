@@ -1,0 +1,242 @@
+[
+  {
+    "file": "fonte_valida_concluida.json",
+    "schema": "schema_fonte.json",
+    "expected": "ACCEPT",
+    "expected_reason": "dossiê completo, CONCLUIDO, hash_sha256/caminho_local preenchidos, evidencia.repository_evidence.action_ref preenchido, id_drive=null (permitido)"
+  },
+  {
+    "file": "fonte_valida_bloqueada.json",
+    "schema": "schema_fonte.json",
+    "expected": "ACCEPT",
+    "expected_reason": "BLOQUEADO sem repository_evidence (permitido nesse estado)"
+  },
+  {
+    "file": "fonte_invalida_sem_hash.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "falta hash_sha256 — deve falhar por required (identidade real, não id_drive)",
+    "expected_error_contains": "'hash_sha256' ausente"
+  },
+  {
+    "file": "fonte_invalida_sem_evidencia.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "falta evidencia — deve falhar por required",
+    "expected_error_contains": "'evidencia' ausente"
+  },
+  {
+    "file": "fonte_invalida_sensivel_sem_tratamento.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "dado_sensivel_encontrado=true sem tratamento_dado_sensivel — regra if/then da melhoria b",
+    "expected_error_contains": "'tratamento_dado_sensivel' ausente"
+  },
+  {
+    "file": "decisao_valida_bloqueada.json",
+    "schema": "schema_decisao.json",
+    "expected": "ACCEPT",
+    "expected_reason": "estado=BLOQUEADO, fonte=[], aprovador=PENDENTE (permitido)"
+  },
+  {
+    "file": "decisao_invalida_resolvida_sem_aprovador.json",
+    "schema": "schema_decisao.json",
+    "expected": "REJECT",
+    "expected_reason": "estado=RESOLVIDA com aprovador=PENDENTE — melhoria f",
+    "expected_error_contains": "$.aprovador: esperado const \"Davi Sermenho\""
+  },
+  {
+    "file": "decisao_invalida_resolvida_fonte_vazia.json",
+    "schema": "schema_decisao.json",
+    "expected": "REJECT",
+    "expected_reason": "estado=RESOLVIDA com fonte=[] — regra minItems",
+    "expected_error_contains": "$.fonte: 0 itens"
+  },
+  {
+    "file": "evidencia_valida.json",
+    "schema": "schema_evidencia.json",
+    "expected": "ACCEPT",
+    "expected_reason": "EVD-NNNN com localizacao/trecho_literal específicos (não 'o arquivo inteiro')"
+  },
+  {
+    "file": "evidencia_invalida_sensivel_sem_tratamento.json",
+    "schema": "schema_evidencia.json",
+    "expected": "REJECT",
+    "expected_reason": "dado_sensivel_encontrado=true sem tratamento_dado_sensivel — mesma regra da melhoria b, aplicada a fragmentos",
+    "expected_error_contains": "'tratamento_dado_sensivel' ausente"
+  },
+  {
+    "file": "termo_valido_observado.json",
+    "schema": "schema_termo.json",
+    "expected": "ACCEPT",
+    "expected_reason": "fonte=['EVD-0001'], estado_epistemologico=OBSERVADO, estado_tecnico=NAO_MODELADO"
+  },
+  {
+    "file": "termo_invalido_modelado_sem_validacao.json",
+    "schema": "schema_termo.json",
+    "expected": "REJECT",
+    "expected_reason": "estado_tecnico=MODELADO com estado_epistemologico=INFERIDO — regra if/then",
+    "expected_error_contains": "$.estado_epistemologico: esperado const \"VALIDADO\", recebido \"INFERIDO\""
+  },
+  {
+    "file": "termo_invalido_fonte_ac_bruto.json",
+    "schema": "schema_termo.json",
+    "expected": "REJECT",
+    "expected_reason": "fonte=['AC-001'] em vez de EVD-NNNN — viola o pattern do item",
+    "expected_error_contains": "$.fonte[0]: valor 'AC-001' não corresponde ao padrão"
+  },
+  {
+    "file": "termo_invalido_validado_sem_aprovador.json",
+    "schema": "schema_termo.json",
+    "expected": "REJECT",
+    "expected_reason": "estado_epistemologico=VALIDADO com evidencia.approval_evidence.aprovador=PENDENTE — regra if/then",
+    "expected_error_contains": "$.evidencia.approval_evidence.aprovador: esperado const \"Davi Sermenho\", recebido \"PENDENTE\""
+  },
+  {
+    "file": "regra_valida_observada.json",
+    "schema": "schema_regra.json",
+    "expected": "ACCEPT",
+    "expected_reason": "fonte=['EVD-0002'], sujeito/acao preenchidos, estado_epistemologico=OBSERVADO"
+  },
+  {
+    "file": "regra_invalida_sem_sujeito_acao.json",
+    "schema": "schema_regra.json",
+    "expected": "REJECT",
+    "expected_reason": "falta sujeito/acao — deve falhar por required",
+    "expected_error_contains": "'sujeito' ausente"
+  },
+  {
+    "file": "regra_invalida_validada_sem_aprovador.json",
+    "schema": "schema_regra.json",
+    "expected": "REJECT",
+    "expected_reason": "estado_epistemologico=VALIDADO sem evidencia.approval_evidence.aprovador='Davi Sermenho' — regra if/then",
+    "expected_error_contains": "'approval_evidence' ausente"
+  },
+  {
+    "file": "elemento_valido_bc.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "ACCEPT",
+    "expected_reason": "tipo=BOUNDED_CONTEXT, estagio=CANDIDATO, maturidade=IMATURA, fonte=['EVD-0003']"
+  },
+  {
+    "file": "elemento_invalido_bc_sem_maturidade.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "tipo=BOUNDED_CONTEXT sem maturidade — regra if/then",
+    "expected_error_contains": "'maturidade' ausente"
+  },
+  {
+    "file": "elemento_invalido_validado_sem_aprovador.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "estado_epistemologico=VALIDADO sem approval_evidence.aprovador='Davi Sermenho' — mesma regra do termo, aplicada aos seis objetos",
+    "expected_error_contains": "'approval_evidence' ausente"
+  },
+  {
+    "file": "elemento_invalido_dominio_sem_validacao.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "estagio=DOMINIO com estado_epistemologico=OBSERVADO — só entra em dominio/ o que já é VALIDADO",
+    "expected_error_contains": "$.estado_epistemologico: esperado const \"VALIDADO\", recebido \"OBSERVADO\""
+  },
+  {
+    "file": "elemento_invalido_dominio_sem_promocao.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "estagio=DOMINIO, estado_epistemologico=VALIDADO, mas sem promoted_from/promoted_by",
+    "expected_error_contains": "'promoted_from' ausente"
+  },
+  {
+    "file": "elemento_invalido_promovido_sem_destino.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "estagio=PROMOVIDO sem promoted_to — o registro histórico tem que apontar para onde foi promovido",
+    "expected_error_contains": "'promoted_to' ausente"
+  },
+  {
+    "file": "fonte_valida_bloqueada_ausente_sem_hash.json",
+    "schema": "schema_fonte.json",
+    "expected": "ACCEPT",
+    "expected_reason": "fonte ausente, BLOQUEADO, hash_sha256=null, identidade esperada e causa registradas"
+  },
+  {
+    "file": "fonte_invalida_concluida_sem_hash.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "CONCLUIDO exige hash válido",
+    "expected_error_contains": "$.hash_sha256: esperado tipo \"string\", recebido null"
+  },
+  {
+    "file": "fonte_valida_concluida_com_action_ref.json",
+    "schema": "schema_fonte.json",
+    "expected": "ACCEPT",
+    "expected_reason": "repository_evidence.action_ref=id_acao"
+  },
+  {
+    "file": "fonte_invalida_concluida_sem_action_ref.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "CONCLUIDO sem action_ref",
+    "expected_error_contains": "'repository_evidence' ausente"
+  },
+  {
+    "file": "fonte_invalida_action_ref_divergente_de_id_acao.json",
+    "schema": "schema_fonte.json",
+    "expected": "REJECT",
+    "expected_reason": "action_ref de aquisição diverge de id_acao — regra complementar aplicada por validar.mjs (seção 5.1)",
+    "expected_error_contains": "regra complementar (seção 5.1)"
+  },
+  {
+    "file": "decisao_valida_resolvida_com_action_ref.json",
+    "schema": "schema_decisao.json",
+    "expected": "ACCEPT",
+    "expected_reason": "decisão resolvida com aprovação e action_ref verificável"
+  },
+  {
+    "file": "decisao_invalida_resolvida_sem_action_ref.json",
+    "schema": "schema_decisao.json",
+    "expected": "REJECT",
+    "expected_reason": "decisão resolvida sem action_ref",
+    "expected_error_contains": "'evidencia' ausente"
+  },
+  {
+    "file": "elemento_valido_preseed.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "ACCEPT",
+    "expected_reason": "PRE-SEED com REF:, aprovação humana e action_ref=AC-000"
+  },
+  {
+    "file": "elemento_invalido_preseed_sem_ref.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "PRE-SEED sem origem REF:",
+    "expected_error_contains": "não corresponde ao padrão ^REF:.+"
+  },
+  {
+    "file": "elemento_invalido_preseed_sem_aprovacao.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "PRE-SEED sem aprovação humana",
+    "expected_error_contains": "$.evidencia.approval_evidence.aprovador: esperado const \"Davi Sermenho\", recebido \"PENDENTE\""
+  },
+  {
+    "file": "elemento_valido_promocao_sem.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "ACCEPT",
+    "expected_reason": "promoção normal com candidato histórico e SEM-NNN"
+  },
+  {
+    "file": "elemento_invalido_promocao_sem_candidato.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "SEM-NNN em domínio sem candidato correspondente registrado (promoted_from ausente)",
+    "expected_error_contains": "'promoted_from' ausente"
+  },
+  {
+    "file": "elemento_invalido_promovido_sem_sem_ref.json",
+    "schema": "schema_elemento_modelo.json",
+    "expected": "REJECT",
+    "expected_reason": "candidato PROMOVIDO sem promoted_by=SEM-NNN",
+    "expected_error_contains": "'promoted_by' ausente"
+  }
+]

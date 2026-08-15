@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schemas/schema_regra.json",
+  "title": "Registro de regra extraída",
+  "type": "object",
+  "required": [
+    "id_regra",
+    "fonte",
+    "tipo",
+    "sujeito",
+    "acao",
+    "estado_epistemologico",
+    "estado_tecnico",
+    "evidencia"
+  ],
+  "properties": {
+    "id_regra": {
+      "type": "string",
+      "pattern": "^REGRA-[0-9]{3}$"
+    },
+    "fonte": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^EVD-[0-9]{4}$"
+      },
+      "minItems": 1,
+      "description": "Fragmentos de evidência (EVD-NNNN, seção 4.5) — cada um já carrega a localização exata (página/seção/célula); não AC-NNN bruto."
+    },
+    "texto_original": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Preservado literalmente quando a redação for material (Guia 1 §4)."
+    },
+    "tipo": {
+      "enum": [
+        "DEFINICAO",
+        "OBRIGACAO",
+        "PROIBICAO",
+        "PERMISSAO",
+        "CONDICAO",
+        "EXCECAO",
+        "CLASSIFICACAO",
+        "CALCULO",
+        "REGRA_TEMPORAL",
+        "CARDINALIDADE",
+        "UNICIDADE",
+        "AUTORIZACAO",
+        "TRANSICAO_DE_ESTADO"
+      ],
+      "description": "União de Fluxo de Modelagem Guia 1 §4 e modelagem_dominio_dados.md §20 (atomização de regras) — nenhum dos dois se declarou substituto do outro."
+    },
+    "sujeito": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acao": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objeto": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "condicoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excecoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cardinalidade_minima": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cardinalidade_maxima": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "vigencia": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contexto_valido": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contexto_invalido": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conceitos_afetados": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementacao_candidata": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "estado_epistemologico": {
+      "enum": [
+        "OBSERVADO",
+        "INFERIDO",
+        "AMBIGUO",
+        "CONFLITANTE",
+        "VALIDADO",
+        "REJEITADO"
+      ],
+      "description": "modelagem_dominio_dados.md §17 — substitui a escada específica EXTRAÍDA/VERIFICADA/VALIDADA/REJEITADA do Guia 1 §4, para usar um único vocabulário epistemológico em todo o plano (termos, regras e os seis objetos da seção 4.1)."
+    },
+    "estado_tecnico": {
+      "enum": [
+        "NAO_MODELADO",
+        "MODELADO",
+        "IMPLEMENTADO",
+        "TESTADO",
+        "ATIVO",
+        "SUBSTITUIDO"
+      ]
+    },
+    "duvidas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidencia": {
+      "type": "object",
+      "description": "Quatro eixos separados — action_ref prova vínculo com uma ação versionada; não prova significado correto.",
+      "required": [
+        "source_evidence"
+      ],
+      "properties": {
+        "source_evidence": {
+          "type": "object",
+          "required": [
+            "comando_ou_metodo",
+            "resultado"
+          ],
+          "properties": {
+            "comando_ou_metodo": {
+              "type": "string",
+              "minLength": 1
+            },
+            "resultado": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitacoes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "semantic_evidence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_evidence": {
+          "type": "object",
+          "properties": {
+            "aprovador": {
+              "type": "string",
+              "enum": [
+                "Davi Sermenho",
+                "PENDENTE"
+              ]
+            },
+            "data": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "repository_evidence": {
+          "type": "object",
+          "properties": {
+            "action_ref": {
+              "type": "string",
+              "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "estado_tecnico": {
+            "enum": [
+              "MODELADO",
+              "IMPLEMENTADO",
+              "TESTADO",
+              "ATIVO",
+              "SUBSTITUIDO"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "estado_epistemologico": {
+            "const": "VALIDADO"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "estado_epistemologico": {
+            "const": "VALIDADO"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evidencia": {
+            "properties": {
+              "semantic_evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "approval_evidence": {
+                "type": "object",
+                "properties": {
+                  "aprovador": {
+                    "const": "Davi Sermenho"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                },
+                "required": [
+                  "aprovador",
+                  "data"
+                ]
+              },
+              "repository_evidence": {
+                "type": "object",
+                "properties": {
+                  "action_ref": {
+                    "type": "string",
+                    "pattern": "^(AC|SEM|SYN)-[0-9]{3}$"
+                  }
+                },
+                "required": [
+                  "action_ref"
+                ]
+              }
+            },
+            "required": [
+              "semantic_evidence",
+              "approval_evidence",
+              "repository_evidence"
+            ]
+          }
+        },
+        "required": [
+          "evidencia"
+        ]
+      }
+    }
+  ]
+}

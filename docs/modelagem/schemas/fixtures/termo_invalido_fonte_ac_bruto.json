@@ -1,0 +1,16 @@
+{
+  "id_termo": "TERMO-003",
+  "termo_preferencial": "disponibilidade",
+  "nome_canonico": "Disponibilidade",
+  "classificacao": "EVENTO",
+  "definicao": "Resposta declarada sobre disponibilidade para treino.",
+  "fonte": ["AC-001"],
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "aba 'Disponibilidade' encontrada"
+    }
+  }
+}

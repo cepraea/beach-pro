@@ -1,0 +1,21 @@
+{
+  "id_elemento": "INV-105",
+  "tipo": "INVARIANTE",
+  "nome": "Fixture — PRE-SEED sem aprovação",
+  "estagio": "DOMINIO",
+  "promoted_from": "REF:teste",
+  "promoted_by": "PRE-SEED",
+  "maturidade": null,
+  "fonte": ["REF:teste"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "decisão humana direta",
+      "resultado": "teste"
+    },
+    "semantic_evidence": "justificativa de teste",
+    "approval_evidence": { "aprovador": "PENDENTE", "data": null },
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id_decisao": "DEC-105",
+  "data": "2026-08-15",
+  "decisao": "Fixture de teste — decisão resolvida sem action_ref",
+  "alternativas": [],
+  "escolha": "escolha de teste",
+  "justificativa": "justificativa de teste",
+  "fonte": ["REF:teste"],
+  "impacto": null,
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA"
+}

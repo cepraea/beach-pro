@@ -4,6 +4,126 @@ Um bloco `json` por `DEC-NNN`, validado contra `schema_decisao.json` (seção 5.
 entrada é precedida por um resumo em prosa para leitura humana; o bloco `json` é a fonte
 verificável para `validar.mjs`.
 
+## DEC-001 — Estado do arquivo Wellness Apps Script Mobile e de sua cópia (D-01)
+
+Durante esta sessão, `CEPRAEA — Wellness — Apps Script Mobile.txt` foi apagado acidentalmente por
+Davi e já foi restaurado por ele — confirmado presente. A cópia
+`Cópia de CEPRAEA — Wellness — Apps Script Mobile.txt` continua ausente; Davi decidiu que ela não é
+necessária, já que o original já supre a fonte.
+
+```json
+{
+  "id_decisao": "DEC-001",
+  "data": "2026-08-15",
+  "decisao": "Estado do arquivo 'CEPRAEA — Wellness — Apps Script Mobile.txt' e de sua cópia, após exclusão acidental durante a sessão (D-01).",
+  "alternativas": [
+    "Restaurar também a cópia 'Cópia de CEPRAEA — Wellness — Apps Script Mobile.txt'",
+    "Tratar o original restaurado como suficiente e não restaurar a cópia"
+  ],
+  "escolha": "O original foi restaurado por Davi e está confirmado presente. A cópia não foi restaurada — Davi decidiu que ela não é necessária, já que o original já supre a fonte.",
+  "justificativa": "O conteúdo relevante para a modelagem está no original; a cópia não acrescenta evidência distinta.",
+  "fonte": ["REF:D-01, seção 0 de PLANO_CEPRAEA_Modelo_Canonico_FINAL.md"],
+  "impacto": "AC-020 processa o original normalmente; AC-021 nasce estado_processamento=NAO_APLICAVEL, sem conteúdo a analisar.",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}
+```
+
+## DEC-002 — Não reaproveitamento dos schemas físicos da tentativa anterior (D-02)
+
+O fluxo de modelagem anterior foi declarado falho por Davi. Consequência: nenhum dos dois schemas
+físicos anteriores — as 23 tabelas de `BancoCEPRAEA.docx` e as 13 tabelas citadas pelo "Glossário
+v0.2" — é reaproveitado como base do modelo lógico desta fase.
+
+```json
+{
+  "id_decisao": "DEC-002",
+  "data": "2026-08-15",
+  "decisao": "Reaproveitamento (ou não) dos schemas físicos da tentativa de modelagem anterior como base do modelo lógico desta fase.",
+  "alternativas": [
+    "Reaproveitar as 23 tabelas de BancoCEPRAEA.docx como ponto de partida",
+    "Reaproveitar as 13 tabelas citadas pelo 'Glossário v0.2' como ponto de partida",
+    "Não reaproveitar nenhum dos dois; derivar o modelo lógico exclusivamente do Modelo Canônico desta fase"
+  ],
+  "escolha": "Nenhum dos dois schemas físicos anteriores é reaproveitado como base do modelo lógico desta fase. O modelo lógico nasce do Modelo Canônico sustentado pelas fontes relevantes segundo autoridade e finalidade, não desses documentos.",
+  "justificativa": "O fluxo de modelagem anterior foi declarado falho por Davi (D-02) — os dois schemas físicos ficaram incompatíveis entre si e sem resolução.",
+  "fonte": ["REF:D-02, seção 0 de PLANO_CEPRAEA_Modelo_Canonico_FINAL.md"],
+  "impacto": "BancoCEPRAEA.docx, CEPRAEA-DB.docx, DESC-CEPRAEA.docx, Glossário de Dados — CEPRAEA v0.1.xlsx e o REGISTRO MESTRE nascem autoridade_fonte=AUXILIAR e estado_fonte=SUBSTITUIDA em seus dossiês, independente de completude técnica (melhoria d).",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}
+```
+
+## DEC-003 — "STOP GATE fechado" vs. "DDL completo escrito" não se contradizem (D-03)
+
+Uma investigação anterior nesta sessão havia caracterizado como contradição direta a frase do
+REGISTRO MESTRE ("STOP GATE físico permaneceu fechado; nenhum SQL, schema, migration, RLS ou banco
+externo foi criado") frente à frase de `BancoCEPRAEA.docx` ("o repositório atual contém... mas não
+possui migrations de domínio implementadas"). Verificação direta dos dois documentos-fonte mostrou
+que isso é impreciso.
+
+```json
+{
+  "id_decisao": "DEC-003",
+  "data": "2026-08-15",
+  "decisao": "Se \"STOP GATE físico permaneceu fechado\" (REGISTRO MESTRE) contradiz \"o repositório atual contém... dependência Supabase, mas não possui migrations de domínio implementadas\" (BancoCEPRAEA.docx).",
+  "alternativas": [
+    "Tratar como contradição direta entre as duas fontes, exigindo resolução de precedência",
+    "Reler os dois textos-fonte diretamente e verificar se as frases realmente se referem ao mesmo fato"
+  ],
+  "escolha": "As duas frases provavelmente não se contradizem. 'SQL foi escrito como proposta dentro de um documento' e 'nenhum SQL foi criado [executado contra um banco real]' podem ser verdadeiras ao mesmo tempo — o REGISTRO MESTRE audita o ecossistema de planilhas, não todos os documentos da pasta; e o próprio REGISTRO MESTRE instrui, na aba 00, não promover documento REVIEWED/rascunho/cópia/predecessor/evidência a estado APPROVED/CURRENT, exatamente a regra que a investigação anterior não aplicou ao DDL de BancoCEPRAEA.docx.",
+  "justificativa": "Verificação direta dos dois documentos-fonte (REGISTRO MESTRE DE ARTEFATOS E FUNCIONAMENTO — SISTEMA CEPRAEA.docx, linha 864 do texto extraído; BancoCEPRAEA.docx, linha 45 do texto extraído), não apenas do resumo de uma investigação anterior.",
+  "fonte": [
+    "REF:D-03, seção 0 de PLANO_CEPRAEA_Modelo_Canonico_FINAL.md",
+    ".drive/CEPRAEA BEACH PRO/REGISTRO MESTRE DE ARTEFATOS E FUNCIONAMENTO — SISTEMA CEPRAEA.docx",
+    ".drive/CEPRAEA BEACH PRO/BancoCEPRAEA.docx"
+  ],
+  "impacto": "Nenhum — D-03 fecha como não-contradição, sem alterar a classificação de nenhuma fonte. Fica registrada, sem bloquear nada, uma curiosidade residual de baixa prioridade: a menção a 'dependência Supabase' em BancoCEPRAEA.docx não tem informação suficiente, nos dois textos, para determinar se é só um package.json com @supabase/supabase-js (baixo risco) ou algo mais.",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}
+```
+
+## DEC-006 — Contagem atual de atletas e treinador
+
+Davi confirmou diretamente, como especialista do domínio, a contagem de 19 atletas e 1 treinador
+no estado atual do CEPRAEA-BEACH-PRO (`modelagem_dominio_dados.md` §7 já registrava o mesmo
+número). Aceita como válida a partir desta decisão, não como candidata a confirmar.
+
+```json
+{
+  "id_decisao": "DEC-006",
+  "data": "2026-08-15",
+  "decisao": "Contagem atual de atletas e treinador no CEPRAEA-BEACH-PRO, para orientar (sem determinar sozinha) a modelagem de identidades e papéis operacionais.",
+  "alternativas": [
+    "Tratar a contagem como candidata a confirmar por AC-001/AC-004/AC-008–AC-010/AC-016–AC-019",
+    "Aceitar a contagem já confirmada por Davi como válida a partir desta decisão"
+  ],
+  "escolha": "Davi confirmou diretamente, como especialista do domínio, a contagem de 19 atletas e 1 treinador no estado atual do CEPRAEA-BEACH-PRO (modelagem_dominio_dados.md §7 já registrava o mesmo número). Aceita como válida a partir desta decisão, não como candidata a confirmar.",
+  "justificativa": "Confirmação direta de Davi Sermenho nesta sessão, coerente com o número já registrado em modelagem_dominio_dados.md §7.",
+  "fonte": ["REF:modelagem_dominio_dados.md §7", "REF:seção 4.2 de PLANO_CEPRAEA_Modelo_Canonico_FINAL.md"],
+  "impacto": "Nota operacional: se AC-001, AC-004, AC-008–AC-010, AC-016–AC-019 contarem um número diferente, isso é divergência temporal/operacional (elenco muda ao longo do tempo), registrada como novo item em decisoes/registro_decisoes.md — não uma contradição do que já foi validado, e não substituída silenciosamente.",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}
+```
+
 ## DEC-008 — Remoção da worktree irmã da modelagem
 
 Durante `AC-000` (primeira e segunda tentativas, ver `.agent-flow/executions/AC-000.md`), dois
@@ -95,55 +215,65 @@ MODO (CEPRAEA_SOURCE_ROOT)
 8. operações Git privilegiadas (commit, push, merge, rebase, criação de branch/ref) executadas
    somente por Davi — inalterado, já era a regra (`AGENT_POLICY.md` §Autoridade).
 
-## DEC-GOV-001 — Substituição do workflow .agent-flow por Git como state machine operacional
+## DEC-GOV-001 — Substituição do workflow .agent-flow por Git como state machine operacional (referência)
 
 Durante `AC-000` (ver `DEC-008`), a arquitetura baseada em `.agent-flow/STATE.md`,
 `EXECUTOR.md`, `REVIEWER.md` e diretórios `executions/**` / `reviews/**` como mecanismo de
 workflow foi identificada como fonte redundante de estado paralela ao Git.
 
-A revisão arquitetural produzida em `.drive/multi-agentes/` (2026-08-13, status FINAL PARA
-ADOÇÃO — REVISÃO 2) define Git como a única state machine operacional, substituindo os
-adaptadores de papel e a infraestrutura de estado anterior.
+**Esta entrada é referência, não o registro canônico** (resolução de `DEC-011`, achado do
+`REVIEWER` em `AC-000`): `DEC-GOV-001` é uma decisão de governança do SDLC do CEPRAEA BEACH PRO —
+domínio distinto das decisões de modelagem que este arquivo registra, com prefixo (`DEC-GOV-NNN`)
+e forma de dados (`impacto` estruturado por componente) próprios. Misturá-la ao namespace `DEC-NNN`
+sequencial e ao `schema_decisao.json` desta fase forçaria o schema a acomodar dois domínios com
+condicionais ad-hoc — por isso ela não valida contra `schema_decisao.json` e não deveria. O
+registro canônico, completo e já aprovado está em
+[`.ai/decisions/DEC-GOV-001-agent-flow-legado.md`](../../../.ai/decisions/DEC-GOV-001-agent-flow-legado.md).
 
-**Decisão:** remover `.agent-flow/**` como mecanismo obrigatório de workflow. Os artefatos
-históricos são preservados no histórico Git, mas não são mais autoridade operacional.
+Resumo para contexto desta fase: Git passa a ser a única state machine operacional, substituindo
+`.agent-flow/STATE.md`/`EXECUTOR.md`/`REVIEWER.md`/`executions/**`/`reviews/**`. `EXECUTOR.md` foi
+substituído por `CLAUDE.md`; `REVIEWER.md` por `AGENTS.md`. Consequência direta para `AC-000`: os
+escopos formais desta fase (seção "Escopos formais", acima) já refletem essa decisão.
+
+## DEC-011 — Forma de `id_decisao`/`impacto` de decisões de governança dentro de `schema_decisao.json`
+
+Durante a validação de `AC-000`, `DEC-GOV-001` (já `RESOLVIDA`/commitada antes deste `AC-000`) não
+conforma ao `schema_decisao.json` extraído literalmente da seção 5.2 do plano:
+`id_decisao="DEC-GOV-001"` não corresponde a `^DEC-[0-9]{3}$`, e `impacto` é um objeto estruturado
+por componente, não `string`/`null`.
+
+O `EXECUTOR` tentou inicialmente resolver isso estendendo o schema unilateralmente
+(`id_decisao` passando a aceitar `DEC-GOV-NNN`; `impacto` passando a aceitar `object` sem validar
+sua estrutura interna). Revisão independente do `REVIEWER` apontou, corretamente, que isso é uma
+decisão material sobre a forma do próprio contrato de dados — não uma correção mecânica que o
+`EXECUTOR` possa fazer sozinho, mesmo sinalizando a extensão como pendente de confirmação. A
+extensão foi revertida; `schema_decisao.json` está, nesta revisão, fiel ao texto literal da seção
+5.2.
 
 ```json
 {
-  "id_decisao": "DEC-GOV-001",
-  "data": "2026-08-14",
-  "decisao": "Substituição do workflow baseado em .agent-flow/STATE.md, EXECUTOR.md, REVIEWER.md e executions/**/reviews/** por Git como única state machine operacional, conforme arquitetura Human-Governed Dual-Agent SDLC (FINAL PARA ADOÇÃO — REVISÃO 2).",
+  "id_decisao": "DEC-011",
+  "data": "2026-08-15",
+  "decisao": "Como schema_decisao.json deve tratar o formato de DEC-GOV-001 (id_decisao fora do padrão DEC-NNN; impacto como objeto estruturado por componente, não string) — decisão já RESOLVIDA e commitada antes deste AC-000, cujo formato diverge do schema desta fase.",
   "alternativas": [
-    "Manter .agent-flow como mecanismo de estado paralelo ao Git",
-    "Arquivar .agent-flow como referência sem uso operacional (escolhida)"
+    "Incorporar formalmente o padrão DEC-GOV-NNN ao contrato de schema_decisao.json, com impacto aceitando string ou objeto (com estrutura validada)",
+    "Separar decisões de governança do SDLC (DEC-GOV-NNN) do corpus de decisões de modelagem — realocar para um registro próprio, fora de schema_decisao.json",
+    "Manter schema_decisao.json fiel à seção 5.2 do plano e aceitar que validar.mjs sobre o corpus real reporte 1 erro conhecido e rastreado sobre DEC-GOV-001 até esta decisão ser tomada"
   ],
-  "escolha": "Git como state machine operacional. .agent-flow removido do fluxo ativo. Histórico preservado no Git. EXECUTOR.md substituído por CLAUDE.md. REVIEWER.md substituído por AGENTS.md. executions/** e reviews/** não são obrigatórios.",
-  "justificativa": "STATE.md e os diretórios de execução/revisão criavam duas fontes de verdade paralelas ao Git, introduzindo risco de divergência sem adicionar rastreabilidade que Git não forneça. A arquitetura revisada unifica estado, handoff e histórico em Git, eliminando infraestrutura desnecessária.",
+  "escolha": "Alternativa 2 — separar decisões de governança do SDLC (DEC-GOV-NNN) do corpus de decisões de modelagem. O prefixo diferente (GOV) e a forma de dados diferente (impacto como objeto estruturado, não string) são sinal de que a decisão pertence a outro domínio; forçá-la no mesmo schema criaria condicionais ad-hoc (\"se id começa com GOV então impacto deve ser objeto\") que comprometeriam a escalabilidade do modelo de documentação. DEC-GOV-001 já tinha registro canônico próprio, em formato de prosa, em .ai/decisions/DEC-GOV-001-agent-flow-legado.md — a entrada dentro de decisoes/registro_decisoes.md vira referência textual a esse registro, sem bloco json, sem tentar validar contra schema_decisao.json.",
+  "justificativa": "Confirmado diretamente por Davi Sermenho: prefixo e estrutura de dados divergentes são code smell de domínio distinto, não uma variação a acomodar dentro do mesmo contrato.",
   "fonte": [
-    "DEC-008",
-    ".drive/multi-agentes/Human-Governed Dual-Agent SDLC Architecture.md",
-    ".drive/multi-agentes/Implantação-Human-Governed Dual-Agent SDLC Archite.md",
-    "instrução direta de Davi Sermenho, 2026-08-14"
+    "REF:docs/modelagem/decisoes/registro_decisoes.md — DEC-GOV-001",
+    "REF:docs/modelagem/schemas/schema_decisao.json",
+    "REF:.ai/decisions/DEC-GOV-001-agent-flow-legado.md",
+    "instrução direta de Davi Sermenho, 2026-08-15"
   ],
-  "impacto": {
-    "STATE.md": "não mais autoridade operacional",
-    "EXECUTOR.md": "substituído por CLAUDE.md",
-    "REVIEWER.md": "substituído por AGENTS.md",
-    "executions/**": "não obrigatório; pode ser produzido quando evidência possuir valor material próprio",
-    "reviews/**": "não obrigatório; Reviewer emite verdict ao humano",
-    "Git": "state machine operacional, mecanismo de handoff e histórico persistente"
-  },
-  "riscos": [
-    "Agentes que lerem artefatos antigos de .agent-flow podem interpretar STATE.md como autoridade — mitigado por esta decisão e pela atualização de CLAUDE.md e AGENTS.md.",
-    "Ausência de log estruturado de execução pode dificultar auditoria retroativa — mitigado por convenção de mensagem de commit (AC-NNN, SEM-NNN, SYN-NNN) e pela política de evidência material."
-  ],
+  "impacto": "schema_decisao.json permanece fiel ao texto literal da seção 5.2 do plano, sem extensão. A seção DEC-GOV-001 em decisoes/registro_decisoes.md vira referência em prosa para .ai/decisions/DEC-GOV-001-agent-flow-legado.md, sem bloco json — validar.mjs sobre o corpus real volta a reportar errors=0. Precedente para qualquer futura decisão de governança que apareça referenciada nesta pasta: registrar como referência, nunca como bloco schema_decisao.json.",
+  "riscos": [],
   "aprovador": "Davi Sermenho",
   "estado": "RESOLVIDA",
   "evidencia": {
-    "repository_evidence": {
-      "action_ref": "AC-000",
-      "branch": "feat/cepraea-domain-modeling"
-    }
+    "repository_evidence": { "action_ref": "AC-000" }
   }
 }
 ```

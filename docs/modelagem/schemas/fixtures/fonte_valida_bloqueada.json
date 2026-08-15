@@ -1,0 +1,25 @@
+{
+  "id_fonte": "SRC-012",
+  "id_acao": "AC-012",
+  "nome_arquivo_original": "CEPRAEA JULHO 2026.pdf",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/CEPRAEA JULHO 2026.pdf",
+  "hash_sha256": "7c8e40d01bd95093fc32e2f9b529fc774541ac45d65d476c783a20d90d38a901",
+  "id_drive": null,
+  "tipo_arquivo": "pdf",
+  "idioma": "pt-BR",
+  "tipo_fonte": "OPERACIONAL",
+  "autoridade_fonte": "PRIMARIA",
+  "proveniencia_fonte": "DERIVADA",
+  "estado_fonte": "INDETERMINADA",
+  "estado_processamento": "BLOQUEADO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": ["PDF ilegível com as ferramentas disponíveis (sem poppler-utils)"],
+  "evidencia": {
+    "comando_ou_metodo": "tentativa de extração de texto via ferramenta disponível",
+    "resultado": "extração retornou 0 caracteres legíveis",
+    "limitacoes": ["conteúdo não verificado visualmente"]
+  },
+  "proxima_acao": "reavaliar com ferramenta de OCR quando disponível"
+}

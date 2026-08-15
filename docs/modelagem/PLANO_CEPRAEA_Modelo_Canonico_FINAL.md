@@ -126,7 +126,7 @@ documento REVIEWED, rascunho, cópia, predecessor ou evidência a estado APPROVE
 é exatamente a regra que a investigação anterior não aplicou ao tratar o DDL de
 `BancoCEPRAEA.docx` como se contradissesse o STOP GATE.
 
-**Resolução:** Davi aceitou a leitura corrigida — as duas frases não se contradizem. D-03 está
+**Resolução:** Davi aceitou a leitura corrigida — as duas frases não se contradizem. `D-03` está
 **fechado** como contradição. Fica registrada, só como nota de baixa prioridade e não bloqueante,
 uma curiosidade residual sem informação suficiente para responder sozinho: a mesma frase de
 `BancoCEPRAEA.docx` menciona "o repositório atual contém... dependência Supabase" — não está

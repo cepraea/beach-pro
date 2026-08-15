@@ -1,0 +1,21 @@
+{
+  "id_elemento": "INV-104",
+  "tipo": "INVARIANTE",
+  "nome": "Fixture — PRE-SEED sem REF",
+  "estagio": "DOMINIO",
+  "promoted_from": "candidatos/invariantes.md#INV-104",
+  "promoted_by": "PRE-SEED",
+  "maturidade": null,
+  "fonte": ["REF:teste"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "decisão humana direta",
+      "resultado": "teste"
+    },
+    "semantic_evidence": "justificativa de teste",
+    "approval_evidence": { "aprovador": "Davi Sermenho", "data": "2026-08-15" },
+    "repository_evidence": { "action_ref": "AC-000" }
+  }
+}

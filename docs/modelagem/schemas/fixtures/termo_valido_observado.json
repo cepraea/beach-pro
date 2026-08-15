@@ -1,0 +1,27 @@
+{
+  "id_termo": "TERMO-001",
+  "termo_preferencial": "atleta",
+  "nome_canonico": "Atleta",
+  "classificacao": "ENTIDADE",
+  "definicao": "Pessoa vinculada operacionalmente ao CEPRAEA-BEACH-PRO com papel ATLETA.",
+  "contexto_valido": null,
+  "contexto_invalido": null,
+  "inclusoes": [],
+  "exclusoes": [],
+  "sinonimos": [],
+  "termos_relacionados": [],
+  "fonte": ["EVD-0001"],
+  "valores_permitidos": null,
+  "temporalidade": null,
+  "natureza_e_privacidade": null,
+  "ativos_tecnicos": [],
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "limitacoes": [],
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta da aba Elenco",
+      "resultado": "coluna 'Nome completo' presente em todas as 19 linhas"
+    }
+  }
+}

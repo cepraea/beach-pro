@@ -1,0 +1,26 @@
+{
+  "id_fonte": "SRC-001",
+  "id_acao": "AC-001",
+  "nome_arquivo_original": "CEPRAEA AGOSTO 2026.xlsx",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/CEPRAEA AGOSTO 2026.xlsx",
+  "hash_sha256": "7c8e40d01bd95093fc32e2f9b529fc774541ac45d65d476c783a20d90d38a901",
+  "id_drive": null,
+  "tipo_arquivo": "xlsx",
+  "idioma": "pt-BR",
+  "tipo_fonte": "OPERACIONAL",
+  "autoridade_fonte": "PRIMARIA",
+  "proveniencia_fonte": "ORIGINAL",
+  "estado_fonte": "VIGENTE",
+  "estado_processamento": "CONCLUIDO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": [],
+  "evidencia": {
+    "comando_ou_metodo": "Read direto do arquivo",
+    "resultado": "Planilha com 3 abas: Elenco, Presenças, Disponibilidade",
+    "repository_evidence": { "action_ref": "AC-001" },
+    "limitacoes": []
+  },
+  "proxima_acao": null
+}

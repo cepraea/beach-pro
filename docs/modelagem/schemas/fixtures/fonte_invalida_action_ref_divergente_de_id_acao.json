@@ -1,0 +1,25 @@
+{
+  "id_fonte": "SRC-007",
+  "id_acao": "AC-007",
+  "nome_arquivo_original": "REGISTRO MESTRE DE ARTEFATOS E FUNCIONAMENTO — SISTEMA CEPRAEA.docx",
+  "caminho_local": ".drive/CEPRAEA BEACH PRO/REGISTRO MESTRE DE ARTEFATOS E FUNCIONAMENTO — SISTEMA CEPRAEA.docx",
+  "hash_sha256": "7c8e40d01bd95093fc32e2f9b529fc774541ac45d65d476c783a20d90d38a901",
+  "id_drive": null,
+  "tipo_arquivo": "docx",
+  "idioma": "pt-BR",
+  "tipo_fonte": "ADMINISTRATIVA",
+  "autoridade_fonte": "AUXILIAR",
+  "proveniencia_fonte": "ORIGINAL",
+  "estado_fonte": "SUBSTITUIDA",
+  "estado_processamento": "CONCLUIDO",
+  "dado_sensivel_encontrado": false,
+  "conceitos_encontrados": [],
+  "regras_encontradas": [],
+  "conflitos_ou_duvidas": [],
+  "evidencia": {
+    "comando_ou_metodo": "Read direto do arquivo",
+    "resultado": "documento processado",
+    "repository_evidence": { "action_ref": "AC-006" }
+  },
+  "proxima_acao": null
+}

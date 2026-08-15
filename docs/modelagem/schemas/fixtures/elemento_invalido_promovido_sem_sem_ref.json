@@ -1,0 +1,17 @@
+{
+  "id_elemento": "IDN-101",
+  "tipo": "IDENTIDADE",
+  "nome": "Fixture — promovido sem SEM-NNN",
+  "estagio": "PROMOVIDO",
+  "promoted_to": "dominio/identidades_definitivas.md#IDN-101",
+  "maturidade": null,
+  "fonte": ["EVD-0003"],
+  "estado_epistemologico": "INFERIDO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "teste"
+    }
+  }
+}

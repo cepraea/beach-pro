@@ -1,0 +1,13 @@
+{
+  "id_regra": "REGRA-002",
+  "fonte": ["EVD-0002"],
+  "tipo": "DEFINICAO",
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "trecho ilustrativo"
+    }
+  }
+}

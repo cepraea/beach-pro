@@ -1,0 +1,17 @@
+{
+  "id_regra": "REGRA-003",
+  "fonte": ["EVD-0002"],
+  "tipo": "OBRIGACAO",
+  "sujeito": "atleta",
+  "acao": "possuir",
+  "objeto": "exatamente um papel operacional",
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "confirmado por Davi Sermenho"
+    },
+    "semantic_evidence": "confirmado diretamente por Davi Sermenho, especialista do domínio"
+  }
+}

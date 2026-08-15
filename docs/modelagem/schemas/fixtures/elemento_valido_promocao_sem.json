@@ -1,0 +1,22 @@
+{
+  "id_elemento": "CTX-104",
+  "tipo": "BOUNDED_CONTEXT",
+  "nome": "Fixture — promoção normal via SEM-NNN",
+  "estagio": "DOMINIO",
+  "promoted_from": "candidatos/bounded_contexts.md#CTX-104",
+  "promoted_by": "SEM-001",
+  "bounded_context_id": null,
+  "maturidade": "PARCIALMENTE_MADURA",
+  "fonte": ["EVD-0003"],
+  "estado_epistemologico": "VALIDADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "teste"
+    },
+    "semantic_evidence": "justificativa de teste",
+    "approval_evidence": { "aprovador": "Davi Sermenho", "data": "2026-08-15" },
+    "repository_evidence": { "action_ref": "SEM-001" }
+  }
+}

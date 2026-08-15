@@ -1,0 +1,18 @@
+{
+  "id_elemento": "INV-102",
+  "tipo": "INVARIANTE",
+  "nome": "Fixture — domínio sem validação",
+  "estagio": "DOMINIO",
+  "promoted_from": "REF:teste",
+  "promoted_by": "PRE-SEED",
+  "maturidade": null,
+  "fonte": ["REF:teste"],
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "teste"
+    }
+  }
+}

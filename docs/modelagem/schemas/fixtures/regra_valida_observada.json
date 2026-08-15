@@ -1,0 +1,27 @@
+{
+  "id_regra": "REGRA-001",
+  "fonte": ["EVD-0002"],
+  "texto_original": null,
+  "tipo": "PROIBICAO",
+  "sujeito": "atleta",
+  "acao": "acumular",
+  "objeto": "mais de um papel operacional",
+  "condicoes": [],
+  "excecoes": [],
+  "cardinalidade_minima": null,
+  "cardinalidade_maxima": null,
+  "vigencia": null,
+  "contexto_valido": null,
+  "contexto_invalido": null,
+  "conceitos_afetados": ["papel operacional"],
+  "implementacao_candidata": null,
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "duvidas": [],
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura direta",
+      "resultado": "cada linha da aba Elenco tem exatamente um valor de papel"
+    }
+  }
+}
