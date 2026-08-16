@@ -235,21 +235,26 @@ Resumo para contexto desta fase: Git passa a ser a única state machine operacio
 substituído por `CLAUDE.md`; `REVIEWER.md` por `AGENTS.md`. Consequência direta para `AC-000`: os
 escopos formais desta fase (seção "Escopos formais", acima) já refletem essa decisão.
 
-## DEC-GOV-002 — `runbook_binding` formal da fase de modelagem canônica (referência)
+## DEC-GOV-002 — `runbook_binding` formal para `AC-001`–`AC-029`/`SEM-NNN`/`SYN-NNN` (referência)
 
 Durante a revisão adversarial de `AC-001`, o `REVIEWER` apontou que nenhum `runbook_binding`
-concreto para as tarefas `AC-NNN`/`SEM-NNN`/`SYN-NNN` desta fase estava registrado em local
-verificável do repositório (`HUMAN_DECISION_REQUIRED`). Davi aprovou o binding formal.
+concreto para as tarefas desta fase estava registrado em local verificável do repositório
+(`HUMAN_DECISION_REQUIRED`). Davi aprovou o binding formal. Uma primeira versão desta decisão
+generalizava o binding a "todas as tarefas `AC-NNN`", inclusive `AC-000` — o `REVIEWER` apontou
+(`FAIL`, achado subsequente) que `AC-000` produziu `schemas/*.json` e scripts `.mjs` (commit
+`2bf9214`), uma classe de operação heterogênea, não só documental; corrigido delimitando o binding
+a `AC-001`–`AC-029`/`SEM-NNN`/`SYN-NNN`, que não criam nem alteram schema ou script.
 
 Mesmo motivo de `DEC-GOV-001` acima: é uma decisão de governança do SDLC (vinculação de runbooks a
 uma classe de operação), não uma decisão de modelagem do domínio CEPRAEA — não valida contra
 `schema_decisao.json` e não deveria (precedente de `DEC-011`, abaixo). O registro canônico está em
 [`.ai/decisions/DEC-GOV-002-runbook-binding-modelagem-canonica.md`](../../../.ai/decisions/DEC-GOV-002-runbook-binding-modelagem-canonica.md).
 
-Resumo para contexto desta fase: toda tarefa `AC-NNN`/`SEM-NNN`/`SYN-NNN` usa
+Resumo para contexto desta fase: `AC-001` a `AC-029`, `SEM-NNN` e `SYN-NNN` usam
 `operation_class=documentation_change` → Executor: `RB-EXEC-003`; Reviewer: `RB-REV-003` +
 `RB-REV-004` (evidência é material nesta fase, ver justificativa no registro canônico); Shared:
-`RB-SHARED-001/002/003`.
+`RB-SHARED-001/002/003`. `AC-000` está fora do escopo — já concluído, revisado e commitado antes
+desta decisão.
 
 ## DEC-011 — Forma de `id_decisao`/`impacto` de decisões de governança dentro de `schema_decisao.json`
 
