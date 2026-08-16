@@ -1,57 +1,160 @@
 {
-  "object_type": "task_proposal",
+  "task_id": "",
+  "object_type":,
+  "task_proposal":,
   "schema_version": "1.0",
-  "proposal_id": "<identificador>",
+  "proposal_id": "",
   "revision": 1,
-  "tarefa_id": "<identificador>",
-  "instrucao_original": "<texto recebido>",
-  "objetivo": "<resultado>",
-
-  "arquivos": [
+  "title": "",
+  "original_instruction": "",
+  "objective": "",
+  "actor": "",
+  [
     {
-      "caminho": "<path>",
-      "papel": "referencia | alvo | somente_leitura | proibido",
-      "operacao": "<leitura ou mudança>"
+      "path": "",
+      "role": "",
+      "operation": ""
     }
   ],
 
-  "fora_de_escopo": [
-    "<exclusao>"
-  ],
-
-  "risco": {
-    "nivel": "verde | amarelo | vermelho | vermelho_critico",
-    "naturezas": [
-      "<ui | dependencia | rls | mfa | ci | dados>"
-    ],
-    "blast_radius": "baixo | medio | alto",
-    "reversibilidade": "reversivel | parcial | irreversivel",
-    "justificativa": "<motivo>"
+  "risk": {
+    "level": "",
+    "natures": [],
+    "blast_radius": "",
+    "reversibility": "",
+    "justification": ""
   },
 
   "runbook_binding": {
-    "operation_classes": [
-      "database_change"
-    ],
+    "operation_classes": [],
     "applicable_runbooks": {
-      "shared": [
-        "runbooks/shared/RB-SHARED-002-evidence.md",
-        "runbooks/shared/RB-SHARED-003-failure-states.md"
-      ],
-      "executor": [
-        "runbooks/executor/RB-EXEC-002-database-change.md"
-      ],
-      "reviewer": [
-        "runbooks/reviewer/RB-REV-002-database-review.md"
-      ]
+      "shared": [],
+      "executor": [],
+      "reviewer": []
+    }
+  },
+  "stop_conditions": "",
+  "acceptance_criteria": [
+    {
+      "condition": "",
+      "method": "",
+      "expected": ""
+    }
+  ],
+  "mandatory_checks": "",
+  "expected_evidence": "",
+  "definition_of_done": "",
+  "valid_context": "",
+  "invalid_context": "",
+  "preconditions": "",
+  "dependencies": "",
+  "normative_source": "",
+  "inputs_and_contracts": "",
+  "current_behavior": "",
+  "expected_behavior": "",
+  "relevant_states": "",
+  "in_scope": "",
+  "out_of_scope": "",
+  "included_edge_cases": "",
+  "three_amigos": {
+    "domain_business": "",
+    "development": "",
+    "quality": ""
+  },
+  "business_rules": [
+    {
+      "rule_id": "",
+      "rule": ""
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "",
+      "decision": ""
+    }
+  ],
+  "constraints": [
+    {
+      "constraint_id": "",
+      "scope": "",
+      "constraint": ""
+    }
+  ],
+  "allowed_actions": "",
+  "prohibited_actions": "",
+  "allowed_technical_autonomy": "",
+  "files": [
+    {
+      "path": "",
+      "role": "",
+      "operation": ""
+    }
+  ],
+  "human_decisions_already_made": "",
+  "pending_human_decisions": "",
+
+  "risk": {
+    "level": "",
+    "natures": [],
+    "blast_radius": "",
+    "reversibility": "",
+    "justification": ""
+  },
+
+  "runbook_binding": {
+    "operation_classes": [],
+    "applicable_runbooks": {
+      "shared": [],
+      "executor": [],
+      "reviewer": []
     }
   },
 
-  "criterios_de_aceite": [
-    {
-      "condicao": "<fato observavel>",
-      "metodo": "<comando ou inspeção>",
-      "esperado": "passou"
+  "stop_conditions": "",
+
+  "bdd": {
+    "feature": "",
+
+    "background": [
+      {
+        "keyword": "",
+        "text": ""
+      }
+    ],
+
+    "rules": [
+      {
+        "rule": "",
+
+        "scenarios": [
+          {
+            "name": "",
+            "kind": "",
+
+            "steps": [
+              {
+                "keyword": "",
+                "text": ""
+              }
+            ],
+
+            "examples": [
+              {
+                "headers": [],
+                "rows": []
+              }
+
+          { 
+            "condition": "",
+            "method": "",
+            "expected": ""
+          }
+        ]  
+       }
+      ]
+     }
+    ]
+   {
+  
     }
-  ]
 }
