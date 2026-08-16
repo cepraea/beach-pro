@@ -12,7 +12,7 @@ plano). `AC-021` não tem hipótese: a fonte já é conhecida como ausente do di
 
 | `id_fonte` | `id_acao` | Arquivo | Hipótese | `estado_processamento` | Checkpoint |
 | --- | --- | --- | --- | --- | --- |
-| SRC-001 | AC-001 | `CEPRAEA AGOSTO 2026.xlsx` | OPERACIONAL·PRIMARIA·ORIGINAL | NAO_INICIADO | Não |
+| SRC-001 | AC-001 | `CEPRAEA AGOSTO 2026.xlsx` | OPERACIONAL·PRIMARIA·ORIGINAL (confirmada) | CONCLUIDO | Não |
 | SRC-002 | AC-002 | `BancoCEPRAEA.docx` | TECNICA·AUXILIAR·ORIGINAL | NAO_INICIADO | Sim |
 | SRC-003 | AC-003 | `CEPRAEA-DB.docx` | TECNICA·AUXILIAR·ORIGINAL | NAO_INICIADO | Não |
 | SRC-004 | AC-004 | `CEPRAEA DATABASE.xlsx` | OPERACIONAL·INDETERMINADA·INDETERMINADA | NAO_INICIADO | Não |
