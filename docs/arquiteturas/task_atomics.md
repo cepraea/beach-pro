@@ -1,788 +1,266 @@
-# PADRÃO DE TAREFAS ATÔMICAS E CRITÉRIOS DE ACEITAÇÃO — CEPRAEA BEACH PRO
-AESDS 05 — Fundação v0.1
+# Padrão de tarefas atômicas e critérios de aceitação — CEPRAEA BEACH PRO
 
-## 1. OBJETIVO
-Definir a menor unidade de trabalho suficientemente explícita para que um agente implemente sem inventar requisito, alterar escopo ou depender de conversa extensa fora da tarefa.
+AESDS 05 — Fundação v0.3
 
-## 2. PRINCÍPIO
-Uma tarefa atômica deve possuir uma saída verificável e pequena o suficiente para permitir revisão integral do diff e dos critérios. “Implementar módulo X” normalmente é grande demais.
+## Objetivo
 
-## 3. TEMPLATE CANÔNICO DE TASK
+Definir a menor unidade de trabalho suficientemente explícita para que um agente implemente sem
+inventar requisito, alterar escopo ou depender de conversa extensa fora da tarefa.
 
-```json
-{
-  "task_id": "",
-  "object_type":,
-  "task_proposal":,
-  "schema_version": "1.0",
-  "proposal_id": "",
-  "revision": 1,
-  "title": "",
-  "original_instruction": "",
-  "objective": "",
-  "actor": "",
-  "valid_context": "",
-  "problem": "",
-  "preconditions": "",
-  "dependencies": "",
-  "normative_source": "",
-  "inputs_and_contracts": "",
-  "expected_behavior": "",
-  "relevant_states": "",
-  "allowed_actions": "",
-  "prohibited_actions": "",
-  "allowed_technical_autonomy": "",
-  "included_edge_cases": "",
-  "out_of_scope": "",
-  "files": [
-    {
-      "path": "",
-      "role": "",
-      "operation": ""
-    }
-  ],
-  "human_decisions_already_made": "",
-  "pending_human_decisions": "",
-  "risk": {
-    "level": "",
-    "natures": [],
-    "blast_radius": "",
-    "reversibility": "",
-    "justification": ""
-  },
+Este documento é a instrução completa para o Executor preencher corretamente um `task_proposal`
+antes de implementar uma tarefa de produto/engenharia, e para o Reviewer avaliar se esse
+preenchimento está correto. O contrato verificável por máquina correspondente está em
+[`.ai/control/task-proposal.schema.json`](../../.ai/control/task-proposal.schema.json), com um
+exemplo completo em [`.ai/task-proposal.example.json`](../../.ai/task-proposal.example.json)
+(tarefa `TASK-001`, Wellness Pré-Treino) e um validador reproduzível em
+[`.ai/control/validate-task-proposal.mjs`](../../.ai/control/validate-task-proposal.mjs)
+(`node .ai/control/validate-task-proposal.mjs` valida o exemplo canônico contra o schema; aceita
+`<schema> <instância>` para checar outras propostas).
 
-  "runbook_binding": {
-    "operation_classes": [],
-    "applicable_runbooks": {
-      "shared": [],
-      "executor": [],
-      "reviewer": []
-    }
-  },
-  "stop_conditions": "",
-  "acceptance_criteria": [
-    {
-      "condition": "",
-      "method": "",
-      "expected": ""
-    }
-  ],
-  "mandatory_checks": "",
-  "expected_evidence": "",
-  "definition_of_done": "",
-  "valid_context": "",
-  "invalid_context": "",
-  "preconditions": "",
-  "dependencies": "",
-  "normative_source": "",
-  "inputs_and_contracts": "",
-  "current_behavior": "",
-  "expected_behavior": "",
-  "relevant_states": "",
-  "in_scope": "",
-  "out_of_scope": "",
-  "included_edge_cases": "",
-  "three_amigos": {
-    "domain_business": "",
-    "development": "",
-    "quality": ""
-  },
-  "business_rules": [
-    {
-      "rule_id": "",
-      "rule": ""
-    }
-  ],
-  "decisions": [
-    {
-      "decision_id": "",
-      "decision": ""
-    }
-  ],
-  "constraints": [
-    {
-      "constraint_id": "",
-      "scope": "",
-      "constraint": ""
-    }
-  ],
-  "allowed_actions": "",
-  "prohibited_actions": "",
-  "allowed_technical_autonomy": "",
-  "files": [
-    {
-      "path": "",
-      "role": "",
-      "operation": ""
-    }
-  ],
-  "human_decisions_already_made": "",
-  "pending_human_decisions": "",
+**Nota de escopo:** este padrão governa tarefas do produto CEPRAEA-BEACH-PRO (código, banco de
+dados, dependências, documentação de produto). A fase de modelagem canônica do domínio
+(`docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`, tarefas `AC-NNN`) usa seu próprio
+mecanismo de decisão e evidência, já formalizado em `DEC-GOV-002`, e não é afetada por este
+documento.
 
-  "risk": {
-    "level": "",
-    "natures": [],
-    "blast_radius": "",
-    "reversibility": "",
-    "justification": ""
-  },
+## Princípio
 
-  "runbook_binding": {
-    "operation_classes": [],
-    "applicable_runbooks": {
-      "shared": [],
-      "executor": [],
-      "reviewer": []
-    }
-  },
+Uma tarefa atômica deve possuir uma saída verificável e pequena o suficiente para permitir revisão
+integral do diff e dos critérios. "Implementar módulo X" normalmente é grande demais.
 
-  "stop_conditions": "",
+## O ciclo de duas portas
 
-  "bdd": {
-    "feature": "",
+Toda tarefa neste padrão passa por duas aprovações do Reviewer, não uma:
 
-    "background": [
-      {
-        "keyword": "",
-        "text": ""
-      }
-    ],
+1. **Plano.** O Executor preenche um `task_proposal` (seção "Template canônico de task", abaixo) e
+   entrega `READY_FOR_REVIEW`. O Reviewer avalia o plano — antes de qualquer linha de código ser
+   escrita — e emite `PASS`, `FAIL` ou `HUMAN_DECISION_REQUIRED`, os mesmos três estados que já
+   usa para revisar um diff (`AGENTS.md`). `PASS` autoriza o início da implementação.
+2. **Implementação.** Só após `PASS` do plano o Executor implementa, seguindo os runbooks listados
+   em `runbook_binding` (preenchido no próprio plano, seção "Risco e vinculação de runbook",
+   abaixo) e entrega `READY_FOR_REVIEW`/`BLOCKED` como já define `CLAUDE.md`. O Reviewer avalia o
+   diff resultante contra o plano aprovado e emite `PASS`, `FAIL` ou `HUMAN_DECISION_REQUIRED`.
 
-    "rules": [
-      {
-        "rule": "",
+Nenhum estado novo foi criado: o vocabulário fechado de `RB-SHARED-003-failure-states.md`
+(`READY_FOR_REVIEW`/`BLOCKED` para o Executor; `PASS`/`FAIL`/`HUMAN_DECISION_REQUIRED` para o
+Reviewer) se aplica às duas portas — muda o que está sendo avaliado (plano ou diff), não o
+vocabulário.
 
-        "scenarios": [
-          {
-            "name": "",
-            "kind": "",
+`risk` e `runbook_binding` dentro do plano reaproveitam integralmente a taxonomia já existente e
+usam **valores fixos em português**, mesmo com o restante do JSON em inglês — não traduzir:
 
-            "steps": [
-              {
-                "keyword": "",
-                "text": ""
-              }
-            ],
+- `risk.level` — `verde | amarelo | vermelho | vermelho_critico` (`AGENT_POLICY.md`).
+- `risk.natures` — `ui | dependencia | rls | mfa | ci | dados` (`AGENT_POLICY.md`). Não existe
+  categoria própria para "banco de dados" ou "regra de negócio" — uma tarefa de banco usa `dados`.
+- `runbook_binding.operation_classes` — `code_change | database_change | documentation_change |
+  dependency_change` (`runbooks/README.md`). Não existem classes como `backend_change`,
+  `validation_change` ou `test_change` — decompor a tarefa nas 4 classes reais, combinando mais de
+  uma quando necessário (ex.: uma tarefa que altera migration e lógica de servidor usa
+  `["database_change", "code_change"]`, com os runbooks de ambas as classes).
 
-            "examples": [
-              {
-                "headers": [],
-                "rows": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
+Verificar `runbook_binding` contra a matriz de `runbooks/README.md` por evidência (ler o arquivo),
+nunca por inferência — a divergência que gerou o `FAIL` de `DEC-GOV-002` veio exatamente de pular
+essa verificação.
 
-  "acceptance_criteria": [
-    {
-      "condition": "",
-      "method": "",
-      "expected": ""
-    }
-  ],
+## Template canônico de task
 
-  "mandatory_checks": "",
-  "expected_evidence": "",
-  "definition_of_done": ""
-}
-```
+Cada campo abaixo corresponde a uma propriedade de `task-proposal.schema.json`. O nome entre
+crases é o campo JSON exato. Os campos são em inglês; os valores de `risk`/`runbook_binding` que
+referenciam um enum já estabelecido (acima) permanecem em português.
 
-### 3.1 Como Preencher os Campos
+- **ID** (`task_id`) — identificador estável da tarefa (ex.: `FE-AVAIL-003`, `TASK-001`).
+- **Título** (`title`) — frase curta e descritiva, não um resumo técnico da implementação.
+- **Instrução original** (`original_instruction`) — texto literal recebido de Davi que originou
+  esta proposta.
+- **Objetivo** (`objective`) — o resultado que a tarefa produz, em uma frase.
+- **Problema** (`problem`) — o problema que a tarefa resolve, distinto do objetivo (que é a
+  solução). Uma tarefa sem problema identificável é candidata a questionamento antes de virar
+  plano.
+- **Ator** (`actor`) — quem realiza ou é afetado pelo comportamento descrito. Uma tarefa com mais
+  de um ator relevante costuma ser grande demais — ver "Regra de tamanho".
+- **Contexto válido** (`valid_context`) — em que situação esta tarefa/comportamento se aplica.
+- **Contexto inválido** (`invalid_context`) — em que situação este comportamento explicitamente
+  não se aplica. Usar "Não aplicável" quando não houver contexto inválido relevante — o campo é
+  obrigatório porque a ausência de um contexto inválido registrado é, ela mesma, informação (nada
+  foi excluído por omissão).
+- **Pré-condições** (`preconditions`) — o que precisa ser verdade antes da tarefa começar.
+- **Dependências** (`dependencies`) — outras tarefas, decisões (`DEC-NNN`) ou artefatos dos quais
+  esta tarefa depende. Usar "Nenhuma" quando não houver.
+- **Fonte normativa** (`normative_source`) — o(s) documento(s)/seções (business rules, decisions,
+  constraints, `bdd`) que definem o requisito. Uma tarefa sem fonte normativa identificável é
+  candidata a `HUMAN_DECISION_REQUIRED`, não a uma suposição do Executor.
+- **Entrada/contratos** (`inputs_and_contracts`) — os dados/contratos de entrada, com seus valores
+  possíveis quando forem um enum fechado.
+- **Comportamento atual** (`current_behavior`) — o comportamento existente antes desta tarefa. Usar
+  "N/A - nova feature" quando não houver.
+- **Comportamento esperado** (`expected_behavior`) — o que o sistema deve fazer, em prosa direta.
+  Quando o comportamento for observável por um usuário, expandir em BDD (seção "Critérios
+  comportamentais — BDD").
+- **Estados relevantes** (`relevant_states`) — os estados de interação/processamento distintos que
+  a implementação precisa cobrir.
+- **Dentro do escopo** (`in_scope`) — o que esta tarefa cobre, em prosa. Complementa
+  `out_of_scope`, não o substitui.
+- **Fora de escopo** (`out_of_scope`) — o que esta tarefa explicitamente não cobre, mesmo que
+  relacionado. Existe para impedir que o Executor amplie o escopo por conta própria.
+- **Edge cases incluídos** (`included_edge_cases`) — os casos de borda que fazem parte do escopo
+  desta tarefa (não uma lista exaustiva de todos os edge cases possíveis do domínio).
+- **Three amigos** (`three_amigos.domain_business` / `.development` / `.quality`) — a mesma
+  informação vista por três perspectivas: o que o domínio/negócio exige; o que a implementação
+  precisa respeitar; o que a qualidade/teste precisa cobrir. As três costumam se sobrepor
+  parcialmente — isso é esperado, não redundância a eliminar.
+- **Business rules** (`business_rules[]`, `{rule_id, rule}`) — regras de negócio atômicas,
+  numeradas (`R-01`, `R-02`, ...) para serem referenciadas por `normative_source` e por
+  `acceptance_criteria`.
+- **Decisions** (`decisions[]`, `{decision_id, decision}`) — decisões técnicas/de produto já
+  tomadas que restringem a implementação, numeradas (`D-01`, `D-02`, ...). Diferente de
+  `human_decisions_already_made` (resumo em prosa): aqui cada decisão é atômica e referenciável.
+- **Constraints** (`constraints[]`, `{constraint_id, scope, constraint}`) — restrições técnicas
+  formais (ex.: `CHECK` de banco de dados), numeradas (`C-01`, `C-02`, ...). `scope` identifica
+  onde a constraint se aplica (ex.: `database`).
+- **Ações permitidas** (`allowed_actions`) — o que a implementação deve permitir.
+- **Ações proibidas** (`prohibited_actions`) — o equivalente a MUST NOT (seção "Restrições — MUST /
+  MUST NOT"). Cada item aqui é uma restrição negativa que a implementação nunca deve violar.
+- **Autonomia técnica permitida** (`allowed_technical_autonomy`) — até onde o Executor pode decidir
+  detalhes de implementação sem novo checkpoint.
+- **Arquivos esperados ou área de escrita** (`files[]`, `{path, role, operation}`) — mesma
+  classificação de `CLAUDE.md` ("Proposta proporcional"), em inglês: `role` é `target` |
+  `reference` | `read_only` | `forbidden`; `operation` é `change` | `read` | `none` (o schema já
+  força a combinação correta entre os dois — `target` sempre exige `change`; `reference`/
+  `read_only` sempre exigem `read`; `forbidden` sempre exige `none`).
+- **Decisões humanas já tomadas** (`human_decisions_already_made`) — resumo em prosa das decisões
+  que já resolvem parte da ambiguidade da tarefa. Referenciar `DEC-NNN`/`DEC-GOV-NNN` ou os
+  `decision_id` de `decisions[]` quando existir.
+- **Decisões humanas pendentes** (`pending_human_decisions`) — toda pendência real aqui impede
+  `PASS` do plano até ser resolvida ou até o Reviewer emitir `HUMAN_DECISION_REQUIRED` sobre ela.
+  Usar "Nenhuma" quando não houver. Não é um espaço para hipóteses do Executor.
+- **Stop conditions** (`stop_conditions`) — condições que interrompem a parte afetada da
+  implementação (seção "Stop conditions do Executor").
+- **Critérios de aceitação** (`acceptance_criteria[]`, `{condition, method, expected}`). Cada
+  critério precisa de um oráculo de aceitação (seção "Oráculo de aceitação") — sem mecanismo de
+  prova, o critério deve ser refinado antes da implementação.
+- **Checks obrigatórios** (`mandatory_checks`) — os checks que o Executor deve rodar antes do
+  handoff (testes, typecheck, build, lint, validação de contrato).
+- **Evidência esperada** (`expected_evidence`) — o que o Executor deve anexar ao handoff para
+  provar que os checks/critérios foram satisfeitos.
+- **Definição de DONE** (`definition_of_done`) — a condição de fechamento da tarefa, tipicamente
+  "todos os critérios de aceite passam e nenhum finding [classe] aberto".
 
-```
-Objective          ← objective
-Problem            ← problem
-Current Behavior   ← current_behavior
-Expected Behavior  ← expected_behavior
-In Scope           ← in_scope
-Out of Scope       ← out_of_scope
+### Risco e vinculação de runbook
 
-Three Amigos
-  Domain / Business ← three_amigos.domain_business
-  Development       ← three_amigos.development
-  Quality           ← three_amigos.quality
+Todo `task_proposal` inclui `risk` e `runbook_binding` — ver os valores fixos na seção "O ciclo de
+duas portas", acima. `risk.justification` precisa citar o motivo real (ex.: "afeta fluxo usado por
+todas as atletas"), não repetir o nível escolhido.
 
-Business Rules      ← business_rules[]
-Decisions           ← decisions[]
-Constraints         ← constraints[]
+## Regra de tamanho
 
-acceptance.feature  ← bdd
-```
-
-## 4. REGRA DE TAMANHO
 A tarefa deve ser dividida quando:
+
 - possui mais de um resultado independente;
 - mistura decisão de produto com execução;
 - exige vários fluxos de usuário distintos;
 - não cabe em um diff revisável integralmente;
 - depende de duas decisões humanas não relacionadas;
-- possui critérios que podem passar/falhar independentemente e não compartilham a mesma unidade funcional.
+- possui critérios que podem passar/falhar independentemente e não compartilham a mesma unidade
+  funcional.
 
 Não dividir artificialmente um fluxo simples em microtarefas que criem handoff sem valor.
 
-## 5. CRITÉRIOS COMPORTAMENTAIS — BDD
-Use Given/When/Then quando o critério descreve comportamento observável.
+## Critérios comportamentais — BDD
 
-Exemplo:
+Use Gherkin (`Given`/`When`/`Then`/`And`/`But`) quando o critério descreve comportamento
+observável. No `task_proposal`, isso vai no campo opcional `bdd`
+(`{feature, background?, rules: [{rule, scenarios: [{name, kind, steps, examples}]}]}`) —
+preencher somente quando pelo menos um critério de aceite for comportamental; omitir quando não
+aplicável.
+
+- `background` — passos comuns a todos os cenários da feature; omitir quando não houver.
+- Cada item de `rules[]` agrupa os cenários que demonstram uma mesma regra de negócio.
+- `kind: "scenario"` — cenário único; `examples` fica como array vazio (`[]`).
+- `kind: "scenario_outline"` — cenário parametrizado; `examples` precisa de pelo menos uma tabela
+  `{headers, rows}`.
+
+**Exemplo (cenário único):**
 
 ```text
 Given uma solicitação de disponibilidade aberta
 And a atleta ainda não respondeu
 When ela abre o treino
-Then a interface exibe “Não respondida”
-And não representa o estado como resposta “Não”.
+Then a interface exibe "Não respondida"
+And não representa o estado como resposta "Não".
 ```
 
-## 6. RESTRIÇÕES — MUST / MUST NOT
+**Exemplo (scenario outline, ver `.ai/task-proposal.example.json` para o bloco `bdd` completo):**
 
-Use requisitos declarativos quando não houver benefício em cenário BDD.
+```text
+Given fadiga_geral recebe <valor>
+When a submissão é enviada
+Then a operação deve ser rejeitada com BAD_REQUEST
 
-```txt
-MUST: preservar dados preenchidos após erro recuperável.
-MUST NOT: exibir UUID interno à atleta sem requisito explícito.
-MUST NOT: preencher presença automaticamente a partir de disponibilidade.
+Examples:
+  | valor |
+  | 0     |
+  | 8     |
+  | 6.5   |
 ```
 
-## 7. QUALIDADE MENSURÁVEL
+## Restrições — MUST / MUST NOT
 
-Critérios de performance, acessibilidade ou cobertura precisam de métrica/condição objetiva quando aplicável. Evitar “rápido”, “bonito”, “intuitivo”, “moderno” sem definição verificável.
+Use requisitos declarativos quando não houver benefício em cenário BDD. No `task_proposal`, MUST
+NOT vai em `prohibited_actions`; MUST vai em `allowed_actions` ou `expected_behavior`, conforme o
+que descrever melhor.
 
-## 8. CLASSIFICAÇÃO DE CRITÉRIO
+**Exemplo:**
 
-CRITICAL: falha viola segurança, autorização, integridade de domínio ou requisito essencial.
-MUST: obrigatório para DONE.
-SHOULD: esperado, mas pode admitir exceção documentada e aprovada.
-OPTIONAL: melhoria não bloqueante e explicitamente fora do caminho crítico.
+- MUST: preservar dados preenchidos após erro recuperável.
+- MUST NOT: exibir UUID interno à atleta sem requisito explícito.
+- MUST NOT: preencher presença automaticamente a partir de disponibilidade.
 
-9. ORÁCULO DE ACEITAÇÃO
+## Qualidade mensurável
 
-Cada critério deve indicar, direta ou indiretamente, como será provado: teste automatizado, typecheck, build, inspeção de contrato, runtime, acessibilidade, dispositivo real ou validação humana.
+Critérios de performance, acessibilidade ou cobertura precisam de métrica/condição objetiva quando
+aplicável. Evitar "rápido", "bonito", "intuitivo", "moderno" sem definição verificável.
 
-Critério sem mecanismo de prova deve ser refinado antes de implementação quando a ambiguidade puder alterar o resultado.
+## Classificação de critério
 
-10. EXEMPLO DE TASK ATÔMICA
+- **CRITICAL** — falha viola segurança, autorização, integridade de domínio ou requisito
+  essencial.
+- **MUST** — obrigatório para DONE.
+- **SHOULD** — esperado, mas pode admitir exceção documentada e aprovada.
+- **OPTIONAL** — melhoria não bloqueante e explicitamente fora do caminho crítico.
 
-```json
-{
-  "task_id": "TASK-001",
-  "object_type": "task_proposal",
-  "schema_version": "1.0",
-  "proposal_id": "TP-TASK-001-001",
-  "revision": 1,
+## Oráculo de aceitação
 
-  "title": "Persistência e Classificação de Risco do Wellness Pré-Treino",
-  "original_instruction": "Implementar a persistência do formulário de Wellness Pré-Treino com validação estrita, cálculo server-side de riskAlert, controle temporal e critérios BDD de aceitação.",
+Cada critério em `acceptance_criteria` deve indicar, no campo `method`, como será provado: teste
+automatizado, typecheck, build, inspeção de contrato, runtime, acessibilidade, dispositivo real ou
+validação humana.
 
-  "objective": "Receber e persistir o formulário de Wellness Pré-Treino das atletas, garantindo tipagem matemática estrita e derivando no servidor a flag operacional de risco físico riskAlert.",
+Um critério sem mecanismo de prova deve ser refinado antes da implementação quando a ambiguidade
+puder alterar o resultado.
 
-  "problem": "O PWA precisa capturar respostas do Wellness Pré-Treino em uma escala inteira de 1 a 7 antes do início do treino, rejeitar payloads inválidos e calcular de forma autoritativa se as respostas atingem o gatilho matemático de risco.",
+## Exemplo de task atômica
 
-  "actor": "Atleta autenticada submetendo Wellness Pré-Treino para uma sessão válida de TREINO.",
+O `task_proposal` completo deste exemplo está em
+[`.ai/task-proposal.example.json`](../../.ai/task-proposal.example.json) — `TASK-001`,
+persistência e classificação de risco do Wellness Pré-Treino: validação estrita de entrada (Zod,
+sem coerção), cálculo server-side de uma flag de risco a partir de gatilhos numéricos, janela
+temporal autoritativa do servidor e UPSERT sequencial. Cobre `business_rules`, `decisions`,
+`constraints`, `three_amigos` e um bloco `bdd` completo com `background`, múltiplas `rules` e um
+`scenario_outline` — use-o como referência estrutural para novas propostas.
 
-  "valid_context": "Submissão de Wellness Pré-Treino referente a uma atleta válida, sessão existente do tipo TREINO e processada quando o horário autoritativo do servidor é estritamente anterior ao start_at da sessão.",
+## Stop conditions do Executor
 
-  "invalid_context": "Sessão inexistente, sessão que não seja do tipo TREINO, athlete_id ou session_id malformados, processamento em server_time maior ou igual a session.start_at, payload incompleto, payload com propriedades desconhecidas, valores fora do domínio ou tentativa de informar riskAlert pelo cliente.",
+Parar somente a parte afetada se descobrir: decisão material ausente; contrato incompatível; fonte
+canônica conflitante; dependência nova material; necessidade de ampliar escopo; comportamento não
+especificado que altera o produto.
 
-  "preconditions": "A atleta deve existir. A sessão deve existir e ser do tipo TREINO no instante da validação. O servidor deve possuir acesso ao horário autoritativo e ao start_at da sessão. O schema de entrada e a persistência devem estar disponíveis.",
+## Regra para referências
 
-  "dependencies": "Zod para validação de borda, PostgreSQL para persistência e invariantes, acesso ao registro da atleta, acesso à sessão e ao seu start_at, relógio autoritativo do servidor e mecanismo de UPSERT.",
+Se a task exige escolha visual ou técnica ainda não homologada, não embutir a escolha como
+implementação. Criar um ponto de decisão com as opções obtidas segundo o AESDS 08.
 
-  "normative_source": "Business Rules R-01 a R-07, Decisions D-01 a D-05, Constraints C-01 a C-12 e acceptance.feature da TASK-001.",
+## Meta de primeira revisão
 
-  "inputs_and_contracts": "WellnessPreInput aceita exclusivamente athlete_id UUID, session_id UUID, qualidade_sono, fadiga_geral, dor_muscular, estresse, humor_bem_estar, disposicao_treinar como inteiros obrigatórios entre 1 e 7, e dor_nova_ou_lesao como booleano obrigatório. riskAlert não pertence ao input e é derivado pelo servidor.",
-
-  "current_behavior": "N/A - nova feature no PWA.",
-
-  "expected_behavior": "Validar o payload de forma estrita, rejeitando propriedades desconhecidas, campos omitidos, coerção de tipos, números fracionários, valores fora da escala e identificadores inválidos. Validar que a sessão é TREINO e que server_time é estritamente menor que session.start_at. Calcular riskAlert exclusivamente no servidor e persistir ou substituir integralmente o estado mutável via UPSERT.",
-
-  "relevant_states": "Payload válido ou inválido; sessão TREINO ou não-TREINO; submissão antes, exatamente no início ou depois da sessão; riskAlert true ou false; registro inexistente ou já persistido para o mesmo athlete_id e session_id.",
-
-  "in_scope": "Schemas Zod strict, cálculo de riskAlert, validação da janela temporal, invariantes PostgreSQL, chave única athlete_id/session_id, persistência e UPSERT sequencial, testes BDD e validação dos casos de fronteira.",
-
-  "out_of_scope": "Criação ou alteração do UI/Painel do treinador, bloqueio da submissão por regras médicas, concorrência simultânea entre submissões, mudança concorrente do tipo da sessão durante o processamento e comportamento após alterações posteriores no tipo da sessão.",
-
-  "included_edge_cases": "Valores 0, 8 e 6.5; string numérica no lugar de inteiro; campo obrigatório omitido; propriedade riskAlert injetada; identificador UUID malformado; dor_muscular igual a 5 e 6; fadiga_geral igual a 5 e 6; server_time igual ao start_at; correção tardia; sessão do tipo JOGO; segunda submissão válida para a mesma atleta e sessão.",
-
-  "three_amigos": {
-    "domain_business": "A atleta informa sua condição usando valores de 1 a 7 e booleanos antes do início do treino. O sistema calcula riskAlert. O alerta representa somente o atingimento de um gatilho matemático e não uma decisão ou diagnóstico médico.",
-    "development": "O input externo não possui autoridade sobre riskAlert nem sobre o relógio. A validação deve ser strict, sem coerção estrutural ou de valores, sem omissão de campos obrigatórios e sem propriedades adicionais. A persistência deve proteger os invariantes finais.",
-    "quality": "Os testes devem cobrir gatilhos independentes, fronteiras 5 e 6, igualdade temporal, mutação tardia, números fracionários, valores 0 e 8, strings numéricas, campos omitidos, propriedades adicionais, UUIDs malformados, sessão não-TREINO e UPSERT sequencial."
-  },
-
-  "business_rules": [
-    {
-      "rule_id": "R-01",
-      "rule": "qualidade_sono, fadiga_geral, dor_muscular, estresse, humor_bem_estar e disposicao_treinar devem ser inteiros obrigatórios pertencentes ao conjunto de 1 a 7."
-    },
-    {
-      "rule_id": "R-02",
-      "rule": "dor_nova_ou_lesao deve ser booleano obrigatório."
-    },
-    {
-      "rule_id": "R-03",
-      "rule": "No instante da validação, a sessão referenciada deve ser do tipo TREINO."
-    },
-    {
-      "rule_id": "R-04",
-      "rule": "riskAlert é true se e somente se dor_muscular >= 6, fadiga_geral >= 6 ou dor_nova_ou_lesao == true."
-    },
-    {
-      "rule_id": "R-05",
-      "rule": "O payload não pode possuir riskAlert. Tentativas de injeção devem retornar BAD_REQUEST."
-    },
-    {
-      "rule_id": "R-06",
-      "rule": "Submissões sequenciais para a mesma combinação athlete_id e session_id devem substituir integralmente os valores mutáveis e o riskAlert derivado, preservando a identidade lógica."
-    },
-    {
-      "rule_id": "R-07",
-      "rule": "O horário autoritativo do servidor deve ser estritamente anterior a session.start_at. Quando server_time >= session.start_at, a operação deve ser rejeitada sem alterar o estado persistido."
-    }
-  ],
-
-  "decisions": [
-    {
-      "decision_id": "D-01",
-      "decision": "O schema Zod não utilizará z.coerce."
-    },
-    {
-      "decision_id": "D-02",
-      "decision": "A combinação athlete_id e session_id atua como chave única natural."
-    },
-    {
-      "decision_id": "D-03",
-      "decision": "WellnessPreInput contém somente athlete_id, session_id, qualidade_sono, fadiga_geral, dor_muscular, estresse, humor_bem_estar, disposicao_treinar e dor_nova_ou_lesao."
-    },
-    {
-      "decision_id": "D-04",
-      "decision": "O instante usado na validação temporal deve ser obtido pelo servidor e não pode ser informado ou sobrescrito pelo cliente."
-    },
-    {
-      "decision_id": "D-05",
-      "decision": "A rejeição de não-inteiros pertence ao validador de borda. As constraints PostgreSQL protegem o domínio do estado final armazenado."
-    }
-  ],
-
-  "constraints": [
-    {
-      "constraint_id": "C-01",
-      "scope": "database",
-      "constraint": "qualidade_sono SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-02",
-      "scope": "database",
-      "constraint": "fadiga_geral SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-03",
-      "scope": "database",
-      "constraint": "dor_muscular SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-04",
-      "scope": "database",
-      "constraint": "estresse SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-05",
-      "scope": "database",
-      "constraint": "humor_bem_estar SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-06",
-      "scope": "database",
-      "constraint": "disposicao_treinar SMALLINT NOT NULL CHECK BETWEEN 1 AND 7."
-    },
-    {
-      "constraint_id": "C-07",
-      "scope": "database",
-      "constraint": "dor_nova_ou_lesao BOOLEAN NOT NULL."
-    },
-    {
-      "constraint_id": "C-08",
-      "scope": "database",
-      "constraint": "athlete_id UUID NOT NULL com foreign key."
-    },
-    {
-      "constraint_id": "C-09",
-      "scope": "database",
-      "constraint": "session_id UUID NOT NULL com foreign key."
-    },
-    {
-      "constraint_id": "C-10",
-      "scope": "database",
-      "constraint": "UNIQUE athlete_id, session_id."
-    },
-    {
-      "constraint_id": "C-11",
-      "scope": "database",
-      "constraint": "risk_alert BOOLEAN NOT NULL."
-    },
-    {
-      "constraint_id": "C-12",
-      "scope": "database",
-      "constraint": "CHECK que risk_alert seja equivalente a dor_muscular >= 6 OR fadiga_geral >= 6 OR dor_nova_ou_lesao = TRUE."
-    }
-  ],
-
-  "allowed_actions": "Criar ou alterar schemas de validação relacionados ao Wellness Pré; criar ou alterar persistência, migrations e constraints necessárias; implementar cálculo server-side de riskAlert; implementar UPSERT; adicionar testes unitários, integração e BDD diretamente relacionados aos critérios desta tarefa.",
-
-  "prohibited_actions": "Aceitar riskAlert vindo do cliente; utilizar coerção Zod; usar horário fornecido pelo cliente como autoridade temporal; aceitar propriedades desconhecidas; expandir escopo para UI do treinador; implementar regras médicas; alterar comportamento não relacionado à TASK.",
-
-  "allowed_technical_autonomy": "O agente pode escolher nomes internos de funções, organização de módulos, helpers, estratégia transacional e implementação do UPSERT desde que preserve integralmente contratos, regras, decisões, constraints, escopo e critérios de aceitação.",
-
-  "files": [
-    {
-      "path": "tasks/TASK-001/task.md",
-      "role": "target",
-      "operation": "create_or_update"
-    },
-    {
-      "path": "tasks/TASK-001/acceptance.feature",
-      "role": "target",
-      "operation": "create_or_update"
-    },
-    {
-      "path": "src/**/wellness*",
-      "role": "target",
-      "operation": "inspect_and_modify"
-    },
-    {
-      "path": "supabase/migrations/**",
-      "role": "target",
-      "operation": "inspect_and_modify_if_required"
-    },
-    {
-      "path": "runbooks/**",
-      "role": "reference",
-      "operation": "read_only"
-    }
-  ],
-
-  "human_decisions_already_made": "riskAlert é derivado exclusivamente no servidor; escala numérica é inteira de 1 a 7; não há z.coerce; athlete_id/session_id forma a identidade natural; horário do servidor é autoritativo; submissões após o início são rejeitadas; UPSERT sequencial substitui integralmente o estado mutável.",
-
-  "pending_human_decisions": "Nenhuma decisão humana é necessária para os comportamentos descritos nesta TASK. Qualquer necessidade de definir concorrência simultânea, alterar semântica médica, mudar a fórmula de risco ou expandir o escopo para UI exige nova decisão humana.",
-
-  "risk": {
-    "level": "yellow",
-    "natures": [
-      "database",
-      "data",
-      "validation",
-      "business_rule"
-    ],
-    "blast_radius": "medium",
-    "reversibility": "partial",
-    "justification": "A tarefa altera contratos de entrada, persistência e invariantes de banco. Erros podem produzir classificação incorreta de risco ou dados inválidos, mas o escopo está restrito ao Wellness Pré-Treino."
-  },
-
-  "runbook_binding": {
-    "operation_classes": [
-      "database_change",
-      "backend_change",
-      "validation_change",
-      "test_change"
-    ],
-    "applicable_runbooks": {
-      "shared": [
-        "runbooks/shared/RB-SHARED-002-evidence.md",
-        "runbooks/shared/RB-SHARED-003-failure-states.md"
-      ],
-      "executor": [
-        "runbooks/executor/RB-EXEC-002-database-change.md"
-      ],
-      "reviewer": [
-        "runbooks/reviewer/RB-REV-002-database-review.md"
-      ]
-    }
-  },
-
-  "stop_conditions": "Parar e solicitar decisão humana se a implementação exigir alterar a fórmula de riskAlert, aceitar autoridade temporal do cliente, alterar a identidade natural athlete_id/session_id, definir comportamento para concorrência simultânea, expandir para regras médicas ou modificar arquivos fora do escopo permitido.",
-
-  "bdd": {
-    "feature": "Persistência e Classificação de Risco do Wellness Pré-Treino",
-
-    "background": [
-      {
-        "keyword": "Given",
-        "text": "uma atleta válida"
-      },
-      {
-        "keyword": "And",
-        "text": "uma sessão válida do tipo TREINO"
-      },
-      {
-        "keyword": "And",
-        "text": "o instante autoritativo do servidor é anterior ao início da sessão"
-      },
-      {
-        "keyword": "And",
-        "text": "um payload base válido de Wellness Pré"
-      }
-    ],
-
-    "rules": [
-      {
-        "rule": "O cálculo de riskAlert é uma política de servidor inegociável baseada em gatilhos específicos",
-        "scenarios": [
-          {
-            "name": "Risco falso - Abaixo da fronteira",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "dor_muscular é 5 e fadiga_geral é 5"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão de Wellness Pré é processada"
-              },
-              {
-                "keyword": "Then",
-                "text": "riskAlert deve ser false"
-              },
-              {
-                "keyword": "And",
-                "text": "o registro deve ser persistido"
-              }
-            ],
-            "examples": []
-          },
-          {
-            "name": "Risco verdadeiro - Disparo exato por dor muscular",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "dor_muscular é 6"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão de Wellness Pré é processada"
-              },
-              {
-                "keyword": "Then",
-                "text": "riskAlert deve ser true"
-              }
-            ],
-            "examples": []
-          }
-        ]
-      },
-      {
-        "rule": "O sistema deve aplicar validação estrita de escopo e payload",
-        "scenarios": [
-          {
-            "name": "Tentativa de injetar riskAlert no payload",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "o cliente adiciona riskAlert ao payload"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão é enviada"
-              },
-              {
-                "keyword": "Then",
-                "text": "a operação deve ser rejeitada com BAD_REQUEST"
-              },
-              {
-                "keyword": "And",
-                "text": "nenhum registro deve ser persistido"
-              }
-            ],
-            "examples": []
-          },
-          {
-            "name": "Valor numérico inválido na escala",
-            "kind": "scenario_outline",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "fadiga_geral recebe <valor>"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão é enviada"
-              },
-              {
-                "keyword": "Then",
-                "text": "a operação deve ser rejeitada com BAD_REQUEST"
-              }
-            ],
-            "examples": [
-              {
-                "headers": [
-                  "valor"
-                ],
-                "rows": [
-                  [
-                    "0"
-                  ],
-                  [
-                    "8"
-                  ],
-                  [
-                    "6.5"
-                  ]
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "rule": "Wellness Pré-Treino somente pode ser submetido antes do início do treino",
-        "scenarios": [
-          {
-            "name": "Submissão exatamente no instante de início do treino",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "server_time é igual a session.start_at"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão é enviada"
-              },
-              {
-                "keyword": "Then",
-                "text": "a operação deve ser rejeitada"
-              },
-              {
-                "keyword": "And",
-                "text": "nenhum registro deve ser persistido"
-              }
-            ],
-            "examples": []
-          }
-        ]
-      },
-      {
-        "rule": "Wellness Pré-Treino somente pode pertencer a uma sessão de TREINO",
-        "scenarios": [
-          {
-            "name": "Tentativa de registrar Wellness Pré para um jogo",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "a sessão é do tipo JOGO"
-              },
-              {
-                "keyword": "When",
-                "text": "a submissão é enviada"
-              },
-              {
-                "keyword": "Then",
-                "text": "a operação deve ser rejeitada"
-              }
-            ],
-            "examples": []
-          }
-        ]
-      },
-      {
-        "rule": "Operações na mesma sessão comportam-se como UPSERT sequencial",
-        "scenarios": [
-          {
-            "name": "Segunda submissão substitui integralmente o estado mutável",
-            "kind": "scenario",
-            "steps": [
-              {
-                "keyword": "Given",
-                "text": "já existe um registro para a atleta e sessão"
-              },
-              {
-                "keyword": "When",
-                "text": "a mesma atleta submete um novo payload válido para a mesma sessão"
-              },
-              {
-                "keyword": "Then",
-                "text": "deve continuar existindo um único registro para athlete_id e session_id"
-              },
-              {
-                "keyword": "And",
-                "text": "os valores persistidos devem corresponder integralmente à segunda submissão"
-              },
-              {
-                "keyword": "And",
-                "text": "a identidade lógica deve permanecer a mesma"
-              }
-            ],
-            "examples": []
-          }
-        ]
-      }
-    ]
-  },
-
-  "acceptance_criteria": [
-    {
-      "condition": "Payload válido com todos os valores abaixo dos gatilhos de risco produz riskAlert false.",
-      "method": "Executar cenário BDD correspondente e validar estado persistido.",
-      "expected": "passed"
-    },
-    {
-      "condition": "dor_muscular igual a 6 produz riskAlert true.",
-      "method": "Executar teste de fronteira.",
-      "expected": "passed"
-    },
-    {
-      "condition": "fadiga_geral igual a 6 produz riskAlert true.",
-      "method": "Executar teste de fronteira.",
-      "expected": "passed"
-    },
-    {
-      "condition": "dor_nova_ou_lesao true produz riskAlert true.",
-      "method": "Executar cenário BDD correspondente.",
-      "expected": "passed"
-    },
-    {
-      "condition": "Payload com riskAlert informado pelo cliente é rejeitado.",
-      "method": "Enviar payload contendo propriedade riskAlert.",
-      "expected": "BAD_REQUEST e nenhuma persistência"
-    },
-    {
-      "condition": "Valores 0, 8, 6.5 e string numérica são rejeitados.",
-      "method": "Executar cenários negativos de validação.",
-      "expected": "BAD_REQUEST e nenhuma persistência"
-    },
-    {
-      "condition": "Submissão em server_time maior ou igual a session.start_at é rejeitada.",
-      "method": "Executar cenários de fronteira temporal.",
-      "expected": "Operação rejeitada sem alteração de estado"
-    },
-    {
-      "condition": "Segunda submissão válida para a mesma atleta e sessão executa UPSERT.",
-      "method": "Persistir duas submissões sequenciais e consultar o estado final.",
-      "expected": "Um único registro, identidade lógica preservada e estado mutável integralmente substituído"
-    }
-  ],
-
-  "mandatory_checks": "Validar schema strict; executar testes de valores 0, 8 e 6.5; verificar rejeição de propriedades extras; verificar UUIDs inválidos; testar gatilhos riskAlert; testar fronteira temporal; verificar sessão não-TREINO; validar UPSERT; verificar constraints e unique key no banco; executar suíte BDD da TASK-001.",
-
-  "expected_evidence": "Resultados dos testes automatizados, execução bem-sucedida do acceptance.feature, evidência das constraints e índice UNIQUE no banco, diff dos arquivos modificados e demonstração de que payloads inválidos não produzem alteração persistida.",
-
-  "definition_of_done": "A TASK está DONE quando todos os critérios de aceitação passam, os cenários BDD relevantes estão implementados e verdes, a validação strict impede payloads inválidos, riskAlert é derivado exclusivamente no servidor, a janela temporal é respeitada, as invariantes de banco estão presentes, o UPSERT sequencial preserva a identidade lógica e nenhuma alteração fora do escopo foi introduzida."
-}
-```
-
-## 11. STOP CONDITIONS DO EXECUTOR
-
-Parar somente a parte afetada se descobrir: decisão material ausente; contrato incompatível; fonte canônica conflitante; dependência nova material; necessidade de ampliar escopo; comportamento não especificado que altera o produto.
-
-## 12. REGRA PARA REFERÊNCIAS
-
-Se a task exige escolha visual ou técnica ainda não homologada, não embutir a escolha como implementação. Criar um ponto de decisão com as opções obtidas segundo o AESDS 08.
-
-## 13. META DE PRIMEIRA REVISÃO
-
-As tasks devem ser especificadas em granularidade suficiente para buscar >=90% de critérios PASS na primeira revisão independente. Se uma classe de task falhar repetidamente, corrigir o template/contexto antes de aumentar governança.
+As tasks devem ser especificadas em granularidade suficiente para buscar >=90% de critérios PASS
+na primeira revisão independente — na porta de plano e na porta de implementação. Se uma classe de
+task falhar repetidamente na mesma porta, corrigir o template/contexto antes de aumentar
+governança.
