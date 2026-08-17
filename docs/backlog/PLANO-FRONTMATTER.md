@@ -1,5 +1,11 @@
 # Plano completo para criação do fields-registry.md
 
+> **Arquivado em 2026-08-17.** Não priorizado: nada deste plano foi executado
+> (`docs/modelagem/governanca/` e `tests/test_fields_registry.py` não existem),
+> e o Modelo Canônico ainda tem um único elemento validado (`INV-001`). Retomar
+> a ideia — provavelmente em versão mais simples — só quando houver dados reais
+> modelados o suficiente para justificar um catálogo formal de campos.
+
 Versão: 1.1
 Status: Proposto para implementação
 Arquivo-alvo: `docs/modelagem/governanca/fields-registry.md`

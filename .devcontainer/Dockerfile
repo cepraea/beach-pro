@@ -17,18 +17,22 @@ RUN groupmod -n agent node \
        /home/agent/.local/state/cepraea-guards \
        /workspaces/cepraea-beach-pro
 
-RUN install -d -o root -g root /etc/claude-code /etc/codex \
-    /usr/local/lib/cepraea-guards
-COPY .devcontainer/control-plane/claude-managed-settings.json \
-     /etc/claude-code/managed-settings.json
-COPY .devcontainer/control-plane/codex-requirements.toml \
-     /etc/codex/requirements.toml
-COPY .devcontainer/guards/ /usr/local/lib/cepraea-guards/
-RUN chown -R root:root /etc/claude-code /etc/codex \
-      /usr/local/lib/cepraea-guards \
-    && chmod 0644 /etc/claude-code/managed-settings.json \
-      /etc/codex/requirements.toml \
-    && chmod 0755 /usr/local/lib/cepraea-guards/*
+ RUN install -d -o root -g root /etc/claude-code /etc/codex \
+     /usr/local/lib/cepraea-guards
+ COPY .devcontainer/control-plane/claude-managed-settings.json \
+      /etc/claude-code/managed-settings.json
+COPY .devcontainer/control-plane/claude-managed-mcp.json \
+     /etc/claude-code/managed-mcp.json
+ COPY .devcontainer/control-plane/codex-requirements.toml \
+      /etc/codex/requirements.toml
+ COPY .devcontainer/guards/ /usr/local/lib/cepraea-guards/
+ RUN chown -R root:root /etc/claude-code /etc/codex \
+       /usr/local/lib/cepraea-guards \
+     && chmod 0644 /etc/claude-code/managed-settings.json \
+      /etc/claude-code/managed-mcp.json \
+       /etc/codex/requirements.toml \
+     && chmod 0755 /usr/local/lib/cepraea-guards/*
+
 
 USER agent
 ENV HOME=/home/agent
