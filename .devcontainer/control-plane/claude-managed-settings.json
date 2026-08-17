@@ -24,16 +24,22 @@
       "Bash(git update-ref *)",
       "Read(//home/agent/.ssh/**)",
       "Read(//home/agent/.aws/**)",
-      "Read(//home/agent/.config/gh/**)"
+      "Read(//home/agent/.config/gh/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./.drive/CEPRAEA BEACH PRO/**)",
+      "Read(./.drive/BEACH HANDBALL/**)"
     ],
     "ask": [
       "Bash(npm install *)",
       "Bash(npx *)"
     ]
   },
-  "sandbox": {
-    "enabled": false
-  },
+   "sandbox": {
+     "enabled": false
+   },
+
   "hooks": {
     "PreToolUse": [
       {
