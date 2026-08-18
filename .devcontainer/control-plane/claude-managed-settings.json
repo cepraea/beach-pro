@@ -1,6 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "allowManagedHooksOnly": true,
+  "allowManagedPermissionRulesOnly": true,
   "permissions": {
     "disableBypassPermissionsMode": "disable",
     "deny": [
@@ -24,7 +25,10 @@
       "Bash(git update-ref *)",
       "Read(//home/agent/.ssh/**)",
       "Read(//home/agent/.aws/**)",
-      "Read(//home/agent/.config/gh/**)"
+      "Read(//home/agent/.config/gh/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
     ],
     "ask": [
       "Bash(npm install *)",
@@ -37,7 +41,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "Bash|Edit|Write|NotebookEdit",
         "hooks": [
           {
             "type": "command",
@@ -48,7 +52,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "Bash|Edit|Write|NotebookEdit",
         "hooks": [
           {
             "type": "command",

@@ -23,6 +23,25 @@ dados, dependências, documentação de produto). A fase de modelagem canônica 
 mecanismo de decisão e evidência, já formalizado em `DEC-GOV-002`, e não é afetada por este
 documento.
 
+## Quando o template completo é obrigatório
+
+Preencher o `task_proposal` completo (schema de `.ai/control/task-proposal.schema.json`) é
+obrigatório quando a tarefa se enquadra em qualquer um destes casos:
+
+- `risk.level` seria `amarelo`, `vermelho` ou `vermelho_crítico` conforme `AGENT_POLICY.md`;
+- a tarefa introduz ou altera regra de negócio, cálculo ou decisão que afeta atleta, treino, jogo
+  ou dado pessoal;
+- a tarefa toca modelo de dados, RLS, autenticação, MFA ou auditoria.
+
+Quando a tarefa é `risk.level = verde` e não se enquadra em nenhum item acima (ex.: ajuste visual
+isolado, correção de texto, mudança mecânica de configuração), a proposta leve de `CLAUDE.md`
+("Proposta proporcional" — classificar arquivos como alvo/referência/somente_leitura/proibido) é
+suficiente; preencher o `task_proposal` completo nesse caso é opcional, não obrigatório.
+
+Na dúvida sobre qual caminho vale, tratar como se o template completo fosse exigido — o custo de
+especificar demais uma tarefa simples é menor que o custo de uma regra de negócio mal especificada
+chegando ao Reviewer.
+
 ## Princípio
 
 Uma tarefa atômica deve possuir uma saída verificável e pequena o suficiente para permitir revisão
