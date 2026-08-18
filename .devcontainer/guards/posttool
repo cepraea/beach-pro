@@ -3,8 +3,9 @@ set -euo pipefail
 state_dir="/home/agent/.local/state/cepraea-guards"
 mkdir -p "$state_dir"
 payload="$(cat)"
-printf '{"observado_em":"%s","evento":%s}\n' \
+tool="$(jq -r '.tool_name // "desconhecido"' <<<"$payload")"
+printf '{"observado_em":"%s","tool":"%s"}\n' \
   "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-  "$(jq -c '{tool_name,tool_input,tool_response}' <<<"$payload")" \
+  "$tool" \
   >> "$state_dir/events.jsonl"
 exit 0
