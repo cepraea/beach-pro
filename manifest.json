@@ -1,0 +1,301 @@
+{
+  "project": "CEPRAEA BEACH PRO",
+  "version": "0.1.0",
+  "updated_at": "2026-08-18",
+  "assets": [
+    {
+      "path": "AGENT_POLICY.md",
+      "type": "governance",
+      "purpose": "Política comum dos três agentes: papéis, classificação de risco, escopo de Git permitido, lista de control-plane read-only, fontes.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "CLAUDE.md",
+      "type": "governance",
+      "purpose": "Papel operacional do Executor (Claude Code): proposta proporcional, execução, validação, handoff.",
+      "consumers": ["human", "agent:executor"],
+      "status": "active"
+    },
+    {
+      "path": "AGENTS.md",
+      "type": "governance",
+      "purpose": "Papel operacional do Reviewer (Codex): procedimento de revisão independente, findings, vereditos.",
+      "consumers": ["human", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "README.md",
+      "type": "governance",
+      "purpose": "Apresentação do projeto CEPRAEA BEACH PRO (MVP sintético), stack técnica e instruções de setup/validação local.",
+      "consumers": ["human"],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/README.md",
+      "type": "runbook",
+      "purpose": "Catálogo normativo de seleção de runbooks: matriz operation_class → runbooks aplicáveis por papel.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/shared/",
+      "type": "runbook",
+      "purpose": "Runbooks compartilhados entre Executor e Reviewer: baseline de repositório, evidência, estados de falha.",
+      "consumers": ["agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/executor/",
+      "type": "runbook",
+      "purpose": "Runbooks especializados do Executor por classe de operação (code/database/documentation/dependency change).",
+      "consumers": ["agent:executor"],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/reviewer/",
+      "type": "runbook",
+      "purpose": "Runbooks especializados do Reviewer por classe de operação, incluindo revisão de evidência.",
+      "consumers": ["agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/task_atomics.md",
+      "type": "architecture",
+      "purpose": "Padrão de task atômica e critérios de aceite: contrato Task Proposal v2, ciclo de duas portas de revisão.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/assurance/",
+      "type": "architecture",
+      "purpose": "Estado atual vs. estado-alvo do fluxo de assurance: decisões humanas confirmadas (HDEC-xxx), plano de tasks atômicas, runbook de implantação.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/",
+      "type": "architecture",
+      "purpose": "Arquitetura do Human-Governed Dual-Agent SDLC e do dev container que a sustenta (arc42, runbook de container, relatório de verificação).",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "reference"
+    },
+    {
+      "path": "docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md",
+      "type": "domain_model",
+      "purpose": "Documento canônico normativo da fase de modelagem: decisões fechadas, os 6 schemas formais, ordem de execução das fontes, critérios de pronto.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/README.md",
+      "type": "domain_model",
+      "purpose": "Ponto de entrada operacional da modelagem: variáveis de AC-000, escopos de escrita/leitura, comandos de validação.",
+      "consumers": ["human", "agent:executor"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/dominio/",
+      "type": "domain_model",
+      "purpose": "Modelo Canônico — elementos já promovidos (agregados, bounded contexts, invariantes, etc.). Majoritariamente stub; só INV-001 validado até o momento.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "stub"
+    },
+    {
+      "path": "docs/modelagem/candidatos/",
+      "type": "domain_model",
+      "purpose": "Hipóteses estruturais ainda não promovidas ao Modelo Canônico (bounded contexts e invariantes candidatos, entre outros).",
+      "consumers": ["agent:executor", "agent:reviewer"],
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/modelagem/conhecimento/",
+      "type": "domain_model",
+      "purpose": "Glossário de termos e registro de regras extraídas das fontes, rastreáveis a fragmentos de evidência.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/decisoes/registro_decisoes.md",
+      "type": "domain_model",
+      "purpose": "Registro formal de decisões materiais da modelagem (DEC-NNN), com resumo em prosa e bloco JSON verificável.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/evidencias/registro_evidencias.md",
+      "type": "domain_model",
+      "purpose": "Registro de fragmentos de evidência (EVD-NNNN): o elo rastreável entre fonte e conceito/regra extraído.",
+      "consumers": ["agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/fontes/",
+      "type": "domain_model",
+      "purpose": "Inventário mestre e dossiês individuais das fontes originais processadas (SRC-NNN).",
+      "consumers": ["human", "agent:executor"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/logico/",
+      "type": "domain_model",
+      "purpose": "Modelo lógico relacional e áreas pendentes — vazio por design até um bounded context atingir maturidade suficiente.",
+      "consumers": ["agent:executor", "agent:reviewer"],
+      "status": "stub"
+    },
+    {
+      "path": "docs/modelagem/processo/",
+      "type": "domain_model",
+      "purpose": "Critérios de maturidade, fluxo de modelagem, perguntas de competência e taxonomias que orientam o processo.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_decisao.json",
+      "type": "schema",
+      "purpose": "Valida registros de decisão material (DEC-NNN): aprovador, estado, evidência exigida quando RESOLVIDA.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_elemento_modelo.json",
+      "type": "schema",
+      "purpose": "Valida elementos do Modelo Canônico (Bounded Context/Identidade/Agregado/Invariante/Ciclo de vida/Fronteira transacional) e suas rotas de promoção.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_evidencia.json",
+      "type": "schema",
+      "purpose": "Valida fragmentos de evidência (EVD-NNNN): localização literal, trecho, tratamento de dado sensível.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_fonte.json",
+      "type": "schema",
+      "purpose": "Valida dossiês de fonte (SRC-NNN): hash SHA-256, taxonomia, estado de processamento.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_regra.json",
+      "type": "schema",
+      "purpose": "Valida regras extraídas (REGRA-NNN): tipo, sujeito, ação, evidência de origem.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_termo.json",
+      "type": "schema",
+      "purpose": "Valida termos de glossário (TERMO-NNN): classificação, definição, evidência de origem.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/validar.mjs",
+      "type": "script",
+      "purpose": "Validador determinístico de JSON Schema (sem dependência externa) para o corpus real da modelagem e para a suíte de fixtures de regressão.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/verificar_referencias.mjs",
+      "type": "script",
+      "purpose": "Verifica 100% das referências cruzadas do corpus (fonte→evidência→termo/regra/elemento→lógico) e reporta órfãos.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/verificar_repositorio.mjs",
+      "type": "script",
+      "purpose": "Resolve action_ref (AC-NNN/SEM-NNN/SYN-NNN) para commits reais via Git de leitura e confere branch/baseline.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": "docs/operacao/agent-workflow.md",
+      "type": "standard",
+      "purpose": "Runbook do operador humano (Davi) para conduzir o ciclo de uma ACTION no fluxo multiagente, do disparo ao Git privilegiado.",
+      "consumers": ["human"],
+      "status": "active"
+    },
+    {
+      "path": "docs/standards/guia_estilo_documentação.md",
+      "type": "standard",
+      "purpose": "Guia canônico de autoria, edição e validação de documentação Markdown do repositório.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": "test/fixtures/synthetic/agent-plan-smoke.txt",
+      "type": "fixture",
+      "purpose": "Fixture canário de smoke test (KEY=PASS) para verificar que um pipeline de agente localiza e lê um valor conhecido.",
+      "consumers": ["ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": ".ai/control/",
+      "type": "config",
+      "purpose": "Contrato Task Proposal v2 (task-proposal.schema.json v2.0, verification-plan.schema.json) e validador — leitura obrigatória segundo task_atomics.md.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    },
+    {
+      "path": ".ai/decisions/",
+      "type": "config",
+      "purpose": "Registros de decisão de arquitetura/governança (DEC-ARQ-001, DEC-CTR-013, DEC-CTR-015, DEC-GOV-001, DEC-GOV-002).",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": ".ai/task-proposal.example.json",
+      "type": "example",
+      "purpose": "Exemplo completo de task_proposal (TASK-001, Wellness Pré-Treino) — referência estrutural citada por task_atomics.md para novas propostas.",
+      "consumers": ["agent:executor", "human"],
+      "status": "active"
+    },
+    {
+      "path": ".ai/task-approval.example.json",
+      "type": "example",
+      "purpose": "Exemplo de registro de aprovação humana de uma task_proposal.",
+      "consumers": ["agent:executor", "human"],
+      "status": "active"
+    },
+    {
+      "path": ".devcontainer/",
+      "type": "config",
+      "purpose": "Ambiente sandboxed dos agentes: Dockerfile, devcontainer.json do Executor e do Reviewer, guards pretool/posttool, managed settings, requirements do Codex.",
+      "consumers": ["human"],
+      "status": "active"
+    },
+    {
+      "path": ".devcontainer/FIELD_REGISTRY.md",
+      "type": "audit",
+      "purpose": "Auditoria campo-a-campo do próprio devcontainer.json (2026-08-14), com achados PASS/REVISAR/FAIL — inclui P0 ainda não resolvido: mounts de gitconfig-agent neutralizados por GIT_CONFIG_NOSYSTEM/GIT_CONFIG_GLOBAL.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": ".codex/config.toml",
+      "type": "config",
+      "purpose": "Política de permissões do Codex Reviewer: sandbox read-only, sem rede, projeto graváveis apenas em /tmp.",
+      "consumers": ["agent:reviewer", "human"],
+      "status": "active"
+    },
+    {
+      "path": ".mcp.json",
+      "type": "config",
+      "purpose": "Configuração de servidores MCP do repositório — atualmente vazia, nenhum servidor habilitado.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "active"
+    },
+    {
+      "path": ".markdownlint.jsonc",
+      "type": "config",
+      "purpose": "Regras de lint Markdown aplicadas ao repositório, usadas pelo guia de estilo de documentação.",
+      "consumers": ["agent:executor", "agent:reviewer", "ci-cd"],
+      "status": "active"
+    }
+  ]
+}
