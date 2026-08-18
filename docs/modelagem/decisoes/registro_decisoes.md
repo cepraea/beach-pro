@@ -235,6 +235,27 @@ Resumo para contexto desta fase: Git passa a ser a única state machine operacio
 substituído por `CLAUDE.md`; `REVIEWER.md` por `AGENTS.md`. Consequência direta para `AC-000`: os
 escopos formais desta fase (seção "Escopos formais", acima) já refletem essa decisão.
 
+## DEC-GOV-002 — `runbook_binding` formal para `AC-001`–`AC-029`/`SEM-NNN`/`SYN-NNN` (referência)
+
+Durante a revisão adversarial de `AC-001`, o `REVIEWER` apontou que nenhum `runbook_binding`
+concreto para as tarefas desta fase estava registrado em local verificável do repositório
+(`HUMAN_DECISION_REQUIRED`). Davi aprovou o binding formal. Uma primeira versão desta decisão
+generalizava o binding a "todas as tarefas `AC-NNN`", inclusive `AC-000` — o `REVIEWER` apontou
+(`FAIL`, achado subsequente) que `AC-000` produziu `schemas/*.json` e scripts `.mjs` (commit
+`2bf9214`), uma classe de operação heterogênea, não só documental; corrigido delimitando o binding
+a `AC-001`–`AC-029`/`SEM-NNN`/`SYN-NNN`, que não criam nem alteram schema ou script.
+
+Mesmo motivo de `DEC-GOV-001` acima: é uma decisão de governança do SDLC (vinculação de runbooks a
+uma classe de operação), não uma decisão de modelagem do domínio CEPRAEA — não valida contra
+`schema_decisao.json` e não deveria (precedente de `DEC-011`, abaixo). O registro canônico está em
+[`.ai/decisions/DEC-GOV-002-runbook-binding-modelagem-canonica.md`](../../../.ai/decisions/DEC-GOV-002-runbook-binding-modelagem-canonica.md).
+
+Resumo para contexto desta fase: `AC-001` a `AC-029`, `SEM-NNN` e `SYN-NNN` usam
+`operation_class=documentation_change` → Executor: `RB-EXEC-003`; Reviewer: `RB-REV-003` +
+`RB-REV-004` (evidência é material nesta fase, ver justificativa no registro canônico); Shared:
+`RB-SHARED-001/002/003`. `AC-000` está fora do escopo — já concluído, revisado e commitado antes
+desta decisão.
+
 ## DEC-011 — Forma de `id_decisao`/`impacto` de decisões de governança dentro de `schema_decisao.json`
 
 Durante a validação de `AC-000`, `DEC-GOV-001` (já `RESOLVIDA`/commitada antes deste `AC-000`) não
@@ -274,6 +295,43 @@ extensão foi revertida; `schema_decisao.json` está, nesta revisão, fiel ao te
   "estado": "RESOLVIDA",
   "evidencia": {
     "repository_evidence": { "action_ref": "AC-000" }
+  }
+}
+```
+
+## DEC-007 — Resultado de `AD-03` em `AC-001`
+
+`AD-03` (seção 8 do plano): "cabeçalho de coluna de planilha tentando virar termo canônico só por
+existir." Executado sobre os 11 `TERMO-NNN` registrados em `AC-001`
+(`conhecimento/glossario.md`): cada um tem `evidencia.semantic_evidence` com justificativa real —
+recorrência em múltiplas abas independentes, regra explícita de metadados/contrato citando o
+conceito, ou consequência operacional documentada (correção humana registrada, proibição de
+cálculo manual) — nunca apenas "existe uma coluna com esse nome". Nenhum termo nasceu só por nome
+de coluna.
+
+Registrado como decisão formal (não apenas nota de dossiê) para manter o mesmo padrão de
+auditoria dos demais testes adversariais (`AD-01` → `DEC-004`, em `AC-002`). Segue o mesmo
+mecanismo já usado em `DEC-011`: rascunho com `aprovador=PENDENTE`/`estado=BLOQUEADO`, porque é
+uma verificação nova que ninguém revisou ainda — nunca autoaprovada pelo `EXECUTOR` (melhoria f).
+
+```json
+{
+  "id_decisao": "DEC-007",
+  "data": "2026-08-15",
+  "decisao": "Resultado de AD-03 (seção 8 do plano) sobre os 11 termos registrados em AC-001 — nenhum termo deveria nascer apenas por existir uma coluna com esse nome, sem semantic_evidence real.",
+  "alternativas": [],
+  "escolha": "AD-03 passou: todos os 11 TERMO-NNN de AC-001 têm semantic_evidence com justificativa real (recorrência em múltiplas abas, regra de metadados/contrato citando o conceito, ou consequência operacional documentada), nenhum baseado só em nome de coluna. Nenhuma correção foi necessária.",
+  "justificativa": "Verificação executada linha a linha contra os 11 registros em conhecimento/glossario.md; cada semantic_evidence cita evidência estrutural ou textual específica, não apenas a existência do cabeçalho.",
+  "fonte": [
+    "REF:docs/modelagem/conhecimento/glossario.md — TERMO-001 a TERMO-011",
+    "REF:docs/modelagem/fontes/dossies/cepraea_agosto_2026.xlsx.md"
+  ],
+  "impacto": "Nenhuma ação corretiva necessária em AC-001. Precedente de verificação para os demais AD-NNN ainda pendentes (AD-01/AC-002, AD-02+AD-04/AC-008-010, AD-05/AC-028, AD-06/AC-029).",
+  "riscos": [],
+  "aprovador": "PENDENTE",
+  "estado": "BLOQUEADO",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-001" }
   }
 }
 ```
