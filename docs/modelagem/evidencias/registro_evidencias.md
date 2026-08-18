@@ -781,3 +781,77 @@ de temporada por competição, não uma matriz semanal, com uma camada de cálcu
   "dado_sensivel_encontrado": false
 }
 ```
+
+## SRC-003 / AC-003 — `CEPRAEA-DB.docx`
+
+```json
+{
+  "id_evidencia": "EVD-0063",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seção 'GATE-F00-GOV-01 — MATERIALIZAÇÃO DA GOVERNANÇA ADAPTATIVA', fim do documento extraído",
+  "trecho_literal": "'Diretriz de Execução Imediata: Confirmada a integração deste escopo no CEPRAEA-DB, deve-se instanciar o ambiente físico de testes (ACT-F00-007) para prosseguir em linha com a Execução do Piloto Integrado (ACT-F00-009).' Este é o último trecho do documento — nenhuma seção posterior alcança schema físico, CREATE TABLE ou modelo de banco.",
+  "tipo_evidencia": "TEXTO",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0064",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seção 'C17.2 Resultado reconciliado' (números de reconciliação) e início de 'C17.3 Inventário atual integral' (cabeçalho da tabela dos 65 itens) — distinta de 'C15.3 Inventário integral', que documenta o inventário histórico de 43 itens; linhas 761-772 do texto extraído",
+  "trecho_literal": "'Pasta: FONTES → BEACH HANDBALL, ID 1Z0OsR3dHmLMED0KYc_EE2lD1nEYykzWY. Itens atuais: 65. Formatos atuais: 60 PDFs, 3 XLSX e 2 Markdown... Reconciliação: 43 históricos − 8 ausentes + 30 novos = 65 atuais.'",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0065",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seção 'C1.5 Contexto fixado'",
+  "trecho_literal": "'Público inicial: um treinador e 19 atletas adultas. Modalidade: handebol de areia. Categoria inicial: adulto feminino. Backend previsto: Supabase/PostgreSQL.'",
+  "tipo_evidencia": "TEXTO",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0066",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seção 'C2.2 Escopo negativo'",
+  "trecho_literal": "'inserir dados pessoais reais em seeds ou ambientes de teste' e 'apagar fatos históricos para representar correções' listados entre os itens fora de escopo salvo mudança formal aprovada.",
+  "tipo_evidencia": "TEXTO",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0067",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seção 'C0. REGRA DE SUPREMACIA E FINALIDADE DO CONTROLE'",
+  "trecho_literal": "'Exemplos de tabelas, campos, módulos, SQL ou arquitetura permanecem hipóteses até atravessarem os portões correspondentes. A ausência de informação não autoriza a invenção.'",
+  "tipo_evidencia": "TEXTO",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0068",
+  "id_fonte": "SRC-003",
+  "id_acao": "AC-003",
+  "localizacao": "seções 'ACT-F00-001' a 'ACT-F00-009' (Fase 0), busca textual sobre o documento inteiro",
+  "trecho_literal": "Nove ações controladas (ACT-F00-001 a ACT-F00-009) dedicadas a governança/portões/teste do próprio processo (Maker/Checker, canonicalização JSON, migração append-only, piloto de extração). Busca por 'create table'/'CREATE TABLE' sobre as 4059 linhas extraídas: zero ocorrências.",
+  "tipo_evidencia": "TEXTO",
+  "dado_sensivel_encontrado": false
+}
+```

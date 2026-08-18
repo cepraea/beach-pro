@@ -14,7 +14,7 @@ plano). `AC-021` não tem hipótese: a fonte já é conhecida como ausente do di
 | --- | --- | --- | --- | --- | --- |
 | SRC-001 | AC-001 | `CEPRAEA AGOSTO 2026.xlsx` | OPERACIONAL·PRIMARIA·ORIGINAL (confirmada) | CONCLUIDO | Não |
 | SRC-002 | AC-002 | `BancoCEPRAEA.docx` | TECNICA·AUXILIAR·ORIGINAL (confirmada; `estado_fonte=SUBSTITUIDA` fixo por `DEC-002`) | CONCLUIDO | Sim — `DEC-004` confirmada por Davi Sermenho (2026-08-18) |
-| SRC-003 | AC-003 | `CEPRAEA-DB.docx` | TECNICA·AUXILIAR·ORIGINAL | NAO_INICIADO | Não |
+| SRC-003 | AC-003 | `CEPRAEA-DB.docx` | TECNICA·AUXILIAR·ORIGINAL (confirmada; `estado_fonte=SUBSTITUIDA` fixo por `DEC-002`) | CONCLUIDO | Não |
 | SRC-004 | AC-004 | `CEPRAEA DATABASE.xlsx` | OPERACIONAL·INDETERMINADA·INDETERMINADA | NAO_INICIADO | Não |
 | SRC-005 | AC-005 | `DESC-CEPRAEA.docx` | ADMINISTRATIVA·AUXILIAR·ORIGINAL | NAO_INICIADO | Não |
 | SRC-006 | AC-006 | `Glossário de Dados — CEPRAEA v0.1.xlsx` | TECNICA·AUXILIAR·ORIGINAL | NAO_INICIADO | Não |
