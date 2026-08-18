@@ -2,7 +2,6 @@
 tmp/
 
 #DADOS PESSOAIS DAS ATLETAS
-
 .drive/CEPRAEA BEACH PRO
 .drive/BEACH HANDBALL
 
@@ -23,3 +22,5 @@ npm-debug.log*
 Thumbs.db
 *.swp
 *~
+
+docs/arquiteturas/manuais
