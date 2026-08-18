@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cepraea.local/schema/1.0/task-proposal.schema.json",
+  "$id": "https://cepraea.local/schema/2.0/task-proposal.schema.json",
   "title": "CEPRAEA BEACH PRO Task Proposal",
   "type": "object",
   "additionalProperties": false,
@@ -10,84 +10,124 @@
     "schema_version",
     "proposal_id",
     "revision",
-    "tarefa_id",
-    "instrucao_original",
-    "objetivo",
-    "arquivos",
-    "fora_de_escopo",
-    "risco",
+    "task_id",
+    "title",
+    "original_instruction",
+    "objective",
+    "problem",
+    "actor",
+    "valid_context",
+    "invalid_context",
+    "preconditions",
+    "dependencies",
+    "normative_source",
+    "inputs_and_contracts",
+    "current_behavior",
+    "expected_behavior",
+    "relevant_states",
+    "in_scope",
+    "out_of_scope",
+    "included_edge_cases",
+    "three_amigos",
+    "business_rules",
+    "decisions",
+    "constraints",
+    "allowed_actions",
+    "prohibited_actions",
+    "allowed_technical_autonomy",
+    "files",
+    "human_decisions_already_made",
+    "pending_human_decisions",
+    "risk",
     "runbook_binding",
-    "criterios_de_aceite"
+    "stop_conditions",
+    "acceptance_criteria",
+    "mandatory_checks",
+    "expected_evidence",
+    "definition_of_done"
   ],
 
   "properties": {
-    "object_type": {
-      "const": "task_proposal"
+    "object_type": { "const": "task_proposal" },
+    "schema_version": { "const": "2.0" },
+    "proposal_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "revision": { "type": "integer", "minimum": 1 },
+
+    "task_id": { "type": "string", "minLength": 1, "maxLength": 128, "description": "ID (task_atomics.md)." },
+    "title": { "type": "string", "minLength": 1 },
+    "original_instruction": { "type": "string", "minLength": 1, "description": "Texto literal recebido de Davi que originou esta proposta." },
+    "objective": { "type": "string", "minLength": 1 },
+    "problem": { "type": "string", "minLength": 1, "description": "O problema que a tarefa resolve, distinto do objetivo (a solucao)." },
+    "actor": { "type": "string", "minLength": 1 },
+
+    "valid_context": { "type": "string", "minLength": 1 },
+    "invalid_context": { "type": "string", "minLength": 1, "description": "Usar 'Nao aplicavel' quando nao houver contexto invalido relevante." },
+
+    "preconditions": { "type": "string", "minLength": 1 },
+    "dependencies": { "type": "string", "minLength": 1, "description": "Outras tarefas, decisoes (DEC-NNN) ou artefatos dos quais esta tarefa depende. Usar 'Nenhuma' quando nao houver." },
+    "normative_source": { "type": "string", "minLength": 1 },
+    "inputs_and_contracts": { "type": "string", "minLength": 1 },
+
+    "current_behavior": { "type": "string", "minLength": 1, "description": "Usar 'N/A - nova feature' quando nao houver comportamento atual." },
+    "expected_behavior": { "type": "string", "minLength": 1 },
+    "relevant_states": { "type": "string", "minLength": 1 },
+
+    "in_scope": { "type": "string", "minLength": 1 },
+    "out_of_scope": { "type": "string", "minLength": 1 },
+    "included_edge_cases": { "type": "string", "minLength": 1 },
+
+    "three_amigos": { "$ref": "#/$defs/threeAmigos" },
+    "business_rules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/idText" },
+      "description": "{rule_id, rule}[] (task_atomics.md secao 3.1)."
+    },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decisionEntry" },
+      "description": "{decision_id, decision}[] - decisoes humanas ja tomadas que restringem a implementacao (nao confundir com human_decisions_already_made, que e o resumo em prosa)."
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/constraintEntry" },
+      "description": "{constraint_id, scope, constraint}[]."
     },
 
-    "schema_version": {
-      "const": "1.0"
-    },
+    "allowed_actions": { "type": "string", "minLength": 1 },
+    "prohibited_actions": { "type": "string", "minLength": 1, "description": "Equivalente a MUST NOT (task_atomics.md secao 6)." },
+    "allowed_technical_autonomy": { "type": "string", "minLength": 1 },
 
-    "proposal_id": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 128
-    },
-
-    "revision": {
-      "type": "integer",
-      "minimum": 1
-    },
-
-    "tarefa_id": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 128
-    },
-
-    "instrucao_original": {
-      "type": "string",
-      "minLength": 1
-    },
-
-    "objetivo": {
-      "type": "string",
-      "minLength": 1
-    },
-
-    "arquivos": {
+    "files": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {
-        "$ref": "#/$defs/fileScope"
-      }
+      "items": { "$ref": "#/$defs/fileScope" }
     },
 
-    "fora_de_escopo": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
+    "human_decisions_already_made": { "type": "string", "minLength": 1 },
+    "pending_human_decisions": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Toda pendencia real aqui impede PASS do plano ate resolvida ou registrada como HUMAN_DECISION_REQUIRED. Usar 'Nenhuma' quando nao houver."
     },
 
-    "risco": {
-      "$ref": "#/$defs/risk"
-    },
+    "risk": { "$ref": "#/$defs/risk" },
+    "runbook_binding": { "$ref": "#/$defs/runbookBinding" },
 
-    "runbook_binding": {
-      "$ref": "#/$defs/runbookBinding"
-    },
+    "stop_conditions": { "type": "string", "minLength": 1 },
 
-    "criterios_de_aceite": {
+    "acceptance_criteria": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/acceptanceCriterion"
-      }
+      "items": { "$ref": "#/$defs/acceptanceCriterion" }
+    },
+    "mandatory_checks": { "type": "string", "minLength": 1 },
+    "expected_evidence": { "type": "string", "minLength": 1 },
+    "definition_of_done": { "type": "string", "minLength": 1 },
+
+    "bdd": {
+      "$ref": "#/$defs/bdd",
+      "description": "Preencher somente quando algum criterio de aceite descrever comportamento observavel (task_atomics.md secao 5). Omitir quando nao aplicavel."
     }
   },
 
@@ -98,86 +138,74 @@
       "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
     },
 
+    "idText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "rule"],
+      "properties": {
+        "rule_id": { "type": "string", "minLength": 1 },
+        "rule": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "decisionEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "decision"],
+      "properties": {
+        "decision_id": { "type": "string", "minLength": 1 },
+        "decision": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "constraintEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constraint_id", "scope", "constraint"],
+      "properties": {
+        "constraint_id": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "constraint": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "threeAmigos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain_business", "development", "quality"],
+      "properties": {
+        "domain_business": { "type": "string", "minLength": 1 },
+        "development": { "type": "string", "minLength": 1 },
+        "quality": { "type": "string", "minLength": 1 }
+      }
+    },
+
     "fileScope": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "caminho",
-        "papel",
-        "operacao"
-      ],
+      "required": ["path", "role", "operation"],
       "properties": {
-        "caminho": {
-          "$ref": "#/$defs/relativePath"
+        "path": { "$ref": "#/$defs/relativePath" },
+        "role": {
+          "enum": ["target", "reference", "read_only", "forbidden"],
+          "description": "Mesma classificacao de CLAUDE.md (Proposta proporcional): alvo|referencia|somente_leitura|proibido."
         },
-        "papel": {
-          "enum": [
-            "referencia",
-            "alvo",
-            "somente_leitura",
-            "proibido"
-          ]
-        },
-        "operacao": {
-          "enum": [
-            "leitura",
-            "mudanca",
-            "nenhuma"
-          ]
+        "operation": {
+          "enum": ["read", "change", "none"]
         }
       },
-
       "allOf": [
         {
-          "if": {
-            "properties": {
-              "papel": {
-                "const": "alvo"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "operacao": {
-                "const": "mudanca"
-              }
-            }
-          }
+          "if": { "properties": { "role": { "const": "target" } } },
+          "then": { "properties": { "operation": { "const": "change" } } }
         },
         {
-          "if": {
-            "properties": {
-              "papel": {
-                "enum": [
-                  "referencia",
-                  "somente_leitura"
-                ]
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "operacao": {
-                "const": "leitura"
-              }
-            }
-          }
+          "if": { "properties": { "role": { "enum": ["reference", "read_only"] } } },
+          "then": { "properties": { "operation": { "const": "read" } } }
         },
         {
-          "if": {
-            "properties": {
-              "papel": {
-                "const": "proibido"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "operacao": {
-                "const": "nenhuma"
-              }
-            }
-          }
+          "if": { "properties": { "role": { "const": "forbidden" } } },
+          "then": { "properties": { "operation": { "const": "none" } } }
         }
       ]
     },
@@ -185,77 +213,122 @@
     "risk": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "nivel",
-        "naturezas",
-        "blast_radius",
-        "reversibilidade",
-        "justificativa"
-      ],
+      "required": ["level", "natures", "blast_radius", "reversibility", "justification"],
       "properties": {
-        "nivel": {
-          "enum": [
-            "verde",
-            "amarelo",
-            "vermelho",
-            "vermelho_critico"
-          ]
+        "level": {
+          "enum": ["verde", "amarelo", "vermelho", "vermelho_critico"],
+          "description": "AGENT_POLICY.md - Classificacao de risco. Valores fixos, nao traduzir."
         },
-        "naturezas": {
+        "natures": {
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "enum": [
-              "ui",
-              "dependencia",
-              "rls",
-              "mfa",
-              "ci",
-              "dados"
-            ]
-          }
+            "enum": ["ui", "dependencia", "rls", "mfa", "ci", "dados"]
+          },
+          "description": "AGENT_POLICY.md - enum fechado. Uma tarefa de banco de dados usa 'dados'; nao existe categoria 'database' separada."
         },
-        "blast_radius": {
-          "enum": [
-            "baixo",
-            "medio",
-            "alto"
-          ]
-        },
-        "reversibilidade": {
-          "enum": [
-            "reversivel",
-            "parcial",
-            "irreversivel"
-          ]
-        },
-        "justificativa": {
-          "type": "string",
-          "minLength": 1
-        }
+        "blast_radius": { "enum": ["baixo", "medio", "alto"] },
+        "reversibility": { "enum": ["reversivel", "parcial", "irreversivel"] },
+        "justification": { "type": "string", "minLength": 1 }
       }
     },
 
     "acceptanceCriterion": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "condicao",
-        "metodo",
-        "esperado"
-      ],
+      "required": ["condition", "method", "expected"],
       "properties": {
-        "condicao": {
-          "type": "string",
-          "minLength": 1
+        "condition": { "type": "string", "minLength": 1 },
+        "method": { "type": "string", "minLength": 1 },
+        "expected": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "bddStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["keyword", "text"],
+      "properties": {
+        "keyword": { "enum": ["Given", "When", "Then", "And", "But"] },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "bddExamplesTable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headers", "rows"],
+      "properties": {
+        "headers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
         },
-        "metodo": {
-          "type": "string",
-          "minLength": 1
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "bddScenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "kind", "steps", "examples"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["scenario", "scenario_outline"] },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/bddStep" }
         },
-        "esperado": {
-          "type": "string",
-          "minLength": 1
+        "examples": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bddExamplesTable" },
+          "description": "Obrigatorio quando kind=scenario_outline (pelo menos uma tabela); array vazio quando kind=scenario."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "scenario_outline" } } },
+          "then": { "properties": { "examples": { "minItems": 1 } } }
+        }
+      ]
+    },
+
+    "bddRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "scenarios"],
+      "properties": {
+        "rule": { "type": "string", "minLength": 1 },
+        "scenarios": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/bddScenario" }
+        }
+      }
+    },
+
+    "bdd": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["feature", "rules"],
+      "properties": {
+        "feature": { "type": "string", "minLength": 1 },
+        "background": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bddStep" },
+          "description": "Opcional - omitir quando nao houver passo comum a todos os cenarios."
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/bddRule" }
         }
       }
     },
@@ -282,7 +355,8 @@
               "documentation_change",
               "dependency_change"
             ]
-          }
+          },
+          "description": "runbooks/README.md - enum fechado de 4 classes. Nao existem 'backend_change', 'validation_change' ou 'test_change' como classes proprias."
         },
 
         "applicable_runbooks": {
@@ -342,45 +416,23 @@
       },
 
       "allOf": [
-        {
-          "$ref": "#/$defs/codeChangeBinding"
-        },
-        {
-          "$ref": "#/$defs/databaseChangeBinding"
-        },
-        {
-          "$ref": "#/$defs/documentationChangeBinding"
-        },
-        {
-          "$ref": "#/$defs/dependencyChangeBinding"
-        }
+        { "$ref": "#/$defs/codeChangeBinding" },
+        { "$ref": "#/$defs/databaseChangeBinding" },
+        { "$ref": "#/$defs/documentationChangeBinding" },
+        { "$ref": "#/$defs/dependencyChangeBinding" }
       ]
     },
 
     "codeChangeBinding": {
       "if": {
-        "properties": {
-          "operation_classes": {
-            "contains": {
-              "const": "code_change"
-            }
-          }
-        }
+        "properties": { "operation_classes": { "contains": { "const": "code_change" } } }
       },
       "then": {
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "contains": {
-                  "const": "runbooks/executor/RB-EXEC-001-code-change.md"
-                }
-              },
-              "reviewer": {
-                "contains": {
-                  "const": "runbooks/reviewer/RB-REV-001-code-review.md"
-                }
-              }
+              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-001-code-change.md" } },
+              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-001-code-review.md" } }
             }
           }
         }
@@ -389,20 +441,8 @@
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/executor/RB-EXEC-001-code-change.md"
-                  }
-                }
-              },
-              "reviewer": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/reviewer/RB-REV-001-code-review.md"
-                  }
-                }
-              }
+              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-001-code-change.md" } } },
+              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-001-code-review.md" } } }
             }
           }
         }
@@ -411,28 +451,14 @@
 
     "databaseChangeBinding": {
       "if": {
-        "properties": {
-          "operation_classes": {
-            "contains": {
-              "const": "database_change"
-            }
-          }
-        }
+        "properties": { "operation_classes": { "contains": { "const": "database_change" } } }
       },
       "then": {
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "contains": {
-                  "const": "runbooks/executor/RB-EXEC-002-database-change.md"
-                }
-              },
-              "reviewer": {
-                "contains": {
-                  "const": "runbooks/reviewer/RB-REV-002-database-review.md"
-                }
-              }
+              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-002-database-change.md" } },
+              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-002-database-review.md" } }
             }
           }
         }
@@ -441,20 +467,8 @@
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/executor/RB-EXEC-002-database-change.md"
-                  }
-                }
-              },
-              "reviewer": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/reviewer/RB-REV-002-database-review.md"
-                  }
-                }
-              }
+              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-002-database-change.md" } } },
+              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-002-database-review.md" } } }
             }
           }
         }
@@ -463,28 +477,14 @@
 
     "documentationChangeBinding": {
       "if": {
-        "properties": {
-          "operation_classes": {
-            "contains": {
-              "const": "documentation_change"
-            }
-          }
-        }
+        "properties": { "operation_classes": { "contains": { "const": "documentation_change" } } }
       },
       "then": {
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "contains": {
-                  "const": "runbooks/executor/RB-EXEC-003-documentation-change.md"
-                }
-              },
-              "reviewer": {
-                "contains": {
-                  "const": "runbooks/reviewer/RB-REV-003-documentation-review.md"
-                }
-              }
+              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-003-documentation-change.md" } },
+              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-003-documentation-review.md" } }
             }
           }
         }
@@ -493,20 +493,8 @@
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/executor/RB-EXEC-003-documentation-change.md"
-                  }
-                }
-              },
-              "reviewer": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/reviewer/RB-REV-003-documentation-review.md"
-                  }
-                }
-              }
+              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-003-documentation-change.md" } } },
+              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-003-documentation-review.md" } } }
             }
           }
         }
@@ -515,28 +503,14 @@
 
     "dependencyChangeBinding": {
       "if": {
-        "properties": {
-          "operation_classes": {
-            "contains": {
-              "const": "dependency_change"
-            }
-          }
-        }
+        "properties": { "operation_classes": { "contains": { "const": "dependency_change" } } }
       },
       "then": {
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "contains": {
-                  "const": "runbooks/executor/RB-EXEC-004-dependency-change.md"
-                }
-              },
-              "reviewer": {
-                "contains": {
-                  "const": "runbooks/reviewer/RB-REV-005-dependency-review.md"
-                }
-              }
+              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-004-dependency-change.md" } },
+              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-005-dependency-review.md" } }
             }
           }
         }
@@ -545,20 +519,8 @@
         "properties": {
           "applicable_runbooks": {
             "properties": {
-              "executor": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/executor/RB-EXEC-004-dependency-change.md"
-                  }
-                }
-              },
-              "reviewer": {
-                "not": {
-                  "contains": {
-                    "const": "runbooks/reviewer/RB-REV-005-dependency-review.md"
-                  }
-                }
-              }
+              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-004-dependency-change.md" } } },
+              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-005-dependency-review.md" } } }
             }
           }
         }
