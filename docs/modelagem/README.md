@@ -68,8 +68,12 @@ docs/modelagem/
 ## Fontes de autoridade
 
 - `PLANO_CEPRAEA_Modelo_Canonico_FINAL.md` — especificação normativa desta fase.
-- `decisoes/registro_decisoes.md` — decisões já resolvidas (`DEC-008`, `DEC-GOV-001` e as
-  incluídas por este `AC-000`: `DEC-001`–`DEC-003`, `DEC-006`).
+- `decisoes/registro_decisoes.md` — decisões já resolvidas/aprovadas: `DEC-001`–`DEC-003`,
+  `DEC-006`, `DEC-008` (incluídas por `AC-000`); `DEC-GOV-001` (referência, registro canônico em
+  `.ai/decisions/`); `DEC-011` (separação de decisões de governança do SDLC das decisões de
+  modelagem); `DEC-GOV-002` (`runbook_binding` formal para `AC-001`–`AC-029`/`SEM-NNN`/`SYN-NNN`,
+  referência, registro canônico em `.ai/decisions/`). `DEC-007` permanece `BLOQUEADA`, aprovador
+  `PENDENTE`.
 - `.drive/modelagem_dados_agente.md` e `.drive/modelagem_dominio_dados.md` — modelagem de
   referência citada pelo plano.
 - `.drive/BEACH HANDBALL/Fluxo de Modelagem.gdoc.docx` — checklist original ("Guia 1"/"Guia 2")
