@@ -1,0 +1,132 @@
+{
+  "schema_version": "FVR-CONFORMANCE-COVERAGE-1.0",
+  "scope": "machine-readable data contracts only",
+  "criteria": {
+    "AC-FVR-01": {
+      "status": "OUTSIDE_SCHEMA_CONFORMANCE",
+      "reason": "Requires static inspection of runner implementation for eval calls."
+    },
+    "AC-FVR-02": {
+      "status": "OUTSIDE_SCHEMA_CONFORMANCE",
+      "reason": "Requires static/runtime inspection of runner implementation for dynamic source behavior."
+    },
+    "AC-FVR-03": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/plan-invalid-arbitrary-command-field.json",
+        "schema-negative/plan-invalid-host-execution.json",
+        "schema-negative/plan-invalid-unregistered-tool.json"
+      ],
+      "remaining": "Runner implementation must still prove it never invokes a shell evaluator internally."
+    },
+    "AC-FVR-04": {
+      "status": "COVERED",
+      "vectors": [
+        "schema-negative/plan-invalid-unknown-field.json",
+        "schema-negative/manifest-invalid-unknown-field.json"
+      ]
+    },
+    "AC-FVR-05": {
+      "status": "COVERED",
+      "vectors": [
+        "schema-negative/assertion-invalid-unknown-operator.json"
+      ]
+    },
+    "AC-FVR-06": {
+      "status": "OUTSIDE_SCHEMA_CONFORMANCE",
+      "reason": "Requires runner behavior test with a child process returning non-zero."
+    },
+    "AC-FVR-07": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-positive/manifest-valid-completed.json",
+        "schema-negative/manifest-invalid-digest.json"
+      ],
+      "remaining": "Runner must actually calculate the digests from bytes."
+    },
+    "AC-FVR-08": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/manifest-invalid-timeout-with-exit-code.json"
+      ],
+      "remaining": "Runner behavior must produce TIMED_OUT with null exit_code."
+    },
+    "AC-FVR-09": {
+      "status": "SEMANTIC_RULE_DEFINED",
+      "rule": "SEM-PLAN-006"
+    },
+    "AC-FVR-10": {
+      "status": "SEMANTIC_RULE_DEFINED",
+      "rule": "SEM-PLAN-008"
+    },
+    "AC-FVR-11": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "semantic/semantic-invalid-runner-hash-end.json"
+      ],
+      "remaining": "Start hash must be measured by runner/control plane."
+    },
+    "AC-FVR-12": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "semantic/semantic-invalid-runner-hash-end.json"
+      ],
+      "remaining": "End hash must be measured after execution."
+    },
+    "AC-FVR-13": {
+      "status": "COVERED",
+      "vectors": [
+        "schema-negative/plan-invalid-path-traversal.json",
+        "schema-negative/manifest-invalid-artifact-path-traversal.json"
+      ]
+    },
+    "AC-FVR-14": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/plan-invalid-host-execution.json"
+      ],
+      "remaining": "Sandbox implementation must enforce isolation at runtime."
+    },
+    "AC-FVR-15": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/plan-invalid-predicate-string.json"
+      ],
+      "remaining": "Evaluator must ignore narrative content by normative semantics."
+    },
+    "AC-FVR-16": {
+      "status": "SEMANTIC_RULE_DEFINED",
+      "rule": "SEM-MAN-006"
+    },
+    "AC-FVR-17": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/manifest-invalid-missing-required-control-field.json"
+      ],
+      "remaining": "Atomic package publication is runtime behavior."
+    },
+    "AC-FVR-18": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-positive/manifest-valid-completed.json",
+        "schema-negative/manifest-invalid-digest.json"
+      ],
+      "remaining": "Artifact digest verification is SEM-MAN-006."
+    },
+    "AC-FVR-19": {
+      "status": "COVERED_PARTIALLY",
+      "vectors": [
+        "schema-negative/assertion-invalid-numeric-type.json"
+      ],
+      "remaining": "Runtime reference type mismatch is defined as NOT_VERIFIED by normative-semantics.json."
+    },
+    "AC-FVR-20": {
+      "status": "COVERED",
+      "vectors": [
+        "schema-negative/assertion-invalid-unknown-operator.json",
+        "schema-negative/plan-invalid-unknown-operation.json",
+        "schema-negative/plan-invalid-unregistered-tool.json"
+      ]
+    }
+  }
+}
