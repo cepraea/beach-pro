@@ -250,3 +250,38 @@ até fragmentos de evidência específicos (`EVD-NNNN`), nunca até uma fonte in
   }
 }
 ```
+
+## `AC-002` — `BancoCEPRAEA.docx`
+
+```json
+{
+  "id_regra": "REGRA-009",
+  "fonte": ["EVD-0062"],
+  "texto_original": "As alterações IHF válidas desde 1º de abril de 2026 permitem números de uniforme de 1 a 99; por isso shirt_number é temporal e validado nesse intervalo.",
+  "tipo": "CARDINALIDADE",
+  "sujeito": "número de camisa (shirt_number) do vínculo de elenco",
+  "acao": "deve estar entre",
+  "objeto": "1 e 99, inclusive",
+  "condicoes": ["Vigente para vínculos de elenco a partir da alteração normativa IHF de 2026-04-01."],
+  "excecoes": [],
+  "cardinalidade_minima": "1",
+  "cardinalidade_maxima": "99",
+  "vigencia": "A partir de 2026-04-01 (alteração IHF Beach Handball). Intervalo anterior a essa data não detalhado nesta fonte.",
+  "contexto_valido": "Número de camisa atribuído a uma atleta dentro de um vínculo de elenco por temporada.",
+  "contexto_invalido": null,
+  "conceitos_afetados": ["TERMO-001"],
+  "implementacao_candidata": "CHECK (shirt_number is null or shirt_number between 1 and 99) — já observado como constraint física na fonte (roster_shirt_number_ck), não implementado neste repositório nesta fase.",
+  "estado_epistemologico": "OBSERVADO",
+  "estado_tecnico": "NAO_MODELADO",
+  "duvidas": [
+    "Fonte é TÉCNICA/AUXILIAR (DEC-002) — o intervalo 1-99 é atribuído à IHF como fonte normativa externa, não é uma regra inventada por este documento, mas esta ação não verificou o texto oficial da IHF diretamente; permanece OBSERVADO até confirmação contra a fonte normativa primária (IHF — Rules of the Game, Beach Handball) ou aprovação humana direta.",
+    "Não fica claro nesta fonte qual era o intervalo válido antes de 2026-04-01, nem se camisas já atribuídas fora do novo intervalo antes da mudança precisam de correção retroativa."
+  ],
+  "evidencia": {
+    "source_evidence": {
+      "comando_ou_metodo": "leitura de SRC-002 (BancoCEPRAEA.docx), seção 3 ('Regras normativas consideradas') e seção 9.6 (athlete_roster_memberships, coluna shirt_number e constraint roster_shirt_number_ck)",
+      "resultado": "regra declarada em prosa na seção 3 e materializada como constraint física idêntica na seção 9.6, ambas atribuindo a origem à alteração IHF vigente desde 2026-04-01"
+    }
+  }
+}
+```
