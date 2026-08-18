@@ -1,0 +1,582 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fvr.local/schema/1.0/manifest.schema.json",
+  "title": "FVR-1.0 Verification Manifest Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "run",
+    "control",
+    "repository",
+    "runner",
+    "steps",
+    "assertions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "FVR-MANIFEST-1.0"
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "assurance_level"
+      ],
+      "properties": {
+        "name": {
+          "const": "FVR"
+        },
+        "version": {
+          "const": "1.0"
+        },
+        "assurance_level": {
+          "const": "E1_DETERMINISTIC_LOCAL"
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "started_at",
+        "finished_at"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^RUN-[A-Z0-9][A-Z0-9._-]{2,95}$"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_id",
+        "contract_version",
+        "contract_sha256",
+        "verification_plan_sha256",
+        "runner_sha256_start",
+        "runner_sha256_end"
+      ],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "pattern": "^CTR-[A-Z0-9][A-Z0-9._-]{2,63}$"
+        },
+        "contract_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "contract_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "verification_plan_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "runner_sha256_start": {
+          "$ref": "#/$defs/sha256"
+        },
+        "runner_sha256_end": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "head_before",
+        "head_after",
+        "working_tree_before_sha256",
+        "working_tree_after_sha256"
+      ],
+      "properties": {
+        "head_before": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "head_after": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "working_tree_before_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "working_tree_after_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "runner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "RUN_COMPLETED",
+            "RUN_COMPLETED_WITH_FAILED_ASSERTIONS",
+            "PLAN_INVALID",
+            "CONTROL_INTEGRITY_FAILURE",
+            "POLICY_VIOLATION",
+            "PACKAGE_INCOMPLETE",
+            "RUNNER_INTERNAL_ERROR"
+          ]
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/stepResult"
+      }
+    },
+    "assertions": {
+      "type": "object",
+      "maxProperties": 256,
+      "propertyNames": {
+        "pattern": "^(?:AC|INV)-[0-9]{3}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/assertionResult"
+      }
+    },
+    "package_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifactMeta"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifactMeta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "bytes",
+        "truncated"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?:raw|observations)/(?!.*/\\.\\.(?:/|$))[A-Za-z0-9._/@+\\-][A-Za-z0-9._/@+\\-/ ]*$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "stepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "operation",
+        "state",
+        "started_at",
+        "finished_at",
+        "duration_ms",
+        "exit_code",
+        "termination_reason"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation": {
+          "enum": [
+            "file.exists",
+            "file.stat",
+            "file.sha256",
+            "directory.list",
+            "git.head",
+            "git.status",
+            "git.diff",
+            "git.diff_names",
+            "git.tracked_files",
+            "process.run",
+            "devcontainer.build",
+            "devcontainer.up",
+            "devcontainer.exec"
+          ]
+        },
+        "state": {
+          "enum": [
+            "COMPLETED",
+            "TIMED_OUT",
+            "RUNNER_ERROR",
+            "POLICY_VIOLATION",
+            "NOT_RUN"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "termination_reason": {
+          "enum": [
+            "EXITED",
+            "TIMEOUT",
+            "RUNNER_FAILURE",
+            "POLICY_REJECTION",
+            "NOT_RUN"
+          ]
+        },
+        "stdout": {
+          "$ref": "#/$defs/artifactMeta"
+        },
+        "stderr": {
+          "$ref": "#/$defs/artifactMeta"
+        },
+        "observation": {
+          "anyOf": [
+            {
+              "type": [
+                "null",
+                "boolean",
+                "number",
+                "string"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": [
+                  "null",
+                  "boolean",
+                  "number",
+                  "string"
+                ]
+              },
+              "uniqueItems": true
+            },
+            {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": [
+                      "null",
+                      "boolean",
+                      "number",
+                      "string"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "null",
+                        "boolean",
+                        "number",
+                        "string"
+                      ]
+                    },
+                    "uniqueItems": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "COMPLETED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "termination_reason": {
+                "const": "EXITED"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "TIMED_OUT"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "exit_code": {
+                "type": "null"
+              },
+              "termination_reason": {
+                "const": "TIMEOUT"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "RUNNER_ERROR",
+                  "POLICY_VIOLATION",
+                  "NOT_RUN"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "exit_code": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "process.run",
+                  "devcontainer.build",
+                  "devcontainer.up",
+                  "devcontainer.exec"
+                ]
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "stdout",
+              "stderr"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "enum": [
+                  "process.run",
+                  "devcontainer.build",
+                  "devcontainer.up",
+                  "devcontainer.exec"
+                ]
+              },
+              "state": {
+                "const": "COMPLETED"
+              }
+            },
+            "required": [
+              "operation",
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "exit_code": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              }
+            }
+          }
+        }
+      ]
+    },
+    "assertionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mandatory",
+        "status",
+        "reason_code"
+      ],
+      "properties": {
+        "mandatory": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_VERIFIED"
+          ]
+        },
+        "observed": {
+          "anyOf": [
+            {
+              "type": [
+                "null",
+                "boolean",
+                "number",
+                "string"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": [
+                  "null",
+                  "boolean",
+                  "number",
+                  "string"
+                ]
+              },
+              "uniqueItems": true
+            }
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "CONDITION_TRUE",
+            "CONDITION_FALSE",
+            "MISSING_REFERENCE",
+            "TYPE_MISMATCH",
+            "STEP_NOT_COMPLETED",
+            "EVIDENCE_TRUNCATED",
+            "PARSER_FAILURE",
+            "UNSUPPORTED_RUNTIME_VALUE"
+          ]
+        }
+      }
+    }
+  },
+  "x-fvr-semantic-rules": [
+    {
+      "id": "SEM-MAN-001",
+      "operator": "all_equal",
+      "actual": [
+        "/control/runner_sha256_start",
+        "/control/runner_sha256_end"
+      ],
+      "expected_source": "external_trust_anchor.runner_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-002",
+      "operator": "eq",
+      "actual": "/control/verification_plan_sha256",
+      "expected_source": "external_trust_anchor.verification_plan_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-003",
+      "operator": "eq",
+      "actual": "/control/contract_sha256",
+      "expected_source": "external_trust_anchor.contract_sha256",
+      "on_false": "CONTROL_INTEGRITY_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-004",
+      "operator": "same_step_sequence",
+      "actual": "/steps",
+      "expected_source": "frozen_plan.steps",
+      "on_false": "PROVENANCE_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-005",
+      "operator": "set_equal",
+      "actual": "object_keys(/assertions)",
+      "expected_source": "object_keys(frozen_plan./assertions)",
+      "on_false": "PROVENANCE_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-006",
+      "operator": "artifact_digest_verify",
+      "actual": "all embedded raw artifacts",
+      "expected_source": "local_filesystem_bytes",
+      "on_false": "PROVENANCE_FAILURE"
+    },
+    {
+      "id": "SEM-MAN-007",
+      "operator": "recompute_assertions",
+      "actual": "manifest+frozen_plan",
+      "expected": "manifest assertion.status is non-authoritative derived data",
+      "on_false": "NOT_VERIFIED"
+    },
+    {
+      "id": "SEM-MAN-008",
+      "operator": "absence",
+      "actual": "/final_status",
+      "expected": true,
+      "on_false": "PROTOCOL_ERROR"
+    }
+  ]
+}

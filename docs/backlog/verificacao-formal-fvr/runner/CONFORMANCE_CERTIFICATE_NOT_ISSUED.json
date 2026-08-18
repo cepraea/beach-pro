@@ -1,0 +1,35 @@
+{
+  "schema_version": "FVR-CONFORMANCE-CERTIFICATE-ATTEMPT-1.0",
+  "certificate_issued": false,
+  "certificate_status": "NOT_ISSUED",
+  "reason": "HARNESS_INVALID",
+  "harness_report": {
+    "ac_results": {},
+    "preconditions": {
+      "bash": "/usr/bin/bash",
+      "git": "/usr/bin/git"
+    },
+    "reason": "required executable unavailable: shellcheck",
+    "results": [],
+    "schema_version": "FVR-RUNNER-CONFORMANCE-REPORT-1.0",
+    "verdict": "HARNESS_INVALID"
+  },
+  "runner_sha256": "949c60626307ab43e4d38c4c505655084ead0ea03741098b96e25965a77890e4",
+  "harness_sha256": "9cbfcfa1d3efdd28712afcdec92d6174548f9885c893fea3f5bee39bf6fb00fe",
+  "environment_preconditions": {
+    "executables": {
+      "bash": "/usr/bin/bash",
+      "git": "/usr/bin/git",
+      "shellcheck": null,
+      "bwrap": null,
+      "strace": null
+    },
+    "python_modules": {
+      "bashlex": false,
+      "jsonschema": true,
+      "referencing": true
+    }
+  },
+  "issuance_rule": "CONFORMANCE_CERTIFICATE.json MAY be issued only when conformance_harness verdict == CONFORMANT and AC-FVR-01..20 are all PASS.",
+  "observed_harness_process_exit_code": 2
+}

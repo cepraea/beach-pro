@@ -1,0 +1,68 @@
+{
+  "schema_version": "FVR-IMPLEMENTATION-VALIDATION-1.0",
+  "candidate_status": "IMPLEMENTATION_CANDIDATE",
+  "full_conformance_claimed": false,
+  "checks": [
+    {
+      "id": "LOCAL-001-BASH-SYNTAX",
+      "status": "PASS",
+      "detail": {
+        "exit_code": 0,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "LOCAL-002-HARNESS-PY_COMPILE",
+      "status": "PASS",
+      "detail": {
+        "exit_code": 0,
+        "stderr": "Spreadsheet runtime warmup failed during python startup\nTraceback (most recent call last):\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py\", line 26, in warm_spreadsheet_runtime_on_startup\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/spreadsheet_warmup.py\", line 772, in warm_spreadsheet_runtime\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/rpc/connection.py\", line 37, in get_or_create_client\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/rpc/daemon.py\", line 124, in start_daemon\nTimeoutError: Timed out waiting for artifact tool daemon socket. Set ARTIFACT_TOOL_RPC_DAEMON_STARTUP_TIMEOUT_S=<seconds> to increase the limit.\n"
+      }
+    },
+    {
+      "id": "LOCAL-003-EMBEDDED-PYTHON-AST",
+      "status": "FAIL",
+      "detail": "engine heredoc not found"
+    },
+    {
+      "id": "LOCAL-004-EMBEDDED-PYTHON-DYNAMIC-EXEC-SCAN",
+      "status": "PASS",
+      "detail": {
+        "findings": []
+      }
+    },
+    {
+      "id": "LOCAL-005-NORMATIVE-VECTOR-ID-COVERAGE",
+      "status": "PASS",
+      "detail": {
+        "expected_count": 38,
+        "harness_count": 38,
+        "missing": [],
+        "extra": []
+      }
+    },
+    {
+      "id": "LOCAL-006-FULL-CONFORMANCE-HARNESS",
+      "status": "HARNESS_INVALID",
+      "detail": {
+        "harness_process_exit_code": 2,
+        "report": {
+          "ac_results": {},
+          "preconditions": {
+            "bash": "/usr/bin/bash",
+            "git": "/usr/bin/git"
+          },
+          "reason": "required executable unavailable: shellcheck",
+          "results": [],
+          "schema_version": "FVR-RUNNER-CONFORMANCE-REPORT-1.0",
+          "verdict": "HARNESS_INVALID"
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "CONFORMANT_required_before_production_claim": true,
+    "HARNESS_INVALID_is_pass": false,
+    "local_environment_limitation": "required executable unavailable: shellcheck"
+  }
+}
