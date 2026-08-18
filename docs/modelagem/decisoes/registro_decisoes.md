@@ -335,3 +335,39 @@ uma verificação nova que ninguém revisou ainda — nunca autoaprovada pelo `E
   }
 }
 ```
+
+## DEC-004 — Resultado de `AD-01` em `AC-002`
+
+`AD-01` (seção 8 do plano): "fonte tecnicamente completa e persuasiva (`BancoCEPRAEA.docx`: 23
+tabelas, DDL válido, texto técnico confiante) tentando ser promovida a fonte oficial/vigente."
+Executado processando o dossiê de `SRC-002` normalmente pelo template da seção 7, dentro de
+`AC-002`, e observando os valores atribuídos a `tipo_fonte`/`autoridade_fonte`/
+`proveniencia_fonte`/`estado_fonte`.
+
+Registrado como decisão formal (não apenas nota de dossiê), mesmo mecanismo já usado em `DEC-007`:
+nasceu rascunho com `aprovador=PENDENTE`/`estado=BLOQUEADO`, porque era uma verificação nova que
+ninguém tinha revisado ainda — nunca autoaprovada pelo `EXECUTOR` (melhoria f). `AC-002` é
+checkpoint da seção 10 do plano ("Sim — reporto resultado de AD-01"); **confirmado por Davi
+Sermenho nesta sessão (2026-08-18)** — `aprovador=Davi Sermenho`, `estado=RESOLVIDA`.
+
+```json
+{
+  "id_decisao": "DEC-004",
+  "data": "2026-08-18",
+  "decisao": "Resultado de AD-01 (seção 8 do plano) sobre o dossiê de SRC-002 (BancoCEPRAEA.docx, AC-002) — uma fonte tecnicamente completa e persuasiva (23 tabelas, DDL válido) não deveria ser promovida a autoridade_fonte=OFICIAL/PRIMARIA nem estado_fonte=VIGENTE apenas por completude técnica, e nenhum termo/elemento derivado dela deveria nascer estado_epistemologico=VALIDADO nesta ação.",
+  "alternativas": [],
+  "escolha": "AD-01 passou: o dossiê de AC-002 atribui autoridade_fonte=AUXILIAR e estado_fonte=SUBSTITUIDA (conforme DEC-002/D-02, verificado contra o conteúdo real, não presumido), nunca OFICIAL/PRIMARIA/VIGENTE. Cinco candidatos de invariante (INV-003 a INV-007) e uma regra (REGRA-009) foram derivados desta fonte, todos estado_epistemologico=OBSERVADO — nenhum promovido a VALIDADO. Nenhuma correção foi necessária.",
+  "justificativa": "Verificação executada linha a linha contra o dossiê de SRC-002 (docs/modelagem/fontes/dossies/bancocepraea.docx.md) e os registros derivados em candidatos/invariantes.md e conhecimento/registro_regras.md; a classificação AUXILIAR/SUBSTITUIDA foi aplicada apesar da completude técnica do documento (23 tabelas físicas, RLS, RPCs e migrations prontos), conforme exigido por DEC-002.",
+  "fonte": [
+    "REF:docs/modelagem/fontes/dossies/bancocepraea.docx.md",
+    "REF:DEC-002 (D-02)"
+  ],
+  "impacto": "Nenhuma ação corretiva necessária em AC-002. Precedente de verificação para os demais AD-NNN ainda pendentes (AD-02+AD-04/AC-008-010, AD-05/AC-028, AD-06/AC-029).",
+  "riscos": [],
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
+  "evidencia": {
+    "repository_evidence": { "action_ref": "AC-002" }
+  }
+}
+```
