@@ -611,3 +611,173 @@ de temporada por competição, não uma matriz semanal, com uma camada de cálcu
   "tratamento_dado_sensivel": "A linha 31 ('Pendentes') deste mesmo bloco replica, nas colunas U-AD, os nomes de atletas pendentes já listados nas colunas F-O da mesma linha (fora do bloco 'Formula engine' propriamente dito, mas dentro do intervalo de linhas desta evidência). Nenhum nome é reproduzido nesta evidência — apenas a estrutura do bloco e os valores agregados/qualitativos."
 }
 ```
+
+## SRC-002 / AC-002 — `BancoCEPRAEA.docx`
+
+```json
+{
+  "id_evidencia": "EVD-0049",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 4 'Princípios obrigatórios do domínio', tabela DOM-001 a DOM-010",
+  "trecho_literal": "DOM-001 Disponibilidade ≠ presença real. DOM-002 Lista prevista ≠ presença real. DOM-003 Convocação de etapa ≠ escalação/roster de partida ≠ participação real. DOM-004 Nome não é chave; joins usam UUID ou código legado controlado. DOM-005 Respostas, correções, presença e eventos de vínculo preservam histórico. DOM-006 Justificativas são privadas e nunca integram listas compartilhadas. DOM-007 ESPECIALISTA = CORINGA; ambos são papel tático contextual, não função ampla nem posição permanente. DOM-008 Indicadores são projeções de fatos validados. DOM-009 Mudança de regra esportiva não reescreve fatos históricos. DOM-010 Nenhum dado real é autorizado no estágio sintético atual.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0050",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 7 'Catálogo de tabelas', tabela de 23 linhas (# / Nome da tabela / Descrição)",
+  "trecho_literal": "23 tabelas físicas nos schemas public (21), private (1: response_justifications) e audit (1: audit_events), cobrindo equipe/temporada, identidade/acesso, elenco, agenda/treino, solicitação/resposta/correção, lista prevista, presença factual, comunicação e auditoria.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0051",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 8 'Relações entre as tabelas', tabela de 19 linhas (Origem/Destino/Cardinalidade/Finalidade/Exclusão)",
+  "trecho_literal": "19 relações tabela-a-tabela documentadas; regra geral de exclusão é RESTRICT ('fatos históricos não devem desaparecer em cascata'), SET NULL restrito a relações opcionais de conta/autor.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0052",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seções 9.5 (public.athletes) e 9.6 (public.athlete_roster_memberships)",
+  "trecho_literal": "athletes: 'Identidade esportiva estável da atleta. Não guarda função, posição ou status temporal do elenco; esses atributos pertencem ao vínculo de temporada.' Coluna legacy_athlete_id: 'Código estável da planilha, como ATH-0001... Conciliar legado sem depender do nome.' athlete_roster_memberships: 'Vínculo temporal da atleta com uma temporada. Guarda estado do elenco, função ampla corrigida e número de camisa.'",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0053",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 11 'Segurança, RLS e privacidade', prosa introdutória + função private.is_team_coach",
+  "trecho_literal": "'O treinador opera apenas equipes em que possui vínculo COACH ativo e MFA AAL2. A atleta lê e altera apenas seus próprios fluxos... Service role nunca deve ser incluída no frontend.' Função is_team_coach exige coalesce(auth.jwt() ->> 'aal', 'aal1') = 'aal2'. Seção 9.3 (profiles), regra da tabela: 'Não armazenar senha, token ou segredo.'",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0054",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 9.16 (private.response_justifications) e 9.15 (public.justification_categories)",
+  "trecho_literal": "response_justifications: 'Conteúdo privado opcional associado a uma resposta. Fica fora do schema exposto e só é acessado por RPCs autorizadas.' justification_categories possui coluna 'sensitive' (boolean); seed sintético marca categorias 'PERSONAL' e 'HEALTH_PRIVATE' como sensitive=true, com descrição 'Não solicitar diagnóstico.' para a segunda.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0055",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 13.4 'Integridade e triggers', funções validate_training_commitment/validate_roster_scope/validate_response_option",
+  "trecho_literal": "training_sessions_validate_commitment: 'if v_type is distinct from TREINO then raise exception'. roster_validate_scope: 'if v_athlete_team is distinct from v_season_team then raise exception Atleta e temporada pertencem a equipes diferentes'. responses_validate_option: 'if v_expected is distinct from v_actual then raise exception Opção não pertence à definição da solicitação'.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0056",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 13.4 'Integridade e triggers', bloco '-- append-only'",
+  "trecho_literal": "Triggers before update or delete executando private.prevent_update_delete() em cinco tabelas: athlete_roster_events, operational_responses, response_corrections, attendance_records, audit.audit_events. Função prevent_update_delete: 'raise exception Tabela append-only: operação % não permitida em %.%'.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0057",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 10 'Views e indicadores derivados', view v_availability_attendance_divergence",
+  "trecho_literal": "View calcula divergence_code comparando effective_semantic_group (disponibilidade declarada) com attendance_status (presença factual): 'CONFIRMED_BUT_ABSENT' quando declarou AFFIRMATIVE mas attendance_status=AUSENTE; 'UNAVAILABLE_BUT_ATTENDED' quando declarou NEGATIVE mas compareceu; 'ATTENDANCE_NOT_RECORDED' quando não há registro de presença.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0058",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 15 'Contrato de extensibilidade futura', bloco 'Regra específica de especialista/coringa'",
+  "trecho_literal": "'Código canônico do papel tático: ESPECIALISTA. Alias de domínio/legado: CORINGA. Nunca adicionar ESPECIALISTA ou CORINGA ao enum broad_player_function.' Tabela do topo do documento (seção 1) já classifica: 'Especialista/coringa: Mesmo papel tático contextual; fora do cadastro e fora do MVP atual.'",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0059",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 15 'Contrato de extensibilidade futura', tabela de 12 módulos futuros",
+  "trecho_literal": "'As entidades abaixo são previstas, mas não devem ser criadas no MVP atual.' Inclui competitions, competition_stages, competition_rule_snapshots, matches, match_periods, match_rosters, match_participations, match_role_assignments, result_validations, source_documents/record_provenance, import_batches/import_batch_items, external_metric_snapshots.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0060",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 16 'Matriz de substituição das planilhas', tabela de 12 linhas",
+  "trecho_literal": "Mapeia DB_ATLETAS → athletes+athlete_roster_memberships; DB_FUNCOES → enum broad_player_function; DB_TREINOS+DB_CALENDARIO → commitments+training_sessions+v_calendar; DB_PRESENCA → requests/recipients/responses ('Tratar como disponibilidade antecipada'); Presença observada → attendance_records ('Novo fato posterior ao treino'); DB_AVISOS → communications+communication_recipients; DB_CONVOCACOES → módulo futuro; DB_JOGOS → módulo futuro de matches; DB_INDICADORES/EXPORTS → views ('Não persistir métricas deriváveis'); DB_CHANGELOG → audit_events.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0061",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 13.9 '0008_seed_synthetic.sql'",
+  "trecho_literal": "'-- Somente ambiente sintético. Não importar nomes ou contatos reais.' Todos os valores de exemplo usam UUIDs fixos de placeholder (ex.: '11111111-1111-4111-8111-111111111111') e rótulos genéricos ('Temporada sintética 2026'); nenhum nome de pessoa real.",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
+
+```json
+{
+  "id_evidencia": "EVD-0062",
+  "id_fonte": "SRC-002",
+  "id_acao": "AC-002",
+  "localizacao": "seção 3 'Regras normativas consideradas' + seção 9.6 (athlete_roster_memberships), coluna shirt_number e constraint roster_shirt_number_ck",
+  "trecho_literal": "'As alterações IHF válidas desde 1º de abril de 2026 permitem números de uniforme de 1 a 99; por isso shirt_number é temporal e validado nesse intervalo.' Constraint: 'check (shirt_number is null or shirt_number between 1 and 99)'. Regra de coluna: 'Entre 1 e 99 conforme regra IHF vigente desde 01/04/2026; pode variar por temporada.'",
+  "tipo_evidencia": "TABELA",
+  "dado_sensivel_encontrado": false
+}
+```
