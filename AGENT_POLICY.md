@@ -1,149 +1,49 @@
-# CEPRAEA BEACH PRO — Política comum dos agentes
+# CEPRAEA BEACH PRO — Política Comum dos Agentes
 
-## Escopo
+> **Escopo de Aplicação:** Governa a atuação do Claude Code e Codex no SDLC (Ciclo de Vida de Desenvolvimento). **Não** se aplica ao runtime da aplicação.
 
-Esta política governa Claude Code e Codex no SDLC do CEPRAEA BEACH PRO.
-Ela não governa o runtime da aplicação.
+## 1. Papéis, Autoridade e Fluxo
+Existe uma separação estrita de funções. Nenhum agente pode aprovar ou promover o próprio trabalho.
+*   **Davi (Humano):** Autoridade máxima. Responsável exclusivo por decisões materiais, alterações de estado no Git, releases e deploy.
+*   **Claude Code:** Atua estritamente como **EXECUTOR** (Produção).
+*   **Codex:** Atua estritamente como **REVIEWER** independente (Revisão e Validação).
+*   **Escalonamento (ChatGPT / Gemini):** Uso restrito a divergências materiais, decisões arquiteturais ou necessidade de terceira opinião. Eles **não** possuem autoridade de aprovação.
+*   **Fluxo Obrigatório:** `Davi → Claude → Codex → Claude → Codex → Davi → Git`
 
-## Papéis e autoridade
+## 2. Escopo da Tarefa e Anti-Bypass
+*   **Foco Exclusivo:** Execute *somente* a tarefa autorizada. Não avance automaticamente para outras tarefas (AC, SEM, SYN).
+*   **Sem Iniciativas Paralelas:** Não crie agentes, workflows, documentos ou infraestruturas que não tenham sido explicitamente solicitados.
+*   **Proibição de Bypass:** A falta de permissão não autoriza a quebra de regras. Não altere políticas, sandboxes ou controles para contornar restrições. Se não puder avançar, interrompa e responda com `BLOCKED` ou `HUMAN_DECISION_REQUIRED`.
 
-- Davi é a autoridade final sobre domínio, decisões materiais, Git, release e deploy.
-- Claude Code atua como EXECUTOR.
-- Codex atua como REVIEWER independente.
-- Produção, revisão e aprovação são funções distintas.
-- Nenhum agente aprova ou promove o próprio trabalho.
+## 3. Matriz de Classificação de Risco
+Antes de qualquer alteração, o risco deve ser classificado:
 
-Fluxo normal:
+| Risco | Nível | Descrição (Gatilhos) |
+| :---: | :--- | :--- |
+| 🟢 | **Verde** | Mudança local, reversível; sem impacto em auth, dados ou plano de controle. |
+| 🟡 | **Amarelo** | Múltiplos alvos/módulos, semântica canônica ou expansão relevante de código. |
+| 🔴 | **Vermelho** | Dependências, migrations, RLS, MFA, auth, auditoria ou privacidade. |
+| 🚨 | **Crítico** | `.devcontainer`, `CI`, `hooks`, `managed settings`, `secrets`, `deploy` ou infra. |
 
-Claude → Codex → Davi → Git
+## 4. Regras Estritas de Git e Estado
+O Git é a *state machine* exclusiva do projeto e o mecanismo oficial de handoff. Não crie logs de interação, state machines ou relatórios paralelos ao Git para persistir evidências materiais.
 
-## Escopo da tarefa
+*   **PERMITIDO aos Agentes (Inspeção - Read Only):** `status`, `diff`, `log`, `show`, `rev-parse`, `ls-files`.
+*   **PROIBIDO aos Agentes (Mutações - Exclusivo Humano):** Qualquer comando que altere index, refs, histórico ou remoto (`add`, `commit`, `push`, `pull`, `merge`, `rebase`, `checkout`, `branch`, `worktree`, `stash`, `clean`, etc.).
 
-Execute somente a tarefa autorizada.
+## 5. Zonas de Controle (Read-Only)
+**NUNCA** modifique os arquivos/diretórios abaixo, a menos que a tarefa solicite explicitamente essa alteração:
+*   `AGENT_POLICY.md`, `CLAUDE.md`, `AGENTS.md`
+*   `.devcontainer/**`, `.claude/**`, `.codex/**`, `.github/workflows/**`, `runbooks/**`, `scripts/ci/**`
+*   Segredos, tokens e credenciais.
 
-Não avance automaticamente para outra tarefa, AC, SEM ou SYN.
+## 6. Tratamento de Dados e Modelagem
+*   **Fontes:** Fontes controladas são *somente leitura*. O diretório `.drive/**` **não é** autoritativo (pode conter rascunhos humanos).
+*   **Pipeline de Modelagem:** Siga estritamente a ordem: `fonte → evidência → conhecimento → modelo canônico → modelo lógico`.
+*   **Integridade:** Não invente conhecimento (alucinação) para cobrir lacunas. Não altere a fonte para forçar uma conclusão.
+*   **Referência Base:** Ao modelar dados, consulte `[PLANO_CEPRAEA_Modelo_Canonico_FINAL.md](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)`.
 
-Não crie novos agentes, workflows, documentos de governança ou infraestrutura
-fora do necessário para a tarefa.
-
-## Classificação de risco
-
-- Verde: mudança local, reversível, sem auth, dados ou plano de controle.
-- Amarelo: múltiplos alvos/módulos, semântica canônica ou expansão relevante.
-- Vermelho: dependência, migration, RLS, MFA, auth, auditoria ou privacidade.
-- Vermelho crítico: `.devcontainer`, CI, hooks, managed settings, secrets,
-  deploy ou infraestrutura.
-
-## Git
-
-Git é a state machine e o mecanismo de handoff.
-
-Agentes podem executar operações de inspeção:
-
-- `git status`
-- `git diff`
-- `git log`
-- `git show`
-- `git rev-parse`
-- `git ls-files`
-
-Operações que alterem index, refs, histórico ou estado remoto pertencem ao humano,
-incluindo:
-
-- add
-- commit
-- push
-- pull
-- merge
-- rebase
-- cherry-pick
-- reset
-- restore
-- checkout
-- switch
-- branch/tag quando alteram refs
-- worktree
-- stash
-- clean
-- update-ref
-
-## Plano de controle
-
-Não modifique, salvo quando a tarefa humana tiver explicitamente esse alvo:
-
-- `AGENT_POLICY.md`
-- `CLAUDE.md`
-- `AGENTS.md`
-- `.devcontainer/**`
-- `.claude/**`
-- `.codex/**`
-- `.github/workflows/**`
--- `runbooks/**`
-- `scripts/ci/**`
-- secrets e credenciais
-
-## Fontes e domínio
-
-Fontes controladas designadas pela tarefa ou pelo plano são somente leitura.
-
-`.drive/**` não é fonte autoritativa por padrão; pode conter material humano de
-trabalho ou referência.
-
-Para modelagem, preserve:
-
-fonte → evidência → conhecimento → modelo canônico → modelo lógico
-
-Não altere fonte para fazê-la concordar com uma conclusão.
-
-Não invente conhecimento para preencher lacunas.
-
-Para modelagem, use:
-[Modelagem dos Dados](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)
-
-## Validação
-
-O EXECUTOR executa os validadores determinísticos aplicáveis antes do handoff.
-
-O REVIEWER reexecuta somente os checks necessários para revisão independente,
-proporcionalmente ao risco e aos findings.
-
-## Sem bypass
-
-Permissão inexistente não autoriza alteração de policy, sandbox, container ou
-controle para contornar a restrição.
-
-Se a tarefa não puder continuar dentro da autoridade disponível, informe
-
-`BLOCKED` ou `HUMAN_DECISION_REQUIRED`.
-
-## Evidência
-
-Persista quando material:
-
-- código;
-- testes;
-- evidências;
-- modelos;
-- regras;
-- decisões;
-- commits.
-
-Não crie state machine, log de interação ou relatório obrigatório paralelo ao Git.
-
-## Escalonamento
-
-ChatGPT ou Gemini são usados somente para:
-
-- divergência material;
-- decisão arquitetural;
-- problema semântico relevante;
-- terceira opinião realmente necessária.
-
-Eles não adquirem autoridade de aprovação.
-
-## Documentação
-
-Ao criar ou alterar Markdown, siga:
-
-`docs/standards/guia_estilo_documentação.md`
-
+## 7. Validação e Documentação
+*   **Executor:** Deve rodar todos os validadores determinísticos aplicáveis *antes* de realizar o handoff.
+*   **Reviewer:** Reexecuta apenas os checks necessários para auditoria independente, baseando-se no nível de risco (Matriz).
+*   **Documentação:** Toda criação ou alteração de arquivos Markdown deve seguir estritamente o `docs/standards/guia_estilo_documentação.md`.

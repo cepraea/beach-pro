@@ -2,27 +2,25 @@
 
 ## Objetivo
 
-Esta biblioteca define procedimentos especializados por classe de operação para o fluxo
-[Human-Governed Dual-Agent SDLC do CEPRAEA BEACH PRO](../docs/arquiteturas/multi-agentes/Human-Governed%20Dual-Agent%20SDLC%20Architecture.md).
-
-Os runbooks complementam as políticas permanentes (`AGENT_POLICY.md`, `CLAUDE.md`, `AGENTS.md`) e o enforcement técnico do Dev Container.
+>Esta biblioteca define procedimentos especializados por classe de operação para o fluxo [Human-Governed Dual-Agent SDLC do CEPRAEA BEACH PRO](../docs/arquiteturas/multi-agentes/Human-Governed%20Dual-Agent%20SDLC%20Architecture.md).
+> *Os **runbooks** complementam as **políticas permanentes** e o **enforcement** técnico do `Dev Container`.*
 
 ## Matriz de seleção
 
-| `operation_class` | Executor | Reviewer |
-| --- | --- | --- |
-| `code_change` | [RB-EXEC-001](./executor/RB-EXEC-001-code-change.md) | [RB-REV-001](./reviewer/RB-REV-001-code-review.md) |
-| `database_change` | [RB-EXEC-002](./executor/RB-EXEC-002-database-change.md) | [RB-REV-002](./reviewer/RB-REV-002-database-review.md) |
-| `documentation_change` | [RB-EXEC-003](./executor/RB-EXEC-003-documentation-change.md) | [RB-REV-003](./reviewer/RB-REV-003-documentation-review.md) |
-| `dependency_change` | [RB-EXEC-004](./executor/RB-EXEC-004-dependency-change.md) | [RB-REV-005](./reviewer/RB-REV-005-dependency-review.md) |
+| **`operation_class`** | **Executor** | **Reviewer** |
+| :---: | :---: | :---: |
+| `code_change` | **[RB-EXEC-001](./executor/RB-EXEC-001-code-change.md)** | **[RB-REV-001](./reviewer/RB-REV-001-code-review.md)** |
+| `database_change` | **[RB-EXEC-002](./executor/RB-EXEC-002-database-change.md)** | **[RB-REV-002](./reviewer/RB-REV-002-database-review.md)** |
+| `documentation_change` | **[RB-EXEC-003](./executor/RB-EXEC-003-documentation-change.md)** | **[RB-REV-003](./reviewer/RB-REV-003-documentation-review.md)** |
+| `dependency_change` | **[RB-EXEC-004](./executor/RB-EXEC-004-dependency-change.md)** | **[RB-REV-005](./reviewer/RB-REV-005-dependency-review.md)** |
 
 ### Runbook complementar de revisão
 
-`RB-REV-004-evidence-review.md` DEVE ser carregado adicionalmente quando a suficiência da evidência for material para os critérios de aceite ou para a revisão independente.
+>*`RB-REV-004-evidence-review.md` DEVE ser carregado adicionalmente quando a suficiência da evidência for material para os critérios de aceite ou para a revisão independente.*
 
-| Condição | Runbook adicional |
+| **Condição** | **Runbook adicional** |
 | --- | --- |
-| Evidência material exige verificação independente adicional | [RB-REV-004](./reviewer/RB-REV-004-evidence-review.md) |
+| Evidência material exige verificação independente adicional | **[RB-REV-004](./reviewer/RB-REV-004-evidence-review.md)** |
 
 ## Estrutura
 
@@ -48,7 +46,7 @@ runbooks/
 
 ## Seleção de runbooks
 
-Uma tarefa DEVE carregar exclusivamente os runbooks aplicáveis às classes de operação declaradas em seu `runbook_binding`.
+*Uma tarefa DEVE carregar exclusivamente os runbooks aplicáveis às classes de operação declaradas em seu `runbook_binding`.*
 
 A classe da operação determina os procedimentos especializados aplicáveis.
 

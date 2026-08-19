@@ -43,6 +43,7 @@ Sim, mas por uma razão mais estreita do que o fluxo assume hoje.
 `CLAUDE.md`:68-79 define seis categorias e `RB-SHARED-003`:31 torna "handoff factual produzido" pré-condição de `READY_FOR_REVIEW`.
 
 O objetivo real do `handoff` não é transmitir estado — `AGENT_POLICY.md`:39 já diz que *"Git é a state machine e o mecanismo de handoff"*. O handoff carrega exatamente o que o diff não carrega:
+
 - o que foi tentado e falhou,
 - o que ficou fora de escopo por decisão,
 - qual limitação é conhecida,

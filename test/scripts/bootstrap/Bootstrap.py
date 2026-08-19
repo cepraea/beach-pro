@@ -1,29 +1,34 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import sys
 
-repo_readme = Path("README.md")
-section_file = Path(__file__).with_name("AGENT_BOOTSTRAP.md")
 
-if not repo_readme.exists():
-    raise SystemExit("FAIL: execute na raiz do repositório; README.md não encontrado")
-if not section_file.exists():
-    raise SystemExit(f"FAIL: arquivo de seção não encontrado: {section_file}")
+def update_readme(repo_readme_path: Path, section_file_path: Path) -> str:
+    """
+    Atualiza o README.md com o conteúdo do bootstrap e as novas sequências de execução.
+    Retorna a string com o conteúdo atualizado ou lança SystemExit em caso de erro.
+    """
+    if not repo_readme_path.exists():
+        raise SystemExit("FAIL: execute na raiz do repositório; README.md não encontrado")
+    if not section_file_path.exists():
+        raise SystemExit(f"FAIL: arquivo de seção não encontrado: {section_file_path}")
 
-text = repo_readme.read_text(encoding="utf-8")
-bootstrap = section_file.read_text(encoding="utf-8").rstrip() + "\n\n"
+    original_text = repo_readme_path.read_text(encoding="utf-8")
+    text = original_text
+    bootstrap = section_file_path.read_text(encoding="utf-8").rstrip() + "\n\n"
 
-anchor = "# PARTE V — ARQUITETURA DO PLANO E DO FLUXO\n\n## 29. Fases candidatas\n"
-if anchor not in text:
-    raise SystemExit("FAIL: anchor da PARTE V ausente ou README divergente")
+    anchor = "# PARTE V — ARQUITETURA DO PLANO E DO FLUXO\n\n## 29. Fases candidatas\n"
+    if anchor not in text:
+        raise SystemExit("FAIL: anchor da PARTE V ausente ou README divergente")
 
-text = text.replace(
-    anchor,
-    "# PARTE V — ARQUITETURA DO PLANO E DO FLUXO\n\n" + bootstrap +
-    "## 29. Task Lifecycle — fases candidatas\n",
-    1,
-)
+    text = text.replace(
+        anchor,
+        "# PARTE V — ARQUITETURA DO PLANO E DO FLUXO\n\n" + bootstrap +
+        "## 29. Task Lifecycle — fases candidatas\n",
+        1,
+    )
 
-old_boot = '''## 43. Regra geral das TASKs deste plano
+    old_boot = '''## 43. Regra geral das TASKs deste plano
 
 Cada TASK abaixo precisa, antes de execução, ser expandida para o contrato completo da arquitetura definida neste arquivo, receber sua própria suite e passar Pre-Review. A lista abaixo define dependências e resultado atômico; não substitui o Task Contract detalhado.
 
@@ -46,7 +51,7 @@ Cada TASK abaixo precisa, antes de execução, ser expandida para o contrato com
 ### TASK-F0 — Especificar e implementar F0
 '''
 
-new_boot = '''## 43. Regra geral das TASKs deste plano
+    new_boot = '''## 43. Regra geral das TASKs deste plano
 
 O Agent Bootstrap é pré-condição do Task Lifecycle e, portanto, não pode depender de uma TASK normal ainda não autorizada por `AGENT_READY`. Os itens `BOOT-*` abaixo são **work items de bootstrap**, não Task Proposals de produto.
 
@@ -75,11 +80,11 @@ Somente após `AGENT_READY = PASS`, cada `TASK-F*` deve ser expandida para o con
 ### TASK-F0 — Especificar e implementar F0
 '''
 
-if old_boot not in text:
-    raise SystemExit("FAIL: backlog BOOT esperado não encontrado")
-text = text.replace(old_boot, new_boot, 1)
+    if old_boot not in text:
+        raise SystemExit("FAIL: backlog BOOT esperado não encontrado")
+    text = text.replace(old_boot, new_boot, 1)
 
-old_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PLANO
+    old_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PLANO
 
 1. Agente local executa `TASK-BOOT-000` em read-only e produz evidência do próprio ambiente.
 2. Humano e Reviewer confrontam o inventário local; nenhum dado deste conector substitui o resultado.
@@ -97,7 +102,7 @@ old_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PL
 14. Avaliar `DONE_GENERAL` pelo gate determinístico.
 '''
 
-new_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PLANO
+    new_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PLANO
 
 1. Humano/operador privilegiado introduz a alteração candidata de bootstrap no working tree, sem commit.
 2. Codex Reviewer é o primeiro agente a consumir a alteração e inicia `BOOT-000` por `git status` e `git diff`.
@@ -117,16 +122,34 @@ new_sequence = '''# PARTE XV — PRIMEIRA SEQUÊNCIA DE EXECUÇÃO APÓS ESTE PL
 16. Avaliar `DONE_GENERAL` pelo gate determinístico.
 '''
 
-if old_sequence not in text:
-    raise SystemExit("FAIL: sequência final esperada não encontrada")
-text = text.replace(old_sequence, new_sequence, 1)
+    if old_sequence not in text:
+        raise SystemExit("FAIL: sequência final esperada não encontrada")
+    text = text.replace(old_sequence, new_sequence, 1)
 
-old_state = "Próximo estado permitido: execução local e auditável de `TASK-BOOT-000`."
-new_state = "Próximo estado permitido: alteração candidata no working tree → Reviewer-first `BOOT-000` → `PASS | FAIL`."
-if old_state not in text:
-    raise SystemExit("FAIL: registro de estado esperado não encontrado")
-text = text.replace(old_state, new_state, 1)
+    old_state = "Próximo estado permitido: execução local e auditável de `TASK-BOOT-000`."
+    new_state = "Próximo estado permitido: alteração candidata no working tree → Reviewer-first `BOOT-000` → `PASS | FAIL`."
+    if old_state not in text:
+        raise SystemExit("FAIL: registro de estado esperado não encontrado")
+    text = text.replace(old_state, new_state, 1)
 
-repo_readme.write_text(text, encoding="utf-8")
-print("PASS: README.md atualizado no working tree")
-print("OBRIGATÓRIO AGORA: não fazer commit; Codex Reviewer deve executar git status/git diff primeiro.")
+    return text
+
+
+def main():
+    repo_readme_path = Path("README.md")
+    section_file_path = Path(__file__).with_name("AGENT_BOOTSTRAP.md")
+    original_content = None
+    try:
+        original_content = repo_readme_path.read_text(encoding="utf-8") if repo_readme_path.exists() else None
+        new_content = update_readme(repo_readme_path, section_file_path)
+        repo_readme_path.write_text(new_content, encoding="utf-8")
+        print("PASS: README.md atualizado no working tree")
+        print("OBRIGATÓRIO AGORA: não fazer commit; Codex Reviewer deve executar git status/git diff primeiro.")
+    except SystemExit as e:
+        if original_content is not None:
+            repo_readme_path.write_text(original_content, encoding="utf-8")
+        print(e, file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

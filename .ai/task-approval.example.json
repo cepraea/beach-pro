@@ -1,33 +1,26 @@
 {
   "object_type": "task_approval",
   "schema_version": "1.0",
-
   "approval_id": "<identificador>",
-
   "proposal_binding": {
     "proposal_id": "<identificador-da-proposta>",
     "revision": 1,
     "proposal_digest": "sha256:...",
     "canonicalization": "JCS-RFC8785"
   },
-
   "decision": "approved",
-
   "issued_by": {
     "actor_id": "user-456",
     "display_name": "Responsável pelo projeto",
     "actor_type": "human",
     "authentication_method": "trusted_ui_session"
   },
-
   "issued_via": {
     "component_id": "task-approval-service",
     "component_version": "1.2.0"
   },
-
   "issued_at": "2026-08-04T14:35:00Z",
   "valid_until": "2026-08-04T18:35:00Z",
-
   "validated_context": {
     "project_id": "sha256:...",
     "canonical_project_root": "/workspace/project",
@@ -36,12 +29,10 @@
     "base_revision": "git-commit-sha",
     "session_binding": "session-123"
   },
-
   "authorized_scope": {
     "operation_ids": [
       "OP-01"
     ],
-
     "resolved_resources": [
       {
         "resource_id": "REF-01",
@@ -72,7 +63,6 @@
       "allow_parallel_operations": false
     }
   },
-
   "validated_risk": {
     "blast_radius": "medium",
     "reversibility": "reversible",
@@ -82,7 +72,6 @@
       "Mudança de comportamento em autenticação"
     ]
   },
-
   "execution_conditions": {
     "one_operation_at_a_time": true,
     "require_precondition_hash_match": true,

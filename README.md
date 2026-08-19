@@ -1,7 +1,6 @@
 # CEPRAEA BEACH PRO
 
-Fundação do MVP autorizado pela DEC-019. Este repositório aceita exclusivamente
-dados sintéticos e não está autorizado para migração real, piloto ou produção.
+> Fundação do MVP autorizado pela DEC-019. Este repositório aceita exclusivamente dados sintéticos e não está autorizado para migração real, piloto ou produção.
 
 ## Stack
 
