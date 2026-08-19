@@ -1,23 +1,18 @@
 # Plano completo para criação do fields-registry.md
 
-> **Arquivado em 2026-08-17.** Não priorizado: nada deste plano foi executado
-> (`docs/modelagem/governanca/` e `tests/test_fields_registry.py` não existem),
-> e o Modelo Canônico ainda tem um único elemento validado (`INV-001`). Retomar
-> a ideia — provavelmente em versão mais simples — só quando houver dados reais
-> modelados o suficiente para justificar um catálogo formal de campos.
+**Versão**: `1.1`
+**Status**: Proposto para implementação
+**Arquivo-alvo**: `docs/modelagem/governanca/fields-registry.md`
+**Responsável sugerido**: Davi Sermenho
+**Data de criação**: 2026-08-15
 
-Versão: 1.1
-Status: Proposto para implementação
-Arquivo-alvo: `docs/modelagem/governanca/fields-registry.md`
-Responsável sugerido: Davi Sermenho
-Data de criação: 2026-08-15
----
+***
 
 ## 1. Objetivo do plano
 
 > Este plano define todas as ações necessárias para criar o fields-registry.md, o catálogo semântico e governamental dos campos dos registros JSON canônicos do Modelo Canônico do CEPRAEA BEACH PRO, definidos pelos seis JSON Schemas em docs/modelagem/schemas/.
 
-O objetivo é garantir que todo campo aceito pelo sistema tenha:
+O objetivo é **garantir que todo campo aceito** pelo sistema tenha:
 
 - definição;
 - finalidade;
@@ -126,7 +121,7 @@ Fora do escopo:
 
 ## 5. Princípios de governança
 
-### 5.1 Campo é ativo governado
+* 5.1 Campo é ativo governado
 
 Campos não são meros nomes de propriedades JSON.
 Cada campo representa uma decisão de modelagem de informação.
@@ -145,13 +140,13 @@ Todo campo deve ter:
 - exemplos;
 - regra de alteração.
 
-### 5.2 Schema valida; registry explica
+* 5.2 Schema valida; registry explica
 
 O JSON Schema decide se o registro JSON é válido.
 
 O `fields-registry.md` explica por que o campo existe, como deve ser interpretado e quem pode alterá-lo.
 
-### 5.3 Campo novo não nasce no documento
+* 5.3 Campo novo não nasce no documento
 
 Campo novo nasce como proposta no registry ou em uma decisão de governança.
 
@@ -177,7 +172,7 @@ atualização do Histórico de Revisões do registry
 uso permitido nos registros JSON canônicos
 ```
 
-### 5.4 Campo não documentado é erro
+* 5.4 Campo não documentado é erro
 
 Se um campo aparece em um registro JSON canônico governado pelos schemas da modelagem mas não está no `fields-registry.md`, ele deve ser tratado como não catalogado e a divergência deve ser corrigida.
 
@@ -195,7 +190,6 @@ O arquivo deve seguir esta estrutura:
 
 ```markdown
 # fields-registry.md — Registro oficial de campos
-
 ## 1. Finalidade
 ## 2. Regras gerais
 ## 3. Estados de campo
@@ -211,11 +205,11 @@ O arquivo deve seguir esta estrutura:
 ## 13. Histórico do registry
 ```
 
----
+***
 
 ## 7. Estados dos campos
 
-Todo campo deve ter um status de governança.
+>Todo campo deve ter um status de governança.
 
 Estados recomendados:
 
@@ -228,27 +222,27 @@ removed
 rejected
 ```
 
-### proposed
+*Proposed*
 
 Campo identificado como necessidade possível, mas ainda não aceito pelo schema.
 
-### experimental
+** *experimental*
 
 Campo aprovado para uso limitado, normalmente em branch, sandbox ou tipo documental restrito.
 
-### active
+* active
 
 Campo oficialmente aceito pelo schema e documentado no registry.
 
-### deprecated
+* deprecated
 
 Campo ainda reconhecido por compatibilidade, mas não deve ser usado em novos registros canônicos.
 
-### removed
+* removed
 
 Campo removido do schema em versão maior.
 
-### rejected
+* rejected
 
 Campo proposto e rejeitado. Deve permanecer registrado se houver risco de reaparecer com outro nome.
 
@@ -291,96 +285,98 @@ Cada campo deve ser registrado usando este modelo:
 ```markdown
 ## Campo: `nome_do_campo`
 
-### Nome oficial
+* Nome oficial
 
 `nome_do_campo`
 
-### Caminho
+* Caminho
 
 `nome_do_campo` ou `objeto.subcampo`
 
-### Definição
+* Definição
 
 Explique o que o campo significa.
 
-### Finalidade
+* Finalidade
 
 Explique por que o campo existe e qual decisão operacional ele permite.
 
-### Tipo
+* Tipo
 
 `string | array | object | boolean | integer | number | date | date-time`
 
-### Obrigatoriedade
+* Obrigatoriedade
 
 `obrigatório | opcional | condicional`
 
-### Repetível
+* Repetível
 
 `sim | não`
 
-### Valores permitidos
+* Valores permitidos
 
 Liste valores quando houver vocabulário controlado.
 
-### Formato
+* Formato
 
 Regex, SemVer, ISO date, URI ou outro padrão aplicável.
 
-### Escopo
+* Escopo
 
 Tipos de registro e schemas aos quais o campo se aplica.
 
-### Exemplo válido
+**Exemplo válido**
 
 ```json
 { "nome_do_campo": "valor_valido" }
 ```
 
-### Exemplo inválido
+**Exemplo inválido**
 
 ```json
 { "nome_do_campo": "valor_invalido" }
 ```
 
-### Regra de governança
+```markdown
+* Regra de governança
 
 Explique quem pode alterar, aprovar ou usar o campo.
 
-### Relações com outros campos
+* Relações com outros campos
 
 Liste campos relacionados ou dependentes.
 
-### Mapeamento externo
+* Mapeamento externo
 
 Dublin Core, PREMIS, schema.org, PROV, SemVer ou outro vocabulário, se aplicável.
 
-### Dono
+* Dono
 
 Equipe responsável.
 
-### Status
+* Status
 
 `proposed | experimental | active | deprecated | removed | rejected`
 
-### Introduzido em
+* Introduzido em
 
 Versão do padrão.
 
-### Decisão associada
+* Decisão associada
 
 Referência para `DECISOES.md` ou `decision-register.md`.
 
-### Schema associado
+* Schema associado
 
 Path do schema onde o campo é validado.
 
-### Testes associados
+
+* Testes associados
 
 Lista de testes que protegem o comportamento do campo.
 ```
 
----
+***
 
 ## 10. Campos iniciais a catalogar
 
@@ -468,7 +464,7 @@ Campos opcionais, subcampos aninhados e documentação completa de enums pertenc
 
 ## 11. Ações para criação do fields-registry.md
 
-### Ação 1 — Criar o arquivo
+* Ação 1 — Criar o arquivo
 
 Criar:
 
@@ -484,7 +480,7 @@ Critério de aceite:
 - declara regras gerais;
 - na Fase 1, lista todos os campos obrigatórios incondicionais e condicionalmente obrigatórios dos seis schemas atuais.
 
-### Ação 2 — Extrair campos dos seis schemas atuais
+* Ação 2 — Extrair campos dos seis schemas atuais
 
 Ler:
 
@@ -508,7 +504,7 @@ Critério de aceite:
 - todo subcampo aninhado aparece no registry;
 - enums estão documentados.
 
-### Ação 3 — Classificar campos por função
+* Ação 3 — Classificar campos por função
 
 Classificar campos em grupos:
 
@@ -527,7 +523,7 @@ Critério de aceite:
 - cada campo tem uma categoria funcional;
 - nenhuma categoria mistura conceitos incompatíveis.
 
-### Ação 4 — Documentar campos obrigatórios
+* Ação 4 — Documentar campos obrigatórios
 
 Catalogar com prioridade:
 
@@ -542,7 +538,7 @@ Critério de aceite:
 - cada campo obrigatório tem exemplo válido;
 - cada campo obrigatório tem regra de governança.
 
-### Ação 5 — Documentar campos aninhados
+* Ação 5 — Documentar campos aninhados
 
 Catalogar:
 
@@ -556,7 +552,7 @@ Critério de aceite:
 - cada subcampo tem tipo;
 - cada subcampo tem relação com o objeto-pai.
 
-### Ação 6 — Documentar enums e vocabulários controlados
+* Ação 6 — Documentar enums e vocabulários controlados
 
 Catalogar valores permitidos de:
 
@@ -570,7 +566,7 @@ Critério de aceite:
 - valores inválidos comuns são exemplificados;
 - fica claro quando usar cada valor.
 
-### Ação 7 — Documentar campos propostos
+* Ação 7 — Documentar campos propostos
 
 Criar seção:
 
@@ -598,7 +594,7 @@ Critério de aceite:
 - cada proposta tem problema associado;
 - cada proposta informa se campo existente já resolve ou não.
 
-### Ação 8 — Definir regra de aprovação de campos novos
+* Ação 8 — Definir regra de aprovação de campos novos
 
 Adicionar ao registry a regra:
 
@@ -612,7 +608,7 @@ Critério de aceite:
 - processo de aprovação está descrito;
 - papéis responsáveis estão definidos.
 
-### Ação 9 — Criar matriz registry ↔ schema
+* Ação 9 — Criar matriz registry ↔ schema
 
 Adicionar tabela:
 
@@ -629,7 +625,7 @@ Critério de aceite:
 - campo ativo sem schema é erro;
 - campo no schema sem registry é erro.
 
-### Ação 10 — Atualizar governança
+* Ação 10 — Atualizar governança
 
 Atualizar ou criar referência em:
 
@@ -648,7 +644,7 @@ Critério de aceite:
 - documentos normativos apontam para `fields-registry.md` como catálogo oficial de campos;
 - fica claro que o schema continua sendo o contrato executável.
 
-### Ação 11 — Atualizar Histórico de Revisões
+* Ação 11 — Atualizar Histórico de Revisões
 
 Registrar a criação e as mudanças do registry na seção final `Histórico de Revisões` do próprio `docs/modelagem/governanca/fields-registry.md`.
 
@@ -660,7 +656,7 @@ Critério de aceite:
 
 overnança.
 
-### Ação 12 — Registrar decisão
+* Ação 12 — Registrar decisão
 
 Criar ou atualizar decisão em:
 
@@ -680,7 +676,7 @@ Critério de aceite:
 - decisão explica diferença entre registry e schema;
 - decisão define que todo campo aceito precisa estar catalogado.
 
-### Ação 13 — Criar teste de sincronização registry ↔ schema
+* Ação 13 — Criar teste de sincronização registry ↔ schema
 
 Criar:
 
@@ -701,7 +697,7 @@ Critério de aceite:
 - teste roda com `python3 -m unittest discover -s tests -v`;
 - CI executa o teste automaticamente.
 
-### Ação 14 — Atualizar CI
+* Ação 14 — Atualizar CI
 
 Esta ação pertence à Fase 4 e altera o plano de controle; portanto, não deve ser executada na Fase 1. Quando a Fase 4 for explicitamente autorizada, o CI deve reutilizar os validadores reais do repositório e acrescentar o teste de sincronização somente depois que `tests/test_fields_registry.py` existir.
 
@@ -728,7 +724,7 @@ Critério de aceite:
 - o teste de sincronização é executado automaticamente quando a Fase 4 for implantada;
 - divergência entre schema e registry produz falha determinística.
 
-### Ação 15 — Criar exemplos de campo válido e inválido
+* Ação 15 — Criar exemplos de campo válido e inválido
 
 Para cada campo crítico, incluir:
 
@@ -742,7 +738,7 @@ Critério de aceite:
 
 - `id_fonte`, `id_evidencia`, `id_termo`, `id_regra`, `id_decisao`, `id_elemento`, `estado_epistemologico`, `estado_tecnico` e `estagio` têm exemplos válidos e inválidos.
 
-### Ação 16 — Definir política de campos propostos
+* Ação 16 — Definir política de campos propostos
 
 Adicionar regra:
 
@@ -756,7 +752,7 @@ Critério de aceite:
 - campo proposto tem owner e problema documentado;
 - uso experimental exige decisão específica.
 
-### Ação 17 — Definir política de depreciação
+* Ação 17 — Definir política de depreciação
 
 Adicionar regra:
 
@@ -770,7 +766,7 @@ Critério de aceite:
 - campo deprecated tem versão de remoção planejada;
 - migração é documentada.
 
-### Ação 18 — Definir política de rejeição
+* Ação 18 — Definir política de rejeição
 
 Quando uma proposta for rejeitada, registrar em seção própria.
 
@@ -780,7 +776,7 @@ Critério de aceite:
 - nomes alternativos rejeitados são listados;
 - evita reaparecimento com outro nome.
 
-### Ação 19 — Definir owners dos campos
+* Ação 19 — Definir owners dos campos
 
 Cada campo deve ter owner.
 
@@ -795,7 +791,7 @@ Critério de aceite:
 
 - nenhum campo ativo fica sem owner.
 
-### Ação 20 — Definir checklist de revisão
+* Ação 20 — Definir checklist de revisão
 
 Adicionar checklist no final do registry:
 
@@ -863,58 +859,58 @@ Campo novo exige decisão, histórico de revisão, teste e owner.
 ```markdown
 ## Campo: `schema_fonte.json::id_fonte`
 
-### Nome oficial
+* Nome oficial
 `id_fonte`
 
-### Caminho
+* Caminho
 `id_fonte`
 
-### Definição
+* Definição
 Identidade canônica interna e estável de uma fonte registrada pelo Modelo Canônico.
 
-### Finalidade
+* Finalidade
 Permitir referência inequívoca à fonte e sustentar rastreabilidade entre fonte, evidência e conhecimento.
 
-### Tipo
+* Tipo
 `string`
 
-### Obrigatoriedade
+* Obrigatoriedade
 Obrigatório.
 
-### Repetível
+* Repetível
 Não.
 
-### Formato
+* Formato
 ```regex
 ^SRC-[0-9]{3}$
 ```
 
-### Exemplo válido
+* Exemplo válido
 ```json
 { "id_fonte": "SRC-001" }
 ```
 
-### Exemplo inválido
+* Exemplo inválido
 ```json
 { "id_fonte": "FONTE-001" }
 ```
 
-### Escopo
+* Escopo
 Registros validados por `docs/modelagem/schemas/schema_fonte.json`.
 
-### Regra de governança
+* Regra de governança
 O significado e o padrão do campo derivam do schema vigente. O registry documenta essa semântica e não pode alterar o contrato executável unilateralmente.
 
-### Dono
+* Dono
 Davi Sermenho.
 
-### Status
+* Status
 active
 
-### Schema associado
+* Schema associado
 `docs/modelagem/schemas/schema_fonte.json`
 
-### Testes associados
+* Testes associados
 `node docs/modelagem/schemas/validar.mjs`; teste específico de sincronização somente na Fase 4.
 ```
 
@@ -925,50 +921,50 @@ active
 ```markdown
 ## Campo: `schema_elemento_modelo.json::estado_epistemologico`
 
-### Nome oficial
+* Nome oficial
 `estado_epistemologico`
 
-### Caminho
+* Caminho
 `estado_epistemologico`
 
-### Definição
+* Definição
 Estado que expressa a condição epistemológica do elemento do Modelo Canônico.
 
-### Finalidade
+* Finalidade
 Distinguir observação, inferência, ambiguidade, conflito, validação e rejeição sem misturar essa dimensão com o estado técnico.
 
-### Tipo
+* Tipo
 `string` com vocabulário controlado.
 
-### Obrigatoriedade
+* Obrigatoriedade
 Obrigatório.
 
-### Valores permitidos
+* Valores permitidos
 `OBSERVADO | INFERIDO | AMBIGUO | CONFLITANTE | VALIDADO | REJEITADO`
 
-### Exemplo válido
+* Exemplo válido
 ```json
 { "estado_epistemologico": "VALIDADO" }
 ```
 
-### Exemplo inválido
+* Exemplo inválido
 ```json
 { "estado_epistemologico": "APROVADO" }
 ```
 
-### Regra de governança
+* Regra de governança
 O registry deve reproduzir o significado definido pelo schema e pelas decisões da modelagem. Não pode criar valores adicionais. Regras condicionais do schema que exigem `VALIDADO` permanecem autoritativas.
 
-### Dono
+* Dono
 Davi Sermenho.
 
-### Status
+* Status
 active
 
-### Schema associado
+* Schema associado
 `docs/modelagem/schemas/schema_elemento_modelo.json`
 
-### Testes associados
+* Testes associados
 `node docs/modelagem/schemas/validar.mjs`; teste específico de sincronização somente na Fase 4.
 ```
 
@@ -979,33 +975,33 @@ active
 ```markdown
 ## Proposta: `schema_version`
 
-### Status
+* Status
 proposed
 
-### Problema
+* Problema
 Os seis schemas da modelagem possuem metadados `$schema` e `$id`, mas as instâncias atuais não carregam um campo próprio que identifique explicitamente a versão do contrato de metadados que as validou. Isso não é requisito da Fase 1.
 
-### Campo existente resolve?
+* Campo existente resolve?
 Não há campo ativo equivalente nos seis schemas da modelagem.
 
-### Tipo proposto
+* Tipo proposto
 `string`
 
-### Formato proposto
+* Formato proposto
 A definir somente em decisão de governança; nenhum formato deve ser incorporado ao contrato executável por este plano sem aprovação específica.
 
-### Exemplo meramente ilustrativo
+* Exemplo meramente ilustrativo
 ```json
 { "schema_version": "1.0" }
 ```
 
-### Uso operacional potencial
+* Uso operacional potencial
 Permitir migração, auditoria e validação explícita por versão de contrato, caso a necessidade seja aprovada.
 
-### Dono proposto
+* Dono proposto
 Davi Sermenho.
 
-### Decisão necessária
+* Decisão necessária
 Sim. Esta proposta pertence à Fase 5 e não pode ser tratada como campo ativo nem adicionada aos seis schemas durante a criação mínima.
 ```
 
@@ -1112,33 +1108,33 @@ A criação do `fields-registry.md` estará completa quando:
 
 ## 20. Sequência de implementação recomendada
 
-### Fase 1 — Criação mínima
+* Fase 1 — Criação mínima
 
 - Criar `docs/modelagem/governanca/fields-registry.md`.
 - Documentar finalidade, regra central e estados de campo.
 - Catalogar as 60 obrigações `schema::campo` de nível superior dos seis schemas atuais, incluindo as condicionalmente obrigatórias.
 
-### Fase 2 — Cobertura completa
+* Fase 2 — Cobertura completa
 
 - Catalogar campos opcionais.
 - Catalogar subcampos aninhados.
 - Documentar enums.
 - Criar matriz registry ↔ schema.
 
-### Fase 3 — Governança
+* Fase 3 — Governança
 
 - Criar decisão `DEC-NNN`.
 - Atualizar o Histórico de Revisões do registry.
 - Atualizar protocolo e inventário.
 - Definir owners.
 
-### Fase 4 — Automação
+* Fase 4 — Automação
 
 - Criar `tests/test_fields_registry.py`.
 - Garantir execução no CI.
 - Bloquear divergência entre registry e schema.
 
-### Fase 5 — Evolução
+* Fase 5 — Evolução
 
 - Adicionar seção de campos propostos.
 - Avaliar `schema_version`, `approved_by`, `approved_at`, `approval_ref`, `owner_team`, `created_at`, `updated_at`, `risk_level`.
@@ -1238,7 +1234,7 @@ A literatura e os padrões abaixo sustentam semanticamente essa conclusão.
 
 ---
 
-### 24.1 Metadados tornam objetos digitais acionáveis por máquinas
+* 24.1 Metadados tornam objetos digitais acionáveis por máquinas
 
 Fonte principal:
 
@@ -1268,7 +1264,7 @@ Campos definem o que o sistema consegue entender e automatizar.
 
 ---
 
-### 24.2 Campos claros reduzem ambiguidade semântica
+* 24.2 Campos claros reduzem ambiguidade semântica
 
 Fonte principal:
 
@@ -1298,7 +1294,7 @@ Campos bons reduzem ambiguidade; campos mal definidos criam interpretações con
 
 ---
 
-### 24.3 Schema transforma campo em contrato executável
+* 24.3 Schema transforma campo em contrato executável
 
 Fonte principal:
 
@@ -1327,7 +1323,7 @@ Campos devem ser validáveis; caso contrário, viram apenas decoração document
 
 ---
 
-### 24.4 Bloqueio de campos inventados evita corrupção do sistema
+* 24.4 Bloqueio de campos inventados evita corrupção do sistema
 
 Fonte principal:
 
@@ -1358,7 +1354,7 @@ Campos inventados por pessoas ou agentes devem ser bloqueados. Campo não docume
 
 ---
 
-### 24.5 Vocabulários controlados melhoram consistência e recuperação
+* 24.5 Vocabulários controlados melhoram consistência e recuperação
 
 Fonte principal:
 
@@ -1397,7 +1393,7 @@ A seleção dos campos e dos valores permitidos afeta diretamente a qualidade da
 
 ---
 
-### 24.6 Identidade estável sustenta rastreabilidade e deduplicação
+* 24.6 Identidade estável sustenta rastreabilidade e deduplicação
 
 Fontes principais:
 
@@ -1432,7 +1428,7 @@ Campos como id e relationships não são decorativos; eles sustentam identidade,
 
 ---
 
-### 24.7 Proveniência sustenta origem, decisão e destino
+* 24.7 Proveniência sustenta origem, decisão e destino
 
 Fonte principal:
 
@@ -1466,7 +1462,7 @@ Campos devem permitir rastrear origem, decisão, aprovação e destino do artefa
 
 ---
 
-### 24.8 JSON canônico melhora comparação, hash e auditoria
+* 24.8 JSON canônico melhora comparação, hash e auditoria
 
 Fonte principal:
 
@@ -1503,7 +1499,7 @@ Campos bem estruturados permitem gerar artefato canônico estável, comparável 
 
 ---
 
-### 24.9 Campos demais aumentam custo e campos de menos reduzem contexto
+* 24.9 Campos demais aumentam custo e campos de menos reduzem contexto
 
 Fonte principal:
 
@@ -1534,7 +1530,7 @@ A seleção de campos precisa equilibrar suficiência operacional e simplicidade
 
 ---
 
-### 24.10 O campo certo elimina inferência frágil
+* 24.10 O campo certo elimina inferência frágil
 
 Fonte principal:
 
@@ -1574,7 +1570,7 @@ Campos explícitos reduzem inferência, ambiguidade e erro de agentes.
 
 ---
 
-### 24.11 fields-registry.md é necessário para governar significado
+* 24.11 fields-registry.md é necessário para governar significado
 
 Fontes principais:
 
@@ -1607,7 +1603,7 @@ O registry é necessário porque o schema sozinho valida estrutura, mas não exp
 
 ---
 
-### 24.12 Síntese das evidências
+* 24.12 Síntese das evidências
 
 As fontes acima sustentam estas decisões do plano:
 
