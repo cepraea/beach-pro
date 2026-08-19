@@ -1,7 +1,7 @@
 {
   "project": "CEPRAEA BEACH PRO",
   "version": "0.1.0",
-  "updated_at": "2026-08-18",
+  "updated_at": "2026-08-19",
   "assets": [
     {
       "path": "AGENT_POLICY.md",
@@ -65,13 +65,6 @@
       "purpose": "Padrão de task atômica e critérios de aceite: contrato Task Proposal v2, ciclo de duas portas de revisão.",
       "consumers": ["human", "agent:executor", "agent:reviewer"],
       "status": "active"
-    },
-    {
-      "path": "docs/arquiteturas/assurance/",
-      "type": "architecture",
-      "purpose": "Estado atual vs. estado-alvo do fluxo de assurance: decisões humanas confirmadas (HDEC-xxx), plano de tasks atômicas, runbook de implantação.",
-      "consumers": ["human", "agent:executor", "agent:reviewer"],
-      "status": "in_progress"
     },
     {
       "path": "docs/arquiteturas/multi-agentes/",
@@ -149,6 +142,13 @@
       "purpose": "Critérios de maturidade, fluxo de modelagem, perguntas de competência e taxonomias que orientam o processo.",
       "consumers": ["human", "agent:executor", "agent:reviewer"],
       "status": "active"
+    },
+    {
+      "path": "docs/modelagem/governanca/fields-registry.md",
+      "type": "domain_model",
+      "purpose": "Catálogo humano e semântico dos campos aceitos pelos seis JSON Schemas atuais; FR-001 em implementação e sincronização futura prevista.",
+      "consumers": ["human", "agent:executor", "agent:reviewer"],
+      "status": "in_progress"
     },
     {
       "path": "docs/modelagem/schemas/schema_decisao.json",
@@ -267,13 +267,6 @@
       "type": "config",
       "purpose": "Ambiente sandboxed dos agentes: Dockerfile, devcontainer.json do Executor e do Reviewer, guards pretool/posttool, managed settings, requirements do Codex.",
       "consumers": ["human"],
-      "status": "active"
-    },
-    {
-      "path": ".devcontainer/FIELD_REGISTRY.md",
-      "type": "audit",
-      "purpose": "Auditoria campo-a-campo do próprio devcontainer.json (2026-08-14), com achados PASS/REVISAR/FAIL — inclui P0 ainda não resolvido: mounts de gitconfig-agent neutralizados por GIT_CONFIG_NOSYSTEM/GIT_CONFIG_GLOBAL.",
-      "consumers": ["human", "agent:executor", "agent:reviewer"],
       "status": "active"
     },
     {
