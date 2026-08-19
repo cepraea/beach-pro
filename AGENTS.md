@@ -45,9 +45,12 @@ Quando `task_proposal` completo for obrigatório:
 `PASS` no plano autoriza exclusivamente a implementação da mesma revisão do contrato.
 Ele não constitui aprovação da implementação.
 
-Se um contrato completo for obrigatório e estiver ausente, inválido ou não houver
-informação suficiente para determinar o contrato autorizado, finalize
-`HUMAN_DECISION_REQUIRED` em vez de inventar escopo ou `runbook_binding`.
+Se um contrato completo obrigatório estiver ausente ou for inválido por falha
+corrigível pelo Executor, emita `FAIL` e identifique a correção requerida.
+
+Se não houver informação suficiente para determinar o contrato autorizado porque a
+conclusão depende de decisão material de Davi, emita `HUMAN_DECISION_REQUIRED` em vez
+de inventar escopo ou `runbook_binding`.
 
 ## Runbooks
 
