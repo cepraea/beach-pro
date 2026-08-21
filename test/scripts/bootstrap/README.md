@@ -1,11 +1,20 @@
 # Bootstrap dos Agentes — Especificação do `Bootstrap.py`
 
 > Status: **CANDIDATE / NOT VERIFIED**  
+> Modo operacional: **DESIGN** (não `OBSERVE` nem `ENFORCE` — a Fase 2, "Controlador
+> mínimo", ainda não existe; ver [bootstrap-arquitetura.md §17](../../../docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md) e seção 53)<br>
 > Script alvo: `test/scripts/bootstrap/Bootstrap.py`  
 > README canônico do script: `test/scripts/bootstrap/README.md`  
+> **Fonte normativa da arquitetura de bootstrap:** [`bootstrap-arquitetura.md`](../../../docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md) (corrigido em 2026-08-21 — este README citava `.ai/AGENT_BOOTSTRAP.md`, arquivo que nunca existiu neste repositório; ver changelog no fim deste documento)<br>
 > Sistema real verificado: `CEPRAEA/beach-pro`  
 > Laboratório de verificação do próprio script: `CEPRAEA/testes`  
 > Regra epistemológica: **NO EVIDENCE → NO PASS**
+>
+> **Este script não é o controlador nem o gateway exigidos pela arquitetura normativa.**
+> Ele não roda fora do controle do modelo (`DEC-BOOT-001`), não produz manifesto de sessão
+> protegido (`DEC-BOOT-002`), não é mediado por gateway (`DEC-BOOT-004`) e não calcula
+> capacidades (`DEC-BOOT-007`). Um `PASS` deste script é evidência candidata para um
+> controlador que ainda não existe — nunca autorização por si só. Ver seção 53.
 
 ---
 
@@ -19,8 +28,11 @@ O objetivo do script é responder, por observação direta do checkout local:
 "O agente está operando no CEPRAEA BEACH PRO real,
 sob a governança, o control plane, as permissões,
 os validadores e o baseline esperados,
-com evidência suficiente para permitir AGENT_READY?"
+com evidência suficiente para um controlador externo considerar isto um candidato válido?"
 ```
+
+Nota (2026-08-21): a formulação original desta pergunta terminava em "permitir AGENT_READY" —
+este script não concede `AGENT_READY`; ver seção 53.
 
 O `Bootstrap.py` não é um instalador, não é um migrador, não é um gerador de documentação e não é uma TASK do produto.
 
@@ -75,14 +87,24 @@ PredeclaredOracles
 
 ## 3. Por que o bootstrap deve acontecer antes de F0
 
+**Nota (2026-08-21):** o fluxo abaixo é o **comportamento-alvo** depois que este bootstrap for
+promovido a `ENFORCE_BASE` (`bootstrap-arquitetura.md §17`/`DEC-BOOT-012`). Enquanto
+`operational_mode=DESIGN` (estado atual — ver cabeçalho e seção 53), `FAIL` aqui **não**
+interrompe F0: é diagnóstico. Existem, separadamente, guards do devcontainer
+(`.devcontainer/guards/pretool`) e políticas em `AGENT_POLICY.md`/`CLAUDE.md` que impõem
+restrições próprias — mas isso é **outro mecanismo**, não o bootstrap descrito neste
+documento, e este README não afirma tê-los verificado por testes de capability
+(`bootstrap-arquitetura.md §6`: `CONFIG_DECLARED ≠ CONFIG_EFFECTIVE` — declaração não é
+prova). Ver seção 53 antes de tratar "STOP" abaixo como comportamento em vigor.
+
 O `Task Lifecycle` não pode começar sem que o agente prove que está no ambiente correto.
 
 ```mermaid
 flowchart TD
     S["Sessão do agente inicia"] --> E["Entry point automático"]
-    E --> B["Agent Bootstrap"]
-    B --> G{"AGENT_READY?"}
-    G -- "FAIL" --> F["STOP"]
+    E --> B["Agent Bootstrap (candidato — ver seção 53)"]
+    B --> G{"PASS candidato?"}
+    G -- "FAIL" --> F["STOP (alvo pós-ENFORCE_BASE; hoje é diagnóstico, não bloqueio)"]
     G -- "PASS" --> F0["F0 — Captura do pedido humano"]
     F0 --> F1["F1..."]
 ```
@@ -129,28 +151,33 @@ MANIFEST
 
 ### 4.2 Fail-closed
 
-Somente dois verdicts externos são permitidos:
+**Corrigido em 2026-08-21** (ver changelog): a versão anterior desta seção reduzia todo
+resultado externo a `PASS`/`FAIL`, com qualquer indisponibilidade de ferramenta ou lacuna de
+evidência colapsada em `FAIL` + `reason_code`. Isso perde informação que
+`bootstrap-arquitetura.md §6` exige distinguir — em especial, uma ferramenta indisponível não é
+o mesmo que uma configuração inválida, e tratá-las como idênticas dificulta diagnóstico e
+recuperação.
+
+Por check individual, os resultados possíveis são:
 
 ```text
 PASS
 FAIL
+NOT_APPLICABLE
+UNAVAILABLE
+ERROR
 ```
 
-Estados diagnósticos como:
+`UNAVAILABLE` não pode ser convertido automaticamente em `PASS` — mas também não deve ser
+confundido com `FAIL` quando a causa é puramente a ausência de uma ferramenta (ex.: Node.js
+não encontrado), sem que exista, adicionalmente, uma configuração observável e inválida.
 
-```text
-UNKNOWN
-UNVERIFIED
-TOOL_UNAVAILABLE
-MISSING_EVIDENCE
-CONFIG_MISMATCH
-```
-
-devem aparecer como `reason_code` sob:
-
-```text
-verdict = FAIL
-```
+O `verdict` agregado do modo `full` continua binário (`PASS` somente se todos os checks
+obrigatórios forem `PASS`) — este é o **veredito candidato** deste script (`candidate_verdict`,
+conceitualmente; a chave no JSON de saída permanece `verdict`, ver §31). **Não é**
+`session.final_state` da arquitetura — esse campo só é calculado pelo controlador, que não
+existe nesta implantação (ver seção 53). Não confundir os dois: `verdict` aqui é evidência
+candidata por check, `session.final_state` é a decisão final de autorização, de outra camada.
 
 ### 4.3 Ausência de prova não é sucesso
 
@@ -479,13 +506,14 @@ Quando o Bootstrap Entry Contract estiver implantado, também deve verificar que
 ```text
 CLAUDE.md
 → declara bootstrap obrigatório
-→ referencia .ai/AGENT_BOOTSTRAP.md
-→ exige AGENT_READY antes de F0
+→ referencia docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md
+→ exige PASS candidato antes de F0 quando operational_mode=ENFORCE_BASE
+  (hoje, em DESIGN, é diagnóstico — não bloqueio; ver seção 53)
 
 AGENTS.md
 → declara bootstrap obrigatório
-→ referencia .ai/AGENT_BOOTSTRAP.md
-→ exige bootstrap antes do review/trabalho
+→ referencia docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md
+→ exige bootstrap antes do review/trabalho (mesma ressalva de DESIGN acima)
 ```
 
 O bootstrap completo não deve ser copiado para os entrypoints.
@@ -998,7 +1026,7 @@ AGENTS.md
 manifest.json
 runbooks/README.md
 
-.ai/AGENT_BOOTSTRAP.md
+docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md
 
 .ai/control/task-proposal.schema.json
 .ai/control/validate-task-proposal.mjs
@@ -1099,19 +1127,31 @@ O script não pode inventar um armazenamento de baseline silenciosamente.
 
 ## 29. `revalidate`
 
-Depois de existir baseline aprovado, o modo de revalidação deve ser menor.
+**Corrigido em 2026-08-21** (ver changelog): a versão anterior desta seção terminava com
+`AGENT_READY = PASS` como consequência direta do modo `revalidate`. Isso confundia três
+responsabilidades distintas que `bootstrap-arquitetura.md §2` separa explicitamente:
+
+1. **renovação/expiração de sessão** — pertence ao controlador (`DEC-BOOT-005`), que ainda
+   não existe nesta implantação;
+2. **detecção de drift do plano de controle** — é o que este script pode de fato calcular
+   (fingerprint da superfície protegida contra baseline aprovado);
+3. **preflight anterior a uma operação** — pertence ao gateway (`DEC-BOOT-004`, `§2` da
+   arquitetura), não a este script.
+
+`revalidate`, neste script, cobre apenas o item 2: recalcular o fingerprint candidato e
+compará-lo contra o baseline aprovado. Não concede `AGENT_READY` nem qualquer autorização —
+produz `PASS`/`FAIL` de drift, evidência candidata para o controlador.
 
 ```mermaid
 flowchart TD
-    S["Agent session/task start"] --> I["Repository Identity"]
+    S["Início de execução do script"] --> I["Repository Identity"]
     I --> F["Recalculate Protected Fingerprint"]
     F --> C{"Current == Approved?"}
     C -- "NO" --> X["FAIL: BOOTSTRAP_DRIFT"]
-    C -- "YES" --> E["Entry Points + Role + Capability Checks"]
+    C -- "YES" --> E["Entry Points + Role Checks"]
     E --> G{"PASS?"}
     G -- "NO" --> X
-    G -- "YES" --> A["AGENT_READY = PASS"]
-    A --> F0["F0"]
+    G -- "YES" --> R["Verdict candidato PASS — não é AGENT_READY"]
 ```
 
 Mínimo:
@@ -1133,18 +1173,30 @@ FAIL
 reason_code = BOOTSTRAP_DRIFT
 ```
 
-e exige Full Bootstrap.
+e exige Full Bootstrap. Nota: no `Bootstrap.py` atual, `revalidate` ainda é um stub — a
+comparação de fingerprint (B14) e o baseline (§28) não estão implementados; ver Definition of
+Done (§49, item 18-19).
 
 ---
 
-## 30. `AGENT_READY`
+## 30. `FullBootstrapCandidatePass` (antes: "`AGENT_READY`")
 
-O bootstrap pré-F0 não deve depender da existência de uma Task Proposal concreta.
+**Corrigido em 2026-08-21** (ver changelog): esta seção antes definia uma fórmula chamada
+`AGENT_READY` e tratava seu `PASS` como suficiente para liberar F0. Isso é exatamente a
+discordância CRITICAL identificada contra `bootstrap-arquitetura.md`: pela arquitetura
+normativa, **nenhuma ferramenta protegida é liberada porque um script afirmou PASS** — a
+liberação só ocorre quando um verificador externo (controlador) valida um manifesto de sessão
+ligado à sessão atual (`DEC-BOOT-001`, `DEC-BOOT-002`). Este script não é esse verificador
+externo: ele roda sob o mesmo processo/controle do agente que está sendo avaliado.
 
-Fórmula candidata:
+O bootstrap pré-F0 não deve depender da existência de uma Task Proposal concreta — isso
+continua válido e não muda.
+
+O que este script pode legitimamente produzir é um veredito **candidato**, cujo nome foi
+corrigido para deixar claro que não é autorização:
 
 ```text
-AGENT_READY ⇔
+FullBootstrapCandidatePass ⇔
 
 RepositoryIdentity = PASS
 AND EntryPoints = PASS
@@ -1164,7 +1216,16 @@ AND BaselineMatch = PASS
 AND RepositoryMutationCount = 0
 ```
 
-A fórmula final deve ser sincronizada com `.ai/AGENT_BOOTSTRAP.md`.
+`FullBootstrapCandidatePass = true` **não** implica `session.final_state = READY`
+(`bootstrap-arquitetura.md §3`). Faltam, no mínimo: identidade forte de sessão vinculada a
+processo/boot/container (`DEC-BOOT-005`), manifesto protegido root-owned (`DEC-BOOT-002`),
+cálculo de capacidades pelo controlador (`DEC-BOOT-007`) e mediação por gateway
+(`DEC-BOOT-004`) — nenhum desses existe nesta implantação. Ver seção 53 para o que este script
+não é.
+
+A fórmula final deve ser sincronizada com
+[`bootstrap-arquitetura.md`](../../../docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md)
+(fonte normativa — `.ai/AGENT_BOOTSTRAP.md` nunca existiu neste repositório).
 
 ---
 
@@ -1226,7 +1287,8 @@ Independentemente do exit code detalhado:
 
 ```text
 anything other than verified PASS
-→ AGENT_READY must not be granted
+→ this script's output must not be treated as authorization by any consumer
+→ (this script never grants AGENT_READY — see section 53)
 ```
 
 ---
@@ -1316,29 +1378,38 @@ Não persistir segredos em logs ou JSON de resultado.
 
 ---
 
-## 36. Relação com `.ai/AGENT_BOOTSTRAP.md`
+## 36. Relação com `bootstrap-arquitetura.md`
+
+**Corrigido em 2026-08-21** (ver changelog): esta seção citava `.ai/AGENT_BOOTSTRAP.md` como
+fonte normativa. Esse arquivo nunca existiu neste repositório — a referência estava quebrada
+desde a criação deste README. A fonte normativa real e existente é
+[`docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md`](../../../docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md).
 
 Este README explica a implementação do script.
 
-`.ai/AGENT_BOOTSTRAP.md` define a arquitetura normativa do Agent Bootstrap.
+`bootstrap-arquitetura.md` define a arquitetura normativa do Agent Bootstrap — incluindo
+propriedades que este README e o `Bootstrap.py` atual **ainda não satisfazem** (controlador,
+gateway, manifesto de sessão protegido, capacidades — ver seção 53).
 
 A relação deve ser:
 
 ```text
-.ai/AGENT_BOOTSTRAP.md
+docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md
         ↓ define
-properties / gates / authority
+properties / gates / authority / estágio de promoção (DESIGN | OBSERVE | WARN | ENFORCE_*)
         ↓
 test/scripts/bootstrap/README.md
-        ↓ traduz para contrato de implementação
+        ↓ traduz para contrato de implementação, hoje só o que é executável em DESIGN
         ↓
 test/scripts/bootstrap/Bootstrap.py
         ↓ executa
         ↓
-evidence + PASS | FAIL
+evidence + PASS | FAIL | NOT_APPLICABLE | UNAVAILABLE | ERROR (por check)
+        ↓
+verdict candidato — NÃO é autorização (ver seção 30 e 53)
 ```
 
-Nenhum dos três arquivos deve divergir materialmente.
+Nenhum dos três artefatos deve divergir materialmente.
 
 Se divergirem:
 
@@ -1363,13 +1434,13 @@ flowchart LR
     A --> P["AGENT_POLICY.md"]
     CM --> P
 
-    A --> B[".ai/AGENT_BOOTSTRAP.md"]
+    A --> B["bootstrap-arquitetura.md"]
     CM --> B
 
     B --> R["test/scripts/bootstrap/README.md"]
     R --> PY["Bootstrap.py"]
 
-    PY --> G{"PASS | FAIL"}
+    PY --> G{"PASS candidato | FAIL"}
 ```
 
 Mínimo que os entrypoints precisam garantir:
@@ -1377,11 +1448,15 @@ Mínimo que os entrypoints precisam garantir:
 ```text
 bootstrap obrigatório
 ler especificação
-executar verificador
-PASS obrigatório antes de F0
-FAIL → STOP
+executar verificador candidato
+PASS candidato obrigatório antes de F0 quando operational_mode=ENFORCE_BASE
+  (não substitui autorização de um controlador externo, mesmo depois de promovido)
+FAIL → STOP quando operational_mode=ENFORCE_BASE; hoje (DESIGN) FAIL é diagnóstico
 não modificar superfície protegida
 ```
+
+**Estado atual (2026-08-21):** `operational_mode=DESIGN` — nenhum dos itens acima que dependem
+de `ENFORCE_BASE` está em vigor. Ver seção 53.
 
 ---
 
@@ -1413,7 +1488,7 @@ sequenceDiagram
         H->>W: operação Git privilegiada
         H-->>E: baseline aprovado disponível
         E->>B: revalidate
-        B-->>E: AGENT_READY PASS/FAIL
+        B-->>E: PASS/FAIL candidato de drift (não AGENT_READY)
     end
 ```
 
@@ -1709,7 +1784,7 @@ O `Bootstrap.py` somente pode ser considerado implementado quando:
 Um agente que receber apenas:
 
 ```text
-.ai/AGENT_BOOTSTRAP.md
+docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md
 test/scripts/bootstrap/README.md
 estado real do CEPRAEA/beach-pro
 ```
@@ -1743,10 +1818,14 @@ Ele não deve inventar a regra.
 
 ## 51. Resumo operacional
 
+**Corrigido em 2026-08-21** (ver changelog): a versão anterior deste fluxo lia
+`.ai/AGENT_BOOTSTRAP.md` (arquivo inexistente) e terminava em `PASS / AGENT_READY`, tratando
+este script como autoridade de liberação. Nenhuma das duas coisas está correta — ver seção 53.
+
 ```mermaid
 flowchart TD
     A["Agent autoload<br/>AGENTS.md / CLAUDE.md"] --> B["Bootstrap obrigatório"]
-    B --> C["Lê .ai/AGENT_BOOTSTRAP.md"]
+    B --> C["Lê bootstrap-arquitetura.md"]
     C --> D["Lê test/scripts/bootstrap/README.md"]
     D --> E["Executa Bootstrap.py"]
     E --> R["Observa CEPRAEA/beach-pro"]
@@ -1755,13 +1834,77 @@ flowchart TD
     S --> I["Fingerprint / Baseline"]
     I --> G{"Todos obrigatórios PASS?"}
     G -- "Não" --> F["FAIL + reason_codes + evidence"]
-    G -- "Sim" --> P["PASS / AGENT_READY"]
+    G -- "Sim" --> P["PASS candidato (modo DESIGN — não bloqueia)"]
     P --> F0["F0"]
 ```
 
+Enquanto o modo operacional for `DESIGN` (estado atual — ver cabeçalho deste documento),
+`FAIL` aqui é diagnóstico, não bloqueio automático de `F0`. Existem, à parte deste bootstrap,
+guards do devcontainer (`.devcontainer/guards/pretool`) e políticas em
+`AGENT_POLICY.md`/`CLAUDE.md` que impõem suas próprias restrições — mas isso é um mecanismo
+diferente, não uma promoção deste fluxo, e este documento não afirma tê-lo verificado por
+testes de capability (`bootstrap-arquitetura.md §6`). Promover este fluxo para `ENFORCE_BASE`
+exige os critérios da seção 12 de `bootstrap-arquitetura.md`, nenhum dos quais está satisfeito
+nesta implantação — incluindo a Fase 2 ("Controlador mínimo"), que sequer existe ainda.
+
 ---
 
-## 52. Regra final
+## 53. O que este script não é (adicionado em 2026-08-21 — ver changelog)
+
+Esta seção consolida lacunas que a versão anterior deste README não declarava, identificadas
+por comparação com `bootstrap-arquitetura.md`. Nenhuma delas é implementada por
+`Bootstrap.py`; todas pertencem ao controlador/gateway ainda não construídos.
+
+### Não é o controlador nem o gateway
+
+`bootstrap-arquitetura.md §1` e `§11` exigem um controlador root-owned, externo ao modelo, e
+um gateway que medeia toda chamada de ferramenta — nenhum dos dois existe nesta implantação.
+Este script roda como processo do próprio agente, sob o mesmo controle que está sendo avaliado
+(`DEC-BOOT-001`). Um `PASS` aqui não impede o agente de chamar qualquer ferramenta por uma rota
+que não consulte este script.
+
+### Não produz manifesto de sessão protegido
+
+O manifesto exigido por `bootstrap-arquitetura.md §8-9` é `root`-owned, vinculado a
+`session_id`/`nonce`/`boot_id`, escrito atomicamente em `/run/cepraea-bootstrap/`, protegido
+contra substituição. A saída deste script é um JSON impresso em `stdout`, sem identidade de
+sessão, sem proteção contra reuso, sem expiração. **Não confundir esta saída com o manifesto de
+sessão da arquitetura** — são artefatos diferentes com o mesmo formato superficial (JSON).
+
+### Não calcula nem concede capacidades
+
+`bootstrap-arquitetura.md §12/DEC-BOOT-007` exige que capacidades (`workspace.read`,
+`git.mutate.denied`, etc.) sejam calculadas pelo controlador a partir de papel + perfil +
+sessão. `Bootstrap.py` reporta `"capabilities": null` deliberadamente — ver seção correspondente
+no próprio script.
+
+### Terminologia de manifesto — dois artefatos distintos, mesmo nome de arquivo
+
+`manifest.json` (verificado por `B07`, `ManifestVerifier` no `Bootstrap.py`) é o
+**repository-asset-manifest**: inventário declarativo de artefatos do repositório, versionado
+no Git. O **session-bootstrap-manifest** da arquitetura (`§8`) é outro artefato — runtime,
+protegido, específico da sessão. Os dois não devem ser confundidos por compartilharem a palavra
+"manifest"; este README, a partir desta revisão, sempre qualifica qual dos dois está sendo
+citado.
+
+### Estágio de promoção atual
+
+```text
+DESIGN → OBSERVE → WARN → ENFORCE_BASE → ENFORCE_HARDENED
+```
+
+**Corrigido em 2026-08-21 (segunda rodada):** a versão anterior desta seção afirmava que este
+script e este README estavam em `OBSERVE`. Isso também estava incorreto — `OBSERVE` só é
+alcançável depois da Fase 2 ("Controlador mínimo": controlador, identidade de sessão,
+diretório runtime protegido, escrita atômica, validação por schema — ver "Plano de
+implementação necessário" em `bootstrap-arquitetura.md`). Nenhum desses itens existe. Este
+script e este README estão em `DESIGN`. Nenhum critério de `ENFORCE_BASE`
+(`bootstrap-arquitetura.md §17`/`DEC-BOOT-012`) foi satisfeito: não há controlador, não há
+gateway, não há testes de bypass, não há decisão humana de promoção registrada. Qualquer
+afirmação anterior neste README que implicasse enforcement ativo, ou estágio além de `DESIGN`,
+estava incorreta e foi corrigida.
+
+## 54. Regra final
 
 O `Bootstrap.py` existe para impedir que o agente confie em pressupostos sobre o ambiente.
 
@@ -1787,3 +1930,13 @@ EVIDENCE
 ```
 
 O bootstrap está correto somente quando consegue **refutar um ambiente conhecido como incorreto** e **aceitar um ambiente conhecido como correto**, sem modificar o sistema que está verificando.
+
+---
+
+## Changelog documental
+
+| Data | Mudança |
+|---|---|
+| 2026-08-21 | Reconciliação com `docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md` (fonte normativa ACCEPTED, `DEC-BOOT-001..012`), motivada por análise que identificou 6 discordâncias materiais (CRITICAL/HIGH/MEDIUM): (1) este README tratava `Bootstrap.py` como autoridade de `AGENT_READY` — corrigido em toda a extensão do documento para "PASS candidato", sem autoridade de liberação (§30, §51, §3, §32, §38, §12); (2) toda referência a `.ai/AGENT_BOOTSTRAP.md` (arquivo que nunca existiu neste repositório) substituída por `bootstrap-arquitetura.md` (§36, §37, §50, §26, §12, cabeçalho); (3) nova seção 53 declara explicitamente o que este script não é (controlador, gateway, manifesto de sessão protegido, cálculo de capacidades) e distingue `manifest.json` (repository-asset-manifest) do session-bootstrap-manifest da arquitetura; (4) §29 `revalidate` reescrita separando renovação de sessão (controlador), drift de fingerprint (este script) e preflight (gateway); (5) §4.2 resultado de check expandido de `PASS/FAIL` para `PASS/FAIL/NOT_APPLICABLE/UNAVAILABLE/ERROR`; (6) estágios de promoção `DESIGN → OBSERVE → WARN → ENFORCE_BASE → ENFORCE_HARDENED` declarados. `Bootstrap.py` corrigido no mesmo commit: bug de código duplicado/órfão removido, contrato de saída atualizado (`implementation_status`, `operational_mode`, `enforcement`, `capabilities: null`), resultado `UNAVAILABLE` introduzido para `ControlPlaneVerifier`. Fora de escopo desta revisão, registrado como pendência: construção real do controlador/gateway (`DEC-BOOT-001..012`); instalação de `python3` no `Dockerfile`, sem a qual `Bootstrap.py` não executava neste ambiente (proposta de diff entregue a Davi fora deste documento). |
+| 2026-08-21 | Davi instalou `python3` no `Dockerfile` e reconstruiu o devcontainer. Validação runtime executada e registrada: `ast.parse` OK, `--help`/`full`/`revalidate`/argumento inválido com exit codes 0/1/1/2 conforme §32, JSON de saída válido com os campos novos. Correções pós-revisão: propagação de `UNAVAILABLE` corrigida em `VerifierSelfTester` (não tenta mais invocar `node` quando a dependência já está `UNAVAILABLE`, testado com 3 cenários); referência residual a `.ai/AGENT_BOOTSTRAP.md` removida de `CRITICAL_UNDECLARED_PATHS` em `Bootstrap.py`; contradição entre "`OBSERVE` não bloqueia" e "`PASS` obrigatório antes de F0"/"`FAIL` → `STOP`" corrigida em §3/§12/§37. |
+| 2026-08-21 | Segunda rodada de revisão (FAIL): `operational_mode` estava declarado como `OBSERVE` em todo o documento e no `Bootstrap.py`, mas a arquitetura só permite `OBSERVE` após a Fase 2 ("Controlador mínimo") existir — nenhum de seus itens (controlador, identidade de sessão, diretório runtime protegido, escrita atômica, validação por schema) está implementado. Corrigido para `operational_mode=DESIGN` em todo o documento e no script (cabeçalho, §3, §12, §37, §51, §53). A alegação de que os guards do devcontainer são uma "fronteira fail-closed efetivamente em vigor" foi removida/suavizada — é um mecanismo separado, não verificado por testes de capability, não o bootstrap descrito aqui (§3, §51). §4.2 corrigida: o `verdict` do script não é `session.final_state` da arquitetura (era uma equação incorreta introduzida na rodada anterior); campo permanece `verdict` no JSON, mas o texto agora deixa explícito que é veredito candidato, não decisão de sessão. `.gitignore` (que havia sido alterado fora do escopo aprovado, para ignorar `__pycache__/`) foi revertido — validações futuras devem usar `python3 -B` ou `PYTHONDONTWRITEBYTECODE=1` em vez de alterar `.gitignore`. |

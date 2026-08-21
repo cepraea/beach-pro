@@ -3,7 +3,7 @@ FROM node:22-bookworm-slim
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       bash bubblewrap ca-certificates curl git jq less passwd procps socat \
+       bash bubblewrap ca-certificates curl git jq less passwd procps socat python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # A imagem Node já possui UID/GID 1000. Renomeie sem conceder sudo.

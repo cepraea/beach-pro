@@ -1,24 +1,9 @@
-# Plano reconciliado para criação do `fields-registry.md`
-
-> **Reativado e reconciliado em 2026-08-19.** O arquivamento de 2026-08-17 deixa de valer. O
-> repositório já possui seis JSON Schemas canônicos, validadores, fixtures e documentação de
-> modelagem suficientes para justificar um catálogo formal de campos. Este plano foi reduzido ao
-> mínimo necessário para implementação e reconciliado com o estado real de `main`.
-
-**Versão:** 2.0  
-**Status:** REATIVADO — PRONTO PARA IMPLEMENTAÇÃO  
-**Arquivo físico deste plano:** `docs/backlog/PLANO-FRONTMATTER.md` (nome legado; não renomear nesta tarefa)  
-**Arquivo-alvo:** `docs/modelagem/governanca/fields-registry.md`  
-**Responsável humano:** Davi Sermenho  
-**Data original:** 2026-08-15  
-**Data da reconciliação:** 2026-08-19
-
----
+# fields-registry.md
 
 ## 1. Objetivo
 
 Criar `docs/modelagem/governanca/fields-registry.md` como catálogo humano e semântico dos campos
-aceitos pelos contratos de modelagem do CEPRAEA BEACH PRO.
+aceitos pelos arquivos do CEPRAEA BEACH PRO.
 
 O registry deve responder, para cada campo:
 
@@ -44,39 +29,11 @@ campo ativo no registry deve existir no schema
 campo novo não pode ser introduzido silenciosamente
 ```
 
----
-
 ## 2. Estado real verificado do repositório
 
 ### 2.1 Artefatos existentes
 
-Em `main`, existem atualmente os seis schemas:
 
-```text
-docs/modelagem/schemas/schema_fonte.json
-docs/modelagem/schemas/schema_evidencia.json
-docs/modelagem/schemas/schema_termo.json
-docs/modelagem/schemas/schema_regra.json
-docs/modelagem/schemas/schema_decisao.json
-docs/modelagem/schemas/schema_elemento_modelo.json
-```
-
-Também existem os validadores:
-
-```text
-docs/modelagem/schemas/validar.mjs
-docs/modelagem/schemas/verificar_referencias.mjs
-docs/modelagem/schemas/verificar_repositorio.mjs
-```
-
-E já existe um conjunto amplo de fixtures em:
-
-```text
-docs/modelagem/schemas/fixtures/
-```
-
-Logo, a razão original para arquivar o plano — falta de massa crítica de contratos executáveis —
-não se aplica mais.
 
 ### 2.2 Modelo Canônico ainda incompleto
 

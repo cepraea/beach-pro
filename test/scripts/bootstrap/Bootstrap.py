@@ -15,6 +15,24 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Set
 REPO_CANONICAL_ID = "cepraea/beach-pro"
 ENTRYPOINT_FILES = ["AGENT_POLICY.md", "CLAUDE.md", "AGENTS.md"]
 
+# Estado real deste script frente a
+# docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md (fonte normativa).
+# Este script NÃO é o controlador externo exigido pela arquitetura (DEC-BOOT-001): ele não
+# roda fora do controle do modelo, não produz o manifesto de sessão protegido (DEC-BOOT-002),
+# não é mediado por um gateway (DEC-BOOT-004) e não calcula capacidades (DEC-BOOT-007).
+# Um verdict PASS aqui é evidência candidata, não autorização — não concede AGENT_READY.
+#
+# operational_mode = DESIGN, não OBSERVE: a arquitetura só permite OBSERVE depois que a Fase 2
+# ("Controlador mínimo") existir — controlador, identidade de sessão, diretório runtime
+# protegido, escrita atômica, validação por schema (§ "Plano de implementação necessário").
+# Nenhum desses itens existe nesta implantação; este script cobre, no máximo, uma fração da
+# Fase 1 ("Contratos"). O estado inicial formal da própria arquitetura
+# (decisions: ACCEPTED, implementation: NOT_IMPLEMENTED, operational_mode: DESIGN,
+# enforcement: NONE) é o que se aplica aqui.
+IMPLEMENTATION_STATUS = "NOT_IMPLEMENTED"  # controlador/gateway da arquitetura: não existem
+OPERATIONAL_MODE = "DESIGN"  # estados possíveis: DESIGN | OBSERVE | WARN | ENFORCE_BASE | ENFORCE_HARDENED
+ENFORCEMENT = "NONE"
+
 
 @dataclass(frozen=True)
 class ChangedPath:
@@ -47,7 +65,7 @@ class InventoryItem:
 @dataclass(frozen=True)
 class CheckResult:
     check_id: str
-    result: Literal["PASS", "FAIL"]
+    result: Literal["PASS", "FAIL", "NOT_APPLICABLE", "UNAVAILABLE", "ERROR"]
     expected: Any
     observed: Any
     reason_codes: Tuple[str, ...] = field(default_factory=tuple)
@@ -325,6 +343,12 @@ class ControlPlaneVerifier(Check):
                 evidence.append(f"Could not read file {filename}: {e}")
 
         if reason_codes:
+            # Per bootstrap-arquitetura.md §6: UNAVAILABLE não pode ser convertido
+            # automaticamente em PASS, mas também não é o mesmo que FAIL — indisponibilidade
+            # de ferramenta é distinta de configuração inválida. Só rebaixa para UNAVAILABLE
+            # quando essa é a ÚNICA causa; qualquer problema real de configuração continua FAIL.
+            if reason_codes == ["VALIDATOR_UNAVAILABLE"]:
+                return CheckResult(self.check_id, "UNAVAILABLE", "Control plane is valid and available", {"files_checked": self.CONTROL_PLANE_FILES}, tuple(reason_codes), tuple(evidence))
             return CheckResult(self.check_id, "FAIL", "Control plane is valid and available", {"files_checked": self.CONTROL_PLANE_FILES}, tuple(reason_codes), tuple(evidence))
         return CheckResult(self.check_id, "PASS", "Control plane is valid and available", {"files_checked": self.CONTROL_PLANE_FILES})
 
@@ -344,9 +368,14 @@ class VerifierSelfTester(Check):
         )
 
     def run(self) -> CheckResult:
-        # This check depends on the control plane being available.
-        if not self.control_plane_check or self.control_plane_check.result == "FAIL":
-            return CheckResult(self.check_id, "FAIL", "Validator self-test capability", "Control plane check failed or was not run", ("DEPENDENCY_FAILED",))
+        # This check depends on the control plane being available. It must not attempt to
+        # invoke `node` when the dependency was already UNAVAILABLE (e.g. Node.js missing) —
+        # that would just fail again for the same root cause under a misleading reason code.
+        if not self.control_plane_check or self.control_plane_check.result != "PASS":
+            dep_result = self.control_plane_check.result if self.control_plane_check else "FAIL"
+            if dep_result == "UNAVAILABLE":
+                return CheckResult(self.check_id, "UNAVAILABLE", "Validator self-test capability", "Control plane check reported UNAVAILABLE (dependency, e.g. Node.js, missing)", ("DEPENDENCY_UNAVAILABLE",))
+            return CheckResult(self.check_id, "FAIL", "Validator self-test capability", f"Control plane check result was '{dep_result}'", ("DEPENDENCY_FAILED",))
 
         validator_path = self.repo_root / ".ai/control/validate-task-proposal.mjs"
         known_good_path = self.repo_root / ".ai/task-proposal.example.json"
@@ -648,7 +677,8 @@ class ManifestVerifier(Check):
     MANIFEST_FILE = "manifest.json"
     CRITICAL_UNDECLARED_PATHS = [
         "AGENT_POLICY.md", "CLAUDE.md", "AGENTS.md", "manifest.json",
-        "runbooks/README.md", ".ai/AGENT_BOOTSTRAP.md", ".ai/control/",
+        "runbooks/README.md",
+        "docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md", ".ai/control/",
         ".codex/config.toml", ".devcontainer/devcontainer.json",
         ".devcontainer/control-plane/", "test/scripts/bootstrap/Bootstrap.py",
     ]
@@ -814,10 +844,19 @@ class BootstrapRunner:
                 run_and_store(ManifestVerifier(self.repo_root, []))
 
         else: # revalidate
-            print("Modo 'revalidate' ainda não implementado.", file=sys.stderr)
-            # For revalidate, we might still want to run some checks or exit.
-            # For now, it will just print the message and report an empty result set.
-            # This will lead to a FAIL verdict if no checks are added.
+            # Revalidação de sessão (identidade, expiração, comparação com baseline aprovado)
+            # é responsabilidade do controlador externo (DEC-BOOT-005/006), que ainda não
+            # existe. Não é "funcionalidade faltando neste script" — é trabalho que não
+            # pertence a este script segundo a própria arquitetura normativa. Ver
+            # docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md §2.
+            print(
+                "Modo 'revalidate' não é implementado aqui: revalidação de sessão pertence "
+                "ao controlador externo (inexistente nesta implantação), não a este script "
+                "candidato. Use 'full' para reexecutar os checks disponíveis.",
+                file=sys.stderr,
+            )
+            # Sem checks executados, o verdict final é FAIL (fail-closed) — não um estado
+            # neutro que possa ser confundido com sucesso.
             pass
 
     def report(self):
@@ -827,6 +866,13 @@ class BootstrapRunner:
         output = {
             "schema_version": "1.0",
             "mode": self.mode,
+            # Estes três campos declaram, a cada execução, que este script não é o
+            # controlador/gateway exigido por bootstrap-arquitetura.md — ver constantes no
+            # topo do arquivo. Nenhum consumidor deve tratar "verdict": "PASS" abaixo como
+            # AGENT_READY: é evidência candidata para um controlador que ainda não existe.
+            "implementation_status": IMPLEMENTATION_STATUS,
+            "operational_mode": OPERATIONAL_MODE,
+            "enforcement": ENFORCEMENT,
             "repository": {
                 "root": str(self.repo_root),
                 # Placeholder for more repo data
@@ -835,6 +881,10 @@ class BootstrapRunner:
             "reason_codes": list(set(code for r in self.results for code in r.reason_codes)),
             "candidate_fingerprint": None,  # Placeholder for B14
             "repository_mutations": 0, # Placeholder for B01/B02 analysis
+            # Capacidades (workspace.read, git.mutate.denied, etc.) são calculadas pelo
+            # controlador a partir do manifesto de sessão (DEC-BOOT-007) — este script não
+            # as computa nem as concede. Sempre null aqui, deliberadamente.
+            "capabilities": None,
             "verdict": self.final_verdict,
         }
         print(json.dumps(output, indent=2))
@@ -844,70 +894,15 @@ class BootstrapRunner:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Verificador de Bootstrap do Agente para o repositório CEPRAEA/beach-pro.")
-    parser.add_argument(
-        "mode",
-        choices=["full", "revalidate"],
-        help="Modo de execução: 'full' para verificação completa, 'revalidate' para verificação rápida contra baseline."
+    parser = argparse.ArgumentParser(
+        description=(
+            "Verificador CANDIDATO de bootstrap para o repositório CEPRAEA/beach-pro. "
+            "Produz evidência estruturada (PASS/FAIL/NOT_APPLICABLE/UNAVAILABLE/ERROR por "
+            "check) para consumo por um controlador externo. NÃO concede AGENT_READY nem "
+            "qualquer outra autorização por si só — ver "
+            "docs/arquiteturas/multi-agentes/bootstrap/bootstrap-arquitetura.md."
+        )
     )
-    args = parser.parse_args()
-
-    runner = BootstrapRunner(mode=args.mode)
-    runner.run_checks()
-    runner.report()
-                    check_id=ManifestVerifier.check_id,
-                    result="FAIL",
-                    expected="Physical inventory available for verification",
-                    observed="Physical inventory not available or failed",
-                    reason_codes=("DEPENDENCY_FAILED", "PHYSICAL_INVENTORY_FAILED")
-                ))
-        else: # revalidate
-            print("Modo 'revalidate' ainda não implementado.", file=sys.stderr)
-            # For revalidate, we might still want to run some checks or exit.
-            # For now, it will just print the message and report an empty result set.
-            # This will lead to a FAIL verdict if no checks are added.
-            pass
-
-        # Check for repository mutation after all checks
-        if self.mode == 'full': # Only check for mutation in full mode
-            post_run_git_state = self._get_git_state()
-            if pre_run_git_state != post_run_git_state:
-                self.results.append(CheckResult(
-                    check_id="BXX-NON-MUTATION-INVARIANT",
-                    result="FAIL",
-                    expected="Repository state to remain unchanged",
-                    observed="Repository state was mutated",
-                    reason_codes=("BOOTSTRAP_MUTATED_REPOSITORY",),
-                    evidence=(f"Pre-run state: {pre_run_git_state}", f"Post-run state: {post_run_git_state}")
-                ))
-            pass
-
-    def report(self):
-        all_passed = all(r.result == "PASS" for r in self.results)
-        self.final_verdict = "PASS" if all_passed and self.results else "FAIL"
-
-        output = {
-            "schema_version": "1.0",
-            "mode": self.mode,
-            "repository": {
-                "root": str(self.repo_root),
-                # Placeholder for more repo data
-            },
-            "checks": [r.to_dict() for r in self.results],
-            "reason_codes": list(set(code for r in self.results for code in r.reason_codes)),
-            "verdict": self.final_verdict,
-        }
-        print(json.dumps(output, indent=2))
-
-        if self.final_verdict == "FAIL":
-            sys.exit(1)
-        else:
-            # If all checks passed, ensure no mutation was detected
-            if any(r.check_id == "BXX-NON-MUTATION-INVARIANT" and r.result == "FAIL" for r in self.results):
-                sys.exit(1) # Should not happen if final_verdict is PASS, but as a safeguard
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Verificador de Bootstrap do Agente para o repositório CEPRAEA/beach-pro.")
     parser.add_argument(
         "mode",
         choices=["full", "revalidate"],
