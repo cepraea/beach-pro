@@ -3,7 +3,7 @@ FROM node:22-bookworm-slim
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       bash bubblewrap ca-certificates curl git jq less passwd procps socat \
+       bash bubblewrap ca-certificates curl git jq less passwd procps socat python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # A imagem Node já possui UID/GID 1000. Renomeie sem conceder sudo.
@@ -17,18 +17,22 @@ RUN groupmod -n agent node \
        /home/agent/.local/state/cepraea-guards \
        /workspaces/cepraea-beach-pro
 
-RUN install -d -o root -g root /etc/claude-code /etc/codex \
-    /usr/local/lib/cepraea-guards
-COPY .devcontainer/control-plane/claude-managed-settings.json \
-     /etc/claude-code/managed-settings.json
-COPY .devcontainer/control-plane/codex-requirements.toml \
-     /etc/codex/requirements.toml
-COPY .devcontainer/guards/ /usr/local/lib/cepraea-guards/
-RUN chown -R root:root /etc/claude-code /etc/codex \
-      /usr/local/lib/cepraea-guards \
-    && chmod 0644 /etc/claude-code/managed-settings.json \
-      /etc/codex/requirements.toml \
-    && chmod 0755 /usr/local/lib/cepraea-guards/*
+ RUN install -d -o root -g root /etc/claude-code /etc/codex \
+     /usr/local/lib/cepraea-guards
+ COPY .devcontainer/control-plane/claude-managed-settings.json \
+      /etc/claude-code/managed-settings.json
+COPY .devcontainer/control-plane/claude-managed-mcp.json \
+     /etc/claude-code/managed-mcp.json
+ COPY .devcontainer/control-plane/codex-requirements.toml \
+      /etc/codex/requirements.toml
+ COPY .devcontainer/guards/ /usr/local/lib/cepraea-guards/
+ RUN chown -R root:root /etc/claude-code /etc/codex \
+       /usr/local/lib/cepraea-guards \
+     && chmod 0644 /etc/claude-code/managed-settings.json \
+      /etc/claude-code/managed-mcp.json \
+       /etc/codex/requirements.toml \
+     && chmod 0755 /usr/local/lib/cepraea-guards/*
+
 
 USER agent
 ENV HOME=/home/agent

@@ -1,0 +1,81 @@
+{
+  "schema_version": "FVR-IMPLEMENTATION-HOST-REQUIREMENTS-1.0",
+  "assurance_boundary": {
+    "runner_sha256_covers": [
+      ".ai-control/runner/verify.sh",
+      "embedded Python engine bytes inside verify.sh"
+    ],
+    "runner_sha256_does_not_cover": [
+      "host kernel",
+      "Python interpreter",
+      "Python standard library",
+      "jsonschema package",
+      "referencing package",
+      "git executable",
+      "bubblewrap executable",
+      "devcontainer executable",
+      "ShellCheck executable",
+      "strace executable",
+      "bashlex package"
+    ],
+    "classification": "HOST_SECURITY_CONSTRAINTS for RI-2/E1",
+    "ri3_required_for_authenticated_execution_identity": true
+  },
+  "runner_required": {
+    "platform": "Linux",
+    "executables": [
+      {
+        "name": "/usr/bin/env",
+        "required_for": "cleared runner process environment"
+      },
+      {
+        "name": "python3",
+        "resolution": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "modules": [
+          "jsonschema",
+          "referencing"
+        ],
+        "required_for": "strict JSON/schema/assertion/manifest engine"
+      }
+    ],
+    "conditional_executables": [
+      {
+        "name": "git",
+        "when": "any git.* operation or repository fingerprinting is used"
+      },
+      {
+        "name": "bwrap",
+        "when": "process.run is used",
+        "setuid_mode": "forbidden"
+      },
+      {
+        "name": "devcontainer",
+        "when": "devcontainer.* operation is used and frozen policy authorizes lifecycle"
+      }
+    ]
+  },
+  "harness_required": {
+    "executables": [
+      "bash",
+      "git",
+      "shellcheck",
+      "bwrap",
+      "strace"
+    ],
+    "python_modules": [
+      "bashlex",
+      "jsonschema",
+      "referencing"
+    ],
+    "required_capabilities": [
+      "Linux /proc for sandbox kernel probes",
+      "bubblewrap usable with user namespaces",
+      "strace capable of observing rename-family/openat/mkdir/write syscalls"
+    ]
+  },
+  "fail_closed": {
+    "runner_missing_required_dependency": "RUNNER_INTERNAL_ERROR",
+    "sandbox_backend_missing": "RUNNER_INTERNAL_ERROR; host fallback forbidden",
+    "harness_missing_precondition": "HARNESS_INVALID; never PASS"
+  }
+}

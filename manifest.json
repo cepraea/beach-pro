@@ -1,0 +1,489 @@
+{
+  "project": "CEPRAEA BEACH PRO",
+  "version": "0.2.0",
+  "updated_at": "2026-08-21",
+  "assets": [
+    {
+      "path": "AGENT_POLICY.md",
+      "type": "governance",
+      "purpose": "Política comum canônica: autoridade, namespaces .ai, lifecycle PLAN/APPROVAL/EXECUTION/REVIEW, estados, evidência e modos.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "CLAUDE.md",
+      "type": "governance",
+      "purpose": "Adaptador operacional do Claude nas fases PLANNER e EXECUTOR.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "AGENTS.md",
+      "type": "governance",
+      "purpose": "Adaptador do Codex Reviewer para PLAN e IMPLEMENTATION review.",
+      "consumers": [
+        "human",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "README.md",
+      "type": "governance",
+      "purpose": "Apresentação e estado do produto; autorização de produção do produto é separada do control plane.",
+      "consumers": [
+        "human"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/README.md",
+      "type": "runbook",
+      "purpose": "Entrada da biblioteca; paths normativos são resolvidos por .ai/control/runbook-catalog.json.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/shared/",
+      "type": "runbook",
+      "purpose": "Runbooks compartilhados de baseline, evidência e estados.",
+      "consumers": [
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/executor/",
+      "type": "runbook",
+      "purpose": "Runbooks especializados do Executor.",
+      "consumers": [
+        "agent:executor"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "runbooks/reviewer/",
+      "type": "runbook",
+      "purpose": "Runbooks especializados do Reviewer.",
+      "consumers": [
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/main/Human-Governed Dual-Agent SDLC Architecture.md",
+      "type": "architecture",
+      "purpose": "Arquitetura canônica explicativa do SDLC agentivo.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/planner/planner-v1-especificacao-conceitual-fechada.md",
+      "type": "architecture",
+      "purpose": "Especificação do Planner alinhada a .ai/control e .ai/tasks.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/revisor/executor-v1-especificacao-formal.md",
+      "type": "architecture",
+      "purpose": "Especificação do Executor: proposal aprovado + approval + RuntimeAnchor → ExecutionResult.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/executor/task_atomics.md",
+      "type": "architecture",
+      "purpose": "Padrão de TASK atômica alinhado ao Task Proposal v3.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/README.md",
+      "type": "architecture",
+      "purpose": "Índice de autoridade dos documentos multiagente; separa canônicos de reference/historical.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/",
+      "type": "architecture",
+      "purpose": "Demais análises e materiais de arquitetura; não redefinem contratos executáveis de .ai/control.",
+      "consumers": [
+        "human"
+      ],
+      "status": "reference"
+    },
+    {
+      "path": "docs/linters/guia_estilo_documentação.md",
+      "type": "standard",
+      "purpose": "Guia canônico de documentação Markdown.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md",
+      "type": "domain_model",
+      "purpose": "Plano canônico normativo da modelagem.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/README.md",
+      "type": "domain_model",
+      "purpose": "Ponto de entrada operacional da modelagem.",
+      "consumers": [
+        "human",
+        "agent:executor"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/dominio/",
+      "type": "domain_model",
+      "purpose": "Elementos promovidos do Modelo Canônico.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "stub"
+    },
+    {
+      "path": "docs/modelagem/candidatos/",
+      "type": "domain_model",
+      "purpose": "Hipóteses estruturais não promovidas.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/modelagem/conhecimento/",
+      "type": "domain_model",
+      "purpose": "Glossário e regras extraídas com rastreabilidade.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/decisoes/registro_decisoes.md",
+      "type": "domain_model",
+      "purpose": "Registro formal de decisões da modelagem.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/evidencias/registro_evidencias.md",
+      "type": "domain_model",
+      "purpose": "Registro de evidências da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/fontes/",
+      "type": "domain_model",
+      "purpose": "Inventário e dossiês de fontes.",
+      "consumers": [
+        "human",
+        "agent:executor"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/logico/",
+      "type": "domain_model",
+      "purpose": "Modelo lógico relacional e áreas pendentes.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "stub"
+    },
+    {
+      "path": "docs/modelagem/processo/",
+      "type": "domain_model",
+      "purpose": "Critérios de maturidade e processo.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/governanca/fields-registry.md",
+      "type": "domain_model",
+      "purpose": "Catálogo semântico dos campos de modelagem.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_decisao.json",
+      "type": "schema",
+      "purpose": "Schema de decisão da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_elemento_modelo.json",
+      "type": "schema",
+      "purpose": "Schema de elemento do Modelo Canônico.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_evidencia.json",
+      "type": "schema",
+      "purpose": "Schema de evidência da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_fonte.json",
+      "type": "schema",
+      "purpose": "Schema de fonte da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_regra.json",
+      "type": "schema",
+      "purpose": "Schema de regra da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/schema_termo.json",
+      "type": "schema",
+      "purpose": "Schema de termo da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/validar.mjs",
+      "type": "script",
+      "purpose": "Validador determinístico da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/verificar_referencias.mjs",
+      "type": "script",
+      "purpose": "Validador de referências cruzadas da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/modelagem/schemas/verificar_repositorio.mjs",
+      "type": "script",
+      "purpose": "Validador de action_ref/commits da modelagem.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "docs/operacao/agent-workflow.md",
+      "type": "standard",
+      "purpose": "Runbook humano do ciclo agentivo.",
+      "consumers": [
+        "human"
+      ],
+      "status": "active"
+    },
+    {
+      "path": "test/fixtures/synthetic/agent-plan-smoke.txt",
+      "type": "fixture",
+      "purpose": "Fixture sintética canário.",
+      "consumers": [
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".ai/control/",
+      "type": "config",
+      "purpose": "Control plane canônico: config, schemas, catálogo, validators, examples e conformance fixtures.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".ai/decisions/",
+      "type": "config",
+      "purpose": "Decisões humanas de arquitetura/governança e índice de status.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".ai/tasks/",
+      "type": "config",
+      "purpose": "Instâncias materiais por TASK: proposal, approval e execution-result.",
+      "consumers": [
+        "human",
+        "agent:planner",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".devcontainer/",
+      "type": "config",
+      "purpose": "Sandbox e enforcement do ambiente de agentes.",
+      "consumers": [
+        "human"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".codex/config.toml",
+      "type": "config",
+      "purpose": "Política project-level do Codex Reviewer read-only.",
+      "consumers": [
+        "agent:reviewer",
+        "human"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".mcp.json",
+      "type": "config",
+      "purpose": "Configuração MCP; nenhum servidor implicitamente autoritativo.",
+      "consumers": [
+        "human",
+        "agent:executor",
+        "agent:reviewer"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".markdownlint.jsonc",
+      "type": "config",
+      "purpose": "Regras de lint Markdown.",
+      "consumers": [
+        "agent:executor",
+        "agent:reviewer",
+        "ci-cd"
+      ],
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/validate-control-plane.yml",
+      "type": "ci",
+      "purpose": "Gate dependency-free do control plane em PR/push.",
+      "consumers": [
+        "ci-cd",
+        "human"
+      ],
+      "status": "active"
+    }
+  ]
+}

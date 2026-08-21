@@ -249,7 +249,8 @@
       "yaml",
       "text",
       "txt",
-      "markdown"
+      "markdown",
+      "mermaid"
     ]
   },
 

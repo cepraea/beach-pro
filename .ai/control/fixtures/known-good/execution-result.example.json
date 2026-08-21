@@ -1,0 +1,275 @@
+{
+  "object_type": "execution_result",
+  "schema_version": "2.0",
+  "execution_id": "EXE-TASK-ARCH-CP-001-001",
+  "task_id": "TASK-ARCH-CP-001",
+  "proposal_binding": {
+    "proposal_id": "TP-TASK-ARCH-CP-001-001",
+    "revision": 1,
+    "proposal_sha256": "83a8f8a8eff65d3dcc16fa08961597f2fbd75c284c5f3b72b7dc6d72ad0bc07a"
+  },
+  "approval_binding": {
+    "approval_id": "APR-TASK-ARCH-CP-001-001",
+    "approval_sha256": "cbd3cc5c4cfa631d1ff6bf7d527b82a252435f98c1d55190b8fc1b6ff006ea55"
+  },
+  "runtime_anchor": {
+    "repository": "cepraea/beach-pro",
+    "branch": "chore/control-plane-production",
+    "base_commit": "2c182858a42854ae3890f8d490679b61f9592bf6",
+    "head_commit": "2c182858a42854ae3890f8d490679b61f9592bf6"
+  },
+  "preflight": {
+    "status": "PASS",
+    "completed_at": "2026-08-21T19:13:00Z",
+    "checks": [
+      {
+        "check_id": "PF-001",
+        "name": "proposal and approval binding",
+        "status": "PASS",
+        "details": "Hashes and identifiers match."
+      },
+      {
+        "check_id": "PF-002",
+        "name": "branch and runtime anchor",
+        "status": "PASS",
+        "details": "Authorized non-main branch and expected HEAD."
+      }
+    ]
+  },
+  "handoff_status": "READY_FOR_REVIEW",
+  "termination_reason": "NONE",
+  "started_at": "2026-08-21T19:13:01Z",
+  "completed_at": "2026-08-21T19:18:00Z",
+  "actions": [
+    {
+      "action_id": "A-001",
+      "status": "PASS",
+      "acceptance_criteria_refs": [
+        "AC-002"
+      ],
+      "files_changed": [
+        "AGENT_POLICY.md",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "evidence_refs": [
+        "EVD-POLICY-001"
+      ],
+      "notes": ""
+    },
+    {
+      "action_id": "A-002",
+      "status": "PASS",
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-003"
+      ],
+      "files_changed": [
+        ".ai/control/task-proposal.schema.json"
+      ],
+      "evidence_refs": [
+        "EVD-CONTROL-001"
+      ],
+      "notes": ""
+    },
+    {
+      "action_id": "A-003",
+      "status": "PASS",
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-004"
+      ],
+      "files_changed": [
+        "manifest.json"
+      ],
+      "evidence_refs": [
+        "EVD-MANIFEST-001"
+      ],
+      "notes": ""
+    },
+    {
+      "action_id": "A-004",
+      "status": "PASS",
+      "acceptance_criteria_refs": [
+        "AC-003"
+      ],
+      "files_changed": [
+        ".github/workflows/validate-control-plane.yml"
+      ],
+      "evidence_refs": [
+        "EVD-CI-001"
+      ],
+      "notes": ""
+    }
+  ],
+  "changes": [
+    {
+      "change_id": "CHG-001",
+      "action_refs": [
+        "A-001"
+      ],
+      "path": "AGENT_POLICY.md",
+      "operation": "modify",
+      "authorized": true,
+      "before_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:14:00Z"
+    },
+    {
+      "change_id": "CHG-002",
+      "action_refs": [
+        "A-001"
+      ],
+      "path": "CLAUDE.md",
+      "operation": "modify",
+      "authorized": true,
+      "before_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:14:10Z"
+    },
+    {
+      "change_id": "CHG-003",
+      "action_refs": [
+        "A-001"
+      ],
+      "path": "AGENTS.md",
+      "operation": "modify",
+      "authorized": true,
+      "before_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:14:20Z"
+    },
+    {
+      "change_id": "CHG-004",
+      "action_refs": [
+        "A-002"
+      ],
+      "path": ".ai/control/task-proposal.schema.json",
+      "operation": "modify",
+      "authorized": true,
+      "before_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:15:00Z"
+    },
+    {
+      "change_id": "CHG-005",
+      "action_refs": [
+        "A-003"
+      ],
+      "path": "manifest.json",
+      "operation": "modify",
+      "authorized": true,
+      "before_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:16:00Z"
+    },
+    {
+      "change_id": "CHG-006",
+      "action_refs": [
+        "A-004"
+      ],
+      "path": ".github/workflows/validate-control-plane.yml",
+      "operation": "create",
+      "authorized": true,
+      "before_hash": null,
+      "after_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "observed_at": "2026-08-21T19:17:00Z"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "EVD-POLICY-001",
+      "action_refs": [
+        "A-001"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-002"
+      ],
+      "kind": "diff",
+      "status": "PASS",
+      "summary": "Policies use the same lifecycle and external states.",
+      "observed_at": "2026-08-21T19:17:20Z",
+      "simulated": false,
+      "command": "git diff -- AGENT_POLICY.md CLAUDE.md AGENTS.md",
+      "exit_code": 0,
+      "artifact_refs": []
+    },
+    {
+      "evidence_id": "EVD-CONTROL-001",
+      "action_refs": [
+        "A-002"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-003"
+      ],
+      "kind": "schema_validation",
+      "status": "PASS",
+      "summary": "Control plane conformance vectors pass.",
+      "observed_at": "2026-08-21T19:17:30Z",
+      "simulated": false,
+      "command": "node .ai/control/validate-control-plane.mjs",
+      "exit_code": 0,
+      "artifact_refs": []
+    },
+    {
+      "evidence_id": "EVD-MANIFEST-001",
+      "action_refs": [
+        "A-003"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-004"
+      ],
+      "kind": "schema_validation",
+      "status": "PASS",
+      "summary": "Manifest assets and operational references resolve.",
+      "observed_at": "2026-08-21T19:17:40Z",
+      "simulated": false,
+      "command": "node .ai/control/validate-control-plane.mjs",
+      "exit_code": 0,
+      "artifact_refs": []
+    },
+    {
+      "evidence_id": "EVD-CI-001",
+      "action_refs": [
+        "A-004"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-003"
+      ],
+      "kind": "file_snapshot",
+      "status": "PASS",
+      "summary": "CI workflow invokes the dependency-free control-plane validator.",
+      "observed_at": "2026-08-21T19:17:50Z",
+      "simulated": false,
+      "command": null,
+      "exit_code": null,
+      "artifact_refs": [
+        ".github/workflows/validate-control-plane.yml"
+      ]
+    }
+  ],
+  "final_checks": [
+    {
+      "check_id": "CHK-001",
+      "status": "PASS",
+      "evidence_refs": [
+        "EVD-CONTROL-001"
+      ],
+      "details": "Control plane validator exit 0."
+    },
+    {
+      "check_id": "CHK-002",
+      "status": "PASS",
+      "evidence_refs": [
+        "EVD-POLICY-001"
+      ],
+      "details": "git diff --check exit 0."
+    }
+  ],
+  "unauthorized_changes": [],
+  "summary": "Canonical .ai control plane reconciled and ready for independent implementation review."
+}

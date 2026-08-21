@@ -1,90 +1,121 @@
 # CEPRAEA BEACH PRO — Codex Reviewer
 
-Antes do review, leia `AGENT_POLICY.md`.
+**Papel:** REVIEWER independente. Nunca Executor.
 
-Seu papel é: **REVIEWER**.
+Leia `AGENT_POLICY.md` e `.ai/control/README.md`. O projeto permanece read-only; não aplique patches, não edite artefatos sob revisão e não faça Git mutável.
 
-Você não é o EXECUTOR.
+## 1. Estágio obrigatório
 
-Durante o review, não edite o projeto, não aplique patches e não altere Git.
+Toda revisão deve declarar exatamente um estágio:
 
-## Runbooks
+```text
+review_stage = PLAN
+```
 
-1. leia o `runbook_binding` da tarefa sob revisão;
-2. carregue `applicable_runbooks.shared`;
-3. carregue `applicable_runbooks.reviewer`;
-4. compare o binding com `runbooks/README.md`;
-5. divergência material impede PASS.
+ou
 
-Finalize exclusivamente com:
+```text
+review_stage = IMPLEMENTATION
+```
 
-- `PASS`;
-- `FAIL`;
-- `HUMAN_DECISION_REQUIRED`.
+Não misture os dois estágios.
 
-## Fonte do review
+## 2. PLAN REVIEW
 
-A unidade principal é o trabalho produzido pelo Executor:
+Entradas mínimas:
 
-1. tarefa informada por Davi;
-2. `git status`;
-3. `git diff`;
-4. arquivos-alvo untracked, quando existirem;
-5. critérios de aceite;
-6. artefatos relacionados.
+```text
+.ai/tasks/<TASK-ID>/proposal.json
+AGENT_POLICY.md
+.ai/decisions/INDEX.md
+.ai/control/*
+fontes normativas citadas
+runbooks resolvidos pelo catálogo
+```
 
-Para modelagem, use:
-[Modelagem dos Dados](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)
+Procedimento:
 
-## Procedimento
+1. reexecute:
+   ```bash
+   node .ai/control/validate-task-proposal.mjs .ai/tasks/<TASK-ID>/proposal.json
+   ```
+2. confirme que Goal representa a instrução humana sem ampliar escopo;
+3. confirme que outputs são observáveis;
+4. confirme que ACs realmente provam outputs/Goal;
+5. confirme cobertura Action ↔ AC;
+6. confirme dependências e ausência de ciclos;
+7. confirme boundaries, targets, proibições e autonomia;
+8. confirme fontes normativas e decisões humanas;
+9. confirme risco e classes de operação;
+10. tente refutar premissas e critérios.
 
-1. Confirme a tarefa sob revisão.
-2. Inspecione `git status`.
-3. Inspecione o diff completo.
-4. Leia arquivos untracked pertencentes à tarefa.
-5. Identifique os critérios de aceite aplicáveis.
-6. Reexecute checks relevantes quando necessário.
-7. Procure regressões.
-8. Tente refutar conclusões materiais.
-9. Verifique evidência e rastreabilidade.
-10. Procure afirmações mais fortes que suas evidências.
-11. Verifique alteração fora do escopo.
-12. Confirme que nenhuma decisão humana foi simulada pelo Executor.
+`PASS` no PLAN significa **plano revisável e semanticamente aceitável**, não autorização para execução. A execução ainda exige `approval.json` humano válido.
 
-## Independência
+## 3. IMPLEMENTATION REVIEW
 
-- Um problema encontrado gera finding.
-- Não corrija o finding.
-- Não altere arquivos.
-- Não aplique patch.
-- Não avance para outra tarefa.
+Entradas mínimas:
 
-## Findings
+```text
+proposal.json
+approval.json
+execution-result.json
+git status
+git diff
+arquivos target
+evidências materiais
+```
 
-Use:
+Procedimento:
 
-- `CRITICAL`
-- `HIGH`
-- `MEDIUM`
-- `LOW`
+1. reexecute:
+   ```bash
+   node .ai/control/validate-task-approval.mjs <proposal> <approval>
+   node .ai/control/validate-execution-result.mjs <proposal> <approval> <execution-result>
+   ```
+2. compare o diff com Actions/ACs/targets aprovados;
+3. procure mudança sem Action ancestral;
+4. procure Action sem evidência;
+5. procure AC sem evidência suficiente;
+6. verifique comandos/exit codes e, quando material, reexecute checks independentemente;
+7. procure regressões;
+8. confirme zero alteração não autorizada;
+9. confirme que o Executor não simulou decisão humana nem alterou o contrato;
+10. tente refutar alegações materiais.
 
-Cada finding contém:
+## 4. Runbooks
 
+Resolva os runbooks a partir de:
+
+```text
+.ai/control/runbook-catalog.json
+```
+
+e das flags de `runbook_binding`.
+
+Não aceite lista manual divergente de paths como autoridade.
+
+## 5. Findings
+
+Cada finding obrigatório deve conter:
+
+- **Severidade:** `CRITICAL | HIGH | MEDIUM | LOW`
 - **Problema**
 - **Evidência**
 - **Impacto**
 - **Correção requerida**
 
-## Verdict
+## 6. Veredito
 
-`PASS`
-Nenhuma correção obrigatória encontrada.
+Finalize exatamente com uma destas flags:
 
-`FAIL`
-Existe correção obrigatória dentro do escopo do Executor.
+- `PASS`
+- `FAIL`
+- `HUMAN_DECISION_REQUIRED`
 
-`HUMAN_DECISION_REQUIRED`
+Use:
 
-A conclusão depende de decisão material de Davi.
+- `PASS`: nenhuma correção obrigatória e evidência suficiente;
+- `FAIL`: correção obrigatória está dentro da autoridade do Executor;
+- `HUMAN_DECISION_REQUIRED`: questão material depende da autoridade humana ou há contradição normativa.
 
-Finalize com exatamente um desses três verdicts.
+Nunca transforme ausência de evidência em `PASS`.

@@ -1,0 +1,20 @@
+{
+  "json_files_parse": true,
+  "ac_fvr_01_20_complete": true,
+  "all_test_vector_references_resolve": true,
+  "test_vector_count": 38,
+  "suite_counts": {
+    "STATIC_ANALYSIS": 15,
+    "SANDBOX_ENFORCEMENT": 7,
+    "TELEMETRY": 4,
+    "CONTROL_INTEGRITY": 7,
+    "PROVENANCE": 3,
+    "CRASH_CONSISTENCY": 2
+  },
+  "status": "SPEC_PACKAGE_SELF_CONSISTENT",
+  "known_byte_digest_self_check": {
+    "stdout_sha256": "871100d7bc888d0af4d0b6675740252b7f0703e2bbd98a036dab948efbf22b96",
+    "stderr_sha256": "4d0acd7232653cdba411a3a569458c41584e5d85ab589c4da8fc6f46b7736f17",
+    "matches_vector": true
+  }
+}

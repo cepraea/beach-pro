@@ -65,13 +65,25 @@ if [[ "$tool" == "Bash" ]]; then
       block "Bloqueado: flag --dangerously-* do Claude pertence a Davi." ;;
     *"codex --dangerously-"*)
       block "Bloqueado: flag --dangerously-* do Codex pertence a Davi." ;;
-    *"git add"*|*"git commit"*|*"git push"*|*"git pull"*|\
-    *"git merge"*|*"git rebase"*|*"git cherry-pick"*|\
-    *"git reset"*|*"git restore"*|*"git checkout"*|\
-    *"git switch"*|*"git worktree"*|*"git clean"*|\
-    *"git rm"*|*"git stash"*|*"git update-ref"*)
-      block "Bloqueado: Git privilegiado pertence a Davi." ;;
   esac
+
+  # Git: allowlist de inspeção (fail-closed), conforme AGENT_POLICY.md.
+  # Qualquer subcomando fora da lista é bloqueado por padrão, não só os
+  # conhecidos como mutáveis. -C/-c/--git-dir/--work-tree com valor em
+  # token separado são tratados para não confundir o valor com o
+  # subcomando. Ainda não cobre 100% da sintaxe shell arbitrária (variáveis,
+  # encoding, wrappers indiretos) — a proteção estrutural final continua
+  # sendo o mount .git readonly no container.
+  git_matches="$(grep -oE '\bgit\b([[:space:]]+(-C|-c|--git-dir|--work-tree|--namespace|--super-prefix)[[:space:]]+[^[:space:]]+|[[:space:]]+-[^[:space:]]+)*[[:space:]]+[a-zA-Z][a-zA-Z-]*' <<<"$cmd" || true)"
+  if [[ -n "$git_matches" ]]; then
+    while IFS= read -r match; do
+      subcmd="${match##* }"
+      case "$subcmd" in
+        status|diff|log|show|rev-parse|ls-files) ;;
+        *) block "Bloqueado: apenas Git de inspeção é permitido ao agente (status, diff, log, show, rev-parse, ls-files)." ;;
+      esac
+    done <<<"$git_matches"
+  fi
 fi
 
 exit 0

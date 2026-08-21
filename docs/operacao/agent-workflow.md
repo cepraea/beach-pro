@@ -1,82 +1,96 @@
-# Runbook do operador — Fluxo multiagente
+# Runbook do operador humano — Fluxo multiagente
 
 ## Objetivo
 
-Orientar Davi na condução do ciclo completo de uma ACTION no fluxo
-Human-Governed Dual-Agent SDLC.
+Conduzir uma TASK completa mantendo autoridade humana, revisão independente e Git privilegiado fora dos agentes.
 
 ## Fluxo
 
 ```text
-Confirmar branch
-        ↓
-Selecionar uma ACTION
-        ↓
-Solicitar execução ao Claude
-        ↓
-Claude retorna READY_FOR_REVIEW
-        ↓
-Solicitar revisão do git diff ao Codex
-        ↓
-           ┌──────────────────┬───────────────────────────┐
-         FAIL          HUMAN_DECISION_REQUIRED           PASS
-           │                  │                           │
-           ▼                  ▼                           ▼
-  Encaminhar findings   Decidir e registrar       Revisar o diff
-  aplicáveis ao Claude  decisão material          Executar Git
-           │            quando necessária         privilegiado
-           ▼                  │                           │
-  Claude corrige              ▼                           ▼
-           │             Claude retoma             Próxima ACTION
-           ▼
-  Novo review Codex
+1. Confirmar branch não-main
+2. Solicitar PLAN ao Claude
+3. Claude cria .ai/tasks/<TASK-ID>/proposal.json
+4. Validar proposal
+5. Solicitar Codex review_stage=PLAN
+6. PASS → humano decide aprovação
+7. Humano cria approval.json vinculado ao SHA-256 da proposta
+8. Solicitar EXECUTE ao Claude
+9. Claude faz preflight, implementa, valida e cria execution-result.json
+10. Solicitar Codex review_stage=IMPLEMENTATION
+11. PASS → humano revisa diff e executa Git privilegiado
 ```
 
-## Procedimento
+## PLAN
 
-1. Confirmar a branch autorizada para a ACTION (deve ser diferente de `main` e `master`).
-2. Selecionar exclusivamente **uma** ACTION para execução — não iniciar a próxima antes de
-   concluir a anterior.
-3. Solicitar ao Claude a execução dessa ACTION, informando o escopo e os critérios de aceite.
-4. Aguardar `READY_FOR_REVIEW` do Claude. Não prosseguir se receber `BLOCKED`.
-5. Solicitar ao Codex a revisão do `git diff` produzido pelo Claude.
-6. Processar o verdict do Codex:
-   - `FAIL` → encaminhar os findings aplicáveis ao Claude para correção; solicitar novo review.
-   - `HUMAN_DECISION_REQUIRED` → exercer a decisão humana; registrar a decisão como DEC-NNN
-     quando for material; comunicar ao Claude para retomar.
-   - `PASS` → revisar o diff; executar Git privilegiado (`git add`, `git commit`).
-7. Iniciar a próxima ACTION somente após concluir a anterior com commit.
+Comando de validação:
 
-## Convenção de mensagem de commit
+```bash
+node .ai/control/validate-task-proposal.mjs .ai/tasks/<TASK-ID>/proposal.json
+```
+
+Se Codex retornar:
+
+- `FAIL`: Claude corrige somente a proposta;
+- `HUMAN_DECISION_REQUIRED`: humano decide; proposta é revisada e passa por novo review;
+- `PASS`: ainda não executar.
+
+## Aprovação humana
+
+O humano cria `approval.json` contendo:
+
+- `plan_review.verdict = PASS`;
+- `issued_by.actor_type = human`;
+- proposal ID/revision;
+- SHA-256 dos bytes exatos do proposal;
+- repository, branch e base commit.
+
+Validar:
+
+```bash
+node .ai/control/validate-task-approval.mjs \
+  .ai/tasks/<TASK-ID>/proposal.json \
+  .ai/tasks/<TASK-ID>/approval.json
+```
+
+## EXECUTE
+
+Somente após aprovação válida.
+
+Claude retorna `READY_FOR_REVIEW` ou `BLOCKED` e persiste `execution-result.json`.
+
+Validar:
+
+```bash
+node .ai/control/validate-execution-result.mjs \
+  .ai/tasks/<TASK-ID>/proposal.json \
+  .ai/tasks/<TASK-ID>/approval.json \
+  .ai/tasks/<TASK-ID>/execution-result.json
+```
+
+## IMPLEMENTATION REVIEW
+
+Solicite ao Codex:
 
 ```text
-AC-NNN: descrição da action
-SEM-NNN: descrição da sintetização semântica
-SYN-NNN: descrição da sintetização
+review_stage = IMPLEMENTATION
 ```
 
-Git é a state machine operacional. O commit é o registro formal da conclusão de cada ACTION.
+Verdicts:
 
-## Regras
+- `FAIL`: devolver findings ao Claude;
+- `HUMAN_DECISION_REQUIRED`: decidir materialmente e, se alterar contrato, gerar nova revision + novo PLAN review + nova aprovação;
+- `PASS`: humano revisa diff e pode executar Git privilegiado.
 
-- Davi controla Git privilegiado: `git add`, `git commit`, `git push`, `git merge`.
-- Um agente escritor por branch. Claude não avança automaticamente para a próxima ACTION.
-- `PASS` do Codex não produz commit automaticamente. Davi revisa e comita.
-- Para decisão material sem precedente, registrar em
-  `docs/modelagem/decisoes/registro_decisoes.md`.
+## Git
 
-## Quando acionar ChatGPT ou Gemini
+Somente humano executa `git add`, `commit`, `push`, `merge`, `rebase` ou mudança de branch/ref.
 
-- Divergência material entre Claude e Codex.
-- Decisão arquitetural sem precedente.
-- Necessidade de terceira opinião independente.
-
-Eles não adquirem autoridade de aprovação.
+Git continua sendo state machine e histórico. `.ai/tasks/` contém contratos/evidência material, não logs de conversa.
 
 ## Referências
 
 - [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
-- [`CLAUDE.md`](../..../../CLAUDE.md)
-- [`AGENTS.md`](../../../AGENTS.md)
+- [`CLAUDE.md`](../../CLAUDE.md)
+- [`AGENTS.md`](../../AGENTS.md)
+- [`.ai/control/README.md`](../../.ai/control/README.md)
 - [`runbooks/README.md`](../../runbooks/README.md)
-- [`docs/modelagem/decisoes/registro_decisoes.md`](../modelagem/decisoes/registro_decisoes.md)

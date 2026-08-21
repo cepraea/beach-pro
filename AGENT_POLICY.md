@@ -1,149 +1,219 @@
-# CEPRAEA BEACH PRO — Política comum dos agentes
+# CEPRAEA BEACH PRO — Política Comum dos Agentes
 
-## Escopo
+> **Escopo:** governa o SDLC agentivo do repositório. Não se aplica ao runtime do produto.
+> **Princípio:** produção, revisão e aprovação são funções distintas. Nenhum agente aprova ou promove o próprio trabalho.
 
-Esta política governa Claude Code e Codex no SDLC do CEPRAEA BEACH PRO.
-Ela não governa o runtime da aplicação.
+## 1. Papéis e autoridade
 
-## Papéis e autoridade
+- **Humano:** autoridade final sobre intenção, domínio, decisões materiais, aprovação de plano, Git privilegiado, release e deploy.
+- **Claude Code:** atua em duas fases mutuamente exclusivas:
+  - **PLANNER:** transforma a instrução humana em `TaskProposal`.
+  - **EXECUTOR:** implementa somente um `TaskProposal` aprovado e íntegro.
+- **Codex:** **REVIEWER** independente, em dois estágios:
+  - `PLAN`: revisa o `TaskProposal`.
+  - `IMPLEMENTATION`: revisa implementação, evidências e `ExecutionResult`.
 
-- Davi é a autoridade final sobre domínio, decisões materiais, Git, release e deploy.
-- Claude Code atua como EXECUTOR.
-- Codex atua como REVIEWER independente.
-- Produção, revisão e aprovação são funções distintas.
-- Nenhum agente aprova ou promove o próprio trabalho.
+ChatGPT/Gemini podem ser usados como meta-review excepcional, sem autoridade automática.
 
-Fluxo normal:
+## 2. Control plane canônico
 
-Claude → Codex → Davi → Git
+Os únicos namespaces persistentes do control plane são:
 
-## Escopo da tarefa
+```text
+.ai/control/    contratos, catálogos, validadores e fixtures
+.ai/decisions/  decisões humanas de arquitetura/governança
+.ai/tasks/      instâncias materiais de tarefas
+```
 
-Execute somente a tarefa autorizada.
+São proibidos como mecanismos operacionais concorrentes:
 
-Não avance automaticamente para outra tarefa, AC, SEM ou SYN.
+```text
+.agent-flow/
+.agent_rules/
+.planning/
+```
 
-Não crie novos agentes, workflows, documentos de governança ou infraestrutura
-fora do necessário para a tarefa.
+`Git` permanece a state machine e o histórico operacional. `.ai/tasks/` não é fila, banco de workflow, log de conversa nem substituto do Git.
 
-## Classificação de risco
+## 3. Hierarquia normativa
 
-- Verde: mudança local, reversível, sem auth, dados ou plano de controle.
-- Amarelo: múltiplos alvos/módulos, semântica canônica ou expansão relevante.
-- Vermelho: dependência, migration, RLS, MFA, auth, auditoria ou privacidade.
-- Vermelho crítico: `.devcontainer`, CI, hooks, managed settings, secrets,
-  deploy ou infraestrutura.
+1. decisão humana explícita atual;
+2. `AGENT_POLICY.md`;
+3. decisões `ACTIVE` em `.ai/decisions/INDEX.md`;
+4. contratos executáveis em `.ai/control/`;
+5. adaptadores de papel `CLAUDE.md` e `AGENTS.md`;
+6. `runbooks/README.md` e runbooks aplicáveis;
+7. instância corrente em `.ai/tasks/<TASK-ID>/`;
+8. documentação arquitetural explicativa.
 
-## Git
+Contradição material não é resolvida silenciosamente por precedência:
 
-Git é a state machine e o mecanismo de handoff.
+- Executor/Planner → `BLOCKED`;
+- Reviewer → `HUMAN_DECISION_REQUIRED`.
 
-Agentes podem executar operações de inspeção:
+## 4. Ciclo canônico
 
-- `git status`
-- `git diff`
-- `git log`
-- `git show`
-- `git rev-parse`
-- `git ls-files`
+```text
+Human Request
+    ↓
+Claude / PLANNER
+    ↓
+.ai/tasks/<TASK-ID>/proposal.json
+    ↓
+validação determinística
+    ↓
+Codex / PLAN REVIEW
+    ↓ PASS
+aprovação humana vinculada ao SHA-256 exato da proposta
+    ↓
+.ai/tasks/<TASK-ID>/approval.json
+    ↓
+Claude / EXECUTOR PREFLIGHT
+    ↓
+implementação + validações + evidência
+    ↓
+.ai/tasks/<TASK-ID>/execution-result.json
+    ↓
+Codex / IMPLEMENTATION REVIEW
+    ↓
+PASS | FAIL | HUMAN_DECISION_REQUIRED
+    ↓
+Humano
+    ↓
+Git privilegiado / promoção
+```
 
-Operações que alterem index, refs, histórico ou estado remoto pertencem ao humano,
-incluindo:
+`Codex PASS` no estágio `PLAN` é necessário, mas não autoriza execução por si só. O Executor só é autorizado quando `approval.json` é válido, humano, corresponde ao `proposal.json` byte a byte por SHA-256 e o `RuntimeAnchor` continua válido.
 
-- add
-- commit
-- push
-- pull
-- merge
-- rebase
-- cherry-pick
-- reset
-- restore
-- checkout
-- switch
-- branch/tag quando alteram refs
-- worktree
-- stash
-- clean
-- update-ref
+## 5. Estados externos fechados
 
-## Plano de controle
+### Planner/Executor
 
-Não modifique, salvo quando a tarefa humana tiver explicitamente esse alvo:
+Somente:
 
-- `AGENT_POLICY.md`
-- `CLAUDE.md`
-- `AGENTS.md`
-- `.devcontainer/**`
-- `.claude/**`
-- `.codex/**`
-- `.github/workflows/**`
--- `runbooks/**`
-- `scripts/ci/**`
-- secrets e credenciais
+- `READY_FOR_REVIEW`
+- `BLOCKED`
 
-## Fontes e domínio
+Diagnósticos internos devem usar `termination_reason`; não criar novos estados de handoff.
 
-Fontes controladas designadas pela tarefa ou pelo plano são somente leitura.
+### Reviewer
 
-`.drive/**` não é fonte autoritativa por padrão; pode conter material humano de
-trabalho ou referência.
+Somente:
 
-Para modelagem, preserve:
+- `PASS`
+- `FAIL`
+- `HUMAN_DECISION_REQUIRED`
 
+Toda saída do Reviewer deve declarar `review_stage = PLAN | IMPLEMENTATION`.
+
+## 6. Evidência e claims
+
+- Ausência de evidência nunca significa `PASS`.
+- Agentes não podem fabricar, simular ou inferir resultado de teste, log, comando ou aprovação.
+- Evidência material deve ser vinculável a `TASK`, `Action` e `Acceptance Criterion`.
+- Resultado de comando material preserva comando, exit code e instante observado.
+- `git diff` é evidência de mudança; não é prova automática de correção.
+- Evidência marcada como simulada é inválida para aprovação.
+- Uma `Action` em `PASS` exige evidência material.
+- `READY_FOR_REVIEW` exige zero mudança não autorizada.
+
+## 7. Risco
+
+Valores normativos de `risk.level`:
+
+- `verde`
+- `amarelo`
+- `vermelho`
+- `vermelho_critico`
+
+Valores normativos de `risk.natures`:
+
+- `ui`
+- `dependencia`
+- `rls`
+- `mfa`
+- `ci`
+- `dados`
+
+Mudanças de control plane, Dev Container, CI, secrets, deploy ou enforcement são `vermelho_critico` por padrão.
+
+## 8. Git
+
+Agentes podem executar somente inspeção read-only, incluindo:
+
+```text
+git status
+git diff
+git diff --check
+git log
+git show
+git rev-parse
+git ls-files
+git branch --show-current
+```
+
+Mutações de Git são exclusivas do humano: `add`, `commit`, `push`, `merge`, `rebase`, criação/movimentação de branch/ref, alteração de index, histórico ou remoto.
+
+## 9. Zonas de escrita
+
+| Path | Planner | Executor | Reviewer | Humano |
+| --- | --- | --- | --- | --- |
+| `.ai/control/**` | RO | RO | RO | RW |
+| `.ai/decisions/**` | RO | RO | RO | RW |
+| `.ai/tasks/<TASK>/proposal.json` antes da aprovação | RW | — | RO | RW |
+| `.ai/tasks/<TASK>/proposal.json` após aprovação | RO | RO | RO | RW |
+| `.ai/tasks/<TASK>/approval.json` | RO | RO | RO | RW |
+| `.ai/tasks/<TASK>/execution-result.json` | — | RW | RO | RW |
+| targets declarados na TASK | RO | RW | RO | RW |
+| Git privilegiado | proibido | proibido | proibido | permitido |
+
+Uma tarefa de arquitetura explicitamente aprovada pelo humano pode autorizar alteração do control plane; nesse caso os paths devem aparecer como `target` no próprio `TaskProposal`, com risco `vermelho_critico`.
+
+## 10. Runbooks
+
+A TASK declara apenas classes de operação e flags semânticas. Os paths dos runbooks são resolvidos por:
+
+```text
+.ai/control/runbook-catalog.json
+```
+
+Não duplicar manualmente a matriz de paths dentro da TASK.
+
+Classes permitidas:
+
+- `code_change`
+- `database_change`
+- `documentation_change`
+- `dependency_change`
+
+## 11. Bootstrap e FVR
+
+O estado operacional é definido por `.ai/control/control-plane.json`.
+
+Enquanto:
+
+```text
+bootstrap_mode = DESIGN
+```
+
+o bootstrap é diagnóstico e seu `FAIL` não é autorização nem gate global.
+
+Enquanto:
+
+```text
+fvr_mode = PILOT_ONLY
+```
+
+o FVR/Verification Plan pode ser executado como piloto, mas não substitui os validadores obrigatórios nem concede `PASS` de produção.
+
+A promoção para modo obrigatório exige decisão humana `ACTIVE` em `.ai/decisions/`.
+
+## 12. Modelagem
+
+Para a modelagem canônica de domínio, preservar o pipeline existente:
+
+```text
 fonte → evidência → conhecimento → modelo canônico → modelo lógico
+```
 
-Não altere fonte para fazê-la concordar com uma conclusão.
-
-Não invente conhecimento para preencher lacunas.
-
-Para modelagem, use:
-[Modelagem dos Dados](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)
-
-## Validação
-
-O EXECUTOR executa os validadores determinísticos aplicáveis antes do handoff.
-
-O REVIEWER reexecuta somente os checks necessários para revisão independente,
-proporcionalmente ao risco e aos findings.
-
-## Sem bypass
-
-Permissão inexistente não autoriza alteração de policy, sandbox, container ou
-controle para contornar a restrição.
-
-Se a tarefa não puder continuar dentro da autoridade disponível, informe
-
-`BLOCKED` ou `HUMAN_DECISION_REQUIRED`.
-
-## Evidência
-
-Persista quando material:
-
-- código;
-- testes;
-- evidências;
-- modelos;
-- regras;
-- decisões;
-- commits.
-
-Não crie state machine, log de interação ou relatório obrigatório paralelo ao Git.
-
-## Escalonamento
-
-ChatGPT ou Gemini são usados somente para:
-
-- divergência material;
-- decisão arquitetural;
-- problema semântico relevante;
-- terceira opinião realmente necessária.
-
-Eles não adquirem autoridade de aprovação.
-
-## Documentação
-
-Ao criar ou alterar Markdown, siga:
-
-`docs/standards/guia_estilo_documentação.md`
-
+Não inventar fatos para preencher lacunas. O plano canônico permanece em `docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md`.
