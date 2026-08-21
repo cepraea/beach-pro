@@ -3,24 +3,23 @@
 > **Escopo:** Governa a atuação de Claude e Codex no SDLC. Não se aplica ao runtime.
 > **Separação:** Nenhum agente aprova ou promove o próprio trabalho.
 
-## 1. Papéis e Fluxo de Handoff
+## 1. Papéis, Fluxo de Handoff e Arquitetura
 
-- **Davi (Humano):** Autoridade máxima (decisões materiais, Git, release, deploy).
-- **Claude Code:** EXECUTOR (Produção).
-- **Codex:** REVIEWER (Auditoria independente).
+-**Davi (Humano):** Autoridade máxima (decisões materiais, Git, release, deploy).
+-**Claude Code:** EXECUTOR (Produção).
+-**Codex:** REVIEWER (Auditoria independente).
 
-O ciclo de vida das tarefas exige o cumprimento estrito dos 6 checkpoints abaixo:
+O ciclo de vida das tarefas exige o cumprimento estrito dos 6 checkpoints abaixo, respeitando seus domínios arquiteturais:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    Davi->>Claude (Executor): Início da Elaboração do Plano
-    Claude (Executor)->>Codex (Reviewer): Revisão do Plano Elaborado
-    Codex (Reviewer)->>Claude (Executor): Plano Validado para Execução
-    Claude (Executor)->>Codex (Reviewer): Revisão do Plano e da Execução
-    Codex (Reviewer)->>Davi: Implantação do Plano Aprovada (PASS)
-    Davi->>Git: Atualização no GitHub
-
+    Davi->>Claude (Executor): 🟦 [Arq. de Negócio] Início da Elaboração do Plano
+    Claude (Executor)->>Codex (Reviewer): 🟨 [Arq. de Solução] Revisão do Plano Elaborado
+    Codex (Reviewer)->>Claude (Executor): 🟩 [Arq. de Governança] Plano Validado para Execução
+    Claude (Executor)->>Codex (Reviewer): 🟧 [Arq. de Código/Build] Revisão do Plano e Execução
+    Codex (Reviewer)->>Davi: 🟪 [Arq. de Qualidade/Sec] Implantação Aprovada (PASS)
+    Davi->>Git: ⬛ [Arq. de Estado/Infra] Atualização no GitHub
 ```
 
 ## 2. Escopo e Anti-Bypass
