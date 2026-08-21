@@ -309,15 +309,12 @@ conceito, ou consequência operacional documentada (correção humana registrada
 cálculo manual) — nunca apenas "existe uma coluna com esse nome". Nenhum termo nasceu só por nome
 de coluna.
 
-Registrado como decisão formal (não apenas nota de dossiê) para manter o mesmo padrão de
-auditoria dos demais testes adversariais (`AD-01` → `DEC-004`, em `AC-002`). Segue o mesmo
-mecanismo já usado em `DEC-011`: rascunho com `aprovador=PENDENTE`/`estado=BLOQUEADO`, porque é
-uma verificação nova que ninguém revisou ainda — nunca autoaprovada pelo `EXECUTOR` (melhoria f).
+>Registrado como decisão formal (não apenas nota de dossiê) para manter o mesmo padrão de auditoria dos demais testes adversariais (`AD-01` → `DEC-004`, em `AC-002`). Segue o mesmo mecanismo já usado em `DEC-011`: nasceu rascunho com aprovador= `PENDENTE`/estado= `BLOQUEADO`, porque é uma verificação nova que ninguém revisou ainda — nunca autoaprovada pelo *EXECUTOR* (melhoria f). Confirmado por *Davi Sermenho* nesta sessão (2026-08-21) — aprovador= `Davi Sermenho`, estado =`RESOLVIDA`.
 
 ```json
 {
   "id_decisao": "DEC-007",
-  "data": "2026-08-15",
+  "data": "2026-08-21",
   "decisao": "Resultado de AD-03 (seção 8 do plano) sobre os 11 termos registrados em AC-001 — nenhum termo deveria nascer apenas por existir uma coluna com esse nome, sem semantic_evidence real.",
   "alternativas": [],
   "escolha": "AD-03 passou: todos os 11 TERMO-NNN de AC-001 têm semantic_evidence com justificativa real (recorrência em múltiplas abas, regra de metadados/contrato citando o conceito, ou consequência operacional documentada), nenhum baseado só em nome de coluna. Nenhuma correção foi necessária.",
@@ -328,8 +325,8 @@ uma verificação nova que ninguém revisou ainda — nunca autoaprovada pelo `E
   ],
   "impacto": "Nenhuma ação corretiva necessária em AC-001. Precedente de verificação para os demais AD-NNN ainda pendentes (AD-01/AC-002, AD-02+AD-04/AC-008-010, AD-05/AC-028, AD-06/AC-029).",
   "riscos": [],
-  "aprovador": "PENDENTE",
-  "estado": "BLOQUEADO",
+  "aprovador": "Davi Sermenho",
+  "estado": "RESOLVIDA",
   "evidencia": {
     "repository_evidence": { "action_ref": "AC-001" }
   }
