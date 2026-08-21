@@ -10,10 +10,10 @@ inventar requisito, alterar escopo ou depender de conversa extensa fora da taref
 Este documento é a instrução completa para o Executor preencher corretamente um `task_proposal`
 antes de implementar uma tarefa de produto/engenharia, e para o Reviewer avaliar se esse
 preenchimento está correto. O contrato verificável por máquina correspondente está em
-[`.ai/control/task-proposal.schema.json`](../../.ai/control/task-proposal.schema.json), com um
-exemplo completo em [`.ai/task-proposal.example.json`](../../.ai/task-proposal.example.json)
+[`.ai/control/task-proposal.schema.json`](../../../../.ai/control/task-proposal.schema.json), com um
+exemplo completo em [`.ai/task-proposal.example.json`](../../../../.ai/task-proposal.example.json)
 (tarefa `TASK-001`, Wellness Pré-Treino) e um validador reproduzível em
-[`.ai/control/validate-task-proposal.mjs`](../../.ai/control/validate-task-proposal.mjs)
+[`.ai/control/validate-task-proposal.mjs`](../../../../.ai/control/validate-task-proposal.mjs)
 (`node .ai/control/validate-task-proposal.mjs` valida o exemplo canônico contra o schema; aceita
 `<schema> <instância>` para checar outras propostas).
 
@@ -259,7 +259,7 @@ puder alterar o resultado.
 ## Exemplo de task atômica
 
 O `task_proposal` completo deste exemplo está em
-[`.ai/task-proposal.example.json`](../../.ai/task-proposal.example.json) — `TASK-001`,
+[`.ai/task-proposal.example.json`](../../../../.ai/task-proposal.example.json) — `TASK-001`,
 persistência e classificação de risco do Wellness Pré-Treino: validação estrita de entrada (Zod,
 sem coerção), cálculo server-side de uma flag de risco a partir de gatilhos numéricos, janela
 temporal autoritativa do servidor e UPSERT sequencial. Cobre `business_rules`, `decisions`,

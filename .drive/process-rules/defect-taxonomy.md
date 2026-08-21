@@ -2,7 +2,7 @@
 
 ## 1. Contexto e Objetivos
 
-No desenvolvimento de software, existem inúmeros termos para representar "defeitos", e seus significados variam dependendo do contexto. 
+No desenvolvimento de software, existem inúmeros termos para representar "defeitos", e seus significados variam dependendo do contexto.
 Este documento faz referência às normas IEEE 1044, IEC 61508, ISO 26262 e ITIL para definir de forma unívoca a terminologia relacionada a defeitos utilizada no framework full-auto-dev.
 
 **Princípio de Design:** Como os equivalentes locais para termos como "falha", "defeito" e "pane" são polissêmicos e ambíguos, este framework **utiliza as palavras em inglês como estão** para eliminar qualquer ambiguidade.
@@ -30,9 +30,9 @@ flowchart LR
 
 ## 1. Contexto e Objetivos
 
-No desenvolvimento de software, existem inúmeros termos para representar "defeito", e seus significados variam dependendo do contexto. Este documento faz referência às normas IEEE 1044, IEC 61508, ISO 26262 e ITIL para definir de forma unívoca a terminologia relacionada a defeitos utilizada no framework full-auto-dev.
+No desenvolvimento de software, existem inúmeros termos para representar "defeito", e seus significados variam dependendo do contexto. Este documento faz referência às normas IEEE 1044, IEC 61508, ISO 26262 e ITIL para definir de forma unívoca a terminologia relacionada a defeitos utilizada no framework `full-auto-dev`.
 
-**Princípio de Design:** Como os equivalentes locais para termos como "falha", "defeito" e "pane" (em japonês, "障害", "不具合", "故障") são polissêmicos e ambíguos, este framework **utiliza as palavras em inglês como estão** para eliminar qualquer ambiguidade.
+**Princípio de Design:** Como os equivalentes locais para termos como "falha", "defeito" e "pane" são polissêmicos e ambíguos, este framework **utiliza as palavras em inglês como estão** para eliminar qualquer ambiguidade.
 
 ---***
 
@@ -55,7 +55,7 @@ flowchart LR
 
 ```
 
-Um Error gera um Fault, o Fault se manifesta tornando-se um Failure, e quando o Failure afeta o serviço em produção, torna-se um Incident. Quando o Failure possui condições para causar danos à vida ou propriedade, ele é chamado de Hazard (no contexto de segurança funcional).
+Um `Error`, gera um `Fault`, o `Fault` se manifesta tornando-se um `Failure`, e quando o `Failure` afeta o serviço em produção, torna-se um `Incident`. Quando o Failure possui condições para causar danos à vida ou propriedade, ele é chamado de `Hazard` (no contexto de segurança funcional).
 
 ***
 
@@ -65,18 +65,18 @@ Um Error gera um Fault, o Fault se manifesta tornando-se um Failure, e quando o 
 
 | Termo | Norma de Referência | Definição | Exemplo Específico |
 | --- | --- | --- | --- |
-| **Error** | IEEE 1044 | Erro humano de reconhecimento, julgamento ou operação. É a causa do Fault. | Interpretou incorretamente a condição de limite de um array e escreveu um código *off-by-one*. |
-| **Fault** | IEEE 1044, IEC 61508 | Estado incorreto incorporado ao código, design ou especificação como resultado de um Error. É latente e não se manifesta até que condições específicas de execução sejam atendidas. | O erro na condição de limite `if (i <= array.length)` (existe no código, mas ainda não foi executado). |
-| **Failure** | IEEE 1044, IEC 61508 | Evento no qual um Fault se manifesta em tempo de execução, fazendo com que o sistema deixe de satisfazer os requisitos (funcionais ou não funcionais). | O código *off-by-one* acima foi executado, gerando uma `ArrayIndexOutOfBoundsException`. |
+| **Error** | `IEEE 1044` | Erro humano de reconhecimento, julgamento ou operação. É a causa do Fault. | Interpretou incorretamente a condição de limite de um array e escreveu um código *off-by-one*. |
+| **Fault** | `IEEE 1044`, `IEC 61508` | Estado incorreto incorporado ao código, design ou especificação como resultado de um Error. É latente e não se manifesta até que condições específicas de execução sejam atendidas. | O erro na condição de limite `if (i <= array.length)` (existe no código, mas ainda não foi executado). |
+| **Failure** | `IEEE 1044`, `IEC 61508 `| Evento no qual um Fault se manifesta em tempo de execução, fazendo com que o sistema deixe de satisfazer os requisitos (funcionais ou não funcionais). | O código *off-by-one* acima foi executado, gerando uma `ArrayIndexOutOfBoundsException`. |
 
 ### 3.2 Fault Origin (Classificação por Fase de Introdução)
 
-Os Faults são classificados em três tipos de acordo com a fase em que foram introduzidos. Identificar a origem do fault (fault origin) na *root cause analysis* de um Defect determina o alvo a ser corrigido (especificação, design ou código).
+Os `Faults` são classificados em três tipos de acordo com a fase em que foram introduzidos. Identificar a origem do `fault` (`fault origin`) na *root cause analysis* de um `Defect` determina o alvo a ser corrigido (especificação, design ou código).
 
 | Termo | Norma de Referência | Definição | Exemplo Específico |
 | --- | --- | --- | --- |
-| **Requirements Fault** | IEEE 1044 | Fault introduzido nos requisitos/especificação. A própria especificação está incorreta ou insuficiente. | O requisito é "bloquear o login após 3 falhas", mas isso não consta no documento de especificação, ou foi erroneamente escrito como "5 falhas". |
-| **Design Fault** | IEEE 1044 | Fault introduzido no design. A especificação está correta, mas o design está incorreto. | A especificação está correta, mas no diagrama de sequência, a verificação de bloqueio foi colocada na camada de UI em vez da camada de DB. |
+| **Requirements Fault** | `IEEE 1044` | `Fault` introduzido nos *requisitos/especificação*. A própria especificação está incorreta ou insuficiente. | O requisito é "bloquear o login após 3 falhas", mas isso não consta no documento de especificação, ou foi erroneamente escrito como "5 falhas". |
+| **Design Fault** | `IEEE 1044` | `Fault` introduzido no design. A *especificação* está correta, mas o *design* está incorreto. | A especificação está correta, mas no diagrama de sequência, a verificação de bloqueio foi colocada na camada de UI em vez da camada de DB. |
 | **Implementation Fault** | IEEE 1044 | Fault introduzido na implementação (= coding fault). O design está correto, mas o código está incorreto. | O design está correto, mas escreveu-se `failCount > 3` em vez de `failCount >= 3`. |
 
 **Correspondência entre Fault Origin e Alvo de Correção:**
