@@ -1,10 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cepraea.local/schema/2.0/task-proposal.schema.json",
-  "title": "CEPRAEA BEACH PRO Task Proposal",
+  "$id": "https://cepraea.local/schema/3.0/task-proposal.schema.json",
+  "title": "CEPRAEA BEACH PRO Task Proposal v3",
   "type": "object",
   "additionalProperties": false,
-
   "required": [
     "object_type",
     "schema_version",
@@ -13,340 +12,440 @@
     "task_id",
     "title",
     "original_instruction",
-    "objective",
+    "goal",
     "problem",
     "actor",
-    "valid_context",
-    "invalid_context",
+    "context",
+    "outputs",
     "preconditions",
     "dependencies",
-    "normative_source",
-    "inputs_and_contracts",
+    "normative_sources",
     "current_behavior",
     "expected_behavior",
     "relevant_states",
-    "in_scope",
-    "out_of_scope",
+    "boundaries",
     "included_edge_cases",
     "three_amigos",
     "business_rules",
     "decisions",
     "constraints",
-    "allowed_actions",
-    "prohibited_actions",
-    "allowed_technical_autonomy",
     "files",
-    "human_decisions_already_made",
     "pending_human_decisions",
     "risk",
     "runbook_binding",
-    "stop_conditions",
     "acceptance_criteria",
+    "actions",
     "mandatory_checks",
-    "expected_evidence",
     "definition_of_done"
   ],
-
   "properties": {
-    "object_type": { "const": "task_proposal" },
-    "schema_version": { "const": "2.0" },
-    "proposal_id": { "type": "string", "minLength": 1, "maxLength": 128 },
-    "revision": { "type": "integer", "minimum": 1 },
-
-    "task_id": { "type": "string", "minLength": 1, "maxLength": 128, "description": "ID (task_atomics.md)." },
-    "title": { "type": "string", "minLength": 1 },
-    "original_instruction": { "type": "string", "minLength": 1, "description": "Texto literal recebido de Davi que originou esta proposta." },
-    "objective": { "type": "string", "minLength": 1 },
-    "problem": { "type": "string", "minLength": 1, "description": "O problema que a tarefa resolve, distinto do objetivo (a solucao)." },
-    "actor": { "type": "string", "minLength": 1 },
-
-    "valid_context": { "type": "string", "minLength": 1 },
-    "invalid_context": { "type": "string", "minLength": 1, "description": "Usar 'Nao aplicavel' quando nao houver contexto invalido relevante." },
-
-    "preconditions": { "type": "string", "minLength": 1 },
-    "dependencies": { "type": "string", "minLength": 1, "description": "Outras tarefas, decisoes (DEC-NNN) ou artefatos dos quais esta tarefa depende. Usar 'Nenhuma' quando nao houver." },
-    "normative_source": { "type": "string", "minLength": 1 },
-    "inputs_and_contracts": { "type": "string", "minLength": 1 },
-
-    "current_behavior": { "type": "string", "minLength": 1, "description": "Usar 'N/A - nova feature' quando nao houver comportamento atual." },
-    "expected_behavior": { "type": "string", "minLength": 1 },
-    "relevant_states": { "type": "string", "minLength": 1 },
-
-    "in_scope": { "type": "string", "minLength": 1 },
-    "out_of_scope": { "type": "string", "minLength": 1 },
-    "included_edge_cases": { "type": "string", "minLength": 1 },
-
-    "three_amigos": { "$ref": "#/$defs/threeAmigos" },
+    "object_type": {
+      "const": "task_proposal"
+    },
+    "schema_version": {
+      "const": "3.0"
+    },
+    "proposal_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9._-]{2,127}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9._-]{2,127}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "original_instruction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "problem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid",
+        "invalid"
+      ],
+      "properties": {
+        "valid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "invalid": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "output_id",
+          "description"
+        ],
+        "properties": {
+          "output_id": {
+            "type": "string",
+            "pattern": "^OUT-[0-9]{3,}$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "normative_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "ref",
+          "locator"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "file",
+              "decision",
+              "human_instruction"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "current_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relevant_states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "in_scope",
+        "out_of_scope",
+        "allowed_actions",
+        "prohibited_actions",
+        "allowed_technical_autonomy",
+        "stop_conditions"
+      ],
+      "properties": {
+        "in_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_technical_autonomy": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "stop_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "included_edge_cases": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "three_amigos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain_business",
+        "development",
+        "quality"
+      ],
+      "properties": {
+        "domain_business": {
+          "type": "string",
+          "minLength": 1
+        },
+        "development": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quality": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
     "business_rules": {
       "type": "array",
-      "items": { "$ref": "#/$defs/idText" },
-      "description": "{rule_id, rule}[] (task_atomics.md secao 3.1)."
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rule_id",
+          "rule"
+        ],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "decisions": {
       "type": "array",
-      "items": { "$ref": "#/$defs/decisionEntry" },
-      "description": "{decision_id, decision}[] - decisoes humanas ja tomadas que restringem a implementacao (nao confundir com human_decisions_already_made, que e o resumo em prosa)."
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "decision_id",
+          "decision"
+        ],
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "constraints": {
       "type": "array",
-      "items": { "$ref": "#/$defs/constraintEntry" },
-      "description": "{constraint_id, scope, constraint}[]."
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "constraint_id",
+          "scope",
+          "constraint"
+        ],
+        "properties": {
+          "constraint_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "constraint": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
-
-    "allowed_actions": { "type": "string", "minLength": 1 },
-    "prohibited_actions": { "type": "string", "minLength": 1, "description": "Equivalente a MUST NOT (task_atomics.md secao 6)." },
-    "allowed_technical_autonomy": { "type": "string", "minLength": 1 },
-
     "files": {
       "type": "array",
       "minItems": 1,
-      "uniqueItems": true,
-      "items": { "$ref": "#/$defs/fileScope" }
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "role",
+          "operation"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+          },
+          "role": {
+            "enum": [
+              "target",
+              "reference",
+              "read_only",
+              "forbidden"
+            ]
+          },
+          "operation": {
+            "enum": [
+              "read",
+              "change",
+              "none"
+            ]
+          }
+        }
+      }
     },
-
-    "human_decisions_already_made": { "type": "string", "minLength": 1 },
     "pending_human_decisions": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Toda pendencia real aqui impede PASS do plano ate resolvida ou registrada como HUMAN_DECISION_REQUIRED. Usar 'Nenhuma' quando nao houver."
-    },
-
-    "risk": { "$ref": "#/$defs/risk" },
-    "runbook_binding": { "$ref": "#/$defs/runbookBinding" },
-
-    "stop_conditions": { "type": "string", "minLength": 1 },
-
-    "acceptance_criteria": {
       "type": "array",
-      "minItems": 1,
-      "items": { "$ref": "#/$defs/acceptanceCriterion" }
-    },
-    "mandatory_checks": { "type": "string", "minLength": 1 },
-    "expected_evidence": { "type": "string", "minLength": 1 },
-    "definition_of_done": { "type": "string", "minLength": 1 },
-
-    "bdd": {
-      "$ref": "#/$defs/bdd",
-      "description": "Preencher somente quando algum criterio de aceite descrever comportamento observavel (task_atomics.md secao 5). Omitir quando nao aplicavel."
-    }
-  },
-
-  "$defs": {
-    "relativePath": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
-    },
-
-    "idText": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["rule_id", "rule"],
-      "properties": {
-        "rule_id": { "type": "string", "minLength": 1 },
-        "rule": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
       }
     },
-
-    "decisionEntry": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["decision_id", "decision"],
-      "properties": {
-        "decision_id": { "type": "string", "minLength": 1 },
-        "decision": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "constraintEntry": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["constraint_id", "scope", "constraint"],
-      "properties": {
-        "constraint_id": { "type": "string", "minLength": 1 },
-        "scope": { "type": "string", "minLength": 1 },
-        "constraint": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "threeAmigos": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["domain_business", "development", "quality"],
-      "properties": {
-        "domain_business": { "type": "string", "minLength": 1 },
-        "development": { "type": "string", "minLength": 1 },
-        "quality": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "fileScope": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["path", "role", "operation"],
-      "properties": {
-        "path": { "$ref": "#/$defs/relativePath" },
-        "role": {
-          "enum": ["target", "reference", "read_only", "forbidden"],
-          "description": "Mesma classificacao de CLAUDE.md (Proposta proporcional): alvo|referencia|somente_leitura|proibido."
-        },
-        "operation": {
-          "enum": ["read", "change", "none"]
-        }
-      },
-      "allOf": [
-        {
-          "if": { "properties": { "role": { "const": "target" } } },
-          "then": { "properties": { "operation": { "const": "change" } } }
-        },
-        {
-          "if": { "properties": { "role": { "enum": ["reference", "read_only"] } } },
-          "then": { "properties": { "operation": { "const": "read" } } }
-        },
-        {
-          "if": { "properties": { "role": { "const": "forbidden" } } },
-          "then": { "properties": { "operation": { "const": "none" } } }
-        }
-      ]
-    },
-
     "risk": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["level", "natures", "blast_radius", "reversibility", "justification"],
+      "required": [
+        "level",
+        "natures",
+        "blast_radius",
+        "reversibility",
+        "justification"
+      ],
       "properties": {
         "level": {
-          "enum": ["verde", "amarelo", "vermelho", "vermelho_critico"],
-          "description": "AGENT_POLICY.md - Classificacao de risco. Valores fixos, nao traduzir."
+          "enum": [
+            "verde",
+            "amarelo",
+            "vermelho",
+            "vermelho_critico"
+          ]
         },
         "natures": {
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "enum": ["ui", "dependencia", "rls", "mfa", "ci", "dados"]
-          },
-          "description": "AGENT_POLICY.md - enum fechado. Uma tarefa de banco de dados usa 'dados'; nao existe categoria 'database' separada."
-        },
-        "blast_radius": { "enum": ["baixo", "medio", "alto"] },
-        "reversibility": { "enum": ["reversivel", "parcial", "irreversivel"] },
-        "justification": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "acceptanceCriterion": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["condition", "method", "expected"],
-      "properties": {
-        "condition": { "type": "string", "minLength": 1 },
-        "method": { "type": "string", "minLength": 1 },
-        "expected": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "bddStep": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["keyword", "text"],
-      "properties": {
-        "keyword": { "enum": ["Given", "When", "Then", "And", "But"] },
-        "text": { "type": "string", "minLength": 1 }
-      }
-    },
-
-    "bddExamplesTable": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["headers", "rows"],
-      "properties": {
-        "headers": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
-        },
-        "rows": {
-          "type": "array",
-          "items": {
-            "type": "array",
-            "items": { "type": "string" }
+            "enum": [
+              "ui",
+              "dependencia",
+              "rls",
+              "mfa",
+              "ci",
+              "dados"
+            ]
           }
-        }
-      }
-    },
-
-    "bddScenario": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["name", "kind", "steps", "examples"],
-      "properties": {
-        "name": { "type": "string", "minLength": 1 },
-        "kind": { "enum": ["scenario", "scenario_outline"] },
-        "steps": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/bddStep" }
         },
-        "examples": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/bddExamplesTable" },
-          "description": "Obrigatorio quando kind=scenario_outline (pelo menos uma tabela); array vazio quando kind=scenario."
-        }
-      },
-      "allOf": [
-        {
-          "if": { "properties": { "kind": { "const": "scenario_outline" } } },
-          "then": { "properties": { "examples": { "minItems": 1 } } }
-        }
-      ]
-    },
-
-    "bddRule": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["rule", "scenarios"],
-      "properties": {
-        "rule": { "type": "string", "minLength": 1 },
-        "scenarios": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/bddScenario" }
-        }
-      }
-    },
-
-    "bdd": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["feature", "rules"],
-      "properties": {
-        "feature": { "type": "string", "minLength": 1 },
-        "background": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/bddStep" },
-          "description": "Opcional - omitir quando nao houver passo comum a todos os cenarios."
+        "blast_radius": {
+          "enum": [
+            "baixo",
+            "medio",
+            "alto"
+          ]
         },
-        "rules": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "$ref": "#/$defs/bddRule" }
+        "reversibility": {
+          "enum": [
+            "reversivel",
+            "parcial",
+            "irreversivel"
+          ]
+        },
+        "justification": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },
-
-    "runbookBinding": {
+    "runbook_binding": {
       "type": "object",
       "additionalProperties": false,
-
       "required": [
+        "catalog_version",
         "operation_classes",
-        "applicable_runbooks"
+        "repository_baseline_required",
+        "evidence_review_required"
       ],
-
       "properties": {
+        "catalog_version": {
+          "const": "1.0"
+        },
         "operation_classes": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 4,
           "uniqueItems": true,
           "items": {
             "enum": [
@@ -355,176 +454,210 @@
               "documentation_change",
               "dependency_change"
             ]
-          },
-          "description": "runbooks/README.md - enum fechado de 4 classes. Nao existem 'backend_change', 'validation_change' ou 'test_change' como classes proprias."
+          }
         },
-
-        "applicable_runbooks": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "shared",
-            "executor",
-            "reviewer"
-          ],
-          "properties": {
-            "shared": {
-              "type": "array",
-              "maxItems": 3,
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "runbooks/shared/RB-SHARED-001-repository-baseline.md",
-                  "runbooks/shared/RB-SHARED-002-evidence.md",
-                  "runbooks/shared/RB-SHARED-003-failure-states.md"
-                ]
-              }
-            },
-
-            "executor": {
-              "type": "array",
-              "minItems": 1,
-              "maxItems": 4,
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "runbooks/executor/RB-EXEC-001-code-change.md",
-                  "runbooks/executor/RB-EXEC-002-database-change.md",
-                  "runbooks/executor/RB-EXEC-003-documentation-change.md",
-                  "runbooks/executor/RB-EXEC-004-dependency-change.md"
-                ]
-              }
-            },
-
-            "reviewer": {
-              "type": "array",
-              "minItems": 1,
-              "maxItems": 5,
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "runbooks/reviewer/RB-REV-001-code-review.md",
-                  "runbooks/reviewer/RB-REV-002-database-review.md",
-                  "runbooks/reviewer/RB-REV-003-documentation-review.md",
-                  "runbooks/reviewer/RB-REV-004-evidence-review.md",
-                  "runbooks/reviewer/RB-REV-005-dependency-review.md"
-                ]
-              }
-            }
-          }
+        "repository_baseline_required": {
+          "type": "boolean"
+        },
+        "evidence_review_required": {
+          "type": "boolean"
         }
-      },
-
-      "allOf": [
-        { "$ref": "#/$defs/codeChangeBinding" },
-        { "$ref": "#/$defs/databaseChangeBinding" },
-        { "$ref": "#/$defs/documentationChangeBinding" },
-        { "$ref": "#/$defs/dependencyChangeBinding" }
-      ]
+      }
     },
-
-    "codeChangeBinding": {
-      "if": {
-        "properties": { "operation_classes": { "contains": { "const": "code_change" } } }
-      },
-      "then": {
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion_id",
+          "output_refs",
+          "condition",
+          "method",
+          "expected",
+          "verification_owner"
+        ],
         "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-001-code-change.md" } },
-              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-001-code-review.md" } }
+          "criterion_id": {
+            "type": "string",
+            "pattern": "^AC-[0-9]{3,}$"
+          },
+          "output_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^OUT-[0-9]{3,}$"
             }
+          },
+          "condition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verification_owner": {
+            "enum": [
+              "deterministic",
+              "reviewer",
+              "human"
+            ]
           }
         }
-      },
-      "else": {
+      }
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "action_id",
+          "action",
+          "purpose",
+          "depends_on",
+          "acceptance_criteria_refs",
+          "target_files",
+          "expected_evidence"
+        ],
         "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-001-code-change.md" } } },
-              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-001-code-review.md" } } }
+          "action_id": {
+            "type": "string",
+            "pattern": "^A-[0-9]{3,}$"
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "depends_on": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^A-[0-9]{3,}$"
+            }
+          },
+          "acceptance_criteria_refs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^AC-[0-9]{3,}$"
+            }
+          },
+          "target_files": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "expected_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
             }
           }
         }
       }
     },
-
-    "databaseChangeBinding": {
-      "if": {
-        "properties": { "operation_classes": { "contains": { "const": "database_change" } } }
-      },
-      "then": {
+    "mandatory_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "check_id",
+          "kind",
+          "command",
+          "expected_exit_code"
+        ],
         "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-002-database-change.md" } },
-              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-002-database-review.md" } }
-            }
-          }
-        }
-      },
-      "else": {
-        "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-002-database-change.md" } } },
-              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-002-database-review.md" } } }
-            }
-          }
-        }
-      }
-    },
-
-    "documentationChangeBinding": {
-      "if": {
-        "properties": { "operation_classes": { "contains": { "const": "documentation_change" } } }
-      },
-      "then": {
-        "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-003-documentation-change.md" } },
-              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-003-documentation-review.md" } }
-            }
-          }
-        }
-      },
-      "else": {
-        "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-003-documentation-change.md" } } },
-              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-003-documentation-review.md" } } }
-            }
+          "check_id": {
+            "type": "string",
+            "pattern": "^CHK-[0-9]{3,}$"
+          },
+          "kind": {
+            "enum": [
+              "schema",
+              "lint",
+              "typecheck",
+              "test",
+              "build",
+              "git",
+              "security",
+              "custom"
+            ]
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expected_exit_code": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
           }
         }
       }
     },
-
-    "dependencyChangeBinding": {
-      "if": {
-        "properties": { "operation_classes": { "contains": { "const": "dependency_change" } } }
-      },
-      "then": {
-        "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "contains": { "const": "runbooks/executor/RB-EXEC-004-dependency-change.md" } },
-              "reviewer": { "contains": { "const": "runbooks/reviewer/RB-REV-005-dependency-review.md" } }
-            }
+    "definition_of_done": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_acceptance_criteria_refs",
+        "required_check_refs",
+        "no_unauthorized_changes",
+        "no_pending_human_decisions"
+      ],
+      "properties": {
+        "required_acceptance_criteria_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^AC-[0-9]{3,}$"
           }
-        }
-      },
-      "else": {
-        "properties": {
-          "applicable_runbooks": {
-            "properties": {
-              "executor": { "not": { "contains": { "const": "runbooks/executor/RB-EXEC-004-dependency-change.md" } } },
-              "reviewer": { "not": { "contains": { "const": "runbooks/reviewer/RB-REV-005-dependency-review.md" } } }
-            }
+        },
+        "required_check_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^CHK-[0-9]{3,}$"
           }
+        },
+        "no_unauthorized_changes": {
+          "const": true
+        },
+        "no_pending_human_decisions": {
+          "const": true
         }
       }
+    },
+    "bdd": {
+      "type": "object"
     }
   }
 }

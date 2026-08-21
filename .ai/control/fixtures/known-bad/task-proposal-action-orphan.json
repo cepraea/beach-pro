@@ -1,0 +1,407 @@
+{
+  "object_type": "task_proposal",
+  "schema_version": "3.0",
+  "proposal_id": "TP-BAD-ORPHAN-001",
+  "revision": 1,
+  "task_id": "TASK-ARCH-CP-001",
+  "title": "Reconciliar o control plane canônico do SDLC agentivo",
+  "original_instruction": "Substituir os artefatos conflitantes do control plane por uma arquitetura única baseada em .ai/control, .ai/decisions e .ai/tasks, preservando autoridade humana, revisão independente e Git como state machine.",
+  "goal": "Eliminar drift entre policy operacional, contratos, Planner, Executor e Reviewer, deixando uma única cadeia verificável do pedido humano até a revisão da implementação.",
+  "problem": "A main contém contratos executáveis e documentos arquiteturais com paths, estados e gates divergentes, permitindo interpretações diferentes entre Planner, Executor e Reviewer.",
+  "actor": "Humano responsável pelo repositório, Claude Code e Codex no SDLC.",
+  "context": {
+    "valid": "Mudança explicitamente autorizada de governança/arquitetura do repositório cepraea/beach-pro.",
+    "invalid": "Mudanças funcionais do produto ou tentativa de promover o runtime do CEPRAEA a produção."
+  },
+  "outputs": [
+    {
+      "output_id": "OUT-001",
+      "description": "Control plane único em .ai/control, .ai/decisions e .ai/tasks."
+    },
+    {
+      "output_id": "OUT-002",
+      "description": "Ciclo PLAN → aprovação humana por hash → EXECUTE → IMPLEMENTATION REVIEW coerente em policy e documentação."
+    },
+    {
+      "output_id": "OUT-003",
+      "description": "Validadores determinísticos e fixtures que rejeitam drift, referências órfãs, aprovação inválida e evidência simulada."
+    }
+  ],
+  "preconditions": [
+    "Baseline da main observada em 2c182858a42854ae3890f8d490679b61f9592bf6.",
+    "Mudança executada em branch diferente de main/master."
+  ],
+  "dependencies": [
+    "Decisão humana de manter .ai/control, .ai/decisions e .ai/tasks."
+  ],
+  "normative_sources": [
+    {
+      "kind": "file",
+      "ref": "AGENT_POLICY.md",
+      "locator": "política operacional vigente"
+    },
+    {
+      "kind": "file",
+      "ref": "runbooks/README.md",
+      "locator": "matriz de classes de operação"
+    },
+    {
+      "kind": "file",
+      "ref": "docs/arquiteturas/multi-agentes/executor/task_atomics.md",
+      "locator": "padrão de task atômica"
+    },
+    {
+      "kind": "human_instruction",
+      "ref": "current_request",
+      "locator": "decisão explícita de manter os três namespaces .ai"
+    }
+  ],
+  "current_behavior": "O repositório possui Task Proposal v2, Verification Plan e múltiplos documentos com ciclos e paths parcialmente divergentes.",
+  "expected_behavior": "Uma única arquitetura canônica controla planejamento, aprovação, execução, evidência e revisão; documentação não redefine contratos executáveis.",
+  "relevant_states": [
+    "PLAN",
+    "PLAN_REVIEW",
+    "HUMAN_APPROVAL",
+    "EXECUTION_PREFLIGHT",
+    "EXECUTION",
+    "IMPLEMENTATION_REVIEW",
+    "HUMAN_GIT"
+  ],
+  "boundaries": {
+    "in_scope": [
+      "governança raiz",
+      "control plane .ai",
+      "documentação arquitetural multiagente",
+      "runbooks compartilhados",
+      "manifest e CI de validação do control plane"
+    ],
+    "out_of_scope": [
+      "runtime funcional do PWA",
+      "migração de dados reais",
+      "deploy/release do produto"
+    ],
+    "allowed_actions": [
+      "substituir contratos e policies explicitamente listados",
+      "mover examples para .ai/control/examples",
+      "criar .ai/tasks",
+      "criar workflow determinístico do control plane"
+    ],
+    "prohibited_actions": [
+      "promover bootstrap DESIGN a gate",
+      "promover FVR PILOT_ONLY a gate",
+      "alterar Git refs/index/history",
+      "declarar o produto apto a dados reais"
+    ],
+    "allowed_technical_autonomy": [
+      "organizar helpers internos dos validadores sem mudar semântica"
+    ],
+    "stop_conditions": [
+      "baseline material divergir antes da aplicação",
+      "contradição normativa nova exigir decisão humana",
+      "validator known-bad deixar de falhar"
+    ]
+  },
+  "included_edge_cases": [
+    "approval com hash divergente",
+    "Action órfã",
+    "AC órfão",
+    "ciclo de Actions",
+    "mudança fora de target",
+    "evidência simulada",
+    "pending human decision"
+  ],
+  "three_amigos": {
+    "domain_business": "A autoridade humana permanece final; agentes não reinterpretam decisões materiais.",
+    "development": "Contratos e validadores são dependency-free e fail-closed; Git permanece read-only para agentes.",
+    "quality": "Known-good deve passar e known-bad deve falhar; ausência de evidência nunca vira PASS."
+  },
+  "business_rules": [
+    {
+      "rule_id": "R-01",
+      "rule": "TaskProposal aprovado é o contrato semântico; não criar TaskContract concorrente."
+    },
+    {
+      "rule_id": "R-02",
+      "rule": "Aprovação humana vincula os bytes exatos do proposal por SHA-256."
+    },
+    {
+      "rule_id": "R-03",
+      "rule": "Planner/Executor usam READY_FOR_REVIEW ou BLOCKED; Reviewer usa PASS/FAIL/HUMAN_DECISION_REQUIRED."
+    },
+    {
+      "rule_id": "R-04",
+      "rule": "Bootstrap DESIGN e FVR PILOT_ONLY não são gates de produção."
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "D-01",
+      "decision": "Namespaces canônicos: .ai/control, .ai/decisions, .ai/tasks."
+    },
+    {
+      "decision_id": "D-02",
+      "decision": "Git continua sendo state machine e histórico operacional."
+    }
+  ],
+  "constraints": [
+    {
+      "constraint_id": "C-01",
+      "scope": "control_plane",
+      "constraint": "Validadores não dependem de rede nem de LLM."
+    },
+    {
+      "constraint_id": "C-02",
+      "scope": "review",
+      "constraint": "Codex permanece read-only."
+    }
+  ],
+  "files": [
+    {
+      "path": "AGENT_POLICY.md",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "CLAUDE.md",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "AGENTS.md",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".ai/control/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".ai/decisions/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".ai/tasks/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "docs/arquiteturas/multi-agentes/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "runbooks/README.md",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "runbooks/shared/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "manifest.json",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "manifest.md",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".github/workflows/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".codex/config.toml",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": ".devcontainer/scripts/",
+      "role": "target",
+      "operation": "change"
+    },
+    {
+      "path": "docs/modelagem/",
+      "role": "reference",
+      "operation": "read"
+    }
+  ],
+  "pending_human_decisions": [],
+  "risk": {
+    "level": "vermelho_critico",
+    "natures": [
+      "ci"
+    ],
+    "blast_radius": "alto",
+    "reversibility": "reversivel",
+    "justification": "Altera governança, contracts e gate CI do processo de engenharia, sem alterar runtime funcional do produto."
+  },
+  "runbook_binding": {
+    "catalog_version": "1.0",
+    "operation_classes": [
+      "documentation_change",
+      "code_change"
+    ],
+    "repository_baseline_required": true,
+    "evidence_review_required": true
+  },
+  "acceptance_criteria": [
+    {
+      "criterion_id": "AC-001",
+      "output_refs": [
+        "OUT-001"
+      ],
+      "condition": "Estrutura canônica existe e namespaces concorrentes não são operacionais.",
+      "method": "Executar validate-control-plane.mjs.",
+      "expected": "exit code 0",
+      "verification_owner": "deterministic"
+    },
+    {
+      "criterion_id": "AC-002",
+      "output_refs": [
+        "OUT-002"
+      ],
+      "condition": "Policies e specs usam o mesmo lifecycle e estados externos.",
+      "method": "Validador procura referências operacionais stale e contratos divergentes.",
+      "expected": "nenhuma inconsistência bloqueante",
+      "verification_owner": "deterministic"
+    },
+    {
+      "criterion_id": "AC-003",
+      "output_refs": [
+        "OUT-003"
+      ],
+      "condition": "Examples known-good validam e known-bad são rejeitados.",
+      "method": "Executar suite embutida de conformance do control plane.",
+      "expected": "todos os vetores com resultado esperado",
+      "verification_owner": "deterministic"
+    },
+    {
+      "criterion_id": "AC-004",
+      "output_refs": [
+        "OUT-001"
+      ],
+      "condition": "Manifesto estruturado aponta apenas para paths existentes.",
+      "method": "validate-control-plane.mjs resolve assets de manifest.json.",
+      "expected": "zero path órfão",
+      "verification_owner": "deterministic"
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "A-001",
+      "action": "Reconciliar policies e ciclo de vida.",
+      "purpose": "Unificar autoridade, estágios e estados.",
+      "depends_on": [],
+      "acceptance_criteria_refs": [
+        "AC-999"
+      ],
+      "target_files": [
+        "AGENT_POLICY.md",
+        "CLAUDE.md",
+        "AGENTS.md"
+      ],
+      "expected_evidence": [
+        "diff das policies",
+        "validator control-plane PASS"
+      ]
+    },
+    {
+      "action_id": "A-002",
+      "action": "Consolidar contracts e validators em .ai/control.",
+      "purpose": "Tornar regras verificáveis por máquina.",
+      "depends_on": [
+        "A-001"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-003"
+      ],
+      "target_files": [
+        ".ai/control/"
+      ],
+      "expected_evidence": [
+        "known-good PASS",
+        "known-bad rejected"
+      ]
+    },
+    {
+      "action_id": "A-003",
+      "action": "Reconciliar docs, runbooks, decisions, tasks e manifest.",
+      "purpose": "Eliminar paths e conceitos concorrentes.",
+      "depends_on": [
+        "A-002"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-004"
+      ],
+      "target_files": [
+        "docs/arquiteturas/multi-agentes/",
+        "runbooks/README.md",
+        "runbooks/shared/",
+        ".ai/decisions/",
+        ".ai/tasks/",
+        "manifest.json",
+        "manifest.md"
+      ],
+      "expected_evidence": [
+        "manifest path check PASS",
+        "stale reference scan PASS"
+      ]
+    },
+    {
+      "action_id": "A-004",
+      "action": "Adicionar gate CI dependency-free.",
+      "purpose": "Impedir regressão estrutural do control plane.",
+      "depends_on": [
+        "A-003"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-003"
+      ],
+      "target_files": [
+        ".github/workflows/"
+      ],
+      "expected_evidence": [
+        "workflow syntax review",
+        "local validator PASS"
+      ]
+    }
+  ],
+  "mandatory_checks": [
+    {
+      "check_id": "CHK-001",
+      "kind": "custom",
+      "command": "node .ai/control/validate-control-plane.mjs",
+      "expected_exit_code": 0
+    },
+    {
+      "check_id": "CHK-002",
+      "kind": "git",
+      "command": "git diff --check",
+      "expected_exit_code": 0
+    }
+  ],
+  "definition_of_done": {
+    "required_acceptance_criteria_refs": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004"
+    ],
+    "required_check_refs": [
+      "CHK-001",
+      "CHK-002"
+    ],
+    "no_unauthorized_changes": true,
+    "no_pending_human_decisions": true
+  }
+}

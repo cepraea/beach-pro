@@ -2,103 +2,79 @@
 
 ## Objetivo
 
-Definir o procedimento especializado de revisão independente para criação e alteração de
-documentação Markdown no CEPRAEA BEACH PRO.
+Definir o procedimento de revisão independente para alterações de documentação Markdown.
 
 ## Aplicabilidade
 
-Usar este runbook quando o Reviewer receber um `git diff` resultante de:
-
-- criação de novo documento Markdown
-- alteração de documento Markdown existente
-- atualização de decisão, modelo ou evidência em formato Markdown
+Usar quando a `operation_class` da TASK incluir `documentation_change`.
 
 ## Entradas
 
-- `git diff` completo da alteração documental
-- Fontes técnicas aplicáveis ao conteúdo revisado
-- Critérios de aceite da tarefa
+- `proposal.json` aprovado;
+- `approval.json` válido;
+- `execution-result.json`;
+- `git diff` e `git status`;
+- guia canônico `docs/linters/guia_estilo_documentação.md`;
+- fontes normativas e evidências materiais aplicáveis.
 
 ## Fontes de autoridade
 
-- `AGENT_POLICY.md`
-- `AGENTS.md`
-- `docs/standards/guia_estilo_documentação.md` — normativa canônica de autoria
-- Fontes técnicas aplicáveis ao conteúdo revisado
+- `AGENT_POLICY.md`;
+- `AGENTS.md`;
+- `.ai/control/runbook-catalog.json`;
+- `docs/linters/guia_estilo_documentação.md`;
+- fontes normativas declaradas no `proposal.json`.
 
 ## Pré-condições
 
-- `git diff` disponível e inspecionável
-- Guia canônico de documentação lido
-- Fontes técnicas identificadas
-- Reviewer operando com projeto read-only
-
-## Escopo operacional
-
-Somente leitura: diff, documentos do repositório, fontes técnicas aplicáveis.
-
-Escrita efêmera exclusivamente em `/tmp` quando necessário para validações.
-
-Não alterar o working tree, não aplicar patches, não fazer commit.
+- `review_stage = IMPLEMENTATION`;
+- Reviewer em modo read-only;
+- proposal/approval/result resolvíveis;
+- diff inspecionável.
 
 ## Procedimento
 
-1. Confirmar a tarefa sob revisão e seus critérios de aceite.
-2. Identificar as fontes técnicas aplicáveis ao conteúdo.
-3. Inspecionar o `git diff` completo.
-4. Verificar a preservação do significado técnico: o conteúdo alterado não contradiz as fontes.
-5. Verificar aderência ao guia de autoria (idioma, sentence case, linguagem direta, estrutura).
-6. Identificar afirmações sem suporte em fonte verificável.
-7. Verificar links e referências afetados pela alteração.
-8. Verificar exemplos e comandos para correção técnica.
-9. Avaliar separadamente: forma (estilo, estrutura) e correção técnica (conteúdo).
-10. Emitir o verdict com findings quando aplicável.
+1. Validar proposal, approval e execution result.
+2. Inspecionar `git status` e `git diff` completos.
+3. Confirmar que cada arquivo alterado está dentro da superfície autorizada.
+4. Comparar afirmações do documento com suas fontes normativas.
+5. Verificar aderência ao guia canônico de documentação.
+6. Verificar links e referências afetados.
+7. Tentar refutar alegações materiais do Executor usando evidência observável.
+8. Reexecutar checks compatíveis com read-only e proporcionais ao risco.
+9. Emitir findings estruturados quando necessário.
 
 ## Pontos de decisão
 
 | Condição | Ação |
-|---|---|
-| Conteúdo contradiz fonte normativa | `FAIL` com finding HIGH ou CRITICAL conforme impacto |
-| Afirmação sem suporte em evidência | Finding MEDIUM; não suprimir |
-| Decisão existente alterada sem autorização | `FAIL` com finding CRITICAL |
-| Erro de estilo sem impacto técnico | Finding LOW |
-| Exemplo ou comando tecnicamente incorreto | Finding HIGH |
+| --- | --- |
+| Conteúdo contradiz fonte normativa | `FAIL` |
+| Decisão material foi simulada pelo Executor | `FAIL` ou `HUMAN_DECISION_REQUIRED`, conforme a correção possível |
+| Afirmação material sem evidência suficiente | `FAIL` |
+| Semântica depende de decisão humana não resolvida | `HUMAN_DECISION_REQUIRED` |
+| Erro apenas editorial, sem impacto material | finding proporcional; não inventar nova exigência |
 
 ## Validações independentes
 
-- markdownlint (ou equivalente) sem erros bloqueantes
-- Links internos verificados
-- Comandos listados conferidos contra a implementação atual quando críticos
+Quando aplicável:
 
-## Evidências
-
-- Diff documental inspecionado
-- Resultado das validações documentais
-- Findings documentados com estrutura completa
+- lint Markdown sem `--fix`;
+- links internos afetados;
+- comandos/documentação técnica confrontados com a implementação atual;
+- integridade do `execution-result.json`.
 
 ## Handoff
 
-Emitir verdict com:
+Finalizar exclusivamente com:
 
-- resumo da revisão (forma e correção técnica, separadamente)
-- findings classificados (quando existirem)
-- verificações executadas e resultados
-- questões para Davi quando aplicável
-
-## Estados de saída
-
-`PASS` — conteúdo tecnicamente correto, aderente ao guia de autoria, sem afirmações sem suporte
-material.
-
-`FAIL` — conteúdo tecnicamente incorreto, contradiz fonte normativa, decisão alterada sem
-autorização, ou finding HIGH/CRITICAL que impeça aceitação.
-
-`HUMAN_DECISION_REQUIRED` — questão de conteúdo que exige decisão de domínio por Davi.
+- `PASS`;
+- `FAIL`; ou
+- `HUMAN_DECISION_REQUIRED`.
 
 ## Referências
 
 - [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
 - [`AGENTS.md`](../../AGENTS.md)
-- [`docs/standards/guia_estilo_documentação.md`](../../docs/standards/guia_estilo_documentação.md)
+- [`docs/linters/guia_estilo_documentação.md`](../../docs/linters/guia_estilo_documentação.md)
 - [`RB-SHARED-002-evidence.md`](../shared/RB-SHARED-002-evidence.md)
 - [`RB-SHARED-003-failure-states.md`](../shared/RB-SHARED-003-failure-states.md)

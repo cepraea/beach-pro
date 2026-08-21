@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cepraea.local/schema/1.0/task-approval.schema.json",
+  "title": "CEPRAEA BEACH PRO Task Approval v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "object_type",
+    "schema_version",
+    "approval_id",
+    "task_id",
+    "proposal_binding",
+    "plan_review",
+    "decision",
+    "issued_by",
+    "issued_at",
+    "runtime_anchor"
+  ],
+  "properties": {
+    "object_type": {
+      "const": "task_approval"
+    },
+    "schema_version": {
+      "const": "1.0"
+    },
+    "approval_id": {
+      "type": "string",
+      "pattern": "^APR-[A-Z0-9._-]{3,127}$"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposal_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "revision",
+        "proposal_sha256"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "proposal_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "plan_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "review_stage",
+        "verdict",
+        "reviewed_at"
+      ],
+      "properties": {
+        "reviewer": {
+          "const": "codex"
+        },
+        "review_stage": {
+          "const": "PLAN"
+        },
+        "verdict": {
+          "const": "PASS"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected"
+      ]
+    },
+    "issued_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "properties": {
+        "actor_type": {
+          "const": "human"
+        },
+        "actor_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runtime_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "branch",
+        "base_commit",
+        "working_tree_policy"
+      ],
+      "properties": {
+        "repository": {
+          "const": "cepraea/beach-pro"
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "enum": [
+              "main",
+              "master"
+            ]
+          }
+        },
+        "base_commit": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{7,64}$"
+        },
+        "working_tree_policy": {
+          "enum": [
+            "clean_required",
+            "contract_allowed_changes_only"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -2,87 +2,34 @@
 
 ## Objetivo
 
-Definir critérios compartilhados para produção, seleção e persistência de evidências materiais
-nas operações especializadas.
+Definir evidência suficiente, observável e não simulada para claims materiais.
 
-## Aplicabilidade
+## Autoridade
 
-Carregar quando a operação especializada definir requisitos de evidência que precisem seguir
-critérios comuns.
+- `AGENT_POLICY.md` — seção "Evidência e claims";
+- TaskProposal aprovado;
+- `.ai/control/execution-result.schema.json`.
 
-## Entradas
+## Regras
 
-- Working tree após execução ou revisão
-- Resultados dos validadores determinísticos executados
+1. `NO EVIDENCE → NO PASS`.
+2. Evidência deve referenciar Action e AC.
+3. Evidência simulada é inválida.
+4. Comando material registra comando, exit code e instante.
+5. Diff prova mudança, não correção.
+6. Contradição entre evidências deve ser preservada e reportada.
+7. Evidência não autoriza decisão humana.
 
-## Fontes de autoridade
+## Mínimo antes de READY_FOR_REVIEW
 
-- `AGENT_POLICY.md` — seção Persistent Evidence
-- Critérios de aceite da tarefa em execução
+- cada Action `PASS` possui `evidence_refs`;
+- cada AC requerido pela DoD possui evidência `PASS`;
+- mandatory checks possuem resultado;
+- `git diff --check`, diff e status foram inspecionados;
+- `unauthorized_changes=[]`.
 
-## Pré-condições
+A persistência material é `.ai/tasks/<TASK-ID>/execution-result.json`; não criar logs narrativos obrigatórios paralelos ao Git.
 
-- Operação especializada executada ou em execução
-- Validadores determinísticos aplicáveis já rodados
+## Reviewer
 
-## Escopo operacional
-
-Produção e seleção de evidências para a operação em curso.
-
-Persistência proporcional ao valor probatório da evidência.
-
-Git permanece como mecanismo primário de estado, handoff e histórico.
-
-## Procedimento
-
-1. Identificar as alegações materiais da operação.
-2. Para cada alegação, identificar a evidência correspondente.
-3. Executar `git diff --check` e registrar o resultado.
-4. Executar `git diff` e registrar o diff completo.
-5. Registrar a lista dos arquivos modificados (`git status --short`).
-6. Registrar exit codes relevantes dos validadores.
-7. Registrar relatórios produzidos pela tarefa quando possuírem valor material.
-8. Persistir somente as evidências com valor probatório.
-
-## Pontos de decisão
-
-| Condição | Ação |
-|---|---|
-| Alegação sem evidência correspondente | Registrar como insuficiência; não inventar evidência |
-| Evidência contraditória | Reportar contradição; não ocultar |
-| Validador com falha | Registrar falha e impacto; não suprimir |
-
-## Validações
-
-- `git diff --check` não reporta espaços em branco problemáticos
-- `git diff` inspecionado e compreendido
-- Exit codes dos validadores documentados
-
-## Evidências mínimas
-
-A evidência mínima inclui:
-
-- `git diff` ou diff completo da operação
-- Lista dos arquivos alterados
-- Resultado dos validadores obrigatórios
-
-Evidências adicionais são produzidas somente quando possuírem valor material para a operação.
-
-## Handoff
-
-Evidências selecionadas → disponíveis para o próximo papel.
-
-**Executor:** inclui evidências no handoff factual com `READY_FOR_REVIEW`.
-
-**Reviewer:** usa as evidências do Executor como base para refutação independente.
-
-## Estados de saída
-
-**Executor:** evidência insuficiente bloqueia `READY_FOR_REVIEW` → `BLOCKED`.
-
-**Reviewer:** insuficiência material de evidência → finding classificado + parte do verdict.
-
-## Referências
-
-- [`AGENT_POLICY.md`](../../AGENT_POLICY.md) — seção Persistent Evidence
-- [`RB-SHARED-003-failure-states.md`](RB-SHARED-003-failure-states.md)
+Reviewer usa a evidência do Executor como entrada, mas tenta refutá-la independentemente. Insuficiência material impede `PASS`.
