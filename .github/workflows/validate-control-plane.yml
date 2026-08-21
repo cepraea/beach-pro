@@ -2,18 +2,8 @@ name: validate-control-plane
 
 on:
   pull_request:
-    paths:
-      - "AGENT_POLICY.md"
-      - "CLAUDE.md"
-      - "AGENTS.md"
-      - ".ai/**"
-      - "runbooks/**"
-      - "docs/arquiteturas/multi-agentes/**"
-      - "manifest.json"
-      - "manifest.md"
-      - ".codex/**"
-      - ".devcontainer/**"
-      - ".github/workflows/validate-control-plane.yml"
+    branches: [main]
+
   push:
     branches: [main]
     paths:
