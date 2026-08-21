@@ -1,19 +1,12 @@
 ## CEPRAEA-BEACH-PRO — Codex Reviewer Policy (project-level)
 ##
-## Este arquivo configura o papel REVIEWER do Codex para este projeto.
-##
-## Objetivo: projeto read-only, escrita efêmera apenas em /tmp e caches técnicos
-## explicitamente autorizados, sem acesso a rede durante review normal.
+## Papel REVIEWER: projeto read-only, escrita efêmera apenas em /tmp/caches autorizados,
+## sem rede durante review normal.
 ##
 ## Referência arquitetural:
-##   .drive/multi-agentes/Human-Governed Dual-Agent SDLC Architecture.md
-##   seção "Codex Reviewer Configuration"
+##   docs/arquiteturas/multi-agentes/main/Human-Governed Dual-Agent SDLC Architecture.md
 ##
-## Nota de compatibilidade (testado em codex-cli 0.146.1, 2026-08-14):
-##   O permission profile [permissions.cepraea-review] pode não ser suportado
-##   pela versão instalada. Nesse caso, o enforcement definitivo é aplicado por
-##   /etc/codex/requirements.toml (allowed_sandbox_modes = ["read-only"]),
-##   instalado root-owned no container. Verificar após upgrade do Codex CLI.
+## O enforcement definitivo também depende de /etc/codex/requirements.toml no Dev Container.
 
 default_permissions = "cepraea-review"
 approval_policy = "never"

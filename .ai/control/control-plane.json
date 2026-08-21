@@ -1,0 +1,69 @@
+{
+  "object_type": "control_plane_config",
+  "schema_version": "1.0",
+  "repository": "cepraea/beach-pro",
+  "namespaces": {
+    "control": ".ai/control",
+    "decisions": ".ai/decisions",
+    "tasks": ".ai/tasks"
+  },
+  "forbidden_operational_namespaces": [
+    ".agent-flow",
+    ".agent_rules",
+    ".planning"
+  ],
+  "bootstrap_mode": "DESIGN",
+  "fvr_mode": "PILOT_ONLY",
+  "canonical_architecture": "docs/arquiteturas/multi-agentes/main/Human-Governed Dual-Agent SDLC Architecture.md",
+  "canonical_task_standard": "docs/arquiteturas/multi-agentes/executor/task_atomics.md",
+  "canonical_planner_spec": "docs/arquiteturas/multi-agentes/planner/planner-v1-especificacao-conceitual-fechada.md",
+  "canonical_executor_spec": "docs/arquiteturas/multi-agentes/revisor/executor-v1-especificacao-formal.md",
+  "operational_sources": [
+    "AGENT_POLICY.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".ai/control/README.md",
+    ".ai/decisions/INDEX.md",
+    "runbooks/README.md",
+    "runbooks/shared/RB-SHARED-002-evidence.md",
+    "runbooks/shared/RB-SHARED-003-failure-states.md",
+    "docs/arquiteturas/multi-agentes/main/Human-Governed Dual-Agent SDLC Architecture.md",
+    "docs/arquiteturas/multi-agentes/executor/task_atomics.md",
+    "docs/arquiteturas/multi-agentes/planner/planner-v1-especificacao-conceitual-fechada.md",
+    "docs/arquiteturas/multi-agentes/revisor/executor-v1-especificacao-formal.md",
+    "docs/operacao/agent-workflow.md",
+    "docs/arquiteturas/multi-agentes/README.md",
+    ".codex/config.toml",
+    ".devcontainer/scripts/verify-agent-environment.sh",
+    ".devcontainer/scripts/README.md"
+  ],
+  "required_control_files": [
+    ".ai/control/control-plane.json",
+    ".ai/control/task-proposal.schema.json",
+    ".ai/control/task-approval.schema.json",
+    ".ai/control/execution-result.schema.json",
+    ".ai/control/verification-plan.schema.json",
+    ".ai/control/runbook-catalog.json",
+    ".ai/control/validate-task-proposal.mjs",
+    ".ai/control/validate-task-approval.mjs",
+    ".ai/control/validate-execution-result.mjs",
+    ".ai/control/validate-control-plane.mjs"
+  ],
+  "stale_operational_references": [
+    "docs/arquiteturas/task_atomics.md",
+    ".drive/multi-agentes/",
+    "docs/standards/guia_estilo_documentação.md",
+    ".ai/task-proposal.example.json",
+    ".ai/task-approval.example.json",
+    "docs/arquiteturas/multi-agentes/revisor/execution_result.schema.json"
+  ],
+  "required_decision_files": [
+    ".ai/decisions/INDEX.md",
+    ".ai/decisions/DEC-ARQ-001-dev-container-como-sandbox-operacional.md",
+    ".ai/decisions/DEC-CTR-013-git-readonly-modelo-a.md",
+    ".ai/decisions/DEC-CTR-015-dois-contextos-dev-container.md",
+    ".ai/decisions/DEC-GOV-001-agent-flow-legado.md",
+    ".ai/decisions/DEC-GOV-002-runbook-binding-modelagem-canonica.md",
+    ".ai/decisions/DEC-GOV-003-control-plane-canonico.md"
+  ]
+}

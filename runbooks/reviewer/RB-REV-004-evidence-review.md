@@ -2,98 +2,66 @@
 
 ## Objetivo
 
-Definir o procedimento especializado de revisão independente quando a suficiência da evidência
-é um aspecto material para a aceitação da operação.
+Definir a revisão independente da suficiência, autenticidade e rastreabilidade de evidências materiais.
 
 ## Aplicabilidade
 
-Usar este runbook em combinação com o runbook especializado principal quando:
-
-- os critérios de aceite exigirem evidência específica de propriedades materiais
-- o Executor fizer alegações que precisam ser verificadas independentemente
-- a operação envolver risco que justifique verificação adicional de evidências
+Carregar adicionalmente quando `proposal.runbook_binding.evidence_review_required = true`.
 
 ## Entradas
 
-- Evidências produzidas pelo Executor
-- `git diff` da operação
-- Critérios de aceite da tarefa
+- `proposal.json` aprovado;
+- `approval.json` válido;
+- `execution-result.json`;
+- `git diff` e estado observável do repositório;
+- evidências referenciadas pelo resultado de execução.
 
 ## Fontes de autoridade
 
-- `AGENT_POLICY.md` — seção Persistent Evidence
-- `AGENTS.md`
-- Critérios de aceite da tarefa
+- `AGENT_POLICY.md`, seção **Evidência e claims**;
+- `AGENTS.md`;
+- ACs e Actions do `proposal.json`.
 
-## Pré-condições
+## Regras de suficiência
 
-- Evidências do Executor disponíveis
-- Critérios de aceite identificados
-- Reviewer operando com projeto read-only
+Uma evidência material só pode sustentar `PASS` quando:
 
-## Escopo operacional
+1. existe e é resolvível;
+2. não é simulada;
+3. identifica Actions e ACs existentes;
+4. é consistente com o estado observável;
+5. quando deriva de comando, preserva comando e exit code;
+6. quando depende de artefato, o artefato referenciado existe e corresponde à alegação;
+7. não é contradita por observação independente mais forte.
 
-Somente leitura e verificação independente.
-
-Escrita efêmera exclusivamente em `/tmp` ou caches técnicos explicitamente autorizados.
-
-Não corrigir silenciosamente deficiências de evidência: registrar como finding.
+`git diff` prova que houve mudança; não prova que a mudança está correta.
 
 ## Procedimento
 
-1. Identificar as alegações materiais feitas pelo Executor.
-2. Para cada alegação, identificar a evidência correspondente produzida.
-3. Comparar cada alegação com o estado observável no repositório.
-4. Reproduzir verificações críticas quando proporcional ao risco (usar somente `/tmp` para escrita).
-5. Classificar insuficiência de evidência conforme severidade.
-6. Emitir o verdict com findings quando aplicável.
+1. Enumerar alegações materiais do Executor.
+2. Mapear alegação → Action → AC → Evidence.
+3. Rejeitar referências órfãs ou evidência simulada.
+4. Reproduzir checks críticos quando compatíveis com read-only e proporcionais ao risco.
+5. Comparar os resultados independentes com o `execution-result.json`.
+6. Classificar qualquer insuficiência como finding.
 
 ## Pontos de decisão
 
 | Condição | Ação |
-|---|---|
-| Alegação sem evidência correspondente | Finding MEDIUM ou HIGH conforme impacto |
-| Evidência contraditória com estado observável | Finding HIGH ou CRITICAL |
-| Verificação crítica não reproduzível | Finding + comunicar limitação |
-| Critérios de aceite ambíguos sobre o que constitui evidência | `HUMAN_DECISION_REQUIRED` |
-
-## Critérios de suficiência mínima
-
-Uma evidência é materialmente suficiente quando:
-
-- existe e é verificável no estado atual do repositório
-- é consistente com a alegação feita
-- não contraditória com o estado observável
-
-Uma evidência é insuficiente quando:
-
-- está ausente para uma alegação material
-- contradiz o estado observável
-- não pode ser verificada independentemente e a alegação é de alto risco
-
-## Evidências do próprio review
-
-- Lista das alegações revisadas
-- Verificações executadas independentemente
-- Findings de insuficiência classificados
+| --- | --- |
+| Action em PASS sem evidência material | `FAIL` |
+| AC obrigatório sem evidência PASS | `FAIL` |
+| Evidência contradiz estado observável | `FAIL` |
+| Evidência crítica não pode ser reproduzida por limitação legítima | registrar limitação; não converter em PASS |
+| Critério de suficiência depende de escolha humana | `HUMAN_DECISION_REQUIRED` |
 
 ## Handoff
 
-Emitir verdict com:
+Finalizar exclusivamente com o verdict do Reviewer:
 
-- lista das alegações verificadas
-- findings de insuficiência (quando existirem)
-- verificações independentes executadas
-- questões para Davi quando aplicável
-
-## Estados de saída
-
-`PASS` — todas as alegações materiais possuem evidência suficiente e consistente.
-
-`FAIL` — alegação material sem evidência, evidência contraditória ou insuficiência que impeça
-aceitação.
-
-`HUMAN_DECISION_REQUIRED` — critérios de suficiência de evidência exigem decisão de Davi.
+- `PASS`;
+- `FAIL`; ou
+- `HUMAN_DECISION_REQUIRED`.
 
 ## Referências
 

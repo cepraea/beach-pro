@@ -1,0 +1,44 @@
+{
+  "object_type": "runbook_catalog",
+  "schema_version": "1.0",
+  "operation_classes": {
+    "code_change": {
+      "executor": [
+        "runbooks/executor/RB-EXEC-001-code-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-001-code-review.md"
+      ]
+    },
+    "database_change": {
+      "executor": [
+        "runbooks/executor/RB-EXEC-002-database-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-002-database-review.md"
+      ]
+    },
+    "documentation_change": {
+      "executor": [
+        "runbooks/executor/RB-EXEC-003-documentation-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-003-documentation-review.md"
+      ]
+    },
+    "dependency_change": {
+      "executor": [
+        "runbooks/executor/RB-EXEC-004-dependency-change.md"
+      ],
+      "reviewer": [
+        "runbooks/reviewer/RB-REV-005-dependency-review.md"
+      ]
+    }
+  },
+  "shared": {
+    "evidence": "runbooks/shared/RB-SHARED-002-evidence.md",
+    "failure_states": "runbooks/shared/RB-SHARED-003-failure-states.md",
+    "repository_baseline": "runbooks/shared/RB-SHARED-001-repository-baseline.md",
+    "evidence_review": "runbooks/reviewer/RB-REV-004-evidence-review.md"
+  }
+}

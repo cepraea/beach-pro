@@ -1,0 +1,29 @@
+{
+  "object_type": "task_approval",
+  "schema_version": "1.0",
+  "approval_id": "APR-TASK-ARCH-CP-001-001",
+  "task_id": "TASK-ARCH-CP-001",
+  "proposal_binding": {
+    "proposal_id": "TP-TASK-ARCH-CP-001-001",
+    "revision": 1,
+    "proposal_sha256": "83a8f8a8eff65d3dcc16fa08961597f2fbd75c284c5f3b72b7dc6d72ad0bc07a"
+  },
+  "plan_review": {
+    "reviewer": "codex",
+    "review_stage": "PLAN",
+    "verdict": "PASS",
+    "reviewed_at": "2026-08-21T19:10:00Z"
+  },
+  "decision": "approved",
+  "issued_by": {
+    "actor_type": "human",
+    "actor_id": "human-authority"
+  },
+  "issued_at": "2026-08-21T19:12:00Z",
+  "runtime_anchor": {
+    "repository": "cepraea/beach-pro",
+    "branch": "chore/control-plane-production",
+    "base_commit": "2c182858a42854ae3890f8d490679b61f9592bf6",
+    "working_tree_policy": "contract_allowed_changes_only"
+  }
+}

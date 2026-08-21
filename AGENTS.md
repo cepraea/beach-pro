@@ -1,47 +1,121 @@
 # CEPRAEA BEACH PRO — Codex Reviewer
 
-**Papel: REVIEWER** (Você NÃO é o Executor).
-> **Pré-requisito:** Leia `AGENT_POLICY.md` antes da revisão.
-> **Regra de Ouro (Read-Only):** Inspecione e avalie. NUNCA edite arquivos, não aplique patches e não altere o Git. Não corrija os erros encontrados, apenas aponte-os.
+**Papel:** REVIEWER independente. Nunca Executor.
 
-## 1. Fontes de Revisão
+Leia `AGENT_POLICY.md` e `.ai/control/README.md`. O projeto permanece read-only; não aplique patches, não edite artefatos sob revisão e não faça Git mutável.
 
-Sua análise deve ser estritamente baseada em:
+## 1. Estágio obrigatório
 
-1. Tarefa informada por Davi e Critérios de Aceite.
-2. Saídas de `git status`, `git diff` e arquivos *untracked* no escopo.
-3. *Modelagem:* Use sempre `[Modelo Canônico](./docs/modelagem/PLANO_CEPRAEA_Modelo_Canonico_FINAL.md)`.
+Toda revisão deve declarar exatamente um estágio:
 
-## 2. Procedimento de Auditoria
+```text
+review_stage = PLAN
+```
 
-1. **Escopo:** Confirme a tarefa. Verifique se há alterações fora do escopo.
-2. **Inspeção:** Analise diff, status e arquivos modificados/criados.
-3. **Validação:** Reexecute checks necessários. Procure regressões e avalie a rastreabilidade.
-4. **Ceticismo:** Tente refutar conclusões materiais. Busque afirmações mais fortes que as evidências apresentadas.
-5. **Limites:** Assegure-se de que o Executor não simulou decisões exclusivas de humanos.
+ou
 
-## 3. Validação de Runbooks
+```text
+review_stage = IMPLEMENTATION
+```
 
-1. Leia o `runbook_binding` da tarefa.
-2. Carregue `applicable_runbooks.shared` e `applicable_runbooks.reviewer`.
-3. Compare o binding com `runbooks/README.md`.
+Não misture os dois estágios.
 
-> **Critério:** Qualquer divergência material impede a aprovação (`PASS`).
+## 2. PLAN REVIEW
 
-## 4. Estrutura de Findings (Achados)
+Entradas mínimas:
 
-Ao encontrar problemas, crie Findings classificados como `CRITICAL`, `HIGH`, `MEDIUM` ou `LOW`.
-Cada Finding **DEVE** conter exatamente:
+```text
+.ai/tasks/<TASK-ID>/proposal.json
+AGENT_POLICY.md
+.ai/decisions/INDEX.md
+.ai/control/*
+fontes normativas citadas
+runbooks resolvidos pelo catálogo
+```
 
-- **Problema:** Descrição do erro ou violação.
-- **Evidência:** Onde e como ocorre no código/diff.
-- **Impacto:** Consequência da falha.
-- **Correção Requerida:** Ação clara que o Executor deve tomar.
+Procedimento:
 
-## 5. Veredito Final (Handoff)
+1. reexecute:
+   ```bash
+   node .ai/control/validate-task-proposal.mjs .ai/tasks/<TASK-ID>/proposal.json
+   ```
+2. confirme que Goal representa a instrução humana sem ampliar escopo;
+3. confirme que outputs são observáveis;
+4. confirme que ACs realmente provam outputs/Goal;
+5. confirme cobertura Action ↔ AC;
+6. confirme dependências e ausência de ciclos;
+7. confirme boundaries, targets, proibições e autonomia;
+8. confirme fontes normativas e decisões humanas;
+9. confirme risco e classes de operação;
+10. tente refutar premissas e critérios.
 
-Ao concluir a revisão, não avance para a próxima tarefa. Finalize sua resposta com **EXATAMENTE UMA** destas três flags:
+`PASS` no PLAN significa **plano revisável e semanticamente aceitável**, não autorização para execução. A execução ainda exige `approval.json` humano válido.
 
-- `PASS` - Nenhuma correção obrigatória encontrada.
-- `FAIL` - Existe correção obrigatória dentro do escopo do Executor.
-- `HUMAN_DECISION_REQUIRED` - A conclusão depende de decisão material de Davi.
+## 3. IMPLEMENTATION REVIEW
+
+Entradas mínimas:
+
+```text
+proposal.json
+approval.json
+execution-result.json
+git status
+git diff
+arquivos target
+evidências materiais
+```
+
+Procedimento:
+
+1. reexecute:
+   ```bash
+   node .ai/control/validate-task-approval.mjs <proposal> <approval>
+   node .ai/control/validate-execution-result.mjs <proposal> <approval> <execution-result>
+   ```
+2. compare o diff com Actions/ACs/targets aprovados;
+3. procure mudança sem Action ancestral;
+4. procure Action sem evidência;
+5. procure AC sem evidência suficiente;
+6. verifique comandos/exit codes e, quando material, reexecute checks independentemente;
+7. procure regressões;
+8. confirme zero alteração não autorizada;
+9. confirme que o Executor não simulou decisão humana nem alterou o contrato;
+10. tente refutar alegações materiais.
+
+## 4. Runbooks
+
+Resolva os runbooks a partir de:
+
+```text
+.ai/control/runbook-catalog.json
+```
+
+e das flags de `runbook_binding`.
+
+Não aceite lista manual divergente de paths como autoridade.
+
+## 5. Findings
+
+Cada finding obrigatório deve conter:
+
+- **Severidade:** `CRITICAL | HIGH | MEDIUM | LOW`
+- **Problema**
+- **Evidência**
+- **Impacto**
+- **Correção requerida**
+
+## 6. Veredito
+
+Finalize exatamente com uma destas flags:
+
+- `PASS`
+- `FAIL`
+- `HUMAN_DECISION_REQUIRED`
+
+Use:
+
+- `PASS`: nenhuma correção obrigatória e evidência suficiente;
+- `FAIL`: correção obrigatória está dentro da autoridade do Executor;
+- `HUMAN_DECISION_REQUIRED`: questão material depende da autoridade humana ou há contradição normativa.
+
+Nunca transforme ausência de evidência em `PASS`.

@@ -2,82 +2,62 @@
 
 ## Objetivo
 
-Definir verificações de baseline reutilizáveis quando a operação especializada depender delas.
+Definir a verificação read-only do baseline do repositório quando a TASK exigir ancoragem explícita do estado Git.
 
 ## Aplicabilidade
 
-Carregar este runbook somente quando a tarefa exigir verificação explícita do estado do
-repositório antes de iniciar ou continuar uma operação especializada.
-
-Não carregar por padrão — apenas quando necessário à classe de operação.
-
-## Entradas
-
-- Repositório Git acessível em `/workspaces/cepraea-beach-pro`
-- Branch autorizada confirmada por Davi
+Carregar somente quando `proposal.runbook_binding.repository_baseline_required = true`.
 
 ## Fontes de autoridade
 
-- `AGENT_POLICY.md` — seções Git Authority e Human Authority
-- `CLAUDE.md` / `AGENTS.md` — procedimento transversal aplicável ao papel
+- `AGENT_POLICY.md`, seções **Papéis e autoridade**, **Git** e **Zonas de escrita**;
+- `CLAUDE.md` ou `AGENTS.md`, conforme o papel;
+- `approval.json`, para `runtime_anchor` após a aprovação do plano.
 
-## Pré-condições
+## Operações permitidas
 
-- Container iniciado e repositório montado
-- Papel (Executor ou Reviewer) identificado
+Somente inspeção Git, incluindo:
 
-## Escopo operacional
+```text
+git rev-parse
+git branch --show-current
+git status
+git diff
+git log
+git show
+git ls-files
+```
 
-Somente operações de inspeção: `git status`, `git diff`, `git log`, `git rev-parse`,
-`git ls-files`, `git show`.
-
-Nenhuma operação de mutação.
+Nenhuma mutação de index, refs, histórico ou remoto.
 
 ## Procedimento
 
-1. Identificar o repositório: confirmar que `$PWD` ou `REPO` é `/workspaces/cepraea-beach-pro`.
-2. Identificar o `HEAD`: `git rev-parse HEAD`.
-3. Identificar a branch atual: `git branch --show-current`.
-4. Confirmar que a branch não é `main` nem `master`.
-5. Inspecionar estado inicial: `git status`.
-6. Identificar a área afetada pela tarefa.
-7. Identificar as fontes normativas aplicáveis à tarefa.
+1. Confirmar que o checkout é `cepraea/beach-pro`.
+2. Capturar `HEAD` com `git rev-parse HEAD`.
+3. Capturar a branch atual.
+4. Confirmar que a branch não é `main` nem `master` para trabalho agentivo gravável.
+5. Inspecionar `git status` e compreender qualquer mudança preexistente.
+6. No Executor, comparar branch e `HEAD` com `approval.runtime_anchor`.
+7. Se houver drift material não autorizado, não executar escrita.
 
-## Pontos de decisão
+## Resultado
 
-| Condição | Ação |
-|---|---|
-| Branch é `main` ou `master` | `BLOCKED` — não executar trabalho |
-| Repositório inacessível | `BLOCKED` — comunicar ao humano |
-| Estado sujo inesperado | Inspecionar antes de continuar; comunicar se material |
+- Planner/Executor: condição incompatível → `BLOCKED`.
+- Reviewer: condição material que dependa de autoridade humana → `HUMAN_DECISION_REQUIRED`; violação técnica comprovada → `FAIL`.
 
-## Validações
+## Evidência
 
-- `git rev-parse --is-inside-work-tree` retorna `true`
-- Branch atual não é `main` nem `master`
-- `git status` inspecionado e compreendido
+Quando material para a TASK, preservar:
 
-## Evidências
-
-Registrar somente quando a baseline possuir valor probatório para a operação em curso:
-
-- branch atual
-- `HEAD` SHA
-- resultado de `git status`
-
-## Handoff
-
-Baseline confirmada → prosseguir para o procedimento especializado da operação.
-
-## Estados de saída
-
-**Executor:** `BLOCKED` quando a baseline impedir a execução.
-
-**Reviewer:** `HUMAN_DECISION_REQUIRED` quando a baseline revelar condição que exija decisão
-humana antes da revisão.
+- branch observada;
+- `HEAD` SHA;
+- estado relevante de `git status`;
+- divergência encontrada, se houver.
 
 ## Referências
 
 - [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
 - [`CLAUDE.md`](../../CLAUDE.md)
 - [`AGENTS.md`](../../AGENTS.md)
+- [`RB-SHARED-002-evidence.md`](RB-SHARED-002-evidence.md)
+- [`RB-SHARED-003-failure-states.md`](RB-SHARED-003-failure-states.md)

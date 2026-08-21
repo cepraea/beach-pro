@@ -2,100 +2,87 @@
 
 ## Objetivo
 
-Definir o procedimento especializado para criação e alteração de arquivos de documentação
-Markdown no CEPRAEA BEACH PRO.
+Definir o procedimento especializado para criação e alteração de documentação Markdown no CEPRAEA BEACH PRO.
 
 ## Aplicabilidade
 
-Usar este runbook quando a tarefa envolver:
-
-- criação de novo documento Markdown
-- alteração de documento Markdown existente
-- atualização de decisão, modelo ou evidência em formato Markdown
+Usar quando a `operation_class` da TASK incluir `documentation_change`.
 
 ## Entradas
 
-- Tarefa autorizada com escopo documental definido
-- Branch dedicada diferente de `main` e `master`
+- `proposal.json` aprovado e íntegro;
+- `approval.json` válido;
+- arquivos `target` autorizados;
+- guia canônico `docs/linters/guia_estilo_documentação.md`;
+- critérios de aceitação e evidências esperadas da TASK.
 
 ## Fontes de autoridade
 
-- `AGENT_POLICY.md` — seção Autoria de documentação
-- `CLAUDE.md`
-- `docs/standards/guia_estilo_documentação.md` — normativa canônica de autoria
-- Fontes técnicas aplicáveis à tarefa
-- Critérios de aceite da tarefa
+- `AGENT_POLICY.md`;
+- `CLAUDE.md`;
+- `.ai/control/runbook-catalog.json`;
+- `docs/linters/guia_estilo_documentação.md`;
+- fontes normativas declaradas no `proposal.json`.
 
 ## Pré-condições
 
-- Branch correta confirmada
-- Guia canônico de documentação lido antes de escrever
-- Fontes técnicas aplicáveis identificadas
+1. O preflight do Executor passou.
+2. A branch aprovada não é `main` nem `master`.
+3. O guia canônico foi lido.
+4. As fontes normativas necessárias estão acessíveis.
+5. Não há decisão humana pendente.
 
 ## Escopo operacional
 
-Alterar exclusivamente os arquivos dentro do escopo documental autorizado pela tarefa.
+Alterar exclusivamente arquivos `target` autorizados pelo `proposal.json`.
 
-Não criar ou alterar:
-
-- código, configuração ou infraestrutura como parte de uma tarefa documental
-- decisões canônicas retroativamente para justificar alterações de código anteriores
-- conteúdo que contradigam fontes normativas sem decisão explícita de Davi
+Não usar uma tarefa documental para alterar código, configuração, infraestrutura, decisão humana ou control plane sem que esses paths estejam explicitamente autorizados no contrato aprovado.
 
 ## Procedimento
 
-1. Ler `docs/standards/guia_estilo_documentação.md` antes de escrever qualquer conteúdo.
-2. Identificar as fontes técnicas aplicáveis (modelo canônico, plano, fontes do domínio).
-3. Preservar as decisões existentes registradas nos documentos afetados.
-4. Restringir a alteração estritamente ao escopo documental autorizado pela tarefa.
-5. Aplicar as regras de autoria: português brasileiro, sentence case, linguagem direta, fidelidade técnica.
-6. Verificar links e referências afetados pela alteração.
-7. Executar as validações documentais disponíveis (markdownlint ou equivalente).
-8. Inspecionar o diff documental antes de finalizar.
+1. Ler o guia canônico de documentação.
+2. Resolver as fontes normativas declaradas na TASK.
+3. Preservar significado técnico, proveniência e decisões existentes.
+4. Alterar somente o conteúdo necessário para satisfazer os ACs vinculados às Actions autorizadas.
+5. Verificar links e referências internas afetados.
+6. Executar os checks documentais declarados em `mandatory_checks`.
+7. Executar `git diff --check`.
+8. Inspecionar `git diff` e `git status`.
+9. Registrar evidência material no `execution-result.json`.
 
 ## Pontos de decisão
 
 | Condição | Ação |
-|---|---|
-| Fonte técnica ausente ou incerta | Registrar como lacuna; não inventar conhecimento |
-| Alteração implica mudança de decisão existente | Parar; comunicar a Davi antes de alterar |
-| Link quebrado detectado | Corrigir somente se dentro do escopo; registrar os demais |
+| --- | --- |
+| Fonte normativa ausente, contraditória ou incerta | `BLOCKED` |
+| Alteração exige decisão humana não registrada | `BLOCKED` |
+| Alteração exige path fora dos targets aprovados | `BLOCKED` |
+| Check documental falha por erro introduzido pela alteração | corrigir dentro da mesma Action, sem ampliar escopo |
+| Correção exige mudança semântica do contrato | `BLOCKED` |
 
-## Validações
+## Validações e evidências
 
-- `markdownlint` (ou equivalente) sem erros bloqueantes
-- Links internos verificados
-- Regras de autoria aplicadas
-- `git diff --check` limpo
-- Diff documental inspecionado
+No mínimo, quando aplicáveis:
 
-## Evidências
+- lint Markdown configurado pelo repositório;
+- links internos afetados;
+- `git diff --check`;
+- diff completo;
+- exit codes dos checks materiais.
 
-- Diff completo do documento (`git diff`)
-- Resultado da validação documental
+Ausência de evidência não pode ser convertida em sucesso.
 
 ## Handoff
 
-Apresentar de forma factual:
+Produzir `execution-result.json` e finalizar exclusivamente com:
 
-- tarefa executada
-- documentos alterados
-- validações executadas e resultados
-- lacunas identificadas (conhecimento ausente, links não corrigidos)
-- pontos que merecem atenção do Reviewer
-
-Finalizar com `READY_FOR_REVIEW` ou `BLOCKED`.
-
-## Estados de saída
-
-`READY_FOR_REVIEW` — alteração completa, validações documentais passando, diff revisável.
-
-`BLOCKED` — qualquer condição impede a conclusão correta.
+- `READY_FOR_REVIEW`; ou
+- `BLOCKED`.
 
 ## Referências
 
-- [`AGENT_POLICY.md`](/AGENT_POLICY.md)
+- [`AGENT_POLICY.md`](../../AGENT_POLICY.md)
 - [`CLAUDE.md`](../../CLAUDE.md)
-- [`docs/standards/guia_estilo_documentação.md`](../../docs/standards/guia_estilo_documentação.md)
+- [`docs/linters/guia_estilo_documentação.md`](../../docs/linters/guia_estilo_documentação.md)
 - [`RB-SHARED-002-evidence.md`](../shared/RB-SHARED-002-evidence.md)
 - [`RB-SHARED-003-failure-states.md`](../shared/RB-SHARED-003-failure-states.md)

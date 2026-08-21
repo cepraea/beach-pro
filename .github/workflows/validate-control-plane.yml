@@ -1,0 +1,46 @@
+name: validate-control-plane
+
+on:
+  pull_request:
+    paths:
+      - "AGENT_POLICY.md"
+      - "CLAUDE.md"
+      - "AGENTS.md"
+      - ".ai/**"
+      - "runbooks/**"
+      - "docs/arquiteturas/multi-agentes/**"
+      - "manifest.json"
+      - "manifest.md"
+      - ".codex/**"
+      - ".devcontainer/**"
+      - ".github/workflows/validate-control-plane.yml"
+  push:
+    branches: [main]
+    paths:
+      - "AGENT_POLICY.md"
+      - "CLAUDE.md"
+      - "AGENTS.md"
+      - ".ai/**"
+      - "runbooks/**"
+      - "docs/arquiteturas/multi-agentes/**"
+      - "manifest.json"
+      - "manifest.md"
+      - ".codex/**"
+      - ".devcontainer/**"
+      - ".github/workflows/validate-control-plane.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  control-plane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate canonical control plane
+        run: node .ai/control/validate-control-plane.mjs
+      - name: Diff whitespace check
+        run: git diff --check
