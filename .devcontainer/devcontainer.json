@@ -67,7 +67,7 @@
       "settings": { 
        "[markdown]": {
          "editor.defaultFormatter": "esbenp.prettier-vscode",
-         "editor.formatOnSave": true
+         "editor.formatOnSave": true,
 }
         "terminal.integrated.defaultProfile.linux": "bash",
         "git.autofetch": false,
