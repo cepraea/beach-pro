@@ -28,9 +28,7 @@
       "Read(//home/agent/.config/gh/**)",
       "Read(./.env)",
       "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Read(./.drive/CEPRAEA BEACH PRO/**)",
-      "Read(./.drive/BEACH HANDBALL/**)"
+      "Read(./secrets/**)"
     ],
     "ask": [
       "Bash(npm install *)",
