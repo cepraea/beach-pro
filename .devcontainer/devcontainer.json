@@ -64,7 +64,11 @@
   },
   "customizations": {
     "vscode": {
-      "settings": {
+      "settings": { 
+       "[markdown]": {
+         "editor.defaultFormatter": "esbenp.prettier-vscode",
+         "editor.formatOnSave": true
+}
         "terminal.integrated.defaultProfile.linux": "bash",
         "git.autofetch": false,
         "git.confirmSync": true,
@@ -75,7 +79,12 @@
       },
       "extensions": [
         "anthropic.claude-code",
-        "openai.chatgpt"
+        "openai.chatgpt",
+        "esbenp.prettier-vscode",
+        "DavidAnson.vscode-markdownlint",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker"
       ]
     }
   },
