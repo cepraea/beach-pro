@@ -145,7 +145,15 @@ fi
 section "Python syntax"
 
 if [[ ${#python_files[@]} -gt 0 ]]; then
-  python3 -m py_compile "${python_files[@]}"
+  python3 - "${python_files[@]}" <<'PY'
+import ast
+from pathlib import Path
+import sys
+
+for name in sys.argv[1:]:
+    path = Path(name)
+    ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+PY
 else
   printf 'SKIP: nenhum Python alterado.\n'
 fi
@@ -169,7 +177,7 @@ fi
 section "mypy / Pydantic"
 
 if [[ ${#python_files[@]} -gt 0 ]]; then
-  mypy "${python_files[@]}"
+  mypy --no-incremental "${python_files[@]}"
 else
   printf 'SKIP: nenhum Python alterado.\n'
 fi
