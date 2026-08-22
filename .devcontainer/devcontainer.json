@@ -64,12 +64,11 @@
   },
   "customizations": {
     "vscode": {
-      "settings": { 
-    "[markdown]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true
-  },
-        "terminal.integrated.defaultProfile.linux": "bash",
+      "settings": {
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
         "terminal.integrated.defaultProfile.linux": "bash",
         "git.autofetch": false,
         "git.confirmSync": true,
